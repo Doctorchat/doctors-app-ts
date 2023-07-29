@@ -4,6 +4,8 @@ module.exports = {
   settings: { react: { version: "detect" } },
   extends: [
     "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "prettier",
@@ -15,6 +17,8 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+
+    "react/prop-types": "off",
 
     "prettier/prettier": "warn",
 

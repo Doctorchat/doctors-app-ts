@@ -1,5 +1,6 @@
 {
   "welcome_back": "Bine ai revenit!",
   "error": "Eroare",
-  "something_went_wrong": "Ceva nu a mers bine. Te rog încearcă din nou."
+  "something_went_wrong": "Ceva nu a mers bine. Te rog încearcă din nou.",
+  "loading": "Se încarcă"
 }
