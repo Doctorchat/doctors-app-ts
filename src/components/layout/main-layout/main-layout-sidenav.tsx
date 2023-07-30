@@ -69,7 +69,8 @@ const SidenavContent = React.memo(() => {
                     className={({ isActive }) =>
                       cn(
                         "flex h-10 items-center overflow-hidden rounded-md px-3 text-neutral-700",
-                        "transition-colors hover:bg-neutral-200 hover:text-typography-primary",
+                        "transition-colors md:hover:bg-neutral-200 md:hover:text-typography-primary",
+                        "active:bg-neutral-200 active:text-typography-primary",
                         { "bg-neutral-200 text-typography-primary": isActive },
                       )
                     }

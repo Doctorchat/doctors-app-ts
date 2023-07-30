@@ -51,6 +51,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
       {...props}
     >
       <Button
+        key="sidenav"
         variant="ghost"
         size="icon"
         className="h-10 w-10 rounded-full"
@@ -62,15 +63,15 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         <Bars3BottomLeftIcon className="h-6 w-6" />
       </Button>
       <div className="ml-2 flex items-center justify-center">
-        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+        <Button key="notifications" variant="ghost" size="icon" className="h-10 w-10 rounded-full">
           <BellIcon className="h-6 w-6" />
         </Button>
-        <Button variant="ghost" size="icon" className="ml-2 h-10 w-10 rounded-full">
+        <Button key="settings" variant="ghost" size="icon" className="ml-2 h-10 w-10 rounded-full">
           <Cog6ToothIcon className="h-6 w-6" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="ml-4 h-8 w-8 cursor-pointer">
+            <Avatar key="avatar" className="ml-4 h-8 w-8 cursor-pointer">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>

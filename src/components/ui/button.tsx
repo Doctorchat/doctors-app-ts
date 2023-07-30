@@ -12,15 +12,23 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-rose-600 text-white shadow hover:bg-rose-600/90",
-        destructive: "bg-red-500 text-neutral-50 shadow-sm hover:bg-red-500/90",
-        outline: [
-          "border border-neutral-200 bg-white shadow-sm hover:bg-neutral-100 hover:text-neutral-900",
+        default: ["bg-rose-600 text-white shadow md:hover:bg-rose-600/90 active:bg-rose-600/90"],
+        destructive: [
+          "bg-red-500 text-neutral-50 shadow-sm md:hover:bg-red-500/90 active:bg-red-500/90",
         ],
-        secondary:
-          "bg-neutral-100 text-neutral-800 shadow-sm hover:text-typography-primary hover:bg-neutral-200/90",
-        ghost: "hover:bg-neutral-100 hover:text-typography-primary",
-        link: "text-neutral-900 underline-offset-4 hover:underline",
+        outline: [
+          "border border-neutral-200 bg-white shadow-sm md:hover:bg-neutral-100 md:hover:text-neutral-900",
+          "active:bg-neutral-100 active:text-neutral-900",
+        ],
+        secondary: [
+          "bg-neutral-100 text-neutral-800 shadow-sm md:hover:text-typography-primary md:hover:bg-neutral-200/90",
+          "active:bg-neutral-200/90 active:text-typography-primary",
+        ],
+
+        ghost: [
+          "md:hover:bg-neutral-100 md:hover:text-typography-primary active:bg-neutral-100 active:text-typography-primary",
+        ],
+        link: "text-neutral-900 underline-offset-4 md:hover:underline active:underline",
       },
       size: {
         default: "h-9 px-4 py-2",
