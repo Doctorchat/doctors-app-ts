@@ -35,13 +35,15 @@ const schema = z.object({
   password: z.string().min(6),
 });
 
+type FormValues = z.infer<typeof schema>;
+
 export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
   const { initializeSession } = useAuth();
 
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof schema>>({
+  const form = useForm<FormValues>({
     defaultValues: {
       phone: "",
       password: "",
@@ -51,7 +53,7 @@ export const LoginForm: React.FC = () => {
 
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  const onSubmitTestIsSubmitting = async (values: z.infer<typeof schema>) => {
+  const onSubmitTestIsSubmitting = async (values: FormValues) => {
     try {
       const response = await apiLogin(values);
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
@@ -114,7 +116,6 @@ export const LoginForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>{t("auth:password")}</FormLabel>
                     <FormControl>
-                      {/* <Input type="password" placeholder="********" {...field} /> */}
                       <PasswordInput placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />

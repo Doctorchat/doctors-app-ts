@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useMediaQuery } from "usehooks-ts";
 import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 
 import { Button, ScrollArea, Sheet, SheetClose, SheetContent, Spinner } from "@/components/ui";
 import {
@@ -82,7 +83,6 @@ const SidenavContent = React.memo(() => {
               ))}
             </ul>
           </nav>
-          <div style={{ height: 1000 }} />
         </ScrollArea>
       </main>
     </>
@@ -97,10 +97,15 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
   className,
   ...props
 }) => {
-  const isCollapsed = useMainLayoutSidenavStore((store) => store.isCollapsed);
+  const { isCollapsed, isOverlay, setIsOverlay } = useMainLayoutSidenavStore(
+    (store) => ({
+      isCollapsed: store.isCollapsed,
+      isOverlay: store.isOverlay,
+      setIsOverlay: store.setIsOverlay,
+    }),
+    shallow,
+  );
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const isOverlay = useMainLayoutSidenavStore((store) => store.isOverlay);
-  const setIsOverlay = useMainLayoutSidenavStore((store) => store.setIsOverlay);
 
   const isCollapsedImpl = isCollapsed && isMobile === false;
 
