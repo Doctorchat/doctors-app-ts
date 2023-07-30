@@ -1,7 +1,7 @@
 import { ChatBubbleBottomCenterIcon, HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 290;
-export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 72;
+export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 75;
 
 export interface NavigationLink {
   key: string;

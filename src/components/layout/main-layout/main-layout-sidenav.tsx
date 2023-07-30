@@ -38,7 +38,7 @@ const SidenavContent = React.memo(() => {
     <>
       <header
         className={cn("flex h-16 flex-shrink-0 items-center px-5", {
-          "px-[17.5px]": isCollapsedImpl,
+          "px-[19px]": isCollapsedImpl,
         })}
       >
         <div className="flex items-center">
@@ -141,7 +141,7 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
         ...style,
       }}
       className={cn(
-        "flex flex-col border-r border-neutral-200 bg-neutral-100 transition-[width]",
+        "flex flex-col overflow-hidden border-r border-neutral-200 bg-neutral-100 transition-[width]",
         className,
       )}
       {...props}
