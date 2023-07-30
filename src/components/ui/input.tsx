@@ -42,6 +42,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         />
         <button
           type="button"
+          aria-label="Toggle password visibility"
           className="absolute inset-y-px right-px rounded-r-md px-3 text-typography-secondary transition-colors active:text-typography-primary md:hover:text-typography-primary"
           onClick={() => setIsPasswordVisible((prev) => !prev)}
         >

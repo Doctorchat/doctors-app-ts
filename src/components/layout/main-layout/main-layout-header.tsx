@@ -54,6 +54,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         key="sidenav"
         variant="ghost"
         size="icon"
+        aria-label="Sidenav"
         className="h-10 w-10 rounded-full"
         onClick={() => {
           if (isMobile) setIsOverlay(!isOverlay);
@@ -63,18 +64,37 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         <Bars3BottomLeftIcon className="h-6 w-6" />
       </Button>
       <div className="ml-2 flex items-center justify-center">
-        <Button key="notifications" variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+        <Button
+          key="notifications"
+          variant="ghost"
+          size="icon"
+          aria-label="Notifications"
+          className="h-10 w-10 rounded-full"
+        >
           <BellIcon className="h-6 w-6" />
         </Button>
-        <Button key="settings" variant="ghost" size="icon" className="ml-2 h-10 w-10 rounded-full">
+        <Button
+          key="settings"
+          variant="ghost"
+          size="icon"
+          aria-label="Settings"
+          className="ml-2 h-10 w-10 rounded-full"
+        >
           <Cog6ToothIcon className="h-6 w-6" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar key="avatar" className="ml-4 h-8 w-8 cursor-pointer">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <button
+              key="avatar"
+              type="button"
+              aria-label="User menu"
+              className="ml-4 flex h-10 w-10 cursor-pointer items-center justify-center"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="end" className="w-60">
             <div className="flex items-center p-2">
