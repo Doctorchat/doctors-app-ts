@@ -4,6 +4,7 @@ import {
   BellIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 import { shallow } from "zustand/shallow";
 
@@ -21,11 +22,15 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui";
+import { apiLogout, useAuth } from "@/features/auth";
 import { cn } from "@/utils";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
 export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, ...props }) => {
+  const { t } = useTranslation();
+  const { clearSession } = useAuth();
+
   const { isCollapsed, setIsCollapsed, isOverlay, setIsOverlay } = useMainLayoutSidenavStore(
     (store) => ({
       isCollapsed: store.isCollapsed,
@@ -65,7 +70,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="ml-4 h-8 w-8">
+            <Avatar className="ml-4 h-8 w-8 cursor-pointer">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
@@ -87,13 +92,18 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              Settings
+              {t("common:settings")}
               <DropdownMenuShortcut>
                 <Cog6ToothIcon className="h-5 w-5" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Logout
+            <DropdownMenuItem
+              onClick={() => {
+                apiLogout().catch(() => {});
+                clearSession();
+              }}
+            >
+              {t("auth:logout")}
               <DropdownMenuShortcut>
                 <ArrowRightOnRectangleIcon className="h-5 w-5" />
               </DropdownMenuShortcut>
