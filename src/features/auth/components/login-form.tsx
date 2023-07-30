@@ -126,7 +126,7 @@ export const LoginForm: React.FC = () => {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-              {t("auth:authentication")}
+              {form.formState.isSubmitting ? t("auth:logging_in") : t("auth:login")}
             </Button>
           </CardFooter>
         </form>
