@@ -43,7 +43,11 @@ const SidenavContent = React.memo(() => {
       >
         <div className="flex items-center">
           <img src="/assets/logo.svg" width="36" height="36" alt="Doctorchat logo" />
-          <span className={cn("ml-3 text-xl font-semibold", { hidden: isCollapsedImpl })}>
+          <span
+            className={cn("ml-3 text-xl font-semibold text-typography-primary", {
+              hidden: isCollapsedImpl,
+            })}
+          >
             Doctorchat
           </span>
         </div>
@@ -58,7 +62,7 @@ const SidenavContent = React.memo(() => {
                     to={link.href}
                     className={({ isActive }) =>
                       cn(
-                        "flex h-10 items-center overflow-hidden rounded-md px-3 text-neutral-600",
+                        "flex h-10 items-center overflow-hidden rounded-md px-3 text-neutral-700",
                         "transition-colors hover:bg-neutral-200 hover:text-typography-primary",
                         { "bg-neutral-200 text-typography-primary": isActive },
                       )

@@ -16,8 +16,8 @@ const RoutesWrapper: React.FC = () => {
       <PublicRoute>
         <React.Suspense
           fallback={
-            <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white">
-              <Spinner className="text-typography-primary" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white text-typography-primary">
+              <Spinner />
               <p className="font-medium">{t("common:loading")}...</p>
             </div>
           }
