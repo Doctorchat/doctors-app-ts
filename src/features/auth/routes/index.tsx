@@ -18,7 +18,7 @@ const RoutesWrapper: React.FC = () => {
           fallback={
             <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white text-typography-primary">
               <Spinner />
-              <p className="font-medium">{t("common:loading")}...</p>
+              <p className="font-medium">{t("common:loading")}</p>
             </div>
           }
         >

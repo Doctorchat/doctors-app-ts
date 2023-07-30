@@ -38,7 +38,7 @@ const SidenavContent = React.memo(() => {
     <>
       <header
         className={cn("flex h-16 flex-shrink-0 items-center px-5", {
-          "justify-center px-0": isCollapsedImpl,
+          "px-[17.5px]": isCollapsedImpl,
         })}
       >
         <div className="flex items-center">
