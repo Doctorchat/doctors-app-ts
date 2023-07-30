@@ -19,6 +19,9 @@ module.exports = {
           secondary: colors.neutral[500],
         },
       },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

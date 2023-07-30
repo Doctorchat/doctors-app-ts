@@ -10,7 +10,8 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { Label } from "@/components/ui/label";
+import { Label } from "./label";
+
 import { cn } from "@/utils";
 
 type FormFieldContextValue<
@@ -86,7 +87,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      variant={error ? "danger" : "default"}
+      variant={error ? "destructive" : "default"}
       className={cn("pl-0.5", className)}
       htmlFor={formItemId}
       {...props}

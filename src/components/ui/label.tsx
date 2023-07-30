@@ -11,7 +11,7 @@ const labelVariants = cva(
     variants: {
       variant: {
         default: "text-typography-primary",
-        danger: "text-red-500",
+        destructive: "text-red-500",
       },
     },
   },

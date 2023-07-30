@@ -12,7 +12,7 @@ export const Spinner = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElem
         viewBox="0 0 16 16"
         fill="none"
         data-view-component="true"
-        className={cn("animate-spin text-typography-primary", className)}
+        className={cn("animate-spin", className)}
         {...props}
       >
         <circle

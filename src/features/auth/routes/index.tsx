@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { AuthLayout, PublicRoute } from "../components";
 
-import { Spinner } from "@/components/ui/spinner";
+import { Spinner } from "@/components/ui";
 
 const Login = React.lazy(() => import("./login"));
 
@@ -17,7 +17,7 @@ const RoutesWrapper: React.FC = () => {
         <React.Suspense
           fallback={
             <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white">
-              <Spinner />
+              <Spinner className="text-typography-primary" />
               <p className="font-medium">{t("common:loading")}...</p>
             </div>
           }

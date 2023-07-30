@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+
 import { cn } from "@/utils";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -24,4 +26,35 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = "Input";
 
-export { Input };
+export interface PasswordInputProps extends InputProps {}
+
+const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+  ({ className, ...props }, ref) => {
+    const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+
+    return (
+      <div className="relative">
+        <Input
+          ref={ref}
+          type={isPasswordVisible ? "text" : "password"}
+          className={cn("pr-11", className)}
+          {...props}
+        />
+        <button
+          type="button"
+          className="absolute inset-y-px right-px rounded-r-md px-3 text-typography-secondary transition-colors hover:text-typography-primary"
+          onClick={() => setIsPasswordVisible((prev) => !prev)}
+        >
+          {isPasswordVisible ? (
+            <EyeIcon className="h-5 w-5" />
+          ) : (
+            <EyeSlashIcon className="h-5 w-5" />
+          )}
+        </button>
+      </div>
+    );
+  },
+);
+PasswordInput.displayName = "PasswordInput";
+
+export { Input, PasswordInput };

@@ -10,6 +10,9 @@ import { apiLogin } from "../api";
 import { useAuth } from "../provider";
 
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   Card,
   CardContent,
@@ -23,8 +26,8 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  PasswordInput,
 } from "@/components/ui";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getApiErrorMessages } from "@/utils";
 
 const schema = z.object({
@@ -86,7 +89,9 @@ export const LoginForm: React.FC = () => {
               {apiErrors && (
                 <Alert variant="destructive">
                   <AlertTitle>{t("common:error")}</AlertTitle>
-                  <AlertDescription>{t(apiErrors)}</AlertDescription>
+                  <AlertDescription>
+                    <p>{t(apiErrors)}</p>
+                  </AlertDescription>
                 </Alert>
               )}
               <FormField
@@ -109,7 +114,8 @@ export const LoginForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>{t("auth:password")}</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="********" {...field} />
+                      {/* <Input type="password" placeholder="********" {...field} /> */}
+                      <PasswordInput placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

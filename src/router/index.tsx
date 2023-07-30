@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import { MainLayout } from "@/components/layout";
 import { PrivateRoute, routes as authRoutes } from "@/features/auth";
 
 export const router = createBrowserRouter([
@@ -7,7 +8,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <PrivateRoute>
-        <div>Hello world!</div>
+        <MainLayout>
+          <div>Hello world!</div>
+        </MainLayout>
       </PrivateRoute>
     ),
   },
