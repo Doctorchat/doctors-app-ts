@@ -42,7 +42,13 @@ const SidenavContent = React.memo(() => {
         })}
       >
         <div className="flex items-center">
-          <img src="/assets/logo.svg" width="36" height="36" alt="Doctorchat logo" />
+          <img
+            src="/assets/logo.svg"
+            width="36"
+            height="36"
+            alt="Doctorchat logo"
+            className="h-9 w-9 flex-shrink-0 object-contain"
+          />
           <span
             className={cn("ml-3 text-xl font-semibold text-typography-primary", {
               hidden: isCollapsedImpl,

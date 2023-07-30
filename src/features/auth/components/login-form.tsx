@@ -73,16 +73,16 @@ export const LoginForm: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
           <CardHeader className="justify-between">
             <div className="text-center">
-              <div className="flex items-center justify-center py-3">
+              <div className="flex items-center justify-center">
                 <img
-                  className="mx-auto"
                   src="/assets/logo.svg"
                   width="36"
                   height="36"
                   alt="Doctorchat logo"
+                  className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
                 />
               </div>
-              <CardTitle className="text-xl">{t("common:welcome_back")}</CardTitle>
+              <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
               <CardDescription>{t("auth:enter_credentials_to_continue")}</CardDescription>
             </div>
           </CardHeader>
