@@ -4,6 +4,7 @@ import {
   BellIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import { formatIncompletePhoneNumber } from "libphonenumber-js/min";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 import { shallow } from "zustand/shallow";
@@ -23,13 +24,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { apiLogout, useAuth } from "@/features/auth";
-import { cn } from "@/utils";
+import { cn, getInitials } from "@/utils";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
 export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, ...props }) => {
   const { t } = useTranslation();
-  const { clearSession } = useAuth();
+  const { session, clearSession } = useAuth();
 
   const { isCollapsed, setIsCollapsed, isOverlay, setIsOverlay } = useMainLayoutSidenavStore(
     (store) => ({
@@ -73,41 +74,32 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         >
           <BellIcon className="h-6 w-6" />
         </Button>
-        <Button
-          key="settings"
-          variant="ghost"
-          size="icon"
-          aria-label="Settings"
-          className="ml-2 h-10 w-10 rounded-full"
-        >
-          <Cog6ToothIcon className="h-6 w-6" />
-        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               key="avatar"
               type="button"
               aria-label="User menu"
-              className="ml-4 flex h-10 w-10 cursor-pointer items-center justify-center"
+              className="ml-4 flex h-10 w-10 cursor-pointer items-center justify-center outline-none"
             >
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
+              <Avatar>
+                <AvatarImage src={session.user?.avatar} alt={session.user?.name} />
+                <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
               </Avatar>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="end" className="w-60">
             <div className="flex items-center p-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
+              <Avatar>
+                <AvatarImage src={session.user?.avatar} alt={session.user?.name} />
+                <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
               </Avatar>
               <div className="ml-2 overflow-hidden">
-                <div className="truncate text-sm font-bold text-typography-primary">
-                  Carolyn Perkins
+                <div className="truncate text-sm font-medium text-typography-primary">
+                  {session.user?.name}
                 </div>
                 <div className="truncate text-xs text-typography-secondary">
-                  carolyn.p@elstar.com
+                  {session.user?.email ?? formatIncompletePhoneNumber(session.user?.phone ?? "")}
                 </div>
               </div>
             </div>

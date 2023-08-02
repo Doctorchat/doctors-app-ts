@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
@@ -29,6 +30,8 @@ export const useMainLayoutSidenavStore = create<MainLayoutSidenavStore>((set) =>
 }));
 
 const SidenavContent = React.memo(() => {
+  const { t } = useTranslation();
+
   const isCollapsed = useMainLayoutSidenavStore((store) => store.isCollapsed);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -46,7 +49,7 @@ const SidenavContent = React.memo(() => {
             src="/assets/logo.svg"
             width="36"
             height="36"
-            alt="Doctorchat logo"
+            alt="Doctorchat"
             className="h-9 w-9 flex-shrink-0 object-contain"
           />
           <span
@@ -60,7 +63,7 @@ const SidenavContent = React.memo(() => {
       </header>
       <main className="flex-auto overflow-y-auto p-px">
         <ScrollArea vertical type={isCollapsedImpl ? "scroll" : "hover"} className="h-full">
-          <nav className="px-3 py-2">
+          <nav className="px-3.5 py-2">
             <ul className="space-y-2">
               {navigationLinks.map((link) => (
                 <li key={link.key}>
@@ -71,6 +74,7 @@ const SidenavContent = React.memo(() => {
                         "flex h-10 items-center overflow-hidden rounded-md px-3 text-neutral-700",
                         "transition-colors md:hover:bg-neutral-200 md:hover:text-typography-primary",
                         "active:bg-neutral-200 active:text-typography-primary",
+                        { "px-2.5": isCollapsedImpl },
                         { "bg-neutral-200 text-typography-primary": isActive },
                       )
                     }
@@ -85,7 +89,7 @@ const SidenavContent = React.memo(() => {
                         <span
                           className={cn("ml-3 truncate font-medium", { hidden: isCollapsedImpl })}
                         >
-                          {link.title}
+                          {t(link.title)}
                         </span>
                       </>
                     )}
@@ -148,7 +152,7 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
         ...style,
       }}
       className={cn(
-        "flex flex-col overflow-hidden border-r border-neutral-200 bg-neutral-100 transition-[width]",
+        "flex flex-shrink-0 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-100 transition-[width]",
         className,
       )}
       {...props}

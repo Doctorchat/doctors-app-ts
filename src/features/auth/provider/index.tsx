@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       const response = await apiGetSessionUser();
-      setUser(response.data);
+      setUser(response);
     } catch {
       clearSession();
     } finally {

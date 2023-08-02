@@ -1,6 +1,6 @@
-import { ChatBubbleBottomCenterIcon, HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleBottomCenterTextIcon, HomeIcon } from "@heroicons/react/24/outline";
 
-export const NAVIGATION_SIDENAV_WIDTH = 290;
+export const NAVIGATION_SIDENAV_WIDTH = 275;
 export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 75;
 
 export interface NavigationLink {
@@ -19,19 +19,13 @@ export const navigationLinks: NavigationLink[] = [
   {
     key: "home",
     href: "/",
-    title: "Home",
+    title: "common:home",
     icon: HomeIcon,
-  },
-  {
-    key: "users",
-    href: "/users",
-    title: "Users",
-    icon: UsersIcon,
   },
   {
     key: "conversations",
     href: "/conversations",
-    title: "Conversations",
-    icon: ChatBubbleBottomCenterIcon,
+    title: "conversations:conversations",
+    icon: ChatBubbleBottomCenterTextIcon,
   },
 ];

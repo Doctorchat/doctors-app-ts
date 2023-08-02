@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { apiLogin } from "../api";
+import { useEmulateLogin } from "../hooks";
 import { useAuth } from "../provider";
 
 import {
@@ -40,6 +41,7 @@ type FormValues = z.infer<typeof schema>;
 export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
   const { initializeSession } = useAuth();
+  const { isEmulating } = useEmulateLogin();
 
   const navigate = useNavigate();
 
@@ -58,7 +60,7 @@ export const LoginForm: React.FC = () => {
       const response = await apiLogin(values);
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
 
-      initializeSession(response.data.token, response.data.user);
+      initializeSession(response.token, response.user);
 
       if (continueFrom) navigate(continueFrom);
       else navigate("/");
@@ -66,6 +68,8 @@ export const LoginForm: React.FC = () => {
       setApiErrors(getApiErrorMessages(error));
     }
   };
+
+  const isAuthInProcess = form.formState.isSubmitting || isEmulating;
 
   return (
     <Card className="w-full max-w-sm">
@@ -78,7 +82,7 @@ export const LoginForm: React.FC = () => {
                   src="/assets/logo.svg"
                   width="36"
                   height="36"
-                  alt="Doctorchat logo"
+                  alt="Doctorchat"
                   className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
                 />
               </div>
@@ -103,7 +107,7 @@ export const LoginForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>{t("auth:email_address")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="example@mail.com" {...field} />
+                      <Input disabled={isAuthInProcess} placeholder="example@mail.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -116,7 +120,7 @@ export const LoginForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>{t("auth:password")}</FormLabel>
                     <FormControl>
-                      <PasswordInput placeholder="********" {...field} />
+                      <PasswordInput disabled={isAuthInProcess} placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,8 +129,8 @@ export const LoginForm: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-              {form.formState.isSubmitting ? t("auth:logging_in") : t("auth:login")}
+            <Button type="submit" disabled={isAuthInProcess} className="w-full">
+              {isAuthInProcess ? t("auth:logging_in") : t("auth:login")}
             </Button>
           </CardFooter>
         </form>

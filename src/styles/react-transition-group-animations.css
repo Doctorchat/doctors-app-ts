@@ -1,0 +1,42 @@
+/* react-transition-group-animations.css */
+
+/*
+  classLists:
+  1. enter
+  2. enter-active
+  3. exit
+  4. exit-active
+*/
+
+.slide-right-enter {
+  transform: translateX(-100%);
+}
+
+.slide-right-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms ease-in;
+}
+
+.slide-right-exit {
+  transform: translateX(0);
+}
+
+.slide-right-exit-active {
+  transform: translateX(100%);
+  transition: transform 300ms ease-in;
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

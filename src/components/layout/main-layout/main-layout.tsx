@@ -12,14 +12,26 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, className, ...
   return (
     <div className={cn("flex h-full", className)} {...props}>
       <MainLayoutSidenav />
-      <main className="flex flex-auto flex-col">
+      <main className="flex w-full flex-col overflow-hidden">
         <MainLayoutHeader />
-        <div className="flex-auto overflow-y-auto p-px">
-          <ScrollArea vertical className="h-full">
-            <div className="p-6">{children}</div>
-          </ScrollArea>
-        </div>
+        {children}
       </main>
+    </div>
+  );
+};
+
+export interface MainLayoutContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const MainLayoutContent: React.FC<MainLayoutContentProps> = ({
+  children,
+  className,
+  ...props
+}) => {
+  return (
+    <div className={cn("flex-auto overflow-hidden p-px", className)} {...props}>
+      <ScrollArea vertical className="h-full">
+        <div className="p-5">{children}</div>
+      </ScrollArea>
     </div>
   );
 };

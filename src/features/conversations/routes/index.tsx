@@ -3,19 +3,22 @@ import { Navigate, Outlet, RouteObject } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
-import { PublicRoute } from "../components";
+import { ConversationsList } from "../components";
 
+import { MainLayout } from "@/components/layout";
 import { Spinner } from "@/components/ui";
+import { PrivateRoute } from "@/features/auth";
 
-const Login = React.lazy(() => import("./login"));
+const Conversation = React.lazy(() => import("./conversation"));
 
 const RoutesWrapper: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex h-full min-h-full w-full flex-col justify-center bg-neutral-50">
-      <main className="flex items-center justify-center px-5">
-        <PublicRoute>
+    <MainLayout>
+      <PrivateRoute>
+        <div className="grid flex-1 grid-cols-12 grid-rows-1 gap-5 overflow-hidden lg:p-5">
+          <ConversationsList />
           <React.Suspense
             fallback={
               <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white text-typography-primary">
@@ -26,9 +29,9 @@ const RoutesWrapper: React.FC = () => {
           >
             <Outlet />
           </React.Suspense>
-        </PublicRoute>
-      </main>
-    </div>
+        </div>
+      </PrivateRoute>
+    </MainLayout>
   );
 };
 
@@ -37,12 +40,16 @@ export const routes: RouteObject[] = [
     element: <RoutesWrapper />,
     children: [
       {
-        path: "login",
-        element: <Login />,
+        index: true,
+        element: <></>,
+      },
+      {
+        path: ":id",
+        element: <Conversation />,
       },
       {
         path: "*",
-        element: <Navigate to="login" replace />,
+        element: <Navigate to="/" replace />,
       },
     ],
   },
