@@ -1,6 +1,7 @@
 {
   "conversations": "Диалоги",
   "recent_conversations": "Последние диалоги",
+  "select_conversation": "Выберите диалог",
   "patients": "Пациенты",
   "doctors": "Врачи",
   "corporate_client": "Корпоративный"

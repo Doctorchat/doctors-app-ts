@@ -1,4 +1,4 @@
-import type { SessionUser } from "../types";
+import type { AuthSessionUser } from "../types";
 
 import React from "react";
 
@@ -11,7 +11,7 @@ import { SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
 export interface AuthContextValue {
   session: {
     token: string | null;
-    user: SessionUser | null;
+    user: AuthSessionUser | null;
     valid: boolean;
     validating: boolean;
   };

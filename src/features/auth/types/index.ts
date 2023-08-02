@@ -1,4 +1,4 @@
-export interface SessionUser {
+export interface AuthSessionUser {
   id: number;
   avatar: string;
   name: string;

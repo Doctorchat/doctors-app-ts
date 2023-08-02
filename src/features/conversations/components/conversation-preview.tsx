@@ -20,6 +20,8 @@ export const ConversationPreview: React.FC<ConversationPreviewProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
 
+  const locale = i18n.language.split("-")[0];
+
   return (
     <NavLink
       to={`/conversations/${conversation.id}`}
@@ -60,7 +62,7 @@ export const ConversationPreview: React.FC<ConversationPreviewProps> = ({
             <time dateTime={conversation.updated}>
               {formatDistance(parseISO(conversation.updated), new Date(), {
                 addSuffix: true,
-                locale: i18n.language === "ru" ? ru : ro,
+                locale: locale === "ru" ? ru : ro,
               })}
             </time>
           </span>

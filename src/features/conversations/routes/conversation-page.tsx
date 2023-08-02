@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui";
 import { cn } from "@/utils";
 
-export default function Conversation() {
+export default function ConversationPage() {
   const { id } = useParams<{ id: string }>();
 
   const navigate = useNavigate();

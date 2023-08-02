@@ -28,7 +28,7 @@ export const MainLayoutContent: React.FC<MainLayoutContentProps> = ({
   ...props
 }) => {
   return (
-    <div className={cn("flex-auto overflow-hidden p-px", className)} {...props}>
+    <div className={cn("flex-1 overflow-hidden p-px", className)} {...props}>
       <ScrollArea vertical className="h-full">
         <div className="p-5">{children}</div>
       </ScrollArea>

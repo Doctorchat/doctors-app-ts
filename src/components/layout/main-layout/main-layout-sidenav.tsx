@@ -61,7 +61,7 @@ const SidenavContent = React.memo(() => {
           </span>
         </div>
       </header>
-      <main className="flex-auto overflow-y-auto p-px">
+      <main className="flex-1 overflow-y-auto p-px">
         <ScrollArea vertical type={isCollapsedImpl ? "scroll" : "hover"} className="h-full">
           <nav className="px-3.5 py-2">
             <ul className="space-y-2">
