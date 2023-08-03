@@ -4,5 +4,25 @@
   "something_went_wrong": "Ceva nu a mers bine. Te rog încearcă din nou.",
   "loading": "Se încarcă...",
   "settings": "Setări",
-  "home": "Acasă"
+  "home": "Acasă",
+  "details": "Detalii",
+  "activity": "Activitate",
+  "age": "Vârsta",
+  "height": "Înălțime",
+  "weight": "Greutate",
+  "bmi": "IMC",
+  "sex": "Gen",
+  "location": "Locație",
+  "female": "Femeie",
+  "male": "Bărbat",
+  "month": {
+    "count_one": "lună",
+    "count_many": "luni",
+    "count_other": "luni"
+  },
+  "year": {
+    "count_one": "an",
+    "count_many": "ani",
+    "count_other": "ani"
+  }
 }

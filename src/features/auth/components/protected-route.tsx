@@ -2,11 +2,11 @@ import { Navigate } from "react-router-dom";
 
 import { useAuth } from "../provider";
 
-export interface AuthPrivateRouteProps {
+export interface PrivateRouteProps {
   children: React.ReactNode;
 }
 
-export const AuthPrivateRoute: React.FC<AuthPrivateRouteProps> = ({ children }) => {
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { session } = useAuth();
 
   if (session.valid === false) {

@@ -5,7 +5,7 @@ export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 75;
 
 export interface NavigationLink {
   key: string;
-  title: string;
+  translation: string;
   href: string;
   icon: React.ForwardRefExoticComponent<
     Omit<React.SVGProps<SVGSVGElement>, "ref"> & {
@@ -19,13 +19,13 @@ export const navigationLinks: NavigationLink[] = [
   {
     key: "home",
     href: "/",
-    title: "common:home",
+    translation: "common:home",
     icon: HomeIcon,
   },
   {
     key: "conversations",
     href: "/conversations",
-    title: "conversations:conversations",
+    translation: "conversations:conversations",
     icon: ChatBubbleBottomCenterTextIcon,
   },
 ];

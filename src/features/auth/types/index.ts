@@ -1,7 +1,8 @@
-export interface AuthSessionUser {
+export interface SessionUser {
   id: number;
   avatar: string;
   name: string;
   phone: string;
   email: string;
+  locale: string;
 }

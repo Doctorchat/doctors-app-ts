@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
@@ -89,7 +89,7 @@ const SidenavContent = React.memo(() => {
                         <span
                           className={cn("ml-3 truncate font-medium", { hidden: isCollapsedImpl })}
                         >
-                          {t(link.title)}
+                          {t(link.translation)}
                         </span>
                       </>
                     )}
@@ -120,9 +120,14 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
     }),
     shallow,
   );
+  const location = useLocation();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const isCollapsedImpl = isCollapsed && isMobile === false;
+
+  React.useEffect(() => {
+    setIsOverlay(false);
+  }, [location.key, setIsOverlay]);
 
   if (isMobile) {
     return (

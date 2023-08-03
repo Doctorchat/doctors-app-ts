@@ -3,11 +3,11 @@ import { Navigate, Outlet, RouteObject } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
-import { ConversationsLayout } from "../components";
+import { Layout } from "../components";
 
 import { MainLayout } from "@/components/layout";
 import { Spinner } from "@/components/ui";
-import { AuthPrivateRoute } from "@/features/auth";
+import { PrivateRoute } from "@/features/auth";
 
 const ConversationPage = React.lazy(() => import("./conversation-page"));
 const SelectConversationPage = React.lazy(() => import("./select-conversation-page"));
@@ -17,8 +17,8 @@ const RoutesWrapper: React.FC = () => {
 
   return (
     <MainLayout>
-      <ConversationsLayout>
-        <AuthPrivateRoute>
+      <Layout>
+        <PrivateRoute>
           <React.Suspense
             fallback={
               <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white text-typography-primary">
@@ -29,8 +29,8 @@ const RoutesWrapper: React.FC = () => {
           >
             <Outlet />
           </React.Suspense>
-        </AuthPrivateRoute>
-      </ConversationsLayout>
+        </PrivateRoute>
+      </Layout>
     </MainLayout>
   );
 };

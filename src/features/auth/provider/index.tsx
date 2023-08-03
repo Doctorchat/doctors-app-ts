@@ -1,4 +1,4 @@
-import type { AuthSessionUser } from "../types";
+import type { SessionUser } from "../types";
 
 import React from "react";
 
@@ -7,15 +7,17 @@ import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { apiGetSessionUser } from "../api";
 
 import { SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
+import { useAppI18n } from "@/hooks";
+import { AppLocale } from "@/types";
 
 export interface AuthContextValue {
   session: {
     token: string | null;
-    user: AuthSessionUser | null;
+    user: SessionUser | null;
     valid: boolean;
     validating: boolean;
   };
-  initializeSession: (token: string, user: any) => void;
+  initializeSession: (token: string, user: SessionUser) => void;
   clearSession: () => void;
   revalidateSession: () => void;
 }
@@ -37,14 +39,17 @@ export interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const { setLanguage } = useAppI18n();
+
   const [token, setToken] = useLocalStorage<string | null>(SESSION_TOKEN_KEY, null);
-  const [user, setUser] = useLocalStorage<any>(SESSION_USER_KEY, null);
+  const [user, setUser] = useLocalStorage<SessionUser | null>(SESSION_USER_KEY, null);
 
   const [validating, setValidating] = React.useState(false);
 
-  const initializeSession = (token: string, user: any) => {
+  const initializeSession = (token: string, user: SessionUser) => {
     setToken(token);
     setUser(user);
+    setLanguage(user.locale as AppLocale);
   };
 
   const clearSession = React.useCallback(() => {

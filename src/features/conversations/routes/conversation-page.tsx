@@ -1,32 +1,48 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useQuery } from "react-query";
 
-import { Button } from "@/components/ui";
+import { apiGetConversation, apiGetUserCard } from "../api";
+import { Header } from "../components";
+
 import { cn } from "@/utils";
 
 export default function ConversationPage() {
   const { id } = useParams<{ id: string }>();
 
-  const navigate = useNavigate();
+  const { data: conversation } = useQuery({
+    queryKey: ["conversation", id],
+    queryFn: async () => {
+      if (id) return apiGetConversation(id);
+    },
+    enabled: Boolean(id),
+  });
+
+  const {
+    data: card,
+    isLoading: isCardLoading,
+    isError: isCardErrored,
+  } = useQuery({
+    queryKey: ["user-card", conversation?.user_id],
+    queryFn: async () => {
+      if (conversation?.user_id) return apiGetUserCard(conversation.user_id, false);
+    },
+    enabled: Boolean(conversation?.user_id),
+  });
 
   return (
     <div
-      className={cn("fixed inset-0 z-50 bg-white", {
-        "slide-in-right": Boolean(id),
-      })}
+      className={cn(
+        "fixed inset-0 z-50 bg-white",
+        { "slide-in-right": Boolean(id) },
+        "lg:static lg:col-span-7 lg:rounded-lg lg:border lg:border-neutral-200 xl:col-span-8",
+      )}
     >
       <div className="flex h-full flex-col">
-        <header className="flex h-16 items-center space-x-4 border-b border-neutral-200 px-5">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10"
-            onClick={() => navigate("/conversations")}
-          >
-            <ArrowLeftIcon className="h-6 w-6" />
-          </Button>
-        </header>
+        <Header
+          card={card}
+          isLoading={isCardLoading || (!conversation?.user_id && !isCardErrored)}
+        />
       </div>
     </div>
   );

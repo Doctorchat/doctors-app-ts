@@ -3,7 +3,7 @@ import { Navigate, Outlet, RouteObject } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
-import { AuthLayout, AuthPublicRoute } from "../components";
+import { Layout, PublicRoute } from "../components";
 
 import { Spinner } from "@/components/ui";
 
@@ -13,8 +13,8 @@ const RoutesWrapper: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <AuthLayout>
-      <AuthPublicRoute>
+    <Layout>
+      <PublicRoute>
         <React.Suspense
           fallback={
             <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 bg-white text-typography-primary">
@@ -25,8 +25,8 @@ const RoutesWrapper: React.FC = () => {
         >
           <Outlet />
         </React.Suspense>
-      </AuthPublicRoute>
-    </AuthLayout>
+      </PublicRoute>
+    </Layout>
   );
 };
 

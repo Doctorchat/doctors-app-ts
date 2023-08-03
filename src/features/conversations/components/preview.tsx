@@ -1,26 +1,22 @@
-import type { Conversation } from "../types";
+import type { ConversationPreview } from "../types";
 
-import { NavLink, NavLinkProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { formatDistance, parseISO } from "date-fns";
 import { ro, ru } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 
-export interface ConversationPreviewProps extends Omit<NavLinkProps, "to"> {
-  conversation: Conversation;
+export interface PreviewProps {
+  conversation: ConversationPreview;
 }
 
-export const ConversationPreview: React.FC<ConversationPreviewProps> = ({
-  conversation,
-  className,
-  ...props
-}) => {
-  const { t, i18n } = useTranslation();
-
-  const locale = i18n.language.split("-")[0];
+export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
+  const { t } = useTranslation();
+  const { locale } = useAppI18n();
 
   return (
     <NavLink
@@ -31,10 +27,8 @@ export const ConversationPreview: React.FC<ConversationPreviewProps> = ({
           "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
           "active:bg-neutral-200 md:hover:bg-neutral-200",
           { "bg-neutral-200": isActive },
-          className,
         )
       }
-      {...props}
     >
       <div className="relative flex-shrink-0">
         <Avatar className="h-12 w-12">
@@ -81,7 +75,7 @@ export const ConversationPreview: React.FC<ConversationPreviewProps> = ({
   );
 };
 
-export const ConversationPreviewSkeleton: React.FC = () => {
+export const PreviewSkeleton: React.FC = () => {
   return (
     <div className="pointer-events-none flex items-center overflow-hidden rounded-lg p-3">
       <Skeleton className="h-12 w-12 flex-shrink-0 rounded-full" />

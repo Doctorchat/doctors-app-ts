@@ -4,5 +4,27 @@
   "something_went_wrong": "Что-то пошло не так. Пожалуйста, попробуйте еще раз.",
   "loading": "Загрузка...",
   "settings": "Настройки",
-  "home": "Главная"
+  "home": "Главная",
+  "details": "Детали",
+  "activity": "Активность",
+  "age": "Возраст",
+  "height": "Рост",
+  "weight": "Вес",
+  "bmi": "ИМТ",
+  "sex": "Пол",
+  "location": "Местоположение",
+  "female": "Женщина",
+  "male": "Мужчина",
+  "month": {
+    "count_one": "месяц",
+    "count_few": "месяца",
+    "count_many": "месяцев",
+    "count_other": "месяцев"
+  },
+  "year": {
+    "count_one": "год",
+    "count_few": "года",
+    "count_many": "лет",
+    "count_other": "лет"
+  }
 }

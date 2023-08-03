@@ -38,7 +38,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export const AuthLoginForm: React.FC = () => {
+export const LoginForm: React.FC = () => {
   const { t } = useTranslation();
   const { initializeSession } = useAuth();
   const { isEmulating } = useEmulateLogin();
