@@ -26,5 +26,10 @@
     "count_few": "года",
     "count_many": "лет",
     "count_other": "лет"
-  }
+  },
+  "email_address": "Адрес электронной почты",
+  "phone_number": "Номер телефона",
+  "select": "Выберите",
+  "search": "Поиск",
+  "no_data": "Нет данных"
 }

@@ -1,6 +1,6 @@
 import type { ConversationPreview } from "../types";
 
-import { NavLink } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { formatDistance, parseISO } from "date-fns";
 import { ro, ru } from "date-fns/locale";
@@ -18,17 +18,17 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
 
+  const [searchParams] = useSearchParams();
+
   return (
-    <NavLink
-      to={`/conversations/${conversation.id}`}
+    <Link
+      to={`/conversations?id=${conversation.id}&anonymous=${conversation.isAnonym}`}
       state={{ from: location.pathname }}
-      className={({ isActive }) =>
-        cn(
-          "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
-          "active:bg-neutral-200 md:hover:bg-neutral-200",
-          { "bg-neutral-200": isActive },
-        )
-      }
+      className={cn(
+        "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
+        "active:bg-neutral-200 md:hover:bg-neutral-200",
+        { "bg-neutral-200": Number(searchParams.get("conversation_id")) === conversation.id },
+      )}
     >
       <div className="relative flex-shrink-0">
         <Avatar className="h-12 w-12">
@@ -71,7 +71,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
           )}
         </div>
       </div>
-    </NavLink>
+    </Link>
   );
 };
 

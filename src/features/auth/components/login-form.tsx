@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
 
 import { apiLogin } from "../api";
 import { useEmulateLogin } from "../hooks";
 import { useAuth } from "../provider";
 
+import { CountrySelect } from "@/components/shared";
 import {
   Alert,
   AlertDescription,
@@ -32,7 +34,7 @@ import {
 import { getApiErrorMessages } from "@/utils";
 
 const schema = z.object({
-  phone: z.string(),
+  phone: z.string().refine(isValidPhoneNumber, { message: "Invalid phone number" }),
   password: z.string().min(6),
 });
 
@@ -61,7 +63,6 @@ export const LoginForm: React.FC = () => {
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
 
       initializeSession(response.token, response.user);
-
       if (continueFrom) navigate(continueFrom);
       else navigate("/");
     } catch (error) {
@@ -105,9 +106,20 @@ export const LoginForm: React.FC = () => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("auth:email_address")}</FormLabel>
+                    <FormLabel>{t("common:phone_number")}</FormLabel>
                     <FormControl>
-                      <Input disabled={isAuthInProcess} placeholder="example@mail.com" {...field} />
+                      <PhoneInput
+                        {...field}
+                        international
+                        smartCaret
+                        focusInputOnCountrySelection
+                        defaultCountry="MD"
+                        countryCallingCodeEditable={false}
+                        className="flex space-x-2"
+                        disabled={isAuthInProcess}
+                        countrySelectComponent={CountrySelect}
+                        inputComponent={Input}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

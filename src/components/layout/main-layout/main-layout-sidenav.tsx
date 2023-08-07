@@ -5,6 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { shallow } from "zustand/shallow";
 
 import { Button, ScrollArea, Sheet, SheetClose, SheetContent, Spinner } from "@/components/ui";
@@ -22,12 +23,26 @@ export interface MainLayoutSidenavStore {
   setIsOverlay: (isOverlay: boolean) => void;
 }
 
-export const useMainLayoutSidenavStore = create<MainLayoutSidenavStore>((set) => ({
-  isCollapsed: false,
-  setIsCollapsed: (isCollapsed) => set({ isCollapsed }),
-  isOverlay: false,
-  setIsOverlay: (isOverlay) => set({ isOverlay }),
-}));
+export const useMainLayoutSidenavStore = create<
+  MainLayoutSidenavStore,
+  [["zustand/persist", MainLayoutSidenavStore]]
+>(
+  persist(
+    (set) => ({
+      isCollapsed: false,
+      setIsCollapsed: (isCollapsed) => set({ isCollapsed }),
+      isOverlay: false,
+      setIsOverlay: (isOverlay) => set({ isOverlay }),
+    }),
+    {
+      name: "main-layout-sidenav",
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: (state) => {
+        state.isOverlay = false;
+      },
+    },
+  ),
+);
 
 const SidenavContent = React.memo(() => {
   const { t } = useTranslation();

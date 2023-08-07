@@ -24,5 +24,10 @@
     "count_one": "an",
     "count_many": "ani",
     "count_other": "ani"
-  }
+  },
+  "email_address": "Adresa de email",
+  "phone_number": "Nr. Telefon",
+  "select": "Selectează",
+  "search": "Căutare",
+  "no_data": "Nu există date"
 }

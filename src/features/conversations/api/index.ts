@@ -12,8 +12,8 @@ export const apiGetConversation = async (id: string) => {
   return await axiosInstance.get<Conversation>(`/chat/get/${id}`).then((res) => res.data);
 };
 
-export const apiGetUserCard = async (id: number, anonym: boolean) => {
+export const apiGetUserCard = async (id: number, anonymous: boolean) => {
   return await axiosInstance
-    .get<UserCard>(`/user/card/${id}?is_anonym=${anonym}`)
+    .get<UserCard>(`/user/card/${id}?is_anonym=${anonymous}`)
     .then((res) => res.data);
 };

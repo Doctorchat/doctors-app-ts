@@ -6,14 +6,23 @@ export interface ConversationPreview {
   name: string;
   description: string | null;
   isOnline: boolean;
+  isAnonym: boolean;
   type: string;
   unread: number;
+  updated: string;
+}
+
+export interface ConversationMessage {
+  id: number;
+  side: "in" | "out" | "center";
+  content: string | null;
   updated: string;
 }
 
 export interface Conversation {
   id: number;
   user_id: number;
+  messages: ConversationMessage[];
 }
 
 export interface UserCardInvestigation {

@@ -1,49 +1,52 @@
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { useQuery } from "react-query";
+import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "usehooks-ts";
 
-import { apiGetConversation, apiGetUserCard } from "../api";
-import { Header } from "../components";
+import { View } from "../components";
 
-import { cn } from "@/utils";
+import { Sheet, SheetContent } from "@/components/ui";
 
 export default function ConversationPage() {
-  const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
-  const { data: conversation } = useQuery({
-    queryKey: ["conversation", id],
-    queryFn: async () => {
-      if (id) return apiGetConversation(id);
-    },
-    enabled: Boolean(id),
-  });
+  const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
-  const {
-    data: card,
-    isLoading: isCardLoading,
-    isError: isCardErrored,
-  } = useQuery({
-    queryKey: ["user-card", conversation?.user_id],
-    queryFn: async () => {
-      if (conversation?.user_id) return apiGetUserCard(conversation.user_id, false);
-    },
-    enabled: Boolean(conversation?.user_id),
-  });
+  const [searchParams] = useSearchParams();
+  const [id, setId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const conversationId = searchParams.get("id") ?? null;
+
+    setId(searchParams.get("id") ?? null);
+    if (conversationId === null) navigate("/conversations");
+  }, [navigate, searchParams]);
+
+  if (isMobile) {
+    return (
+      <Sheet open={Boolean(id)} onOpenChange={() => navigate("/conversations")}>
+        <SheetContent className="w-full p-0 sm:max-w-full">
+          <View id={id} anonymous={searchParams.get("anonymous") === "true"} />
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  if (id === null) {
+    return (
+      <div className="flex items-center justify-center rounded-lg border border-neutral-200 lg:col-span-7 xl:col-span-8">
+        <p className="rounded-md bg-neutral-200 px-2 py-1 text-sm font-medium text-typography-primary">
+          {t("conversations:select_conversation")}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0 z-50 bg-white",
-        { "slide-in-right": Boolean(id) },
-        "lg:static lg:col-span-7 lg:rounded-lg lg:border lg:border-neutral-200 xl:col-span-8",
-      )}
-    >
-      <div className="flex h-full flex-col">
-        <Header
-          card={card}
-          isLoading={isCardLoading || (!conversation?.user_id && !isCardErrored)}
-        />
-      </div>
+    <div className="rounded-lg border border-neutral-200 bg-white lg:col-span-7 xl:col-span-8">
+      <View id={id} anonymous={searchParams.get("anonymous") === "true"} />
     </div>
   );
 }

@@ -10,7 +10,6 @@ import { Spinner } from "@/components/ui";
 import { PrivateRoute } from "@/features/auth";
 
 const ConversationPage = React.lazy(() => import("./conversation-page"));
-const SelectConversationPage = React.lazy(() => import("./select-conversation-page"));
 
 const RoutesWrapper: React.FC = () => {
   const { t } = useTranslation();
@@ -41,10 +40,6 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <SelectConversationPage />,
-      },
-      {
-        path: ":id",
         element: <ConversationPage />,
       },
       {
