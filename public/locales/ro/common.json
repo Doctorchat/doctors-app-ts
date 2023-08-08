@@ -1,7 +1,8 @@
 {
   "welcome_back": "Bine ai revenit!",
   "error": "Eroare",
-  "something_went_wrong": "Ceva nu a mers bine. Te rog încearcă din nou.",
+  "something_went_wrong": "Uh oh! Ceva nu a mers bine.",
+  "unknown_error": "Eroare necunoscută",
   "loading": "Se încarcă...",
   "settings": "Setări",
   "home": "Acasă",
@@ -29,5 +30,10 @@
   "phone_number": "Nr. Telefon",
   "select": "Selectează",
   "search": "Căutare",
-  "no_data": "Nu există date"
+  "no_data": "Nu există date",
+  "accept": "Acceptă",
+  "decline": "Respinge",
+  "reason": "Motivul",
+  "cancel": "Anulează",
+  "you": "Tu"
 }

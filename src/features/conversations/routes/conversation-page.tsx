@@ -1,34 +1,31 @@
-import React from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 
 import { View } from "../components";
+import { useConversation } from "../hooks";
 
 import { Sheet, SheetContent } from "@/components/ui";
 
 export default function ConversationPage() {
   const { t } = useTranslation();
+  const { id, setId } = useConversation();
 
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
-  const [searchParams] = useSearchParams();
-  const [id, setId] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    const conversationId = searchParams.get("id") ?? null;
-
-    setId(searchParams.get("id") ?? null);
-    if (conversationId === null) navigate("/conversations");
-  }, [navigate, searchParams]);
-
   if (isMobile) {
     return (
-      <Sheet open={Boolean(id)} onOpenChange={() => navigate("/conversations")}>
+      <Sheet
+        open={Boolean(id)}
+        onOpenChange={() => {
+          navigate("/conversations");
+          setId(null);
+        }}
+      >
         <SheetContent className="w-full p-0 sm:max-w-full">
-          <View id={id} anonymous={searchParams.get("anonymous") === "true"} />
+          <View />
         </SheetContent>
       </Sheet>
     );
@@ -46,7 +43,7 @@ export default function ConversationPage() {
 
   return (
     <div className="rounded-lg border border-neutral-200 bg-white lg:col-span-7 xl:col-span-8">
-      <View id={id} anonymous={searchParams.get("anonymous") === "true"} />
+      <View />
     </div>
   );
 }

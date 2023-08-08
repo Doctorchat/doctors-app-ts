@@ -17,5 +17,5 @@ export const getApiErrorMessages = (response: unknown): string[] | string => {
     }
   }
 
-  return "common:something_went_wrong";
+  return "common:unknown_error";
 };

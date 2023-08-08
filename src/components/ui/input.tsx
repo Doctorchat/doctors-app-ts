@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import TextareaAutosize, { TextareaAutosizeProps } from "react-textarea-autosize";
 
 import { cn } from "@/utils";
 
@@ -12,8 +13,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <input
         type={type}
         className={cn(
-          "flex h-9 w-full rounded-md border border-neutral-200 bg-white px-3 py-1 shadow-sm transition-colors file:border-0",
-          "file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1",
+          "flex h-9 w-full rounded-md border border-neutral-200 bg-white px-3 py-1 text-black shadow-sm transition-colors file:border-0",
+          "file:bg-transparent file:text-sm file:font-medium placeholder:text-typography-secondary focus-visible:outline-none focus-visible:ring-1",
           "focus-visible:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50",
           "aria-[invalid=true]:border-red-500 aria-[invalid=true]:ring-red-500",
           className,
@@ -58,4 +59,25 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
 );
 PasswordInput.displayName = "PasswordInput";
 
-export { Input, PasswordInput };
+export interface TextareaProps extends TextareaAutosizeProps {}
+
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <TextareaAutosize
+        ref={ref}
+        className={cn(
+          "flex w-full resize-none rounded-md border border-neutral-200 bg-white px-3 py-2 text-black shadow-sm transition-colors file:border-0",
+          "file:bg-transparent file:text-sm file:font-medium placeholder:text-typography-secondary focus-visible:outline-none focus-visible:ring-1",
+          "focus-visible:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50",
+          "aria-[invalid=true]:border-red-500 aria-[invalid=true]:ring-red-500",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
+Textarea.displayName = "Textarea";
+
+export { Input, PasswordInput, Textarea };

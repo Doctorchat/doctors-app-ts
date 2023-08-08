@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "./features/auth";
 import { router } from "./router";
 
+import { Toaster } from "@/components/ui/toaster";
+
 import "./lib/i18n";
 import "./styles/index.css";
 
@@ -25,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <RouterProvider router={router} />
+        <Toaster />
       </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>,

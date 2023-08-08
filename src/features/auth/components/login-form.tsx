@@ -109,9 +109,9 @@ export const LoginForm: React.FC = () => {
                     <FormLabel>{t("common:phone_number")}</FormLabel>
                     <FormControl>
                       <PhoneInput
-                        {...field}
                         international
                         smartCaret
+                        limitMaxLength
                         focusInputOnCountrySelection
                         defaultCountry="MD"
                         countryCallingCodeEditable={false}
@@ -119,6 +119,7 @@ export const LoginForm: React.FC = () => {
                         disabled={isAuthInProcess}
                         countrySelectComponent={CountrySelect}
                         inputComponent={Input}
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -142,7 +143,8 @@ export const LoginForm: React.FC = () => {
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={isAuthInProcess} className="w-full">
-              {isAuthInProcess ? t("auth:logging_in") : t("auth:login")}
+              {t("auth:login")}
+              {isAuthInProcess && "..."}
             </Button>
           </CardFooter>
         </form>

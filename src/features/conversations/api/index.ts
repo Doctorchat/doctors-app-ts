@@ -17,3 +17,16 @@ export const apiGetUserCard = async (id: number, anonymous: boolean) => {
     .get<UserCard>(`/user/card/${id}?is_anonym=${anonymous}`)
     .then((res) => res.data);
 };
+
+export const apiAcceptConversation = async (id: number) => {
+  return await axiosInstance.post("/chat/accept", {
+    chat_id: id,
+  });
+};
+
+export const apiRejectConversation = async (id: number, message: string) => {
+  return await axiosInstance.post("/chat/refuse", {
+    chat_id: id,
+    message,
+  });
+};

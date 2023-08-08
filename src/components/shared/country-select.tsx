@@ -63,9 +63,9 @@ const CountrySelect: React.FC<CountrySelectProps> = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          aria-expanded={open}
           variant="outline"
           role="combobox"
-          aria-expanded={open}
           disabled={disabled}
           onFocus={onFocus}
           onBlur={onBlur}

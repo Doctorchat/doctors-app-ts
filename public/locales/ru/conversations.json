@@ -4,5 +4,11 @@
   "select_conversation": "Выберите диалог",
   "patients": "Пациенты",
   "doctors": "Врачи",
-  "corporate_client": "Корпоративный"
+  "corporate_client": "Корпоративный",
+  "approval_request": {
+    "title": "Необходимо подтверждение диалога",
+    "description": " Для начала диалога необходимо подтвердить запрос на диалог",
+    "reject_dialog_title": "Отклонить запрос на диалог",
+    "reject_dialog_description": "Введите причину отклонения запроса на диалог"
+  }
 }

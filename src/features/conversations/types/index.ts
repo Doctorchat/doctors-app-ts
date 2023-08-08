@@ -12,16 +12,28 @@ export interface ConversationPreview {
   updated: string;
 }
 
+export interface ConversationMessageFile {
+  id: number;
+  name: string;
+  file_url: string;
+  size: string;
+  type: string;
+}
+
 export interface ConversationMessage {
   id: number;
   side: "in" | "out" | "center";
   content: string | null;
+  files: ConversationMessageFile[];
+  created: string;
   updated: string;
 }
 
 export interface Conversation {
   id: number;
   user_id: number;
+  isAccepted: boolean;
+  status: "open" | "closed";
   messages: ConversationMessage[];
 }
 

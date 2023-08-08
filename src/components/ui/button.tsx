@@ -17,7 +17,7 @@ const buttonVariants = cva(
           "bg-red-500 text-neutral-50 shadow-sm md:hover:bg-red-500/90 active:bg-red-500/90",
         ],
         outline: [
-          "border border-neutral-200 bg-white shadow-sm md:hover:bg-neutral-100 md:hover:text-neutral-900",
+          "border border-neutral-200 bg-white shadow-sm md:hover:bg-neutral-100 text-neutral-800 md:hover:text-neutral-900",
           "active:bg-neutral-100 active:text-neutral-900",
         ],
         secondary: [
