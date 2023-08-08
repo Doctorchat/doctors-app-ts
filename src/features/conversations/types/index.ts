@@ -30,7 +30,7 @@ export interface ConversationMessage {
 }
 
 export interface Conversation {
-  id: number;
+  chat_id: number;
   user_id: number;
   isAccepted: boolean;
   status: "open" | "closed";

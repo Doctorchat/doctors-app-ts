@@ -6,7 +6,6 @@ import { useConversationLayoutStore } from "./layout";
 import { Preview, PreviewSkeleton } from "./preview";
 import { apiGetConversationsWithPatients } from "../api";
 
-import { ScrollArea } from "@/components/ui";
 import { cn } from "@/utils";
 
 export const List: React.FC = () => {
@@ -22,21 +21,18 @@ export const List: React.FC = () => {
   return (
     <div
       className={cn(
-        "col-span-12 h-full w-full p-px",
+        "col-span-12 h-full w-full",
         "lg:col-span-5 lg:rounded-lg lg:border lg:border-neutral-200",
         "xl:col-span-4",
       )}
     >
-      <ScrollArea vertical className="h-full">
-        <div className="space-y-0.5 p-2">
-          {conversations?.map((conversation) => (
-            <Preview key={conversation.id} conversation={conversation} />
-          ))}
+      <div className="h-full space-y-0.5 overflow-y-auto p-2">
+        {conversations?.map((conversation) => (
+          <Preview key={conversation.id} conversation={conversation} />
+        ))}
 
-          {isLoading &&
-            Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
-        </div>
-      </ScrollArea>
+        {isLoading && Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
+      </div>
     </div>
   );
 };

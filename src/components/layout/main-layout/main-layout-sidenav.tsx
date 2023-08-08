@@ -4,9 +4,9 @@ import { NavLink, useLocation } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
-import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { shallow } from "zustand/shallow";
+import { createWithEqualityFn } from "zustand/traditional";
 
 import { Button, ScrollArea, Sheet, SheetClose, SheetContent, Spinner } from "@/components/ui";
 import {
@@ -23,7 +23,7 @@ export interface MainLayoutSidenavStore {
   setIsOverlay: (isOverlay: boolean) => void;
 }
 
-export const useMainLayoutSidenavStore = create<
+export const useMainLayoutSidenavStore = createWithEqualityFn<
   MainLayoutSidenavStore,
   [["zustand/persist", MainLayoutSidenavStore]]
 >(
@@ -42,6 +42,7 @@ export const useMainLayoutSidenavStore = create<
       },
     },
   ),
+  shallow,
 );
 
 const SidenavContent = React.memo(() => {

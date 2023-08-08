@@ -94,7 +94,7 @@ export const UserCard: React.FC<UserCardProps> = ({ card, ...props }) => {
           <li className="py-3">
             <h3 className="text-sm">{t("common:sex")}</h3>
             <p className="mt-0.5 text-sm font-medium text-typography-primary">
-              {t(investigation?.sex)}
+              {investigation?.sex && t(investigation?.sex)}
             </p>
           </li>
           <li className="py-3">

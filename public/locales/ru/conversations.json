@@ -10,5 +10,15 @@
     "description": " Для начала диалога необходимо подтвердить запрос на диалог",
     "reject_dialog_title": "Отклонить запрос на диалог",
     "reject_dialog_description": "Введите причину отклонения запроса на диалог"
-  }
+  },
+  "request_file_dialog": {
+    "title": "Запрос файла",
+    "description": "Пожалуйста, укажите причину запроса файла",
+    "placeholder": "Причина запроса файла..."
+  },
+  "enter_message": "Введите сообщение",
+  "upload_file": "Загрузить файл",
+  "request_file": "Запросить файл",
+  "click_to_select_file": "Нажмите, чтобы выбрать файл",
+  "select_different_file": "Выберите другой файл"
 }

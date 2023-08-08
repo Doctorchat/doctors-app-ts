@@ -1,5 +1,3 @@
-import type { UserCard as UserCardType } from "../types";
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
 
 import { UserCard } from "./user-card";
+import { useConversation } from "../hooks";
 
 import {
   Avatar,
@@ -26,19 +25,17 @@ import {
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 
-export interface HeaderProps {
-  card?: UserCardType;
-  isLoading: boolean;
-}
-
-export const Header: React.FC<HeaderProps> = ({ card, isLoading }) => {
+export const Header: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
+  const { card, isCardLoading, isCardErrored, conversation } = useConversation();
 
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
+
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const isLoading = isCardLoading || (!conversation?.user_id && !isCardErrored);
 
   return (
     <>

@@ -18,12 +18,12 @@
   "male": "Bărbat",
   "month": {
     "count_one": "lună",
-    "count_many": "luni",
+    "count_few": "luni",
     "count_other": "luni"
   },
   "year": {
     "count_one": "an",
-    "count_many": "ani",
+    "count_few": "ani",
     "count_other": "ani"
   },
   "email_address": "Adresa de email",
@@ -35,5 +35,8 @@
   "decline": "Respinge",
   "reason": "Motivul",
   "cancel": "Anulează",
-  "you": "Tu"
+  "you": "Tu",
+  "upload": "Încarcă",
+  "comments": "Comentarii",
+  "send": "Trimite"
 }

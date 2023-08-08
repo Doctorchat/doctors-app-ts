@@ -1,7 +1,9 @@
 import React from "react";
 
 import { useTranslation } from "react-i18next";
-import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { shallow } from "zustand/shallow";
+import { createWithEqualityFn } from "zustand/traditional";
 
 import { List } from "./list";
 
@@ -12,10 +14,19 @@ export interface LayoutStore {
   setConversationsType: (conversationsType: "patients" | "doctors") => void;
 }
 
-export const useConversationLayoutStore = create<LayoutStore>((set) => ({
-  conversationsType: "patients",
-  setConversationsType: (conversationsType) => set({ conversationsType }),
-}));
+export const useConversationLayoutStore = createWithEqualityFn<
+  LayoutStore,
+  [["zustand/persist", LayoutStore]]
+>(
+  persist(
+    (set) => ({
+      conversationsType: "patients",
+      setConversationsType: (conversationsType) => set({ conversationsType }),
+    }),
+    { name: "conversations-layout", storage: createJSONStorage(() => localStorage) },
+  ),
+  shallow,
+);
 
 export interface LayoutProps {
   children?: React.ReactNode;

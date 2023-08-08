@@ -10,20 +10,14 @@ import { Sheet, SheetContent } from "@/components/ui";
 
 export default function ConversationPage() {
   const { t } = useTranslation();
-  const { id, setId } = useConversation();
+  const { id } = useConversation();
 
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 1024px)");
 
   if (isMobile) {
     return (
-      <Sheet
-        open={Boolean(id)}
-        onOpenChange={() => {
-          navigate("/conversations");
-          setId(null);
-        }}
-      >
+      <Sheet open={Boolean(id)} onOpenChange={() => navigate("/conversations")}>
         <SheetContent className="w-full p-0 sm:max-w-full">
           <View />
         </SheetContent>

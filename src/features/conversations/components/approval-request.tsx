@@ -45,7 +45,6 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   const { id, conversation } = useConversation();
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
-
   const queryClient = useQueryClient();
 
   const form = useForm<FormValues>({
@@ -67,10 +66,10 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   };
 
   const onAcceptHandler = async () => {
-    if (conversation?.id) {
+    if (id) {
       setIsAcceptLoading(true);
       try {
-        await apiAcceptConversation(conversation.id);
+        await apiAcceptConversation(id);
         await revalidateQueries();
       } catch (error) {
         toast({
@@ -85,9 +84,9 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   };
 
   const onRejectHandler = async (values: FormValues) => {
-    if (conversation?.id) {
+    if (id) {
       try {
-        await apiRejectConversation(conversation.id, values.message);
+        await apiRejectConversation(id, values.message);
         await revalidateQueries();
         setIsRejectDialogOpen(false);
       } catch (error) {
@@ -101,7 +100,7 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
       <>
         <div
           className={cn(
-            "absolute inset-x-0 bottom-0 w-full rounded-b-lg p-5 text-center",
+            "absolute inset-x-0 bottom-0 z-40 w-full rounded-b-lg p-5 text-center",
             "bg-white",
             className,
           )}

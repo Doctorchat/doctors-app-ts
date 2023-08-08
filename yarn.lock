@@ -1165,6 +1165,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-tooltip@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "@radix-ui/react-tooltip@npm:1.0.6"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/primitive": 1.0.1
+    "@radix-ui/react-compose-refs": 1.0.1
+    "@radix-ui/react-context": 1.0.1
+    "@radix-ui/react-dismissable-layer": 1.0.4
+    "@radix-ui/react-id": 1.0.1
+    "@radix-ui/react-popper": 1.1.2
+    "@radix-ui/react-portal": 1.0.3
+    "@radix-ui/react-presence": 1.0.1
+    "@radix-ui/react-primitive": 1.0.3
+    "@radix-ui/react-slot": 1.0.2
+    "@radix-ui/react-use-controllable-state": 1.0.1
+    "@radix-ui/react-visually-hidden": 1.0.3
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 8220f103432e9ad9ff8a828ca890e14bf3323864a0bb145d1ef689cf446ab5ca0af18e5fed5da89db957065c504e79ec12fbe5e551d6e7b84b470fbd672c918d
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-use-callback-ref@npm:1.0.0":
   version: 1.0.0
   resolution: "@radix-ui/react-use-callback-ref@npm:1.0.0"
@@ -2450,6 +2481,7 @@ __metadata:
     "@radix-ui/react-slot": ^1.0.2
     "@radix-ui/react-tabs": ^1.0.4
     "@radix-ui/react-toast": ^1.1.4
+    "@radix-ui/react-tooltip": ^1.0.6
     "@types/node": ^20.4.8
     "@types/react": ^18.2.19
     "@types/react-dom": ^18.2.7
@@ -2464,7 +2496,7 @@ __metadata:
     cmdk: ^0.2.0
     date-fns: ^2.30.0
     eslint: ^8.46.0
-    eslint-config-prettier: ^8.9.0
+    eslint-config-prettier: ^9.0.0
     eslint-plugin-import: ^2.28.0
     eslint-plugin-prettier: ^5.0.0
     eslint-plugin-react: ^7.33.1
@@ -2744,14 +2776,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.9.0":
-  version: 8.9.0
-  resolution: "eslint-config-prettier@npm:8.9.0"
+"eslint-config-prettier@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "eslint-config-prettier@npm:9.0.0"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: a675d0dabd76b700ef2d062b5ec6a634e105a8e8c070f95281fd2ccb614527fac60b4c758132058c50f0521fd19313f1f5be45ce9ebf081f2e5f77ae6eb7d8db
+  checksum: 362e991b6cb343f79362bada2d97c202e5303e6865888918a7445c555fb75e4c078b01278e90be98aa98ae22f8597d8e93d48314bec6824f540f7efcab3ce451
   languageName: node
   linkType: hard
 

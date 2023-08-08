@@ -10,5 +10,15 @@
     "description": "Pentru a începe conversația, trebuie să acceptați cererea de conversație",
     "reject_dialog_title": "Refuzați cererea de conversație",
     "reject_dialog_description": "Introduceți motivul refuzului cererii de conversație"
-  }
+  },
+  "request_file_dialog": {
+    "title": "Solicitare fișier",
+    "description": "Vă rugăm să furnizați un motiv pentru solicitarea fișierului",
+    "placeholder": "Motivul solicitării fișierului..."
+  },
+  "enter_message": "Introduceți mesajul",
+  "upload_file": "Încărcați un fișier",
+  "request_file": "Solicitați un fișier",
+  "click_to_select_file": "Faceți clic pentru a selecta un fișier",
+  "select_different_file": "Selectați alt fișier"
 }

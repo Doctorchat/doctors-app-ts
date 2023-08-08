@@ -37,7 +37,7 @@ export const Message: React.FC<MessageProps> = ({ align, className, children, ..
 };
 
 export interface MessageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  title: string;
+  title?: string;
   timestamp: string;
 }
 

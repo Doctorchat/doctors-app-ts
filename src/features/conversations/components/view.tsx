@@ -3,6 +3,7 @@ import React from "react";
 import { format, parseISO } from "date-fns";
 import { ro, ru } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
+import { useEventListener } from "usehooks-ts";
 
 import { ApprovalRequest } from "./approval-request";
 import { Header } from "./header";
@@ -13,17 +14,20 @@ import {
   MessageBubbleText,
   MessageHeader,
 } from "./message";
+import { MessageBar } from "./message-bar";
 import { useConversation } from "../hooks";
 import { ConversationMessage } from "../types";
 
-import { ScrollArea } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, isCardLoading, isCardErrored, conversation } = useConversation();
+  const { card, conversation } = useConversation();
+
+  const ref = React.useRef<HTMLDivElement>(null);
+  const scroll = React.useRef(0);
 
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
@@ -44,49 +48,92 @@ export const View: React.FC = () => {
     }));
   }, [conversation?.messages]);
 
+  React.useEffect(() => {
+    const onUpdate = () => {
+      if (ref.current) {
+        const el = ref.current;
+
+        if (scroll.current === 0) {
+          el.scrollTo({
+            top: el.scrollHeight,
+            behavior: "auto",
+          });
+        }
+      }
+    };
+
+    const observer = new MutationObserver(onUpdate);
+
+    if (ref.current) {
+      observer.observe(ref.current, { childList: true });
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEventListener(
+    "scroll",
+    () => {
+      if (ref.current) {
+        const el = ref.current;
+        scroll.current = el.scrollTop + el.clientHeight - el.scrollHeight;
+      }
+    },
+    ref,
+  );
+
   return (
-    <div className="relative flex h-full flex-col overflow-hidden">
-      <Header card={card} isLoading={isCardLoading || (!conversation?.user_id && !isCardErrored)} />
-      <div className="flex-1 overflow-hidden p-px">
-        <ScrollArea vertical className="h-full">
-          <div className="space-y-4 p-3 md:p-5 lg:p-3 xl:p-5">
-            {grouped.map(({ key, messages }) => (
-              <div key={key} className="space-y-2.5">
-                <div className={cn("relative flex h-10 items-center justify-center px-5")}>
-                  <span
-                    className={cn(
-                      "absolute left-0 top-1/2 z-0 block h-px w-full border-b border-dashed border-typography-secondary",
-                      "-translate-y-1/2",
-                    )}
-                  />
-                  <span className="relative block bg-white px-1 text-sm font-medium text-typography-secondary">
-                    {format(parseISO(key), "dd MMMM yyyy", { locale: locale === "ro" ? ro : ru })}
-                  </span>
-                </div>
-                {messages.map((message) => (
-                  <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
-                    <MessageHeader
-                      title={message.side === "in" ? card?.name : t("you")}
-                      timestamp={message.updated}
-                    />
-                    <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
-                      <MessageBubbleText>{message.content}</MessageBubbleText>
-                    </MessageBubble>
-                    {message.files.length > 0 && (
-                      <MessageBubble className="space-y-1">
-                        {message.files.map((file) => (
-                          <MessageBubbleFile key={file.id} file={file} />
-                        ))}
-                      </MessageBubble>
-                    )}
-                  </Message>
-                ))}
-              </div>
+    <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
+      <Header />
+
+      <div ref={ref} className="flex-1 space-y-4 overflow-y-auto p-3 md:p-5 lg:p-3 xl:p-5">
+        {grouped.map(({ key, messages }) => (
+          <div key={key} className="space-y-2.5">
+            <div className={cn("relative flex h-10 items-center justify-center px-5")}>
+              <span
+                className={cn(
+                  "absolute left-0 top-1/2 z-0 block h-px w-full border-b border-dashed border-typography-secondary",
+                  "-translate-y-1/2",
+                )}
+              />
+              <span className="relative block bg-white px-1 text-sm font-medium text-typography-secondary">
+                {format(parseISO(key), "dd MMMM yyyy", { locale: locale === "ro" ? ro : ru })}
+              </span>
+            </div>
+
+            {messages.map((message) => (
+              <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
+                <MessageHeader
+                  title={message.side === "in" ? card?.name : t("you")}
+                  timestamp={message.updated}
+                />
+
+                {message.content && (
+                  <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
+                    <MessageBubbleText>{message.content}</MessageBubbleText>
+                  </MessageBubble>
+                )}
+
+                {message.files.length > 0 && (
+                  <MessageBubble
+                    variant={message.side === "in" ? "primary" : "secondary"}
+                    className="space-y-1"
+                  >
+                    {message.files.map((file) => (
+                      <MessageBubbleFile key={file.id} file={file} />
+                    ))}
+                  </MessageBubble>
+                )}
+              </Message>
             ))}
           </div>
-        </ScrollArea>
-        <ApprovalRequest />
+        ))}
       </div>
+
+      <ApprovalRequest />
+      <MessageBar />
     </div>
   );
 };
