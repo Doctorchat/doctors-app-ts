@@ -106,7 +106,7 @@ export const View: React.FC = () => {
             {messages.map((message) => (
               <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
                 <MessageHeader
-                  title={message.side === "in" ? card?.name : t("you")}
+                  title={message.side === "in" ? card?.name ?? t("common:untitled") : t("you")}
                   timestamp={message.updated}
                 />
 
