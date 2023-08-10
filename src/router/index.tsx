@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { MainLayout } from "@/components/layout";
-import { routes as authRoutes } from "@/features/auth";
+import { PrivateRoute, routes as authRoutes } from "@/features/auth";
 import { routes as conversationsRoutes } from "@/features/conversations";
 
 export const router = createBrowserRouter([
@@ -9,7 +9,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <MainLayout>
-        <div>Home</div>
+        <PrivateRoute>
+          <div>Home</div>
+        </PrivateRoute>
       </MainLayout>
     ),
   },
