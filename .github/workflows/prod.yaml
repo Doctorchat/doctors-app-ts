@@ -16,7 +16,7 @@ jobs:
           node-version: "18.x"
 
       - name: Install Dependencies with Yarn
-        uses: Borales/actions-yarn@v4.2.0
+        uses: borales/actions-yarn@v3.6.1
         with:
           cmd: install
 
