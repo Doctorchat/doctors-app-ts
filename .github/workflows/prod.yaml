@@ -19,7 +19,7 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: CI=false npm run build
+        run: CI=false yarn build
       - name: SSH Server Deploy MD
         uses: kostya-ten/ssh-server-deploy@v4
         with:
