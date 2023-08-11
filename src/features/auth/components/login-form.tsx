@@ -34,8 +34,8 @@ import {
 import { getApiErrorMessages } from "@/utils";
 
 const schema = z.object({
-  phone: z.string().refine(isValidPhoneNumber, { message: "Invalid phone number" }),
-  password: z.string().min(6),
+  phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
+  password: z.string().nonempty(),
 });
 
 type FormValues = z.infer<typeof schema>;

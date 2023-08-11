@@ -3,14 +3,18 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { z } from "zod";
 
 import { AuthProvider } from "./features/auth";
+import zodErrorMap from "./lib/zod";
 import { router } from "./router";
 
 import { Toaster } from "@/components/ui/toaster";
 
 import "./lib/i18n";
 import "./styles/index.css";
+
+z.setErrorMap(zodErrorMap);
 
 const queryClient = new QueryClient({
   defaultOptions: {

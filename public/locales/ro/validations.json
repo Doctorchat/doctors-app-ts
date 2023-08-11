@@ -1,7 +1,9 @@
 {
   "invalid_phone_number": "Numărul de telefon nu este valid",
+  "invalid_email": "Adresa de email nu este validă",
   "otp_6_characters": "Codul OTP trebuie să conțină 6 cifre",
   "invalid_file": "Acest fișier nu este valid",
   "file_size_too_big": "Dimensiunea fișierului ar trebui să fie mai mică decât {{max}} MB",
-  "file_type_not_allowed": "Tipul de fișier trebuie să fie {{extensions}}"
+  "file_type_not_allowed": "Tipul de fișier trebuie să fie {{extensions}}",
+  "too_small": "Trebuie să conțină cel puțin {{min}} caractere"
 }
