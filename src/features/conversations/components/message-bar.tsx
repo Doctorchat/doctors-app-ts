@@ -119,9 +119,9 @@ export const MessageBar: React.FC = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* <Button variant="ghost" size="icon" onClick={() => setMessageTemplatesOpen(true)}>
+                <Button variant="ghost" size="icon" onClick={() => setMessageTemplatesOpen(true)}>
                   <ArrowPathRoundedSquareIcon className="h-5 w-5" />
-                </Button> */}
+                </Button>
               </div>
               <Button
                 variant="default"
