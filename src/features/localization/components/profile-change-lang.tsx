@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { LanguageIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui";
+import { useAppI18n } from "@/hooks";
+import { AppLocale } from "@/types";
+import { setUserLocale } from "../api";
 
 export interface ProfileChangeLangProps {
   disabled?: boolean;
@@ -24,13 +27,21 @@ const langs: { [index: string]: string } = {
 
 const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
   const { t, i18n } = useTranslation();
-  const [language, setLanguage] = useState(langs.ro);
+  const [stateLanguage, setStateLanguage] = useState(langs.ro);
+  const { setLanguage } = useAppI18n();
 
   const changeLanguage = useCallback((lng: string) => {
-    //   await api.user.changeLocale(lng);
-
+    setUserLocale(lng);
+    setStateLanguage(langs[lng]);
     localStorage.setItem("i18nextLng", lng);
-    i18n.changeLanguage(lng);
+    setLanguage(lng as AppLocale);
+  }, []);
+
+  useEffect(() => {
+    const user = localStorage.getItem("session:user");
+    if (user) {
+      setStateLanguage(langs[JSON.parse(user).locale]);
+    }
   }, []);
 
   return (
@@ -39,7 +50,7 @@ const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
         <DropdownMenuTrigger asChild>
           <Button className="select-none" variant="ghost">
             <LanguageIcon className="h-5 w-5" /> &nbsp;
-            {language}
+            {stateLanguage}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" align="start">
