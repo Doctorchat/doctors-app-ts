@@ -25,6 +25,7 @@ import {
 } from "@/components/ui";
 import { apiLogout, useAuth } from "@/features/auth";
 import { cn, getInitials } from "@/utils";
+import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -39,7 +40,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
       isOverlay: store.isOverlay,
       setIsOverlay: store.setIsOverlay,
     }),
-    shallow,
+    shallow
   );
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -47,7 +48,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
     <header
       className={cn(
         "flex h-16 flex-shrink-0 items-center justify-between border-b border-neutral-200 px-5",
-        className,
+        className
       )}
       {...props}
     >
@@ -65,6 +66,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
         <Bars3BottomLeftIcon className="h-6 w-6" />
       </Button>
       <div className="ml-2 flex items-center justify-center">
+        <ProfileChangeLang />
         <Button
           key="notifications"
           variant="ghost"
