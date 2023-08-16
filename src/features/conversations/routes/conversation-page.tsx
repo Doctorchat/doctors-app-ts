@@ -23,7 +23,7 @@ export default function ConversationPage() {
         </SheetContent>
       </Sheet>
     );
-  }
+  };
 
   if (id === null) {
     return (
