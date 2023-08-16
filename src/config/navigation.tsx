@@ -1,4 +1,4 @@
-import { ChatBubbleBottomCenterTextIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { ChatBubbleBottomCenterTextIcon, HomeIcon, WalletIcon } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
 export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 75;
@@ -27,5 +27,11 @@ export const navigationLinks: NavigationLink[] = [
     href: "/conversations",
     translation: "conversations:conversations",
     icon: ChatBubbleBottomCenterTextIcon,
+  },
+  {
+    key: "wallet",
+    href: "/wallet",
+    translation: "wallet:wallet",
+    icon: WalletIcon,
   },
 ];

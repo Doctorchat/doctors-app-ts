@@ -1,0 +1,30 @@
+{
+  "wallet": "Кошелек",
+  "total_balance": "Общий баланс",
+  "frozen_balance": "Замороженный баланс",
+  "refill": "Пополнение",
+  "transactions": {
+    "history": "История транзакций",
+    "empty": "Список транзакций появится здесь",
+    "top_up": "Пополнение",
+    "withdraw": "Вывод",
+    "incoming": "Прибыль",
+    "outgoing": "Расход",
+    "pending": "В ожидании",
+    "success": "Успешно",
+    "cancel": "Неудачно",
+    "withdraw_confirmation": "Вы уверены, что хотите вывести деньги?",
+    "top_up_form": "Форма пополнения",
+    "withdraw_form": "Форма вывода",
+    "withdraw_success": "Заявка на вывод успешно отправлена",
+    "withdraw_error": "Ошибка при выводе",
+    "top_up_success": "Ваш баланс успешно пополнен",
+    "top_up_error": "Ошибка при пополнении",
+    "bonus": "Бонус",
+    "refund": "Возврат",
+    "transactions": {
+      "withdraw": "Вывод",
+      "empty": "Список транзакций появится здесь"
+    }
+  }
+}
