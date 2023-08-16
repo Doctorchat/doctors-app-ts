@@ -1,0 +1,10 @@
+{
+  "invalid_phone_number": "Invalid phone number",
+  "invalid_email": "Invalid email",
+  "otp_6_characters": "OTP code must contain 6 digits",
+  "invalid_file": "This file is invalid",
+  "file_size_too_big": "File size must be less than {{max}} MB",
+  "file_type_not_allowed": "The file type must be {{extensions}}",
+  "unknown": "Unknown error",
+  "too_small": "Must contain at least {{min}} characters"
+}

@@ -3,7 +3,6 @@ import type { ConversationPreview } from "../types";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { formatDistance, parseISO } from "date-fns";
-import { ro, ru } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
@@ -26,7 +25,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",
-        { "bg-neutral-200": Number(searchParams.get("id")) === conversation.id },
+        { "bg-neutral-200": Number(searchParams.get("id")) === conversation.id }
       )}
     >
       <div className="relative flex-shrink-0">
@@ -55,7 +54,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
             <time dateTime={conversation.updated}>
               {formatDistance(parseISO(conversation.updated), new Date(), {
                 addSuffix: true,
-                locale: locale === "ru" ? ru : ro,
+                locale: locale(),
               })}
             </time>
           </span>

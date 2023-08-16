@@ -9,7 +9,7 @@ i18n
   .use(initReactI18next)
   .init({
     ns: ["common", "auth", "conversations", "validations"],
-    supportedLngs: ["ro", "ru"],
+    supportedLngs: ["ro", "ru", "en"],
     defaultNS: "common",
     load: "languageOnly",
     fallbackLng: "ro",

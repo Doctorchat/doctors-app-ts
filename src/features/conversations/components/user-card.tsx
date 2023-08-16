@@ -2,7 +2,6 @@ import type { UserCard as UserCardType } from "../types";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { formatDistance, parseISO } from "date-fns";
-import { ro, ru } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -53,7 +52,7 @@ export const UserCard: React.FC<UserCardProps> = ({ card, ...props }) => {
                 <time dateTime={card?.last_seen}>
                   {formatDistance(parseISO(card?.last_seen), new Date(), {
                     addSuffix: true,
-                    locale: locale === "ru" ? ru : ro,
+                    locale: locale(),
                   })}
                 </time>
               )}

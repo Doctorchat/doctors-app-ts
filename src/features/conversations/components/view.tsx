@@ -1,7 +1,6 @@
 import React from "react";
 
 import { format, parseISO } from "date-fns";
-import { ro, ru } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import { useEventListener } from "usehooks-ts";
 
@@ -81,7 +80,7 @@ export const View: React.FC = () => {
         scroll.current = el.scrollTop + el.clientHeight - el.scrollHeight;
       }
     },
-    ref,
+    ref
   );
 
   return (
@@ -95,11 +94,11 @@ export const View: React.FC = () => {
               <span
                 className={cn(
                   "absolute left-0 top-1/2 z-0 block h-px w-full border-b border-dashed border-typography-secondary",
-                  "-translate-y-1/2",
+                  "-translate-y-1/2"
                 )}
               />
               <span className="relative block bg-white px-1 text-sm font-medium text-typography-secondary">
-                {format(parseISO(key), "dd MMMM yyyy", { locale: locale === "ro" ? ro : ru })}
+                {format(parseISO(key), "dd MMMM yyyy", { locale: locale() })}
               </span>
             </div>
 

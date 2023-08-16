@@ -1,1 +1,1 @@
-export type AppLocale = "ro" | "ru";
+export type AppLocale = "ro" | "ru" | "en";

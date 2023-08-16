@@ -1,0 +1,24 @@
+{
+  "conversations": "Conversations",
+  "recent_conversations": "Recent conversations",
+  "select_conversation": "Select conversation",
+  "patients": "Patients",
+  "doctors": "Doctors",
+  "corporate_client": "Corporate",
+  "approval_request": {
+    "title": "Dialogue confirmation required",
+    "description": " To start a dialogue, you must confirm the dialogue request",
+    "reject_dialog_title": "Reject the dialogue request",
+    "reject_dialog_description": "Enter the reason for rejecting the dialogue request"
+  },
+  "request_file_dialog": {
+    "title": "File request",
+    "description": "Please indicate the reason for the file request",
+    "placeholder": "Reason for file request..."
+  },
+  "enter_message": "Enter message",
+  "upload_file": "Upload file",
+  "request_file": "Request file",
+  "click_to_select_file": "Click to select a file",
+  "select_different_file": "Choose another file"
+}
