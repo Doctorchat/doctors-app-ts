@@ -418,13 +418,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/colors@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@radix-ui/colors@npm:2.0.1"
-  checksum: 74a78cfb5ec5de0b547dcca9169c3c33f261666bde3b339b1030659fd3862144656b1cd695e3bcf7b4414d6bc42a4f83fe58b31bf724ae93b7275e81c4e268a5
-  languageName: node
-  linkType: hard
-
 "@radix-ui/number@npm:1.0.1":
   version: 1.0.1
   resolution: "@radix-ui/number@npm:1.0.1"
@@ -2507,7 +2500,6 @@ __metadata:
   dependencies:
     "@heroicons/react": ^2.0.18
     "@hookform/resolvers": ^3.2.0
-    "@radix-ui/colors": ^2.0.1
     "@radix-ui/react-avatar": ^1.0.3
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-dropdown-menu": ^2.0.5
