@@ -53,6 +53,9 @@
   "zod_mixed_format": "Invalid format",
   "zod_passwords_match": "The passwords do not match",
   "zod_array_min": "Field must have at least {{min}} item(-s)",
+  "zod_number_range": "Sum must be between {min} and {max}",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "success_update": "Success update",
+  "error_update": "Error update"
 }

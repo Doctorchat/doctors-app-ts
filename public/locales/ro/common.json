@@ -51,6 +51,9 @@
   "zod_mixed_format": "Format invalid",
   "zod_passwords_match": "Parolele nu sunt identice",
   "zod_array_min": "Câmpul trebuie să conțină cel puțin {{min}} element(-e)",
+  "zod_number_range": "Valoarea trebuie să fie între {{min}} și {{max}}",
   "yes": "Da",
-  "no": "Nu"
+  "no": "Nu",
+  "success_update": "Actualizare cu succes",
+  "error_update": "Eroare la actualizare"
 }

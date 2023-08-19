@@ -5,6 +5,7 @@
     "note": "The discount is provided automatically when the conversation is closed.",
     "warning": "The percentage of the discount provided by the doctor determines the final amount that the patient will have to pay for the consultation.",
     "duration": "Validity period (days)",
-    "discount": "Discount (%)"
+    "discount": "Discount (%)",
+    "discount_updated_successfully": "Discount updated successfully"
   }
 }
