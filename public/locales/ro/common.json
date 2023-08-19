@@ -39,5 +39,18 @@
   "upload": "Încarcă",
   "comments": "Comentarii",
   "send": "Trimite",
-  "untitled": "Fără titlu"
+  "untitled": "Fără titlu",
+  "save": "Salvează",
+  "zod_mixed_required": "Acest câmp este obligatoriu",
+  "zod_string_email": "Acest email nu este valid",
+  "zod_string_min": "Cel puțin {{min}} caractere",
+  "zod_number_min": "Valoarea trebuie să fie mai mare sau egală cu {{min}}",
+  "zod_string_max": "Lungimea maximă este {{max}} caractere",
+  "zod_number_max": "Valoarea trebuie să fie mai mică sau egală cu {{max}}",
+  "zod_mixed_number": ", întroduceți un număr",
+  "zod_mixed_format": "Format invalid",
+  "zod_passwords_match": "Parolele nu sunt identice",
+  "zod_array_min": "Câmpul trebuie să conțină cel puțin {{min}} element(-e)",
+  "yes": "Da",
+  "no": "Nu"
 }

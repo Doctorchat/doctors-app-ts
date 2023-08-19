@@ -30,7 +30,7 @@ module.exports = {
         "warring-10": "rgba(255, 168, 0, 0.1)",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Robot", "Inter", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

@@ -49,7 +49,7 @@ const WalletWithdraw = (props: WalletWithdrawProps) => {
   return (
     <>
       <Button
-        className="Button violet w-full text-sm bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-3 py-2 my-2"
+        className="Button violet w-full text-sm bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-2 py-1 my-2"
         // onClick={() => setIsWithdrawModalOpen(true)}
       >
         {t("wallet:transactions.withdraw")}

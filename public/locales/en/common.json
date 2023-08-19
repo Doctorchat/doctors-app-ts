@@ -41,5 +41,18 @@
   "upload": "Upload",
   "comments": "Comments",
   "send": "Send",
-  "untitled": "Untitled"
+  "untitled": "Untitled",
+  "save": "Save",
+  "zod_mixed_required": "This field is required",
+  "zod_string_email": "This is not a valid email",
+  "zod_string_min": "At least {{min}} characters",
+  "zod_number_min": "Sum must be greater than or equal to {min}",
+  "zod_string_max": "Maximum length {{max}} characters",
+  "zod_number_max": "Sum must be less than or equal to {max}",
+  "zod_mixed_number": ", enter a number",
+  "zod_mixed_format": "Invalid format",
+  "zod_passwords_match": "The passwords do not match",
+  "zod_array_min": "Field must have at least {{min}} item(-s)",
+  "yes": "Yes",
+  "no": "No"
 }
