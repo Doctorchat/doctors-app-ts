@@ -22,9 +22,7 @@
     "top_up_error": "Eroare la suplinirea contului",
     "bonus": "Bonus",
     "refund": "Rambursare",
-    "transactions": {
-      "withdraw": "Retrage",
-      "empty": "Nu există tranzacții"
-    }
+    "withdraw": "Retrage",
+    "empty": "Nu există tranzacții"
   }
 }

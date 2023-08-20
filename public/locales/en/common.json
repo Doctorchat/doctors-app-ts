@@ -43,6 +43,8 @@
   "send": "Send",
   "untitled": "Untitled",
   "save": "Save",
+  "apply": "Apply",
+  "confirm": "Confirm",
   "zod_mixed_required": "This field is required",
   "zod_string_email": "This is not a valid email",
   "zod_string_min": "At least {{min}} characters",
@@ -57,5 +59,6 @@
   "yes": "Yes",
   "no": "No",
   "success_update": "Success update",
-  "error_update": "Error update"
+  "error_update": "Error update",
+  "sum": "Sum"
 }
