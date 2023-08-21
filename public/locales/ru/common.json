@@ -63,5 +63,7 @@
   "error_update": "Ошибка обновления",
   "sum": "Сумма",
   "active": "Activ",
-  "corporate": "Corporativ"
+  "corporate": "Corporativ",
+  "reviews": "Отзывы",
+  "reviews_list_empty": "Список отзывов появится здесь"
 }

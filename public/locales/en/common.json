@@ -63,5 +63,7 @@
   "error_update": "Error update",
   "sum": "Sum",
   "active": "Activ",
-  "corporate": "Corporativ"
+  "corporate": "Corporativ",
+  "reviews": "Reviews",
+  "reviews_list_empty": "The list of reviews will appear here"
 }

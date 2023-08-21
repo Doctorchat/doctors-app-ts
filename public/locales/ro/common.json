@@ -63,5 +63,7 @@
   "error_update": "Eroare la actualizare",
   "sum": "Suma",
   "active": "Activ",
-  "corporate": "Corporativ"
+  "corporate": "Corporativ",
+  "reviews": "Recenzii",
+  "reviews_list_empty": "Aici va apărea lista de recenzii"
 }

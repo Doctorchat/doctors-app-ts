@@ -6,6 +6,7 @@ import { routes as conversationsRoutes } from "@/features/conversations";
 import { routes as walletRoutes } from "@/features/wallet";
 import { routes as conversationRoutes } from "@/features/repeated-consultation";
 import { routes as partnersRoutes } from "@/features/partners";
+import { routes as reviewsRoutes } from "@/features/doc-reviews";
 
 export const router = createBrowserRouter([
   {
@@ -37,5 +38,9 @@ export const router = createBrowserRouter([
   {
     path: "/auth/*",
     children: authRoutes,
+  },
+  {
+    path: "/reviews/*",
+    children: reviewsRoutes,
   },
 ]);
