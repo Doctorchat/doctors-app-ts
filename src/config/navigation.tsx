@@ -1,7 +1,7 @@
-import { 
-  ChatBubbleBottomCenterTextIcon, 
-  HomeIcon, 
-  WalletIcon, 
+import {
+  ChatBubbleBottomCenterTextIcon,
+  HomeIcon,
+  WalletIcon,
   DocumentPlusIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";

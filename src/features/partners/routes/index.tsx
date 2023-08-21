@@ -9,7 +9,7 @@ import { MainLayout } from "@/components/layout";
 import { Spinner } from "@/components/ui";
 import { PrivateRoute } from "@/features/auth";
 
-const RepeatedConsultationPage = React.lazy(() => import("./partners-page"));
+const PartnersPage = React.lazy(() => import("./partners-page"));
 
 const RoutesWrapper: React.FC = () => {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <RepeatedConsultationPage />,
+        element: <PartnersPage />,
       },
       {
         path: "*",

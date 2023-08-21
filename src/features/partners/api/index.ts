@@ -1,4 +1,3 @@
-import { SessionUser } from "@/features/auth";
 import axiosInstance from "@/lib/axios";
 
 export const getPartners = async () => {

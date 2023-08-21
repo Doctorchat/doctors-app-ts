@@ -8,7 +8,10 @@
   "copied": "Copiat",
   "copied_description": "Linkul a fost copiat cu succes",
   "referrals": "Referali",
-  "transactions": "Tranzacții",
   "download_qr": "Descarcă QR",
-  "empty": "Lista partenerilor va apărea aici"
+  "empty": "Lista partenerilor va apărea aici",
+  "transactions": {
+    "title": "Tranzacții",
+    "empty": "Lista tranzacțiilor va apărea aici"
+  }
 }

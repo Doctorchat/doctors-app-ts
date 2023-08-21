@@ -1,5 +1,6 @@
 {
   "welcome_back": "Bine ai revenit!",
+  "success": "Succes",
   "error": "Eroare",
   "something_went_wrong": "Uh oh! Ceva nu a mers bine.",
   "unknown_error": "Eroare necunoscută",
@@ -60,5 +61,7 @@
   "no": "Nu",
   "success_update": "Actualizare cu succes",
   "error_update": "Eroare la actualizare",
-  "sum": "Suma"
+  "sum": "Suma",
+  "active": "Activ",
+  "corporate": "Corporativ"
 }

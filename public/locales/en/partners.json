@@ -8,7 +8,10 @@
   "copied": "Copied",
   "copied_description": "Link copied successfully",
   "referrals": "Referrals",
-  "transactions": "Transactions",
   "download_qr": "Download QR",
-  "empty": "The list of partners will appear here"
+  "empty": "The list of partners will appear here",
+  "transcription": {
+    "title": "Transactions",
+    "empty": "The list of transactions will appear here"
+  }
 }

@@ -1,5 +1,6 @@
 {
   "welcome_back": "Wellcome!",
+  "success": "Success",
   "error": "Error",
   "something_went_wrong": "Oh! Something went wrong.",
   "unknown_error": "Unknown error",
@@ -60,5 +61,7 @@
   "no": "No",
   "success_update": "Success update",
   "error_update": "Error update",
-  "sum": "Sum"
+  "sum": "Sum",
+  "active": "Activ",
+  "corporate": "Corporativ"
 }

@@ -5,7 +5,7 @@ import { PrivateRoute, routes as authRoutes } from "@/features/auth";
 import { routes as conversationsRoutes } from "@/features/conversations";
 import { routes as walletRoutes } from "@/features/wallet";
 import { routes as conversationRoutes } from "@/features/repeated-consultation";
-import { routes as partnersRoutes} from "@/features/partners";
+import { routes as partnersRoutes } from "@/features/partners";
 
 export const router = createBrowserRouter([
   {
