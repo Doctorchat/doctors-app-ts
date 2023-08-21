@@ -50,6 +50,7 @@ const RepeatedConsultationForm = () => {
   type FormValues = z.infer<typeof schema>;
 
   const [apiResponse, setApiResponse] = React.useState<string>('');
+  const [loading, setLoading] = React.useState(false);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -61,6 +62,7 @@ const RepeatedConsultationForm = () => {
   });
 
   const onSubmitTestIsSubmitting = (values: FormValues) => {
+    setLoading(true);
     updateDiscount({
       offer_discount: values.offer_discount === "yes" ? true : false,
       discount_days: parseInt(values.discount_days, 10),
@@ -73,13 +75,13 @@ const RepeatedConsultationForm = () => {
         setApiResponse("error")
       })
       .finally(() => {
+        setLoading(false);
         setTimeout(() => {
           setApiResponse('');
         }, 2000)
       });
   };
 
-  const isSubmitting = form.formState.isSubmitting;
   const setOnOpenChange = (val: string) => () => setApiResponse(val);
 
   return (
@@ -119,7 +121,7 @@ const RepeatedConsultationForm = () => {
                 <FormControl>
                   <Select
                     value={form.getValues("offer_discount")}
-                    disabled={isSubmitting}
+                    disabled={loading}
                     options={[
                       { value: "yes", label: t("common:yes") },
                       { value: "no", label: t("common:no") },
@@ -141,7 +143,7 @@ const RepeatedConsultationForm = () => {
                   <Input
                     type="number"
                     className="w-full"
-                    disabled={isSubmitting}
+                    disabled={loading}
                     {...field}
                   />
                 </FormControl>
@@ -159,7 +161,7 @@ const RepeatedConsultationForm = () => {
                   <Input
                     type="number"
                     className="w-full px-2 py-4"
-                    disabled={isSubmitting}
+                    disabled={loading}
                     {...field}
                   />
                 </FormControl>
@@ -175,10 +177,11 @@ const RepeatedConsultationForm = () => {
         >
           <Button
             type="submit"
+            disabled={loading}
             className="w-60 mt-4 text-sm bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-2 py-1"
           >
             {t("common:save")}
-            {isSubmitting && "..."}
+            {loading && "..."}
           </Button>
         </div>
       </form>
