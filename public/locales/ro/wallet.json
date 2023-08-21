@@ -22,8 +22,6 @@
     "top_up_success": "Soldul dvs. a fost suplinit cu succes",
     "top_up_error": "Eroare la suplinirea contului",
     "bonus": "Bonus",
-    "refund": "Rambursare",
-    "withdraw": "Retrage",
-    "empty": "Nu există tranzacții"
+    "refund": "Rambursare"
   }
 }

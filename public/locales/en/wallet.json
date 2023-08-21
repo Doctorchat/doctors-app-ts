@@ -22,8 +22,6 @@
     "top_up_success": "Your balance has been successfully topped up",
     "top_up_error": "Error filling out the account",
     "bonus": "Bonus",
-    "refund": "Refund",
-    "withdraw": "Withdraw",
-    "empty": "The list of transactions will appear here"
+    "refund": "Refund"
   }
 }
