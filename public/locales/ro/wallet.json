@@ -11,6 +11,7 @@
     "incoming": "Profit",
     "outgoing": "Cheltuieli",
     "pending": "In așteptare",
+    "referral_reward": "Recompensă de recomandare",
     "success": "Cu succes",
     "cancel": "Fără succes",
     "withdraw_confirmation": "Ești sigur că vrei să retragi bani?",
@@ -22,9 +23,7 @@
     "top_up_error": "Eroare la suplinirea contului",
     "bonus": "Bonus",
     "refund": "Rambursare",
-    "transactions": {
-      "withdraw": "Retrage",
-      "empty": "Nu există tranzacții"
-    }
+    "withdraw": "Retrage",
+    "empty": "Nu există tranzacții"
   }
 }
