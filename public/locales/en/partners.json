@@ -1,0 +1,14 @@
+{
+  "title": "Partners",
+  "description": "Invite friends and get {{percent}}% of each of their payments.",
+  "bonus_balance": "Bonus balance",
+  "active_referrals": "Active referrals",
+  "discount_percent": "Income",
+  "copy_referral_link": "Copy referral link",
+  "copied": "Copied",
+  "copied_description": "Link copied successfully",
+  "referrals": "Referrals",
+  "transactions": "Transactions",
+  "download_qr": "Download QR",
+  "empty": "The list of partners will appear here"
+}

@@ -1,4 +1,10 @@
-import { ChatBubbleBottomCenterTextIcon, HomeIcon, WalletIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { 
+  ChatBubbleBottomCenterTextIcon, 
+  HomeIcon, 
+  WalletIcon, 
+  DocumentPlusIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
 export const NAVIGATION_SIDENAV_COLLAPSED_WIDTH = 75;
@@ -39,5 +45,11 @@ export const navigationLinks: NavigationLink[] = [
     href: "/repeated-consultations",
     translation: "consultation:repeated_consultations.title",
     icon: DocumentPlusIcon,
+  },
+  {
+    key: "partners",
+    href: "/partners",
+    translation: "partners:title",
+    icon: UserGroupIcon,
   },
 ];
