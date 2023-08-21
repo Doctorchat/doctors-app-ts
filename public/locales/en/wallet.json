@@ -1,0 +1,29 @@
+{
+  "wallet": "Wallet",
+  "total_balance": "Total balance",
+  "frozen_balance": "Frozen balance",
+  "refill": "Refill",
+  "transactions": {
+    "history": "Transaction history",
+    "empty": "The list of transactions will appear here",
+    "top_up": "Replenishment",
+    "withdraw": "Withdraw",
+    "incoming": "Incoming",
+    "outgoing": "Outgoing",
+    "pending": "Pending",
+    "referral_reward": "Referral reward",
+    "success": "Success",
+    "cancel": "Cancel",
+    "withdraw_confirmation": "Are you sure you want to withdraw funds?",
+    "top_up_form": "Replenishment form",
+    "withdraw_form": "Withdrawal form",
+    "withdraw_success": "Withdrawal request successfully sent",
+    "withdraw_error": "Error withdrawing funds",
+    "top_up_success": "Your balance has been successfully topped up",
+    "top_up_error": "Error filling out the account",
+    "bonus": "Bonus",
+    "refund": "Refund",
+    "withdraw": "Withdraw",
+    "empty": "The list of transactions will appear here"
+  }
+}

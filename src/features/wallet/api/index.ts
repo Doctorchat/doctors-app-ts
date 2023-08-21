@@ -9,3 +9,13 @@ export const getWallet = async () => {
 export const getUserTransactions = async () => {
   return await axiosInstance.get("/user/transactions").then((res) => res.data);
 };
+
+export const walletWithdrawn = async (data: { amount: number }) => {
+  return await axiosInstance
+    .post("/user/transactions/new", {
+      type: "outgoing",
+      category: "withdraw",
+      ...data,
+    })
+    .then((res) => res.data);
+};
