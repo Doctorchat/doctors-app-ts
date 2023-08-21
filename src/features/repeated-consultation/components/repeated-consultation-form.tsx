@@ -16,10 +16,11 @@ import {
   Input,
   ToastClose,
   ToastTitle,
-  Toast, ToastProvider, ToastViewport
+  Toast, ToastProvider, ToastViewport, ToastDescription
 } from "@/components/ui";
 import Select from "@/components/shared/select";
 import { updateDiscount } from "@/features/repeated-consultation/api";
+import Notification from "@/components/ui/notification";
 
 const RepeatedConsultationForm = () => {
   const { t } = useTranslation();
@@ -98,6 +99,7 @@ const RepeatedConsultationForm = () => {
           open={apiResponse ? true : false}
           onOpenChange={setOnOpenChange(null)}
           type={apiResponse?.type}
+          description={apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")}
         />
         <div className={cn("flex flex-col gap-4")}>
           <FormField
@@ -173,42 +175,6 @@ const RepeatedConsultationForm = () => {
         </div>
       </form>
     </FormProvider>
-  );
-};
-
-type NotificationProps = {
-  open: boolean;
-  onOpenChange: () => void;
-  type?: "success" | "error";
-};
-
-const Notification = (props: NotificationProps) => {
-  const { t } = useTranslation();
-  const { open, onOpenChange, type = "success" } = props;
-  return (
-    <div className="space-y-6 mb-3">
-      <ToastProvider
-        swipeDirection="up"
-      >
-        <Toast
-          open={open}
-          onOpenChange={onOpenChange}
-        >
-          <div className="grid gap-1">
-            <ToastTitle className={cn("flex item-center justify-center px-5 py-2 rounded font-medium text-xs",
-              type === "success"
-                ? "bg-green-100 text-green-600 shadow-[inset_0_0_0_1px] shadow-green-200"
-                : "bg-red-100 text-red-600 shadow-[inset_0_0_0_1px] shadow-red-200"
-            )}
-            >
-              {type === "success" ? t("common:success_update") : t("common:error_update")}
-            </ToastTitle>
-          </div>
-          <ToastClose />
-        </Toast>
-        <ToastViewport />
-      </ToastProvider>
-    </div>
   );
 };
 
