@@ -49,7 +49,8 @@ const RepeatedConsultationForm = () => {
 
   type FormValues = z.infer<typeof schema>;
 
-  const [apiResponse, setApiResponse] = React.useState<string>('');
+  const [apiResponse, setApiResponse] = React.useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [timeoutId, setTimeoutId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
 
   const form = useForm<FormValues>({
@@ -69,49 +70,35 @@ const RepeatedConsultationForm = () => {
       discount: parseInt(values.discount, 10)
     })
       .then(() => {
-        setApiResponse("success");
+        setApiResponse({ type: 'success', message: t("common:success_update") });
       })
       .catch(() => {
-        setApiResponse("error")
+        setApiResponse({ type: 'error', message: t("common:error_update") });
       })
       .finally(() => {
         setLoading(false);
-        setTimeout(() => {
-          setApiResponse('');
-        }, 2000)
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        const id = setTimeout(() => {
+          setApiResponse(null);
+        }, 2000) as unknown as number;
+        setTimeoutId(id);
       });
   };
 
-  const setOnOpenChange = (val: string) => () => setApiResponse(val);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () => setApiResponse(val);
 
   return (
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}
       >
-        <div className="space-y-6 mb-3">
-          <ToastProvider
-            swipeDirection="up"
-          >
-            <Toast
-              open={apiResponse?.length > 0}
-              onOpenChange={setOnOpenChange('')}
-            >
-              <div className="grid gap-1">
-                <ToastTitle className={cn("flex item-center justify-center px-5 py-2 rounded font-medium text-xs",
-                  apiResponse === "success"
-                    ? "bg-green-100 text-green-600 shadow-[inset_0_0_0_1px] shadow-green-200"
-                    : "bg-red-100 text-red-600 shadow-[inset_0_0_0_1px] shadow-red-200"
-                )}
-                >
-                  {apiResponse === "success" ? t("common:success_update") : t("common:error_update")}
-                </ToastTitle>
-              </div>
-              <ToastClose />
-            </Toast>
-            <ToastViewport />
-          </ToastProvider>
-        </div>
+        <Notification
+          open={apiResponse ? true : false}
+          onOpenChange={setOnOpenChange(null)}
+          type={apiResponse?.type}
+        />
         <div className={cn("flex flex-col gap-4")}>
           <FormField
             control={form.control}
@@ -186,6 +173,42 @@ const RepeatedConsultationForm = () => {
         </div>
       </form>
     </FormProvider>
+  );
+};
+
+type NotificationProps = {
+  open: boolean;
+  onOpenChange: () => void;
+  type?: "success" | "error";
+};
+
+const Notification = (props: NotificationProps) => {
+  const { t } = useTranslation();
+  const { open, onOpenChange, type = "success" } = props;
+  return (
+    <div className="space-y-6 mb-3">
+      <ToastProvider
+        swipeDirection="up"
+      >
+        <Toast
+          open={open}
+          onOpenChange={onOpenChange}
+        >
+          <div className="grid gap-1">
+            <ToastTitle className={cn("flex item-center justify-center px-5 py-2 rounded font-medium text-xs",
+              type === "success"
+                ? "bg-green-100 text-green-600 shadow-[inset_0_0_0_1px] shadow-green-200"
+                : "bg-red-100 text-red-600 shadow-[inset_0_0_0_1px] shadow-red-200"
+            )}
+            >
+              {type === "success" ? t("common:success_update") : t("common:error_update")}
+            </ToastTitle>
+          </div>
+          <ToastClose />
+        </Toast>
+        <ToastViewport />
+      </ToastProvider>
+    </div>
   );
 };
 
