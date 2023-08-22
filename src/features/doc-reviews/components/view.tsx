@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { getMyReviews } from "../api";
 import { Skeleton } from "@/components/ui";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
+import ReviewItem from "./review-item";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -46,11 +47,16 @@ export const View: React.FC = () => {
 
   return (
     <div className={cn("col-span-12 md:col-span-8 xl:col-span-4 h-full w-full md:rounded-lg md:border md:border-neutral-200 p-10 custom-scroll-bar")}>
-      {publicReviewsData?.map((item: any) => {
-        return (
-          <p>{item.id}</p>
-        );
-      })}
+      <div
+        className={cn("flex flex-col gap-2")}
+      >
+        {publicReviewsData?.map((item: any) => (
+          <ReviewItem
+            key={item.id}
+            data={item}
+          />
+        ))}
+      </div>
     </div>
   );
 };
