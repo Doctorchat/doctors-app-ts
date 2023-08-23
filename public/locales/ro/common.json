@@ -65,5 +65,10 @@
   "active": "Activ",
   "corporate": "Corporativ",
   "reviews": "Recenzii",
-  "reviews_list_empty": "Aici va apărea lista de recenzii"
+  "reviews_list_empty": "Aici va apărea lista de recenzii",
+  "appointments": "Programări",
+  "slots": "Sloturi",
+  "empty_list": "Lista este goală",
+  "summary": "Rezumat",
+  "access": "Acceseaza"
 }

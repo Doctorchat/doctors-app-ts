@@ -7,6 +7,7 @@ import { routes as walletRoutes } from "@/features/wallet";
 import { routes as conversationRoutes } from "@/features/repeated-consultation";
 import { routes as partnersRoutes } from "@/features/partners";
 import { routes as reviewsRoutes } from "@/features/doc-reviews";
+import { routes as videoRoutes } from "@/features/video-appointment";
 
 export const router = createBrowserRouter([
   {
@@ -42,5 +43,9 @@ export const router = createBrowserRouter([
   {
     path: "/reviews/*",
     children: reviewsRoutes,
+  },
+  {
+    path: "/video-appointment/*",
+    children: videoRoutes,
   },
 ]);
