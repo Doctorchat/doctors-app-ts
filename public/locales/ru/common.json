@@ -65,5 +65,10 @@
   "active": "Activ",
   "corporate": "Corporativ",
   "reviews": "Отзывы",
-  "reviews_list_empty": "Список отзывов появится здесь"
+  "reviews_list_empty": "Список отзывов появится здесь",
+  "appointments": "Записи",
+  "slots": "Слоты",
+  "empty_list": "Список пуст",
+  "summary": "Сводка",
+  "access": "Доступ"
 }

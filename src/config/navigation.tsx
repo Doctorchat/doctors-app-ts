@@ -6,6 +6,7 @@ import {
   DocumentPlusIcon,
   UserGroupIcon,
   SparklesIcon,
+  VideoCameraIcon,
 } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
@@ -65,5 +66,11 @@ export const navigationLinks: NavigationLink[] = [
     href: "/reviews",
     translation: "common:reviews",
     icon: SparklesIcon,
+  },
+  {
+    key: "video-appointment",
+    href: "/video-appointment",
+    translation: "video:video_appointments",
+    icon: VideoCameraIcon,
   },
 ];
