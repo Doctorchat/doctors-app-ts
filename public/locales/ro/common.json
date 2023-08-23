@@ -1,5 +1,6 @@
 {
   "welcome_back": "Bine ai revenit!",
+  "success": "Succes",
   "error": "Eroare",
   "something_went_wrong": "Uh oh! Ceva nu a mers bine.",
   "unknown_error": "Eroare necunoscută",
@@ -19,11 +20,13 @@
   "month": {
     "count_one": "lună",
     "count_few": "luni",
+    "count_many": "luni",
     "count_other": "luni"
   },
   "year": {
     "count_one": "an",
     "count_few": "ani",
+    "count_many": "ani",
     "count_other": "ani"
   },
   "email_address": "Adresa de email",
@@ -40,5 +43,27 @@
   "comments": "Comentarii",
   "send": "Trimite",
   "untitled": "Fără titlu",
-  "save": "Salva"
+  "save": "Salva",
+  "apply": "Aplică",
+  "confirm": "Confirmă",
+  "zod_mixed_required": "Acest câmp este obligatoriu",
+  "zod_string_email": "Acest email nu este valid",
+  "zod_string_min": "Cel puțin {{min}} caractere",
+  "zod_number_min": "Valoarea trebuie să fie mai mare sau egală cu {{min}}",
+  "zod_string_max": "Lungimea maximă este {{max}} caractere",
+  "zod_number_max": "Valoarea trebuie să fie mai mică sau egală cu {{max}}",
+  "zod_mixed_number": ", întroduceți un număr",
+  "zod_mixed_format": "Format invalid",
+  "zod_passwords_match": "Parolele nu sunt identice",
+  "zod_array_min": "Câmpul trebuie să conțină cel puțin {{min}} element(-e)",
+  "zod_number_range": "Valoarea trebuie să fie între {{min}} și {{max}}",
+  "yes": "Da",
+  "no": "Nu",
+  "success_update": "Actualizare cu succes",
+  "error_update": "Eroare la actualizare",
+  "sum": "Suma",
+  "active": "Activ",
+  "corporate": "Corporativ",
+  "reviews": "Recenzii",
+  "reviews_list_empty": "Aici va apărea lista de recenzii"
 }

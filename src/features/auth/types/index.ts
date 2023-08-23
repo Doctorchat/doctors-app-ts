@@ -5,4 +5,7 @@ export interface SessionUser {
   phone: string;
   email: string;
   locale: string;
+  offer_discount?: boolean;
+  discount_days?: number;
+  discount?: number;
 }

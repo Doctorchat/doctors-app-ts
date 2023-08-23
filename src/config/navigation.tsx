@@ -3,6 +3,9 @@ import {
   HomeIcon,
   WalletIcon,
   UserIcon,
+  DocumentPlusIcon,
+  UserGroupIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
@@ -44,5 +47,23 @@ export const navigationLinks: NavigationLink[] = [
     href: "/profile",
     translation: "profile:profile",
     icon: UserIcon,
+  },
+  {
+    key: "repeated-consultations",
+    href: "/repeated-consultations",
+    translation: "consultation:repeated_consultations.title",
+    icon: DocumentPlusIcon,
+  },
+  {
+    key: "partners",
+    href: "/partners",
+    translation: "partners:title",
+    icon: UserGroupIcon,
+  },
+  {
+    key: "reviews",
+    href: "/reviews",
+    translation: "common:reviews",
+    icon: SparklesIcon,
   },
 ];

@@ -1,0 +1,17 @@
+{
+  "title": "Партнеры",
+  "description": "Приглашайте друзей и получайте {{percent}}% от каждого их платежа.",
+  "bonus_balance": "Бонусный баланс",
+  "active_referrals": "Активные рефералы",
+  "discount_percent": "Доход",
+  "copy_referral_link": "Скопировать ссылку на реферал",
+  "copied": "Скопировано",
+  "copied_description": "Ссылка успешно скопирована",
+  "referrals": "Рефералы",
+  "download_qr": "Скачать QR",
+  "empty": "Список партнеров появится здесь",
+  "transactions": {
+    "title": "Партнеры",
+    "empty": "Lista tranzacțiilor va apărea aici"
+  }
+}

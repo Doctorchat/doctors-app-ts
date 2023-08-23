@@ -5,6 +5,9 @@ import { PrivateRoute, routes as authRoutes } from "@/features/auth";
 import { routes as conversationsRoutes } from "@/features/conversations";
 import { routes as walletRoutes } from "@/features/wallet";
 import { routes as profileRoutes } from "@/features/profile";
+import { routes as conversationRoutes } from "@/features/repeated-consultation";
+import { routes as partnersRoutes } from "@/features/partners";
+import { routes as reviewsRoutes } from "@/features/doc-reviews";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +33,19 @@ export const router = createBrowserRouter([
     children: profileRoutes,
   },
   {
+    path: "/repeated-consultations/*",
+    children: conversationRoutes,
+  },
+  {
+    path: "/partners/*",
+    children: partnersRoutes,
+  },
+  {
     path: "/auth/*",
     children: authRoutes,
+  },
+  {
+    path: "/reviews/*",
+    children: reviewsRoutes,
   },
 ]);
