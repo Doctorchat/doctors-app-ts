@@ -18,3 +18,4 @@ export * from "./tabs";
 export * from "./toast";
 export * from "./toaster";
 export * from "./tooltip";
+export * from "./checkbox";

@@ -1,0 +1,20 @@
+{
+  "profile": "Profilul",
+  "name": "Nume",
+  "email": "Email",
+  "specialization": "Specializare",
+  "bio": "Apțitudini profesionale",
+  "professionalTitle": "Tițlu professional",
+  "experience": "Experiență",
+  "workplace": "Locul de muncă",
+  "education": "Educație",
+  "personal_info": "Informație personală",
+  "professional_info": "Informație profesională",
+  "security": "Securitate",
+  "options": "Optiune",
+  "chat_consult": "Consultatii chat",
+  "video_consult": "Consultatii video",
+  "current_password": "Parola curenta",
+  "new_password": "Parola nouă",
+  "password_confirmation": "Confirmarea parolei"
+}
