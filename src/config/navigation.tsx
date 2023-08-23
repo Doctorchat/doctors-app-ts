@@ -2,6 +2,7 @@ import {
   ChatBubbleBottomCenterTextIcon,
   HomeIcon,
   WalletIcon,
+  UserIcon,
   DocumentPlusIcon,
   UserGroupIcon,
   SparklesIcon,
@@ -41,6 +42,12 @@ export const navigationLinks: NavigationLink[] = [
     href: "/wallet",
     translation: "wallet:wallet",
     icon: WalletIcon,
+  },
+  {
+    key: "profile",
+    href: "/profile",
+    translation: "profile:profile",
+    icon: UserIcon,
   },
   {
     key: "repeated-consultations",

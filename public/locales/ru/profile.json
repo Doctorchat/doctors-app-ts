@@ -1,0 +1,20 @@
+{
+  "profile": "Профиль",
+  "name": "Имя",
+  "email": "Электронный адрес",
+  "specialization": "Специальность",
+  "bio": "Профессиональные навыки",
+  "professionalTitle": "Профессиональное звание",
+  "experience": "Опыт",
+  "workplace": "Место работы",
+  "education": "Образование",
+  "personal_info": "Личная информация",
+  "professional_info": "Профессиональная информация",
+  "security": "Безопасность",
+  "options": "Опции",
+  "chat_consult": "Консультации чат",
+  "video_consult": "Видео консультации",
+  "current_password": "Текущий пароль",
+  "new_password": "Новый пароль",
+  "password_confirmation": "Подтверждение пароля"
+}

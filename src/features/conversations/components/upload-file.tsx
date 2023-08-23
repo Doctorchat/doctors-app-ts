@@ -45,7 +45,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ error, className, ...props }) => {
         "active:border-neutral-600 active:bg-neutral-200 md:hover:border-neutral-600 md:hover:bg-neutral-200",
         "transition-colors duration-200 ease-in-out",
         { "border-none bg-red-50": error },
-        className,
+        className
       )}
       {...props}
     >
@@ -80,7 +80,7 @@ export const useUploadFileStore = createWithEqualityFn<UploadFileStore>(
     open: false,
     setOpen: (open) => set({ open }),
   }),
-  shallow,
+  shallow
 );
 
 export const UploadFile: React.FC = () => {
