@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useAppI18n } from "@/hooks";
-import { Skeleton } from "@/components/ui";
-import { useQuery } from "react-query";
 import { cn } from "@/utils";
-import { AxiosError } from "axios";
-import { IUser } from "../types";
 import { PersonalData } from ".";
 import { useProfileLayoutStore } from "./layout";
 import { Options } from "./options";
 import { Security } from "./security";
 
 export const View: React.FC = () => {
-  const { t } = useTranslation();
-
   const components = () => {
     const profileLayout = useProfileLayoutStore((store) => store.profileLayout);
 

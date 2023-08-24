@@ -16,5 +16,6 @@
   "video_consult": "Video consultations",
   "current_password": "Current password",
   "new_password": "New password",
-  "password_confirmation": "Password confirmation"
+  "password_confirmation": "Password confirmation",
+  "password_dont_match": "Passwords don't match"
 }

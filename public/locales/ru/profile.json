@@ -16,5 +16,6 @@
   "video_consult": "Видео консультации",
   "current_password": "Текущий пароль",
   "new_password": "Новый пароль",
-  "password_confirmation": "Подтверждение пароля"
+  "password_confirmation": "Подтверждение пароля",
+  "password_dont_match": "Пароли не совпадают"
 }

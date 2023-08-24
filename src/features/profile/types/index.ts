@@ -46,3 +46,19 @@ interface Region {
 }
 
 
+export type PasswordTypes = {
+  current_password: string,
+  new_password: string,
+  password_confirmation: string,
+}
+
+type PersonalDataTypes = {
+  name: string;
+  email: string;
+  specialization: string;
+  bio: string;
+  professionalTitle: string;
+  experience: string;
+  workplace: string;
+  education: string;
+}

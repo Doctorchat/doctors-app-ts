@@ -1,8 +1,21 @@
-import { Button, FormField, FormItem, FormLabel, FormMessage, Input } from "@/components/ui";
+import React, { useState } from "react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Button,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+} from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import { updatePassword } from "../api";
+import { getApiErrorMessages } from "@/utils";
 
 export const Security = () => {
   const { t } = useTranslation();
@@ -10,11 +23,16 @@ export const Security = () => {
 
   type FormFieldTypes = "current_password" | "new_password" | "password_confirmation";
 
-  const schema = z.object({
-    current_password: z.string(),
-    new_password: z.string(),
-    password_confirmation: z.string(),
-  });
+  const schema = z
+    .object({
+      current_password: z.string(),
+      new_password: z.string().min(4),
+      password_confirmation: z.string().min(4),
+    })
+    .refine((data) => data.new_password === data.password_confirmation, {
+      message: t("profile:password_dont_match"),
+      path: ["confirm"],
+    });
 
   type FormValues = z.infer<typeof schema>;
 
@@ -31,8 +49,14 @@ export const Security = () => {
     form.setValue(k as FormFieldTypes, newValue);
   };
 
+  const [apiErrors, setApiErrors] = useState<string[] | string | null>(null);
+
   const onSubmit = async (values: FormValues) => {
-    console.log({ values });
+    try {
+      await updatePassword(values);
+    } catch (error) {
+      setApiErrors(getApiErrorMessages(error));
+    }
   };
 
   return (
@@ -70,6 +94,14 @@ export const Security = () => {
           </form>
         </FormProvider>
       </div>
+      {apiErrors && (
+        <Alert variant="destructive">
+          <AlertTitle>{t("common:error")}</AlertTitle>
+          <AlertDescription>
+            <p>{t(apiErrors)}</p>
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };
