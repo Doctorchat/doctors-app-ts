@@ -8,16 +8,19 @@ import { useEffect, useState } from "react";
 export const Options = () => {
   const { t } = useTranslation();
 
-  const storeUser = localStorage.getItem("session:user:options");
   const [userData, setUserData] = useState({
     chat: false,
     video: false,
   });
 
   useEffect(() => {
-    if (storeUser) {
+    const storeUser = localStorage.getItem("session:user:options");
+
+    if (storeUser && storeUser !== "undefined") {
       const user = JSON.parse(storeUser);
       setUserData(user);
+    } else {
+      localStorage.removeItem("session:user:options");
     }
   }, []);
 
@@ -25,7 +28,7 @@ export const Options = () => {
     try {
       const res = await action();
       if (res) {
-        localStorage.setItem("session:user:options", JSON.stringify(res.data));
+        localStorage.setItem("session:user:options", JSON.stringify(res));
       }
     } catch (error) {
       console.error("Error updating data:", error);

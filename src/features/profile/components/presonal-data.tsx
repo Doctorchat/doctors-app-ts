@@ -30,6 +30,17 @@ type FormFieldTypes =
   | "workplace"
   | "education";
 
+interface IFormData {
+  name: string;
+  email: string;
+  specialization: { [key: string]: string };
+  bio: { [key: string]: string };
+  professionalTitle: string;
+  experience: number;
+  workplace: string;
+  education: string[];
+}
+
 type InfoStateProps = {
   [anyProperty: string]: any;
 };
@@ -39,7 +50,10 @@ export const PersonalData: React.FC = () => {
   const { i18n } = useTranslation();
 
   const [info, setInfo] = useState<InfoStateProps>({});
-  const { name, email, education, avatar, ...restData } = info;
+  const [avatar, setAvatar] = useState("");
+  const [tempInputData, setTempInputData] = useState("");
+
+  const rightItemsList = ["specialization", "bio", "professionalTitle", "experience", "workplace"];
 
   const schema = z.object({
     name: z.string(),
@@ -47,8 +61,16 @@ export const PersonalData: React.FC = () => {
       .string()
       .min(1, { message: "This field has to be filled." })
       .email("This is not a valid email."),
-    specialization: z.string(),
-    bio: z.string(),
+    specialization: z.object({
+      en: z.string().optional().nullable(),
+      ro: z.string().optional().nullable(),
+      ru: z.string().optional().nullable(),
+    }),
+    bio: z.object({
+      en: z.string().optional().nullable(),
+      ro: z.string().optional().nullable(),
+      ru: z.string().optional().nullable(),
+    }),
     professionalTitle: z.string(),
     experience: z.number(),
     workplace: z.string(),
@@ -56,6 +78,11 @@ export const PersonalData: React.FC = () => {
   });
 
   type FormValues = z.infer<typeof schema>;
+
+  const form = useForm<FormValues>({
+    defaultValues: info,
+    resolver: zodResolver(schema),
+  });
 
   useEffect(() => {
     const userStorageData = localStorage.getItem("session:user");
@@ -66,10 +93,9 @@ export const PersonalData: React.FC = () => {
         email,
         about: { specialization, bio, professionalTitle, experience },
         activity: { education, workplace },
-        avatar,
       } = JSON.parse(userStorageData);
 
-      setInfo({
+      const userData = {
         name,
         email,
         specialization,
@@ -78,98 +104,44 @@ export const PersonalData: React.FC = () => {
         experience,
         workplace,
         education,
-        avatar,
-      });
+      };
+      setAvatar(avatar);
+      setInfo(userData);
+      form.reset(userData);
     }
   }, []);
 
   useEffect(() => {
-    if (Object.keys(info).length) {
-      for (const key in info) {
-        const value = info[key];
-        if (Array.isArray(value)) {
-          form.setValue(key as FormFieldTypes, info[key] ?? [""]);
-        } else if (typeof value === "object") {
-          form.setValue(key as FormFieldTypes, info[key][i18n.language] ?? "");
-        } else {
-          form.setValue(key as FormFieldTypes, info[key]);
-        }
-      }
-    }
-  }, [info]);
+    form.reset(info);
+  }, [i18n.language]);
 
-  const form = useForm<FormValues>({
-    defaultValues: info,
-    resolver: zodResolver(schema),
-  });
+  const handlePushData = (fieldKey: string, tempInputData: string) => {
+    const currentData = form.getValues()[fieldKey as FormFieldTypes];
 
-  type InputProp = {
-    fieldKey: FormFieldTypes;
-  };
-
-  const FormattedInput: React.FC<InputProp> = ({ fieldKey }) => {
-    const [tempInputData, setTempInputData] = useState("");
-
-    const value = info[fieldKey];
-
-    const handleChange = (newValue: string) => {
-      form.setValue(fieldKey as FormFieldTypes, newValue);
-    };
-
-    const handlePushData = () => {
-      setInfo({ ...info, [fieldKey]: [...info[fieldKey], tempInputData] });
+    if (Array.isArray(currentData)) {
+      const currentArray = [...currentData];
+      currentArray.push(tempInputData);
+      form.reset({ ...form.getValues(), [fieldKey]: currentArray });
       setTempInputData("");
-    };
-
-    const removeItemFromList = (index: number) => {
-      const temp = [...info[fieldKey]];
-      temp.splice(index, 1);
-      setInfo({ ...info, [fieldKey]: temp });
-    };
-
-    if (Array.isArray(value)) {
-      return (
-        <div>
-          {info[fieldKey].map((value: string, index: number) => (
-            <div key={index} className="mb-4 flex">
-              <Input value={value} onChange={(e) => handleChange(e.target.value)} />
-
-              {index !== 0 && (
-                <Button variant="ghost" className="ml-4" onClick={() => removeItemFromList(index)}>
-                  <TrashIcon className="h-5 w-5" color="text-red-600" />
-                </Button>
-              )}
-            </div>
-          ))}
-
-          <div className="mt-4 flex">
-            <Input
-              type="text"
-              className="mr-4"
-              value={tempInputData}
-              onChange={(e) => setTempInputData(e.target.value)}
-            />
-
-            <Button variant="ghost" disabled={!tempInputData.length} onClick={handlePushData}>
-              <PlusIcon className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-      );
     }
-    if (typeof value === "object") {
-      return (
-        <Textarea {...form.register(fieldKey)} onChange={(e) => handleChange(e.target.value)} />
-      );
-    }
-    return (
-      <Input
-        {...form.register(fieldKey)}
-        disabled={form.formState.isSubmitting}
-        onChange={(e) => handleChange(e.target.value)}
-      />
-    );
   };
+
+  const removeItemFromList = (fieldKey: string, index: number) => {
+    const currentData = form.getValues()[fieldKey as FormFieldTypes];
+
+    if (Array.isArray(currentData)) {
+      const currentArray = [...currentData];
+      currentArray.splice(index, 1);
+      form.reset({ ...form.getValues(), [fieldKey]: currentArray });
+    }
+  };
+
+  const handleBlur = (fieldName: keyof IFormData) => {
+    if (form.formState.errors[fieldName]) {
+      form.clearErrors(fieldName as FormFieldTypes);
+    }
+  };
+
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
   const onSubmit = async (values: FormValues) => {
@@ -203,13 +175,54 @@ export const PersonalData: React.FC = () => {
                   <FormField
                     key={k}
                     name={k}
-                    render={() => {
+                    render={({ field }) => {
                       return (
                         <FormItem>
                           <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
                             {t(`profile:${k}`)}
                           </FormLabel>
-                          <FormattedInput fieldKey={k as FormFieldTypes} />
+                          {Array.isArray(field.value) ? (
+                            <>
+                              {field.value.map((value: string, index: number) => (
+                                <div key={index} className="mb-4 flex">
+                                  <Input
+                                    {...form.register(`${k}.${index}` as keyof IFormData)}
+                                    value={value}
+                                  />
+
+                                  {index > 0 && (
+                                    <Button
+                                      variant="ghost"
+                                      className="ml-4"
+                                      onClick={() => removeItemFromList(k, index)}
+                                    >
+                                      <TrashIcon className="h-5 w-5" color="text-red-600" />
+                                    </Button>
+                                  )}
+                                </div>
+                              ))}
+
+                              <div className="mt-4 flex">
+                                <Input
+                                  type="text"
+                                  className="mr-4"
+                                  value={tempInputData}
+                                  onChange={(e) => setTempInputData(e.target.value)}
+                                />
+
+                                <Button
+                                  variant="ghost"
+                                  disabled={!tempInputData.length}
+                                  onClick={() => handlePushData(k, tempInputData)}
+                                >
+                                  <PlusIcon className="h-5 w-5" />
+                                </Button>
+                              </div>
+                            </>
+                          ) : (
+                            <Input {...form.register(k as keyof IFormData)} />
+                          )}
+
                           <FormMessage />
                         </FormItem>
                       );
@@ -223,18 +236,27 @@ export const PersonalData: React.FC = () => {
                 {t("profile:professional_info")}
               </h2>
               <div className="space-y-6">
-                {Object.keys(restData).map((k) => {
+                {rightItemsList.map((k) => {
                   return (
                     <FormField
                       key={k}
                       name={k}
-                      render={() => {
+                      render={({ field }) => {
                         return (
                           <FormItem>
                             <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
                               {t(`profile:${k}`)}
                             </FormLabel>
-                            <FormattedInput fieldKey={k as FormFieldTypes} />
+                            {typeof field.value === "object" ? (
+                              <Textarea
+                                {...form.register(`${k}.${i18n.language}` as keyof IFormData)}
+                              />
+                            ) : (
+                              <Input
+                                {...form.register(k as keyof IFormData)}
+                                onBlur={() => handleBlur(k as keyof IFormData)}
+                              />
+                            )}
                             <FormMessage />
                           </FormItem>
                         );
