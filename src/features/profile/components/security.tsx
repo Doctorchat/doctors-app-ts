@@ -63,10 +63,10 @@ export const Security = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      setApiErrors(null);
       await updatePassword(values).then(() =>
         setNotification({ visible: true, message: "profile:password_update_success" })
       );
+      setApiErrors(null);
     } catch (error) {
       setApiErrors(getApiErrorMessages(error));
     }
@@ -83,7 +83,9 @@ export const Security = () => {
             </AlertDescription>
           </Alert>
         )}
-        <h2 className="mb-8 text-xl font-bold text-black">{t("profile:security")}</h2>
+        <h2 className="mb-8 hidden text-xl font-bold text-black md:block">
+          {t("profile:security")}
+        </h2>
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-6">

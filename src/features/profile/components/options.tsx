@@ -63,8 +63,8 @@ export const Options = () => {
 
   return (
     <div>
-      <h2 className="pb-4 text-xl font-bold text-black">{t("profile:options")}</h2>
-      <div className="flex flex-col justify-start md:flex-row">
+      <h2 className="hidden pb-4 text-xl font-bold text-black md:block">{t("profile:options")}</h2>
+      <div className="flex flex-col justify-start sm:flex-row sm:justify-between">
         {options.map((opt) => (
           <Label
             key={opt.name}

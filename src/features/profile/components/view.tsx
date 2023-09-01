@@ -24,7 +24,7 @@ export const View: React.FC = () => {
   return (
     <div
       className={cn(
-        "custom-scroll-bar h-full w-full p-10 md:rounded-lg md:border md:border-neutral-200"
+        "custom-scroll-bar h-full w-full p-4 md:rounded-lg md:border md:border-neutral-200 md:p-10"
       )}
     >
       {components()}
