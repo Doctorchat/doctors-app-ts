@@ -54,8 +54,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="mx-auto flex h-full w-full max-w-7xl flex-col overflow-hidden lg:p-5 lg:pt-0">
-      <header className="flex h-16 items-center justify-between overflow-hidden px-5 lg:px-0">
-        <h1 className="truncate text-lg font-medium text-typography-primary">
+      <header className="2md:px-5 flex h-16 flex-col items-center justify-between overflow-hidden px-1 md:flex-row lg:px-0">
+        <h1 className="hidden truncate text-lg font-medium text-typography-primary md:block">
           {t("profile:profile")}
         </h1>
         <Tabs
@@ -63,7 +63,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           onValueChange={(value) =>
             setProfileLayout(value as "personal_info" | "security" | "options")
           }
-          className="ml-2"
+          className="pt-4 sm:pt-0"
         >
           <TabsList>
             <TabsTrigger value="personal_info">{t("profile:personal_info")}</TabsTrigger>

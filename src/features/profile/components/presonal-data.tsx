@@ -171,10 +171,10 @@ export const PersonalData: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-12 gap-1 xl:gap-20">
             <div className="col-span-12 mb-2 mb-4 xl:col-span-6">
-              <h2 className="pb-4 text-xl font-bold text-black">{t("profile:personal_info")}</h2>
-              <div className="mb-8 flex items-end ">
-                <UserAvatar image={avatar} />
-              </div>
+              <h2 className="hidden pb-4 text-xl font-bold text-black md:block">
+                {t("profile:personal_info")}
+              </h2>
+              <UserAvatar image={avatar} />
               <div className="space-y-6">
                 {["name", "email", "education"].map((k) => (
                   <FormField
