@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { UserAvatar } from "./user-avatar";
 import { updateDoctor } from "../api";
 import { getApiErrorMessages } from "@/utils";
+import { useProfileLayoutStore } from ".";
 
 type FormFieldTypes =
   | "name"
@@ -48,6 +49,7 @@ type InfoStateProps = {
 export const PersonalData: React.FC = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
+  const setNotification = useProfileLayoutStore((store) => store.setNotification);
 
   const [info, setInfo] = useState<InfoStateProps>({});
   const [avatar, setAvatar] = useState("");
@@ -146,7 +148,10 @@ export const PersonalData: React.FC = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await updateDoctor(values);
+      setApiErrors(null);
+      await updateDoctor(values).then(() =>
+        setNotification({ visible: true, message: "profile:personal_info_updated" })
+      );
     } catch (error) {
       setApiErrors(getApiErrorMessages(error));
     }

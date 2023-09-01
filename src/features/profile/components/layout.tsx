@@ -4,14 +4,24 @@ import { useTranslation } from "react-i18next";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
+import Notification from "@/components/ui/notification";
 
 export interface LayoutProps {
   children?: React.ReactNode;
 }
 
+type TProfileLayout = "personal_info" | "security" | "options";
+type TNotififaction = {
+  visible: false | true;
+  message?: string;
+  status?: "success" | "error";
+};
+
 export interface LayoutStore {
-  profileLayout: "personal_info" | "security" | "options";
-  setProfileLayout: (profileLayout: "personal_info" | "security" | "options") => void;
+  profileLayout: TProfileLayout;
+  setProfileLayout: (profileLayout: TProfileLayout) => void;
+  notification: TNotififaction;
+  setNotification: (notification: TNotififaction) => void;
 }
 
 export const useProfileLayoutStore = createWithEqualityFn<
@@ -22,6 +32,12 @@ export const useProfileLayoutStore = createWithEqualityFn<
     (set) => ({
       profileLayout: "personal_info",
       setProfileLayout: (profileLayout) => set({ profileLayout }),
+      notification: {
+        visible: false,
+        message: "",
+        status: "success",
+      },
+      setNotification: (notification) => set({ notification }),
     }),
     { name: "profile-layout", storage: createJSONStorage(() => localStorage) }
   ),
@@ -33,6 +49,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const profileLayout = useProfileLayoutStore((store) => store.profileLayout);
   const setProfileLayout = useProfileLayoutStore((store) => store.setProfileLayout);
+  const notification = useProfileLayoutStore((store) => store.notification);
+  const setNotification = useProfileLayoutStore((store) => store.setNotification);
 
   return (
     <div className="mx-auto flex h-full w-full max-w-7xl flex-col overflow-hidden lg:p-5 lg:pt-0">
@@ -54,7 +72,15 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </TabsList>
         </Tabs>
       </header>
-      <main className="grid flex-1 grid-cols-12 grid-rows-1 gap-5 overflow-hidden">{children}</main>
+      <main className="grid flex-1 grid-cols-12 grid-rows-1 gap-5 overflow-hidden">
+        {children}
+        <Notification
+          open={notification.visible}
+          onOpenChange={() => setNotification({ visible: false })}
+          type={notification.status}
+          description={t(`${notification.message}`)}
+        />
+      </main>
     </div>
   );
 };

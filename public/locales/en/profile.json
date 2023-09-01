@@ -17,5 +17,7 @@
   "current_password": "Current password",
   "new_password": "New password",
   "password_confirmation": "Password confirmation",
-  "password_dont_match": "Passwords don't match"
+  "password_dont_match": "Passwords don't match",
+  "password_update_success": "Password successfully updated",
+  "personal_info_updated": "Personal information updated"
 }

@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-import { useTranslation } from "react-i18next";
+import React from "react";
 import { cn } from "@/utils";
 import { PersonalData } from ".";
 import { useProfileLayoutStore } from "./layout";

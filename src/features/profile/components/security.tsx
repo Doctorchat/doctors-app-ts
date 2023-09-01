@@ -17,16 +17,17 @@ import { z } from "zod";
 import { updatePassword } from "../api";
 import { getApiErrorMessages } from "@/utils";
 import { EyeIcon } from "@heroicons/react/24/outline";
-import Notification from "@/components/ui/notification";
+import { useProfileLayoutStore } from ".";
 
 export const Security = () => {
   const { t } = useTranslation();
-  const [openNotification, setOpenNotification] = React.useState<boolean>(false);
   const [fieldTextVisibile, setFieldTextVisibile] = useState({
     current_password: false,
     new_password: false,
     password_confirmation: false,
   });
+
+  const setNotification = useProfileLayoutStore((store) => store.setNotification);
 
   const fields = ["current_password", "new_password", "password_confirmation"];
 
@@ -62,10 +63,10 @@ export const Security = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await updatePassword(values).then(() => setOpenNotification(true));
-      setTimeout(() => {
-        setOpenNotification(false);
-      }, 3000);
+      setApiErrors(null);
+      await updatePassword(values).then(() =>
+        setNotification({ visible: true, message: "profile:password_update_success" })
+      );
     } catch (error) {
       setApiErrors(getApiErrorMessages(error));
     }
@@ -129,12 +130,6 @@ export const Security = () => {
           </form>
         </FormProvider>
       </div>
-      <Notification
-        open={openNotification ? true : false}
-        onOpenChange={setOpenNotification.bind(null, false)}
-        type={"success"}
-        description={t("common:success_update")}
-      />
     </div>
   );
 };
