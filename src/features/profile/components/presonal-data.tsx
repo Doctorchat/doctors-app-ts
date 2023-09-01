@@ -61,8 +61,8 @@ export const PersonalData: React.FC = () => {
     name: z.string(),
     email: z
       .string()
-      .min(1, { message: "This field has to be filled." })
-      .email("This is not a valid email."),
+      .min(4, { message: t("common:zod_mixed_required") })
+      .email(t("validations:invalid_email")),
     specialization: z.object({
       en: z.string().optional().nullable(),
       ro: z.string().optional().nullable(),
@@ -73,10 +73,10 @@ export const PersonalData: React.FC = () => {
       ro: z.string().optional().nullable(),
       ru: z.string().optional().nullable(),
     }),
-    professionalTitle: z.string(),
-    experience: z.number(),
-    workplace: z.string(),
-    education: z.array(z.string()),
+    professionalTitle: z.string().min(2, { message: t("common:zod_mixed_required") }),
+    experience: z.number().min(4, { message: t("common:zod_mixed_required") }),
+    workplace: z.string().min(4, { message: t("common:zod_mixed_required") }),
+    education: z.array(z.string().min(4, { message: t("common:zod_mixed_required") })),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -148,10 +148,10 @@ export const PersonalData: React.FC = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      setApiErrors(null);
       await updateDoctor(values).then(() =>
         setNotification({ visible: true, message: "profile:personal_info_updated" })
       );
+      setApiErrors(null);
     } catch (error) {
       setApiErrors(getApiErrorMessages(error));
     }
