@@ -39,10 +39,16 @@ export const Security = () => {
       new_password: z.string().min(4),
       password_confirmation: z.string().min(4),
     })
-    .refine((data) => data.new_password === data.password_confirmation, {
-      message: t("profile:password_dont_match"),
-      path: ["confirm"],
+    .superRefine((data, ctx) => {
+      if (data.new_password !== data.password_confirmation) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: t("profile:password_dont_match"),
+          path: ["password_confirmation"],
+        });
+      }
     });
+    
 
   type FormValues = z.infer<typeof schema>;
 
