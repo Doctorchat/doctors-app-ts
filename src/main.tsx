@@ -13,6 +13,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import "./lib/i18n";
 import "./styles/index.css";
+import { Notification } from "./features/notification-firebase/notification";
 
 z.setErrorMap(zodErrorMap);
 
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <RouterProvider router={router} />
         <Toaster />
+        <Notification/>
       </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>,

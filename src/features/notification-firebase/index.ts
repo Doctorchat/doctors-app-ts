@@ -12,7 +12,7 @@ import {
 import { SessionUser } from "@/features/auth/types";
 import { apiUpdateFCMToken } from "@/features/notification-firebase/api";
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { getMessaging, getToken, Messaging } from "firebase/messaging";
+import { getMessaging, getToken, Messaging, onMessage } from "firebase/messaging";
 import { firebaseConfigTypes, tokenOptions } from "./types";
 
 const tokenOptions: tokenOptions = {
@@ -62,3 +62,9 @@ export const fetchToken = async (user: SessionUser | null) => {
     console.log("An error occurred while retrieving token. ", err);
   }
 };
+export const onMessageListener = () =>
+  new Promise((resolve) => {
+    onMessage(messaging, (payload) => {
+      resolve(payload);
+    });
+  });
