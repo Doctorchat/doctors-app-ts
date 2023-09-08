@@ -20,3 +20,11 @@ export const toggleVideoChatConversations = async () => {
 export const updatePassword = async (data: PasswordTypes) => {
   return await axiosInstance.post("/user/change-password/", data);
 };
+
+export const getSpecialitites = async () => {
+  return await axiosInstance.get("/specialities");
+};
+
+export const getUser = async () => {
+  return await axiosInstance.get("/user");
+};

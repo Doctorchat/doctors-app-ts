@@ -19,5 +19,7 @@
   "password_confirmation": "Confirmarea parolei",
   "password_dont_match": "Parolele nu se potrivesc",
   "password_update_success": "Parola successfully updated",
-  "personal_info_updated": "Informație personală actualizată"
+  "personal_info_updated": "Informație personală actualizată",
+  "andrology": "Andrologie",
+  "speciality": "Specialitate"
 }

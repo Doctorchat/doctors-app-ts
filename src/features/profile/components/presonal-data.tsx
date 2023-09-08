@@ -13,17 +13,21 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Tabs,
+  TabsList,
+  TabsTrigger,
   Textarea,
 } from "@/components/ui";
 import { useTranslation } from "react-i18next";
 import { UserAvatar } from "./user-avatar";
-import { updateDoctor } from "../api";
+import { getSpecialitites, getUser, updateDoctor } from "../api";
 import { getApiErrorMessages } from "@/utils";
-import { useProfileLayoutStore } from ".";
+import { MultiSelect, useProfileLayoutStore } from ".";
 
 type FormFieldTypes =
   | "name"
   | "email"
+  | "category"
   | "specialization"
   | "bio"
   | "professionalTitle"
@@ -39,7 +43,15 @@ interface IFormData {
   professionalTitle: string;
   experience: number;
   workplace: string;
+  category: string[];
   education: string[];
+}
+
+interface ISpeciality {
+  id: number;
+  name_en: string;
+  name_ro: string;
+  name_ru: string;
 }
 
 type InfoStateProps = {
@@ -50,12 +62,13 @@ export const PersonalData: React.FC = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
   const setNotification = useProfileLayoutStore((store) => store.setNotification);
-
+  const [tab, setTab] = useState("ro");
   const [info, setInfo] = useState<InfoStateProps>({});
   const [avatar, setAvatar] = useState("");
+  const [specialities, setSpecialities] = useState([]);
   const [tempInputData, setTempInputData] = useState("");
 
-  const rightItemsList = ["specialization", "bio", "professionalTitle", "experience", "workplace"];
+  const rightItemsList = ["category", "professionalTitle", "experience", "workplace"];
 
   const schema = z.object({
     name: z.string(),
@@ -74,9 +87,13 @@ export const PersonalData: React.FC = () => {
       ru: z.string().optional().nullable(),
     }),
     professionalTitle: z.string().min(2, { message: t("common:zod_mixed_required") }),
-    experience: z.number().min(4, { message: t("common:zod_mixed_required") }),
+    experience: z
+      .number()
+      .min(4, { message: t("common:zod_mixed_required") })
+      .refine((v) => v >= 0),
     workplace: z.string().min(4, { message: t("common:zod_mixed_required") }),
     education: z.array(z.string().min(4, { message: t("common:zod_mixed_required") })),
+    category: z.array(z.string()),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -87,6 +104,12 @@ export const PersonalData: React.FC = () => {
   });
 
   useEffect(() => {
+    getUser().then((data) => {
+      localStorage.setItem("session:user", JSON.stringify(data.data));
+    });
+  }, []);
+
+  useEffect(() => {
     const userStorageData = localStorage.getItem("session:user");
 
     if (userStorageData) {
@@ -95,6 +118,7 @@ export const PersonalData: React.FC = () => {
         email,
         about: { specialization, bio, professionalTitle, experience },
         activity: { education, workplace },
+        category,
       } = JSON.parse(userStorageData);
 
       const userData = {
@@ -106,16 +130,27 @@ export const PersonalData: React.FC = () => {
         experience,
         workplace,
         education,
+        category,
       };
       setAvatar(avatar);
       setInfo(userData);
       form.reset(userData);
     }
+
+    return () => {
+      localStorage.removeItem("user:category");
+    };
   }, []);
 
   useEffect(() => {
     form.reset(info);
   }, [i18n.language]);
+
+  useEffect(() => {
+    getSpecialitites().then((res) => {
+      if (res.data.length) setSpecialities(res.data);
+    });
+  }, []);
 
   const handlePushData = (fieldKey: string, tempInputData: string) => {
     const currentData = form.getValues()[fieldKey as FormFieldTypes];
@@ -138,7 +173,7 @@ export const PersonalData: React.FC = () => {
     }
   };
 
-  const handleBlur = (fieldName: keyof IFormData) => {
+  const clearFormErrorsAfterBlur = (fieldName: keyof IFormData) => {
     if (form.formState.errors[fieldName]) {
       form.clearErrors(fieldName as FormFieldTypes);
     }
@@ -146,9 +181,51 @@ export const PersonalData: React.FC = () => {
 
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  const onSubmit = async (values: FormValues) => {
+  const updateCtegory = (values: string[]) => {
+    const data = { ...info, category: values };
+    setInfo(data);
+  };
+
+  const userSpecialities = () => {
+    const user = localStorage.getItem("session:user");
+    if (user) {
+      return specialities.filter((s: ISpeciality) =>
+        JSON.parse(user).category.every((el: ISpeciality) => el.id !== s.id)
+      );
+    }
+  };
+
+  const rightSideContent = (field: any, k: string) => {
+    if (field.name === "category") {
+      return (
+        <MultiSelect
+          onChange={(values: string[]) => updateCtegory(values)}
+          data={userSpecialities()}
+        />
+      );
+    }
+    return (
+      <Input
+        {...form.register(k as keyof IFormData)}
+        onBlur={() => clearFormErrorsAfterBlur(k as keyof IFormData)}
+      />
+    );
+  };
+
+  const onSubmit = async (
+    values: FormValues,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const category = localStorage.getItem("user:category");
+    let newValues = { ...values, category: values.category.map((v: any) => v.id.toString()) };
+
+    if (category) {
+      newValues = { ...values, category: JSON.parse(category) };
+    }
+
     try {
-      await updateDoctor(values).then(() =>
+      await updateDoctor(newValues).then(() =>
         setNotification({ visible: true, message: "profile:personal_info_updated" })
       );
       setApiErrors(null);
@@ -168,7 +245,7 @@ export const PersonalData: React.FC = () => {
         </Alert>
       )}
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form>
           <div className="grid grid-cols-12 gap-1 xl:gap-20">
             <div className="col-span-12 mb-2 mb-4 xl:col-span-6">
               <h2 className="hidden pb-4 text-xl font-bold text-black md:block">
@@ -199,6 +276,7 @@ export const PersonalData: React.FC = () => {
                                     <Button
                                       variant="ghost"
                                       className="ml-4"
+                                      disabled={value.length < 4}
                                       onClick={() => removeItemFromList(k, index)}
                                     >
                                       <TrashIcon className="h-5 w-5" color="text-red-600" />
@@ -217,7 +295,7 @@ export const PersonalData: React.FC = () => {
 
                                 <Button
                                   variant="ghost"
-                                  disabled={!tempInputData.length}
+                                  disabled={tempInputData.length < 5}
                                   onClick={() => handlePushData(k, tempInputData)}
                                 >
                                   <PlusIcon className="h-5 w-5" />
@@ -250,18 +328,9 @@ export const PersonalData: React.FC = () => {
                         return (
                           <FormItem>
                             <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
-                              {t(`profile:${k}`)}
+                              {k === "category" ? t("profile:speciality") : t(`profile:${k}`)}
                             </FormLabel>
-                            {typeof field.value === "object" ? (
-                              <Textarea
-                                {...form.register(`${k}.${i18n.language}` as keyof IFormData)}
-                              />
-                            ) : (
-                              <Input
-                                {...form.register(k as keyof IFormData)}
-                                onBlur={() => handleBlur(k as keyof IFormData)}
-                              />
-                            )}
+                            {rightSideContent(field, k)}
                             <FormMessage />
                           </FormItem>
                         );
@@ -269,8 +338,73 @@ export const PersonalData: React.FC = () => {
                     />
                   );
                 })}
+                <Tabs
+                  defaultValue={tab}
+                  onValueChange={(value) => setTab(value as "en" | "ru" | "ro")}
+                >
+                  <TabsList>
+                    <TabsTrigger
+                      className={`mr-4 border ${tab === "en" && "border-red-600"}`}
+                      value="en"
+                    >
+                      En
+                    </TabsTrigger>
+                    <TabsTrigger
+                      className={`mr-4 border ${tab === "ru" && "border-red-600"}`}
+                      value="ru"
+                    >
+                      Ru
+                    </TabsTrigger>
+                    <TabsTrigger
+                      className={`mr-4 border ${tab === "ro" && "border-red-600"}`}
+                      value="ro"
+                    >
+                      Ro
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                {["en", "ru", "ro"].map((lng: string, idx: number) => (
+                  <FormField
+                    key={"specialization" + idx}
+                    name={`specialization.${lng}`}
+                    render={({ field }) => {
+                      return (
+                        <FormItem className={`${lng !== tab ? "hidden" : "visible"}`}>
+                          <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
+                            {t(`profile:specialization`)}
+                          </FormLabel>
+                          <Textarea
+                            {...form.register(`specialization.${lng}` as keyof IFormData)}
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+                {["en", "ru", "ro"].map((lng: string, idx: number) => (
+                  <FormField
+                    key={"bio" + idx}
+                    name={`bio.${lng}`}
+                    render={({ field }) => {
+                      return (
+                        <FormItem className={`${lng !== tab ? "hidden" : "visible"}`}>
+                          <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
+                            {t(`profile:bio`)}
+                          </FormLabel>
+                          <Textarea {...form.register(`bio.${lng}` as keyof IFormData)} />
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
               </div>
-              <Button className="float-right mt-4" type="submit" variant="outline">
+              <Button
+                className="float-right mt-4"
+                onClick={(e) => onSubmit(form.getValues(), e)}
+                variant="outline"
+              >
                 {t("common:save")}
               </Button>
             </div>
