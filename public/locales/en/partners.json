@@ -10,7 +10,7 @@
   "referrals": "Referrals",
   "download_qr": "Download QR",
   "empty": "The list of partners will appear here",
-  "transcription": {
+  "transactions": {
     "title": "Transactions",
     "empty": "The list of transactions will appear here"
   }
