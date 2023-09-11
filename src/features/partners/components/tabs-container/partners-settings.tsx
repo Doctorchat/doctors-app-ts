@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { saveAs } from "file-saver";
 import { UseQueryResult, useQuery } from "react-query";
 import { getPartners } from "../../api";
 import { Button, Skeleton } from "@/components/ui";
@@ -36,10 +37,8 @@ const PartnersSettings: React.FC = () => {
   const { partner_qr } = partnersData;
 
   const onClickQrButton = () => {
-    const link = document.createElement("a");
-    link.href = partner_qr;
-    link.download = "qr.png";
-    link.click();
+    window.open(partner_qr, "_blank");
+    saveAs(partner_qr, "qr.png");
   };
 
   const onClickCopyReferalLink = () => {
@@ -56,7 +55,7 @@ const PartnersSettings: React.FC = () => {
         <div
           className="relative"
         >
-          <img src={partner_qr} alt="qr" />
+          <img src={partner_qr} alt="qr" className="mx-auto my-0 h-auto w-[100%] xs:w-[100%] sm:w-[100%] md:w-[60%] lg:w-[60%] xl:w-[60%]" />
           <Button
             size="sm"
             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-3 py-2"

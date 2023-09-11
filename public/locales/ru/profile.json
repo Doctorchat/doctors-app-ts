@@ -2,7 +2,7 @@
   "profile": "Профиль",
   "name": "Имя",
   "email": "Электронный адрес",
-  "specialization": "Специальность",
+  "specialization": "Специализация",
   "bio": "Профессиональные навыки",
   "professionalTitle": "Профессиональное звание",
   "experience": "Опыт",
@@ -16,5 +16,10 @@
   "video_consult": "Видео консультации",
   "current_password": "Текущий пароль",
   "new_password": "Новый пароль",
-  "password_confirmation": "Подтверждение пароля"
+  "password_confirmation": "Подтверждение пароля",
+  "password_dont_match": "Пароли не совпадают",
+  "password_update_success": "Пароль успешно обновлён",
+  "personal_info_updated": "Личная информация обновлена",
+  "andrology": "Андрология",
+  "speciality": "Специальность"
 }
