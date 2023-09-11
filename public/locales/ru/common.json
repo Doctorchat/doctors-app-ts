@@ -70,5 +70,23 @@
   "slots": "Слоты",
   "empty_list": "Список пуст",
   "summary": "Сводка",
-  "access": "Доступ"
+  "access": "Доступ",
+  "google_calendar": {
+    "authorize": "Авторизовать календарь Google",
+    "authorization": "Авторизация календаря Google",
+    "authorized": "Календарь Google авторизован успешно",
+    "unauthorize": "Де-авторизовать календарь Google",
+    "unauthorized": "Календарь Google де-авторизован успешно"
+  },
+  "days_week": {
+    "mon": "Пнедельник",
+    "tue": "Вторник",
+    "wed": "Среда",
+    "thu": "Четверг",
+    "fri": "Пятница",
+    "sat": "Суббота",
+    "sun": "Воскресенье"
+  },
+  "start_time": "Время начала",
+  "end_time": "Время окончания"
 }

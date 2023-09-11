@@ -3,5 +3,6 @@
   "video_appointments": "Видео встречи",
   "active_appointments": "Активные встречи",
   "finished_appointments": "Завершенные встречи",
-  "consultation_date": "Дата консультации"
+  "consultation_date": "Дата консультации",
+  "appointments_warning": "Оставьте поля пустыми, чтобы указать, что вы не доступны в соответствующий день"
 }

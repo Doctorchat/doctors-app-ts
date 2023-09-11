@@ -70,5 +70,23 @@
   "slots": "Slots",
   "empty_list": "The list is empty",
   "summary": "Summary",
-  "access": "Access"
+  "access": "Access",
+  "google_calendar": {
+    "authorize": "Authorize Google Calendar",
+    "authorization": "Authorization Google Calendar",
+    "authorized": "Google Calendar is authorized successfully",
+    "unauthorize": "Unauthorize Google Calendar",
+    "unauthorized": "Google Calendar is unauthorized successfully"
+  },
+  "days_week": {
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday",
+    "sun": "Sunday"
+  },
+  "start_time": "Start time",
+  "end_time": "End time"
 }
