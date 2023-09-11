@@ -70,5 +70,23 @@
   "slots": "Sloturi",
   "empty_list": "Lista este goală",
   "summary": "Rezumat",
-  "access": "Acceseaza"
+  "access": "Acceseaza",
+  "google_calendar": {
+    "authorize": "Autorizați calendarul Google",
+    "authorization": "Autorizare Google calendar",
+    "authorized": "Calendarul Google este autorizat cu succes",
+    "unauthorize": "Deautorizați calendarul Google",
+    "unauthorized": "Calendarul Google a fost deautorizat cu succes"
+  },
+  "days_week": {
+    "mon": "Luni",
+    "tue": "Marți",
+    "wed": "Miercuri",
+    "thu": "Joi",
+    "fri": "Vineri",
+    "sat": "Sâmbătă",
+    "sun": "Duminică"
+  },
+  "start_time": "Ora de început",
+  "end_time": "Ora de sfârșit"
 }

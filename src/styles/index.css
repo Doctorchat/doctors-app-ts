@@ -20,4 +20,20 @@
     color: theme("colors.typography.secondary");
     overscroll-behavior-y: none;
   }
+
+}
+
+body .ant-picker-ok > button {
+  background: #0066FF ;
+  color: #fff;
+}
+
+body .ant-picker-ok > button:hover {
+  background: #0045ac;
+  color: #fff;
+}
+
+body .ant-picker-ok > button[disabled] {
+  background: #e6e6e6;
+  color: #fff;
 }

@@ -1,9 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
-import DocAppointmentsSlots from "./tabs-container/DocAppointmentsSlots";
-import DocAppointmentsList from "./tabs-container/DocAppointmentsList";
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui";
+import {
+  DocAppointmentsList,
+  DocAppointmentsSettings,
+  DocAppointmentsSlots
+} from "./tabs-container";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -44,7 +52,7 @@ export const View: React.FC = () => {
           className="grow bg-white rounded-b-md outline-none"
           value="settings"
         >
-          1
+          <DocAppointmentsSettings />
         </TabsContent>
         <TabsContent
           className="grow bg-white rounded-b-md outline-none"
