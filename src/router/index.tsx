@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { MainLayout } from "@/components/layout";
 import { PrivateRoute, routes as authRoutes } from "@/features/auth";
+import { routes as dashboardRoutes } from "@/features/dashboard";
 import { routes as conversationsRoutes } from "@/features/conversations";
 import { routes as walletRoutes } from "@/features/wallet";
 import { routes as profileRoutes } from "@/features/profile";
@@ -14,13 +15,7 @@ import GoogleCalendarCallback from "@/features/video-appointment/components/call
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <MainLayout>
-        <PrivateRoute>
-          <div>Home</div>
-        </PrivateRoute>
-      </MainLayout>
-    ),
+    children: dashboardRoutes,
   },
   {
     path: "/auth/authorize",

@@ -9,14 +9,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import PartnersSettings from "./tabs-container/partners-settings";
 import PartnersReferrals from "./tabs-container/partners-referrals";
 import PartnersTransactions from "./tabs-container/partners-transactions";
-
-export const View: React.FC = () => {
+export interface ViewProps {
+  inContainer?: boolean;
+}
+export const View: React.FC<ViewProps> = ({ inContainer }) => {
   const { t } = useTranslation();
 
   const {
     data: partnersData,
     isLoading,
-    isError
+    isError,
   } = useQuery({
     queryKey: ["partners"],
     queryFn: async () => {
@@ -25,8 +27,8 @@ export const View: React.FC = () => {
   });
 
   if (isLoading || isError || !partnersData) {
-    return <PartnersBalanceFallback type={isLoading ? "loading" : "error"} />
-  };
+    return <PartnersBalanceFallback type={isLoading ? "loading" : "error"} />;
+  }
 
   const { earned, referrals, percent, currency } = partnersData;
 
@@ -42,16 +44,30 @@ export const View: React.FC = () => {
     {
       value: "payments",
       children: t("partners:title"),
-    }
+    },
   ];
 
   return (
-    <div className={
-      cn("h-full w-full md:rounded-lg md:border md:border-neutral-200 p-10 custom-scroll-bar")
-    }>
-      <div className={cn("flex flex-col xs:flex-col sm:flex-row md:flex-col lg:flex-row xl:flex-row justify-between gap-10")}>
+    <div
+      className={
+        cn("custom-scroll-bar h-full w-full md:rounded-lg md:border md:border-neutral-200") +
+        " " +
+        cn(inContainer ? "p-5" : "p-10")
+      }
+    >
+      <div
+        className={cn(
+          inContainer
+            ? "flex flex-col justify-between gap-5"
+            : "xs:flex-col flex flex-col justify-between gap-10 sm:flex-row md:flex-col lg:flex-row xl:flex-row"
+        )}
+      >
         <div
-          className={cn("w-[100%] xs:w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[40%]")}
+          className={cn(
+            inContainer
+              ? "w-[100%]"
+              : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[40%]"
+          )}
         >
           <PartnersBalance
             earned={earned}
@@ -61,48 +77,39 @@ export const View: React.FC = () => {
             isLoading={isLoading}
             isError={isError}
           />
-          <div className={cn("flex item-center justify-center mb-4 mt-3 border border-primary bg-primary bg-opacity-10 px-3 py-2 rounded-xl font-medium")}>
-            <ExclamationCircleIcon
-              className="text-primary w-5 h-5 mr-2"
-            />
-            <p className="text-sm text-primary text-center">{t("partners:description", { percent: percent ?? 0 })}</p>
+          <div
+            className={cn(
+              "item-center mb-4 mt-3 flex justify-center rounded-xl border border-primary bg-primary bg-opacity-10 px-3 py-2 font-medium"
+            )}
+          >
+            <ExclamationCircleIcon className="mr-2 h-5 w-5 text-primary" />
+            <p className="text-center text-sm text-primary">
+              {t("partners:description", { percent: percent ?? 0 })}
+            </p>
           </div>
         </div>
         <div
-          className={cn("w-[100%] xs:w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[50%]")}
+          className={cn(
+            inContainer
+              ? "w-[100%]"
+              : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[50%]"
+          )}
         >
-
-          <Tabs
-            defaultValue="settings"
-          >
-            <TabsList
-              className="flex" aria-label="Partners tabs"
-            >
+          <Tabs defaultValue="settings">
+            <TabsList className="flex" aria-label="Partners tabs">
               {TAB_ITEMS.map(({ value, children }) => (
-                <TabItem
-                  value={value}
-                  key={value}
-                >
+                <TabItem value={value} key={value}>
                   {children}
                 </TabItem>
               ))}
             </TabsList>
-            <TabsContent
-              className="grow p-5 bg-white rounded-b-md outline-none"
-              value="settings"
-            >
+            <TabsContent className="grow rounded-b-md bg-white p-5 outline-none" value="settings">
               <PartnersSettings />
             </TabsContent>
-            <TabsContent
-              className="grow bg-white rounded-b-md outline-none"
-              value="referrals"
-            >
+            <TabsContent className="grow rounded-b-md bg-white outline-none" value="referrals">
               <PartnersReferrals />
             </TabsContent>
-            <TabsContent
-              className="grow bg-white rounded-b-md outline-none"
-              value="payments"
-            >
+            <TabsContent className="grow rounded-b-md bg-white outline-none" value="payments">
               <PartnersTransactions />
             </TabsContent>
           </Tabs>
@@ -112,10 +119,10 @@ export const View: React.FC = () => {
   );
 };
 
-const TabItem = ({ children, value }: { children: React.ReactNode, value: string }) => {
+const TabItem = ({ children, value }: { children: React.ReactNode; value: string }) => {
   return (
     <TabsTrigger
-      className="bg-white px-5 py-3 flex-1 flex items-center justify-center text-sm text-primary hover:font-medium cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none data-[state=active]:text-primary data-[state=active]:font-bold"
+      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
       value={value}
     >
       {children}
