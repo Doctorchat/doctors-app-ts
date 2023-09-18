@@ -16,4 +16,5 @@ export interface SessionUser {
   disponibility?: {
     [key in TWeekDays]: string[];
   };
+  consultation_auto_renew?: boolean;
 }

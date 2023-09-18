@@ -2,13 +2,14 @@ import React, { Suspense, lazy } from 'react';
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
 import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TWeekDays, useAuth } from "@/features/auth";
 import { setDisponibility } from "../api/index";
 
 import {
   Button,
+  Checkbox,
   FormControl,
   FormField,
   FormItem,
@@ -33,13 +34,10 @@ const FormAppointmentsSettings: React.FC = () => {
   const [timeoutId, setTimeoutId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  const isMoment = (value: any): value is moment.Moment => moment.isMoment(value);
   const daySchema = z.array(
     z.union([
       z.null(),
-      z.any().refine(isMoment, {
-        message: "Must be a Moment object",
-      }),
+      z.any()
     ])
   );
 
@@ -58,6 +56,7 @@ const FormAppointmentsSettings: React.FC = () => {
   const schema = z.object({
     time_frame: timeSchema(1, 120),
     time_buffer: timeSchema(1, 60),
+    consultation_auto_renew: boolean(),
     ...daysSchema
   });
 
@@ -90,17 +89,20 @@ const FormAppointmentsSettings: React.FC = () => {
     defaultValues: {
       time_frame: `${session?.user?.["time_frame"]}` || "",
       time_buffer: `${session?.user?.["time_buffer"]}` || "",
+      consultation_auto_renew: session?.user?.["consultation_auto_renew"] || true,
       ...defaultValuesDays,
     },
     resolver: zodResolver(schema),
   });
 
   const onSubmitTestIsSubmitting = (values: any) => {
+
     setLoading(true);
     console.log(values);
     setDisponibility({
       time_frame: parseInt(values.time_frame, 10),
       time_buffer: parseInt(values.time_buffer, 10),
+      consultation_auto_renew: values.consultation_auto_renew,
       mon: [values.mon[0]?.format("HH:mm"), values.mon[1]?.format("HH:mm")],
       tue: [values.tue[0]?.format("HH:mm"), values.tue[1]?.format("HH:mm")],
       wed: [values.wed[0]?.format("HH:mm"), values.wed[1]?.format("HH:mm")],
@@ -147,7 +149,7 @@ const FormAppointmentsSettings: React.FC = () => {
             name="time_frame"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("consultation:repeated_consultations.duration")}</FormLabel>
+                <FormLabel>{t("video:consultation_duration")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -165,7 +167,7 @@ const FormAppointmentsSettings: React.FC = () => {
             name="time_buffer"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("consultation:repeated_consultations.discount")}</FormLabel>
+                <FormLabel>{t("video:consultation_interval")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -185,9 +187,29 @@ const FormAppointmentsSettings: React.FC = () => {
         </div>
         <div
           className={cn(
-            "flex justify-end",
+            "flex justify-between items-center gap-4",
           )}
         >
+          <FormField
+            control={form.control}
+            name="consultation_auto_renew"
+            render={({ field }) => (
+              <FormItem
+                className="flex items-center gap-2"
+              >
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(checked) => field.onChange(checked)}
+                    className="h-6 w-6 m-0"
+                    {...field as any}
+                  />
+                </FormControl>
+                <FormLabel>{t("video:automatic_confirmation")}</FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button
             type="submit"
             disabled={loading}
