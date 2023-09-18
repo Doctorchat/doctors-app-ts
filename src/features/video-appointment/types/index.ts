@@ -8,6 +8,7 @@ type Disponibility = {
 export type SetDisponibilityPayload = {
   time_frame: number;
   time_buffer: number;
+  consultation_auto_renew: boolean;
 } & Disponibility;
 
 export type Appointment = {

@@ -4,5 +4,8 @@
   "active_appointments": "Active appointments",
   "finished_appointments": "Finished appointments",
   "consultation_date": "Consultation date",
-  "appointments_warning": "Leave the fields blank to indicate that you are not available on the appropriate day"
+  "appointments_warning": "Leave the fields blank to indicate that you are not available on the appropriate day",
+  "consultation_duration": "Consultation duration (minutes)",
+  "consultation_interval": "Interval between consultations (minutes)",
+  "automatic_confirmation": "Automatic confirmation"
 }
