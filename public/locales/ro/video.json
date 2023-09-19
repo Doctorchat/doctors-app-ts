@@ -4,5 +4,8 @@
   "active_appointments": "Programări active",
   "finished_appointments": "Programări finalizate",
   "consultation_date": "Data consultației",
-  "appointments_warning": "Lăsați câmpurile necompletate pentru a indica că nu sunteți disponibil în ziua corespunzătoare"
+  "appointments_warning": "Lăsați câmpurile necompletate pentru a indica că nu sunteți disponibil în ziua corespunzătoare",
+  "consultation_duration": "Durata consultației (minute)", 
+  "consultation_interval": "Interval între consultații (minute)",
+  "automatic_confirmation": "Confirmare automată"
 }
