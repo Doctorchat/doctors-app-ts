@@ -52,13 +52,13 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
       className={
         cn("custom-scroll-bar h-full w-full md:rounded-lg md:border md:border-neutral-200") +
         " " +
-        cn(inContainer ? "p-5" : "p-10")
+        cn(inContainer ? "rounded-lg border p-5 text-typography-primary" : "p-10")
       }
     >
       <div
         className={cn(
           inContainer
-            ? "flex flex-col justify-between gap-5"
+            ? "gap flex flex-col justify-between"
             : "xs:flex-col flex flex-col justify-between gap-10 sm:flex-row md:flex-col lg:flex-row xl:flex-row"
         )}
       >

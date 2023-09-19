@@ -3,6 +3,9 @@
   "total_balance": "Total balance",
   "frozen_balance": "Frozen balance",
   "refill": "Refill",
+  "wallet_personal": "My wallet",
+  "money_sold": "Money in the account:",
+  "referals":"Referrals",
   "transactions": {
     "history": "Transaction history",
     "empty": "The list of transactions will appear here",

@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/utils";
-import { DashboardWrapper } from "./dashboard-wrapper";
+import { DashboardWrapper } from "./dashboard";
 
 export const View: React.FC = () => {
   const components = () => {

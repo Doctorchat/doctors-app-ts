@@ -3,6 +3,9 @@
   "total_balance": "Sold total",
   "frozen_balance": "Sold blocat",
   "refill": "Suplinire",
+  "wallet_personal":"Portofelul meu",
+  "money_sold":"Bani in cont:",
+  "referals": "Referali",
   "transactions": {
     "history": "Istoricul tranzactiilor",
     "empty": "Lista tranzacțiilor va apărea aici",

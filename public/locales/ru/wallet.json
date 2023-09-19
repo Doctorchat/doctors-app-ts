@@ -3,6 +3,9 @@
   "total_balance": "Общий баланс",
   "frozen_balance": "Замороженный баланс",
   "refill": "Пополнение",
+  "wallet_personal": "Мой кошелек",
+  "money_sold": "Деньги на счету:",
+  "referals": "Рефералы",
   "transactions": {
     "history": "История транзакций",
     "empty": "Список транзакций появится здесь",

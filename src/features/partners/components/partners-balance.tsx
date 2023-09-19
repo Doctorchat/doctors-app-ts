@@ -64,7 +64,7 @@ export const PartnersBalanceFallback: FC<PartnersBalanceFallbackProps> = memo(({
         </div>
       </div>
       <div>
-        <Skeleton className="h-24 w-full mt-3" />
+        <Skeleton className="h-[250px] w-full mt-3" />
       </div>
     </div>
   );

@@ -21,5 +21,7 @@
   "password_update_success": "Password successfully updated",
   "personal_info_updated": "Personal information updated",
   "andrology": "Andrology",
-  "speciality": "Speciality"
+  "speciality": "Speciality",
+  "likes": "Likes",
+  "dislikes": "Dislikes"
 }
