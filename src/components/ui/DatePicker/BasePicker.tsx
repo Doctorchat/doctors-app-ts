@@ -2,7 +2,6 @@ import { useRef, forwardRef } from "react";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { Input } from "../input";
-import useRootClose from "../hooks/useRootClose";
 import useMergedRef from "../hooks/useMergeRef";
 import { HiOutlineCalendar } from "react-icons/hi";
 import type { CommonProps, TypeAttributes } from "../types/common";
@@ -51,16 +50,12 @@ interface BasePickerProps extends CommonProps, BasePickerSharedProps {
 const BasePicker = forwardRef<HTMLInputElement, BasePickerProps>((props, ref) => {
   const {
     className,
-    clearable = true,
-    clearButton,
     children,
     disabled,
     dropdownOpened,
     inputtable,
     inputtableBlurClose = true,
     inputLabel,
-    inputPrefix,
-    inputSuffix = <HiOutlineCalendar className="text-lg" />,
     name,
     onDropdownOpen,
     onDropdownClose,
@@ -120,12 +115,6 @@ const BasePicker = forwardRef<HTMLInputElement, BasePickerProps>((props, ref) =>
 
   const referenceRef = useRef<HTMLInputElement>(null);
   const popperRef = useRef(null);
-
-  useRootClose(() => closeDropdown(), {
-    triggerTarget: referenceRef,
-    overlayTarget: popperRef,
-    disabled: !dropdownOpened,
-  });
 
   return (
     <>

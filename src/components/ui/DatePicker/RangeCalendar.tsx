@@ -2,7 +2,7 @@ import { useState, forwardRef } from 'react'
 import dayjs from 'dayjs'
 import { isSameDate } from './utils/isSameDate'
 import CalendarBase from './CalendarBase'
-import type { CommonProps } from '../@types/common'
+import type { CommonProps } from '../types/common'
 import type { CalendarSharedProps } from './CalendarBase'
 import type { Modifiers } from './tables/components/types'
 

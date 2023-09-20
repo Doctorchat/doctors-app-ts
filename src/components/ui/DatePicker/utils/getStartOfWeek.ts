@@ -1,4 +1,4 @@
-import type { FirstDayOfWeek } from '../../@types/date'
+import type { FirstDayOfWeek } from '../utils/date'
 
 export function getStartOfWeek(
     date: Date,

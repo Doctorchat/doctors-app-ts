@@ -1,6 +1,6 @@
 import { getStartOfWeek } from './getStartOfWeek'
 import { getEndOfWeek } from './getEndOfWeek'
-import type { FirstDayOfWeek } from '../../@types/date'
+import type { FirstDayOfWeek } from '../utils/date'
 
 export function getMonthDays(
     month: Date,

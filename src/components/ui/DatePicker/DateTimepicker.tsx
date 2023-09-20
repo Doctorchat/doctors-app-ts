@@ -2,13 +2,12 @@ import { forwardRef, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import useControllableState from '../hooks/useControllableState'
 import useMergedRef from '../hooks/useMergeRef'
-import capitalize from '../utils/capitalize'
-import TimeInput from '../TimeInput/TimeInput'
+import capitalize from './utils/capitalize'
 import Calendar from './Calendar'
 import BasePicker from './BasePicker'
-import Button from '../Button/Button'
+import {Button} from '../button'
 import { useConfig } from '../ConfigProvider'
-import type { CommonProps } from '../@types/common'
+import type { CommonProps } from '../types/common'
 import type { CalendarSharedProps } from './CalendarBase'
 import type { BasePickerSharedProps } from './BasePicker'
 import type { FocusEvent, ChangeEvent } from 'react'
@@ -302,15 +301,7 @@ const DateTimepicker = forwardRef<HTMLInputElement, DateTimepickerProps>(
                     onMonthChange={setCalendarMonth}
                     onChange={handleValueChange}
                 />
-                <div className="flex items-center gap-4 mt-4">
-                    <TimeInput
-                        disabled={!_value}
-                        value={_value}
-                        format={amPm ? '12' : '24'}
-                        clearable={false}
-                        size="sm"
-                        onChange={handleTimeChange}
-                    />
+                <div className="flex items-center gap-4 mt-4">                 
                     <Button size="sm" disabled={!_value} onClick={handleOk}>
                         {okButtonContent}
                     </Button>

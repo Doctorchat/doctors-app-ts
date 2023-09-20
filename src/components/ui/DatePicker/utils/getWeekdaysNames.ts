@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { getStartOfWeek } from './getStartOfWeek'
-import type { FirstDayOfWeek } from '../../@types/date'
+import type { FirstDayOfWeek } from '../utils/date'
 
 export function getWeekdaysNames(
     locale: string,
