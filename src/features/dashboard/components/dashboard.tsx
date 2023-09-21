@@ -2,18 +2,35 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/utils";
 import { View } from "@/features/partners/components/view";
 import BasicLine from "./chartLines";
-import CalendarCustom from "./calendarCustom";
+import CalendarReservations from "./CalendarReservations";
 
 import TabsConversersional from "./tabsConversetion";
 import CarddWallet from "./cardWallet";
 import { useQuery } from "react-query";
-import { apiGetDashboard } from "../api";
+import { apiGetDashboard, apiGetReservations } from "../api";
 import ChartDonut from "./chartProcent";
+import { useEffect, useState } from "react";
+import { getCurrentMonth } from "../utils/getDates";
 
 export const DashboardWrapper: React.FC = () => {
   const { data: allData, isLoading } = useQuery(["cardWallet"], () => apiGetDashboard(), {
     keepPreviousData: true,
   });
+  const [monthReservations, setMonthReservations] = useState(getCurrentMonth());
+
+  const {
+    data: reservations,
+    isLoading: calendarLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["calendar"],
+    queryFn: async () => {
+      return apiGetReservations(monthReservations as string);
+    },
+  });
+  useEffect(() => {
+    refetch();
+  }, [monthReservations]);
 
   return (
     <div
@@ -23,7 +40,7 @@ export const DashboardWrapper: React.FC = () => {
     >
       <div>
         <Card className={cn("p-4")}>
-          <CarddWallet loading={isLoading} data={allData?.wallet} image={allData?.avatar}/>
+          <CarddWallet loading={isLoading} data={allData?.wallet} image={allData?.avatar} />
         </Card>
         <div className="pt-2">
           <Card className={cn("p-3")}>
@@ -43,7 +60,11 @@ export const DashboardWrapper: React.FC = () => {
         <Card className={cn("p-3")}>
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
-        <CalendarCustom loading={isLoading} data={allData?.reservations} />
+        <CalendarReservations
+          loading={calendarLoading}
+          data={reservations?.reservations}
+          setMonth={setMonthReservations}
+        />
       </div>
     </div>
   );

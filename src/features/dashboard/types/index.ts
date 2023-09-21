@@ -137,10 +137,22 @@ export interface ChartDonutProps {
 }
 export interface CalendarProps {
   loading?: boolean;
-  data?: IReservations[];
+  data?: ICalendar[];
+  setMonth?: any;
 }
 export interface CardProps {
   loading?: boolean;
   data?: IWallet;
   image?: null | string;
+}
+export interface ICalendar {
+  chat_id: number;
+  end_time: string;
+  name: string;
+  start_time: string;
+  status: string;
+  type: string;
+}
+export interface IReservationsCalendar {
+  reservations: ICalendar[];
 }

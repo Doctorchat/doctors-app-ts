@@ -3,7 +3,8 @@ import { cn } from "@/utils";
 import { MoneyIcon } from "../icons/iconMoney";
 import { useTranslation } from "react-i18next";
 import { CardProps } from "../types";
-import { Avatar, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarImage, Skeleton } from "@/components/ui";
+import defaultImageDoctor from "../../../assets/images/default.png";
 
 const CardItemSkeleton: React.FC = () => {
   return (
@@ -29,7 +30,7 @@ const CarddWallet: React.FC<CardProps> = ({ loading, data, image }) => {
     <div className="grid grid-cols-2 gap-1">
       <div className="flex justify-center">
         <Avatar className="relative	flex  h-36  w-36 shrink-0 overflow-hidden !rounded-lg ">
-          <AvatarImage src={image ?? ""} alt="image" />
+          <AvatarImage src={image ?? defaultImageDoctor} alt="image" />
         </Avatar>
       </div>
       <div className="flex h-full grid-rows-2 flex-col gap-6">

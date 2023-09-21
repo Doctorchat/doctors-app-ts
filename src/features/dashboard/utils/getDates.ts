@@ -1,4 +1,4 @@
-import { IReservations } from "../types";
+import { ICalendar } from "../types";
 
 const extractDayFromDate = (dateString: string): number => {
   const date = new Date(dateString);
@@ -6,7 +6,7 @@ const extractDayFromDate = (dateString: string): number => {
   return day;
 };
 
-export const extractDaysFromAppointments = (data: IReservations[] = []): number[] => {
+export const extractDaysFromAppointments = (data: ICalendar[] = []): number[] => {
   const days: number[] = [];
 
   for (const appointment of data) {
@@ -19,9 +19,9 @@ export const extractDaysFromAppointments = (data: IReservations[] = []): number[
   return days;
 };
 
-export const findAppointmentsByDate = (date: any, data: IReservations[] = []): IReservations[] => {
+export const findAppointmentsByDate = (date: any, data: ICalendar[] = []): ICalendar[] => {
   const inputDateObj = new Date(date);
-  const matchingAppointments: IReservations[] = [];
+  const matchingAppointments: ICalendar[] = [];
   for (const appointment of data) {
     const appointmentDate = appointment.start_time.substr(0, 10); // Extrage doar partea de dată a start_time
     const appointmentDateObj = new Date(appointmentDate);
@@ -37,4 +37,10 @@ export const parseTimeFromDateTime = (dateTimeString: string): string => {
   const hours = dateObj.getHours().toString().padStart(2, "0");
   const minutes = dateObj.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
+};
+export const getCurrentMonth = (date = new Date()) => {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${month}-${year}`;
 };

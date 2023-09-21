@@ -121,7 +121,8 @@ body .ant-picker-ok > button[disabled] {
 
 .date-picker-cell-hoverable:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  background-color: #d6d9dc;
+  color: white;
 }
 
 :is(.dark .date-picker-cell-hoverable:hover) {
@@ -180,6 +181,11 @@ body .ant-picker-ok > button[disabled] {
   line-height: 1rem;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.bg-color-date-blue {
+  background-color: #90d7e9;
+  border-color: white;
+  border-width: 2px;
 }
 .border-indigo-50 {
   border-color: rgb(238 242 255 / var(--tw-border-opacity));

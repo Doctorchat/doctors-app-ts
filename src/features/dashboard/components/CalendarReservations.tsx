@@ -4,6 +4,7 @@ import { CalendarProps } from "../types";
 import {
   extractDaysFromAppointments,
   findAppointmentsByDate,
+  getCurrentMonth,
   parseTimeFromDateTime,
 } from "../utils/getDates";
 import { cn } from "@/utils";
@@ -11,34 +12,63 @@ import { Card } from "@/components/ui/card";
 import { HiVideoCamera } from "react-icons/hi";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { Skeleton } from "@/components/ui";
 
-const CustomRender: React.FC<CalendarProps> = ({ loading, data }) => {
+const CalendarFallback = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="py-2">
+      <Card className={cn("p-5")}>
+        <div className="flex-column flex gap-1">
+          <Skeleton className="h-36 w-full" />
+        </div>
+        <hr className="my-6" />
+        <h5 className="mb-4 font-bold">{t("conversations:schedule")}</h5>
+        <div className="flex-column flex gap-1">
+          <Skeleton className="h-20 w-full" />
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], setMonth }) => {
+  const { t } = useTranslation();
   const initialValue = new Date() ? new Date() : null;
   const [value, setValue] = useState<Date | null>(initialValue);
   const [scheduleOfDay, setSchedule] = useState<any>();
-  useEffect(() => {
-    setSchedule(findAppointmentsByDate(new Date(), data));
-  }, [loading, data]);
-
   const extractedDays = extractDaysFromAppointments(data);
   const onChangeDates = (date: Date) => {
     setValue(date);
     const schedule = findAppointmentsByDate(date, data);
     setSchedule(schedule);
   };
-  const { t } = useTranslation();
+  const onChangeMonth = (date: Date) => {
+    const monthSelected = getCurrentMonth(date);
+    setMonth(monthSelected);
+  };
+  useEffect(() => {
+    setSchedule(findAppointmentsByDate(new Date(), data));
+  }, [loading, data]);
+  if (loading) {
+    return <CalendarFallback />;
+  }
   return (
     <div className="py-2">
       <Card className={cn("p-5")}>
         <Calendar
+          onMonthChange={onChangeMonth}
           value={value}
           dayClassName={(date, { selected }) =>
-            selected ? "text-white" : "text-gray-700 dark:text-gray-200"
+            (selected ? "text-white" : "text-gray-700 dark:text-gray-200") &&
+            (extractedDays.includes(date.getDate())
+              ? " bg-color-date-blue rounded-lg text-white"
+              : "")
           }
           dayStyle={(date, { outOfMonth }) => {
             if (outOfMonth) {
               return {
-                opacity: 0,
+                opacity: 0.5,
                 pointerEvents: "none",
                 cursor: "default",
               };
@@ -54,9 +84,8 @@ const CustomRender: React.FC<CalendarProps> = ({ loading, data }) => {
             }
 
             return (
-              <span className="relative flex h-full w-full items-center justify-center">
+              <span className="relative flex h-full w-full items-center justify-center text-white">
                 {day}
-                <span className="badge-dot absolute bottom-1 !h-1 !w-1" />
               </span>
             );
           }}
@@ -96,5 +125,4 @@ const CustomRender: React.FC<CalendarProps> = ({ loading, data }) => {
     </div>
   );
 };
-
-export default CustomRender;
+export default CalendarReservations;
