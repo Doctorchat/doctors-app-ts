@@ -8,7 +8,18 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    ns: ["common", "auth", "conversations", "validations", "wallet", "profile", "consultation", "partners", "video"],
+    ns: [
+      "common",
+      "auth",
+      "conversations",
+      "validations",
+      "wallet",
+      "profile",
+      "consultation",
+      "partners",
+      "video",
+      "vacation",
+    ],
     supportedLngs: ["ro", "ru", "en"],
     defaultNS: "common",
     load: "languageOnly",

@@ -113,6 +113,10 @@ body .ant-picker-ok > button[disabled] {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
+.date-picker-cell-current-month.bg-indigo-600 {
+  --tw-text-opacity: 1;
+  color: white;
+}
 
 :is(.dark .date-picker-cell-current-month) {
   --tw-text-opacity: 1;

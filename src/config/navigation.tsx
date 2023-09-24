@@ -7,6 +7,7 @@ import {
   UserGroupIcon,
   SparklesIcon,
   VideoCameraIcon,
+  SunIcon,
 } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
@@ -60,6 +61,12 @@ export const navigationLinks: NavigationLink[] = [
     href: "/partners",
     translation: "partners:title",
     icon: UserGroupIcon,
+  },
+  {
+    key: "vacantion",
+    href: "/vacantion",
+    translation: "common:vacation",
+    icon: SunIcon,
   },
   {
     key: "reviews",
