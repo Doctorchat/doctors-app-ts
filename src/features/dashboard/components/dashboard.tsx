@@ -61,6 +61,7 @@ export const DashboardWrapper: React.FC = () => {
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
         <CalendarReservations
+          key="calendar-reservation"
           loading={calendarLoading}
           data={reservations?.reservations}
           setMonth={setMonthReservations}

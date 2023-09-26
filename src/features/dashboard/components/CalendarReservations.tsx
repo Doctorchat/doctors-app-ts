@@ -49,14 +49,15 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
   };
   useEffect(() => {
     setSchedule(findAppointmentsByDate(new Date(), data));
-  }, [loading, data]);
+  }, []);
   if (loading) {
     return <CalendarFallback />;
   }
   return (
-    <div className="py-2">
-      <Card className={cn("p-5")}>
+    <div className="py-2" key="calendar-reservation">
+      <Card className={cn("p-5")} key="card-calendar">
         <Calendar
+          key="calendar"
           onMonthChange={onChangeMonth}
           value={value}
           dayClassName={(date, { selected }) =>
