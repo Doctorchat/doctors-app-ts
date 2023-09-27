@@ -6,7 +6,11 @@ export const apiGetConversationsWithPatients = async () => {
   return await axiosInstance.get<ConversationPreview[]>("/chat/list").then((res) => res.data);
 };
 
-export const apiGetConversationsWithDoctors = async () => {};
+export const apiGetConversationsWithDoctors = async (id: number) => {
+  return await axiosInstance
+    .get<any[]>(`doctor/doctors-list?doctor_id=${id}`)
+    .then((res) => res.data);
+};
 
 export const apiGetConversation = async (id: string) => {
   return await axiosInstance.get<Conversation>(`/chat/get/${id}`).then((res) => res.data);

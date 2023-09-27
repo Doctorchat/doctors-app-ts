@@ -1,4 +1,5 @@
 export interface ConversationPreview {
+  updated_at?: string;
   id: number;
   user_id: number;
   company_id: number;
