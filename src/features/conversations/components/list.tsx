@@ -11,9 +11,7 @@ import { getUser } from "@/features/profile/api";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
-  const {
-    data: doctorInfo,
-  } = useQuery({
+  const { data: doctorInfo } = useQuery({
     queryKey: ["getUser"],
     queryFn: async () => getUser(),
   });
@@ -41,7 +39,11 @@ export const List: React.FC = () => {
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
         {conversations?.map((conversation) => (
-          <Preview key={conversation.id} conversation={conversation} />
+          <Preview
+            key={conversation.id}
+            conversation={conversation}
+            typeConversation={conversationsType}
+          />
         ))}
 
         {isLoading && Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}

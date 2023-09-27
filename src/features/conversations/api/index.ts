@@ -7,13 +7,15 @@ export const apiGetConversationsWithPatients = async () => {
 };
 
 export const apiGetConversationsWithDoctors = async (id: number) => {
-  return await axiosInstance
-    .get<any[]>(`doctor/doctors-list?doctor_id=${id}`)
-    .then((res) => res.data);
+  return await axiosInstance.get<any[]>(`doctor/chat-list?doctor_id=${id}`).then((res) => res.data);
 };
-
 export const apiGetConversation = async (id: string) => {
   return await axiosInstance.get<Conversation>(`/chat/get/${id}`).then((res) => res.data);
+};
+export const apiGetConversationDoctors = async (chatId: string) => {
+  return await axiosInstance
+    .get<Conversation>(`/doctor/get-chat/${chatId}`)
+    .then((res) => res.data);
 };
 
 export const apiGetUserCard = async (id: number, anonymous: boolean) => {

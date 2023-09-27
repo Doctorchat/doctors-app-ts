@@ -30,9 +30,10 @@ export const View: React.FC = () => {
 
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
+    console.log(conversation?.messages);
 
     for (const message of conversation?.messages ?? []) {
-      const groupKey = format(parseISO(message.created), "yyyy-MM-dd");
+      const groupKey = format(parseISO(message?.created ?? message?.updated), "yyyy-MM-dd");
 
       if (groupKey in groups) {
         groups[groupKey].push(message);

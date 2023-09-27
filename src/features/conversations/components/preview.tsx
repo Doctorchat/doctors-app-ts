@@ -11,17 +11,18 @@ import { cn, getInitials } from "@/utils";
 
 export interface PreviewProps {
   conversation: ConversationPreview;
+  typeConversation: "patients" | "doctors";
 }
 
-export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
+export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
 
   const [searchParams] = useSearchParams();
-
+  const chatType = typeConversation === "patients" ? "patient" : "doctor";
   return (
     <Link
-      to={`/conversations?id=${conversation.id}&anonymous=${conversation.isAnonym}`}
+      to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${conversation.isAnonym}`}
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",

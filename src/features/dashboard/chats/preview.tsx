@@ -21,7 +21,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
 
   return (
     <Link
-      to={`/conversations?id=${conversation.id}&anonymous=${conversation.isAnonym}`}
+      to={`/conversations?patientId=${conversation.id}&anonymous=${conversation.isAnonym}`}
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",

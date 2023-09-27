@@ -3,22 +3,27 @@ import { useSearchParams } from "react-router-dom";
 
 import { useQuery } from "react-query";
 
-import { apiGetConversation, apiGetUserCard } from "../api";
+import { apiGetConversation, apiGetConversationDoctors, apiGetUserCard } from "../api";
 
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
-  const [id, setId] = React.useState<string | null>(null);
-
+  const [patientId, setPatientId] = React.useState<string | null>(null);
+  const [doctorId, setDoctorId] = React.useState<string | null>(null);
+  console.log(doctorId);
   const {
     data: conversation,
     isLoading: isConversationLoading,
     isError: isConversationErrored,
   } = useQuery({
-    queryKey: ["conversation", id],
+    queryKey: ["conversation", patientId ?? doctorId],
     queryFn: async () => {
-      if (id) return apiGetConversation(id);
+      if (patientId) {
+        return apiGetConversation(patientId);
+      } else if (doctorId) {
+        return apiGetConversationDoctors(doctorId);
+      }
     },
-    enabled: Boolean(id),
+    enabled: Boolean(patientId) || Boolean(doctorId),
   });
 
   const {
@@ -35,13 +40,22 @@ export const useConversation = () => {
   });
 
   React.useEffect(() => {
-    if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
-    else setId(null);
+    if (searchParams.has("patientId")) {
+      setPatientId(searchParams.get("patientId") ?? null);
+      setDoctorId(null);
+    } else if (searchParams.has("doctorId")) {
+      setDoctorId(searchParams.get("doctorId") ?? null);
+      setPatientId(null);
+    } else {
+      setPatientId(null);
+      setDoctorId(null);
+    }
   }, [searchParams]);
 
   return React.useMemo(
     () => ({
-      id,
+      patientId,
+      doctorId,
       conversation,
       isConversationLoading,
       isConversationErrored,
@@ -51,12 +65,13 @@ export const useConversation = () => {
     }),
     [
       card,
+      patientId,
+      doctorId,
       conversation,
-      id,
       isCardErrored,
       isCardLoading,
       isConversationErrored,
       isConversationLoading,
-    ],
+    ]
   );
 };
