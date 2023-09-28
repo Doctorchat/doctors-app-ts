@@ -12,7 +12,7 @@
   "no_schedule": "You have no appointment",
   "schedule": "Schedule",
   "consultation": "Appointment",
-  "consultation_video":"via Video",
+  "consultation_video": "via Video",
   "approval_request": {
     "title": "Dialogue confirmation required",
     "description": " To start a dialogue, you must confirm the dialogue request",
@@ -26,6 +26,11 @@
   },
   "enter_message": "Enter message",
   "upload_file": "Upload file",
+  "recomand_analysis_dialog": {
+    "title": "Recommend analysis",
+    "description": "Select the recommended analyses",
+    "placeholder": "Reason for file request..."
+  },
   "request_file": "Request file",
   "click_to_select_file": "Click to select a file",
   "select_different_file": "Choose another file"

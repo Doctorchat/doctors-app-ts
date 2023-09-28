@@ -26,6 +26,11 @@
   },
   "enter_message": "Введите сообщение",
   "upload_file": "Загрузить файл",
+  "recomand_analysis_dialog": {
+    "title": "Рекомендовать анализ",
+    "description": "Выберите рекомендуемые анализы",
+    "placeholder": "Reason for file request..."
+  },
   "request_file": "Запросить файл",
   "click_to_select_file": "Нажмите, чтобы выбрать файл",
   "select_different_file": "Выберите другой файл"

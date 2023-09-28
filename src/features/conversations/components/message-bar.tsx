@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   ArrowPathRoundedSquareIcon,
+  ClipboardDocumentListIcon,
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
   PaperClipIcon,
@@ -29,6 +30,7 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
+import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -38,6 +40,7 @@ export const MessageBar: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
+  const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setMessageTemplatesOpen = useMessageTemplatesStore((store) => store.setOpen);
 
@@ -104,6 +107,12 @@ export const MessageBar: React.FC = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="top" align="start" className="w-48">
+                    <DropdownMenuItem onClick={() => setRecomandationAnalysisOpen(true)}>
+                      {t("conversations:recomand_analysis_dialog:title")}
+                      <DropdownMenuShortcut>
+                        <ClipboardDocumentListIcon className="h-5 w-5" />
+                      </DropdownMenuShortcut>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setUploadFileOpen(true)}>
                       {t("conversations:upload_file")}
                       <DropdownMenuShortcut>
@@ -142,6 +151,7 @@ export const MessageBar: React.FC = () => {
         <UploadFile />
         <RequestFile />
         <MessageTemplates />
+        <RecomandAnalysis />
       </>
     );
   }
