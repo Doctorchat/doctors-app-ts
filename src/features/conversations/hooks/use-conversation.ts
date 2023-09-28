@@ -79,6 +79,10 @@ export const useConversation = () => {
       console.log("Here");
       // setMessages(allMessages ?? []);
     });
+    return () => {
+      pusher.unsubscribe("chat"); // Dezabonați-vă când componenta este demontată
+      pusher.disconnect();
+    };
   }, []);
 
   const {
