@@ -26,11 +26,11 @@
   },
   "enter_message": "Introduceți mesajul",
   "upload_file": "Încărcați un fișier",
-    "recomand_analysis_dialog": {
-      "title": "Recomandă analize",
-      "description": "Selectează analizele recomandate",
-      "placeholder": "Reason for file request..."
-    },
+  "recomand_analysis_dialog": {
+    "title": "Recomandă analize",
+    "description": "Selectează analizele recomandate",
+    "placeholder": "Căutați și selectați pentru analize..."
+  },
   "request_file": "Solicitați un fișier",
   "click_to_select_file": "Faceți clic pentru a selecta un fișier",
   "select_different_file": "Selectați alt fișier"

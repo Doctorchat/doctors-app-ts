@@ -29,7 +29,7 @@
   "recomand_analysis_dialog": {
     "title": "Рекомендовать анализ",
     "description": "Выберите рекомендуемые анализы",
-    "placeholder": "Reason for file request..."
+    "placeholder": "Поиск и выберите анализы..."
   },
   "request_file": "Запросить файл",
   "click_to_select_file": "Нажмите, чтобы выбрать файл",
