@@ -25,6 +25,7 @@ export const useConversation = () => {
         "Here -------------------------------------------------------------------------------",
         data
       );
+      alert(JSON.stringify(data));
       setIncomingMessages((prev) => [...prev, data]);
     });
     return () => {
