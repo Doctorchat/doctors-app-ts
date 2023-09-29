@@ -1,64 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import { useQueryClient } from "react-query";
+
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 
-import { useConversationLayoutStore } from "./layout";
-import { apiRequestFile } from "../api";
-import { useConversation } from "../hooks";
-
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  Textarea,
-} from "@/components/ui";
-import { useToast } from "@/hooks";
-import { getApiErrorMessages } from "@/utils";
+import ModalComponent from "@/components/ui/modal";
 import { TreeSelect } from "antd";
-const { SHOW_PARENT } = TreeSelect;
+import { useRecomandation } from "../hooks/use-recomandations";
+import { useQuery } from "react-query";
+import { apiGetRecomandations } from "../api";
+import { Category, Recomandation } from "../types";
+
+const { TreeNode, SHOW_PARENT } = TreeSelect;
+
 interface RequestFileStore {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
-const treeData = [
-  {
-    value: "parent 1",
-    title: "parent 1",
-    children: [
-      {
-        value: "parent 1-0",
-        title: "parent 1-0",
-        children: [
-          {
-            value: "leaf1",
-            title: "my leaf",
-          },
-          {
-            value: "leaf2",
-            title: "your leaf",
-          },
-        ],
-      },
-      {
-        value: "parent 1-1",
-        title: "parent 1-1",
-        children: [
-          {
-            value: "sss",
-            title: <b style={{ color: "#08c" }}>sss</b>,
-          },
-        ],
-      },
-    ],
-  },
-];
+interface TreeNodeData {
+  title: string;
+  value: string;
+  children?: TreeNodeData[];
+  checkable?: boolean;
+}
+
 export const useRecomandAnalysisStore = createWithEqualityFn<RequestFileStore>(
   (set) => ({
     open: false,
@@ -68,60 +34,98 @@ export const useRecomandAnalysisStore = createWithEqualityFn<RequestFileStore>(
 );
 
 export const RecomandAnalysis: React.FC = () => {
+  const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const { t } = useTranslation();
-  const { id, conversation } = useConversation();
-  const { toast } = useToast();
 
-  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
-  const queryClient = useQueryClient();
   const open = useRecomandAnalysisStore((store) => store.open);
-  const setOpen = useRecomandAnalysisStore((store) => store.setOpen);
+  const { treeData, isAnalysesLoading } = useRecomandation();
 
-  const [content, setContent] = React.useState("");
-  const [isSending, setIsSending] = React.useState(false);
+  const [value, setValue] = React.useState([]);
 
-  const onRequestFileHandler = async () => {};
-  const [value, setValue] = React.useState(["0-0-0"]);
-
-  const onChange = (newValue: string[]) => {
-    console.log("onChange ", value);
+  const [searchValue, setSearchValue] = React.useState<string>("");
+  const onChange = (newValue: React.SetStateAction<never[]>) => {
     setValue(newValue);
   };
 
-  
+  const renderTreeNodes = (nodes: TreeNodeData[] | undefined) => {
+    if (!nodes) {
+      return null;
+    }
+
+    return nodes.map((node) => {
+      const hasChildren = node.children && node.children.length > 0;
+      const matchesSearch =
+        !searchValue || node.title.toLowerCase().includes(searchValue.toLowerCase());
+
+      const showNode = matchesSearch || hasChildren;
+      if (node.children) {
+        // Nod cu copii, afișează recursiv copiii
+        return (
+          showNode && (
+            <TreeNode
+              key={node.value}
+              value={node.value}
+              title={node.title}
+              checkable={!node.children}
+            >
+              {node.children && renderTreeNodes(node.children)}
+            </TreeNode>
+          )
+        );
+      } else if (node.title.toLowerCase().includes(searchValue.toLowerCase())) {
+        // Nod leaf care se potrivește cu căutarea
+        return (
+          showNode && (
+            <TreeNode
+              key={node.value}
+              value={node.value}
+              title={node.title}
+              checkable={!node.children}
+            >
+              {node.children && renderTreeNodes(node.children)}
+            </TreeNode>
+          )
+        );
+      } else {
+        return null; // Nod leaf care nu se potrivește cu căutarea, nu-l afișa
+      }
+    });
+  };
+
+  const sendRecomandation = () => {
+    console.log(value);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent
-        onEscapeKeyDown={(e) => e.preventDefault()}
-        onPointerDownOutside={(e) => e.preventDefault()}
-        className="max-w-md"
-      >
-        <DialogHeader>
-          <DialogTitle>{t("conversations:recomand_analysis_dialog:title")}</DialogTitle>
-          <DialogDescription>
+    <ModalComponent
+      disableSubmitButton={isAnalysesLoading}
+      onSubmit={sendRecomandation}
+      title={t("conversations:recomand_analysis_dialog:title")}
+      isOpen={open}
+      setOpen={() => setRecomandationAnalysisOpen(false)}
+      submitBtnText={t("common:send")}
+      cancelBtnText={t("common:cancel")}
+      children={
+        <div>
+          <p className="pb-4 text-sm text-typography-secondary">
             {t("conversations:recomand_analysis_dialog.description")}
-          </DialogDescription>
-        </DialogHeader>
-        <TreeSelect
-          showSearch
-          dropdownStyle={{ maxHeight: 400, overflow: "auto", minWidth: 300 }}
-          placeholder="Please select"
-          dropdownMatchSelectWidth={false}
-          // placement={placement}
-          allowClear
-          treeDefaultExpandAll
-          treeData={treeData}
-        />
-        <DialogFooter>
-          <Button variant="outline" disabled={isSending} onClick={() => setOpen(false)}>
-            {t("common:cancel")}
-          </Button>
-          <Button disabled={isSending || content.length === 0} onClick={onRequestFileHandler}>
-            {t("common:send")}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </p>
+          <TreeSelect
+            value={value}
+            showSearch
+            style={{ width: "100%" }}
+            placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
+            treeCheckable={true}
+            treeDefaultExpandedKeys={["Favorite", "Categorii"]}
+            treeCheckStrictly={true}
+            onChange={onChange}
+            onSearch={(value) => setSearchValue(value)}
+          >
+            {renderTreeNodes(treeData)}
+          </TreeSelect>
+        </div>
+      }
+      formKeyId="employeeForm"
+    />
   );
 };

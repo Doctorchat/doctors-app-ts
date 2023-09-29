@@ -62,3 +62,27 @@ export interface UserCard {
   isOnline: boolean;
   investigations: UserCardInvestigation[];
 }
+
+export interface Category {
+  id: number;
+  synevo_id: string;
+  name: string;
+  tests: Test[];
+}
+
+export interface Test {
+  id: number;
+  synevo_id: string;
+  name: string;
+}
+
+export interface TreeNodeData {
+  title: string;
+  value: string;
+  children?: TreeNodeData[];
+}
+
+export interface Recomandation {
+  favorite: Category[]; // Favoritele sunt încă categorii
+  categories: Category[];
+}
