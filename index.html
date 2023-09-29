@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -24,5 +24,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+      // Enable pusher logging - don't include this in production
+      Pusher.logToConsole = true;
+
+      var pusher = new Pusher("7af3d8908b31f066b0a2", {
+        cluster: "eu",
+      });
+
+      var channel = pusher.subscribe("chat-patient");
+      channel.bind("receive-message-patient", function (data) {
+        alert(JSON.stringify(data));
+      });
+    </script>
   </body>
 </html>
