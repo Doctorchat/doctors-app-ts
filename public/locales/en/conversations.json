@@ -29,7 +29,8 @@
   "recomand_analysis_dialog": {
     "title": "Recommend analysis",
     "description": "Select the recommended analyses",
-    "placeholder": "Search and select for analyses... "
+    "placeholder": "Search and select for analyses... ",
+    "recomandation_text": "Recommended analyses:"
   },
   "request_file": "Request file",
   "click_to_select_file": "Click to select a file",

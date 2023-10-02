@@ -1,12 +1,6 @@
 import { Modal, ModalProps } from "antd";
-
-import { FC, ReactNode, useEffect, Dispatch, SetStateAction } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setMethodUpdate, setFormValidation } from "redux/slices/methodUpdateSlice";
-// import { RootState } from "redux/store";
-import { useModalContext } from "./modalProvider";
-import { useRecomandAnalysisStore } from "@/features/conversations/components/recomand-analysis";
-// import "./Modal.less";
+import { FC, ReactNode } from "react";
+import "antd/dist/reset.css";
 
 export interface IModalComponentProps extends ModalProps {
   displayFooter?: boolean;
@@ -22,7 +16,7 @@ export interface IModalComponentProps extends ModalProps {
   submitBtnText?: string;
   cancelBtnText?: string;
 
-  onSubmit?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void | boolean;
+  onSubmit?: () => Promise<void>;
   formKeyId?: string;
   responseStatus?: string;
   disableSubmitButton?: boolean;
@@ -79,7 +73,7 @@ const ModalComponent: FC<IModalComponentProps> = ({
                   <button
                     onClick={() => (setOpen ? setOpen(false) : null)}
                     type="button"
-                    className=" inline-flex h-9 items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-rose-600/90 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-rose-600/90"
+                    className="inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-800 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-neutral-100 active:text-neutral-900 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-neutral-100 md:hover:text-neutral-900"
                   >
                     {cancelBtnText ?? "close"}
                   </button>
@@ -88,7 +82,7 @@ const ModalComponent: FC<IModalComponentProps> = ({
                   <button
                     type="button"
                     onClick={onSubmit}
-                    className="inline-flex h-9 items-center justify-center rounded-md border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-800 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-neutral-100 active:text-neutral-900 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-neutral-100 md:hover:text-neutral-900"
+                    className="inline-flex h-9 items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-rose-600/90 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-rose-600/90"
                   >
                     {submitBtnText ?? "submit"}
                   </button>

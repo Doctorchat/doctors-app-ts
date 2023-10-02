@@ -31,6 +31,8 @@ import {
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
 import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis";
+import { useMediaQuery } from "usehooks-ts";
+import { useNavigate } from "react-router-dom";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -47,6 +49,8 @@ export const MessageBar: React.FC = () => {
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const navigate = useNavigate();
 
   const onSendMessageHandler = async () => {
     if (conversation?.chat_id) {
@@ -107,7 +111,13 @@ export const MessageBar: React.FC = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="top" align="start" className="w-48">
-                    <DropdownMenuItem onClick={() => setRecomandationAnalysisOpen(true)}>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        isMobile
+                          ? navigate(`/recomandation-analyze?id=${conversation.chat_id}`)
+                          : setRecomandationAnalysisOpen(true)
+                      }
+                    >
                       {t("conversations:recomand_analysis_dialog:title")}
                       <DropdownMenuShortcut>
                         <ClipboardDocumentListIcon className="h-5 w-5" />

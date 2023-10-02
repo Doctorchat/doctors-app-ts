@@ -125,6 +125,18 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
+
+                {message.recommendations?.length > 0 && (
+                  <MessageBubble
+                    variant={message.side === "in" ? "primary" : "secondary"}
+                    className="space-y-1"
+                  >
+                    {t("conversations:recomand_analysis_dialog:recomandation_text")}
+                    {message.recommendations.map((recomandation, index) => (
+                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
+                    ))}
+                  </MessageBubble>
+                )}
               </Message>
             ))}
           </div>

@@ -54,3 +54,9 @@ export const apiRequestFile = async (data: { chat_id: number; content: string })
 export const apiGetRecomandations = async () => {
   return await axiosInstance.get<Recomandation>("/analyzes").then((res) => res.data);
 };
+export const apiPutRecomandations = async (data: {
+  chat_id: number | null;
+  analyzes: number[];
+}) => {
+  return await axiosInstance.put<any>("/analyzes/recommend", data).then((res) => res.data);
+};

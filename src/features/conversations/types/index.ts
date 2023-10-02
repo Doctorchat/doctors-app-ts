@@ -27,6 +27,7 @@ export interface ConversationMessage {
   files: ConversationMessageFile[];
   created: string;
   updated: string;
+  recommendations: RecomandationsAnalyzes[];
 }
 
 export interface Conversation {
@@ -35,6 +36,10 @@ export interface Conversation {
   isAccepted: boolean;
   status: "open" | "closed";
   messages: ConversationMessage[];
+}
+export interface RecomandationsAnalyzes {
+  name: string;
+  synevo_id: string;
 }
 
 export interface UserCardInvestigation {
@@ -76,13 +81,19 @@ export interface Test {
   name: string;
 }
 
+export interface Recomandation {
+  favorite: Category[];
+  categories: Category[];
+}
+
+export interface RequestFileStore {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
 export interface TreeNodeData {
   title: string;
   value: string;
   children?: TreeNodeData[];
-}
-
-export interface Recomandation {
-  favorite: Category[]; // Favoritele sunt încă categorii
-  categories: Category[];
+  checkable?: boolean;
+  key?: any;
 }

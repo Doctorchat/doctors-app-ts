@@ -29,7 +29,8 @@
   "recomand_analysis_dialog": {
     "title": "Recomandă analize",
     "description": "Selectează analizele recomandate",
-    "placeholder": "Căutați și selectați pentru analize..."
+    "placeholder": "Căutați și selectați pentru analize...",
+    "recomandation_text": "Analizele recomandate:"
   },
   "request_file": "Solicitați un fișier",
   "click_to_select_file": "Faceți clic pentru a selecta un fișier",

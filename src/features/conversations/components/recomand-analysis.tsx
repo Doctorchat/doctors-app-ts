@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -7,23 +7,13 @@ import { createWithEqualityFn } from "zustand/traditional";
 
 import ModalComponent from "@/components/ui/modal";
 import { TreeSelect } from "antd";
-import { useRecomandation } from "../hooks/use-recomandations";
-import { useQuery } from "react-query";
-import { apiGetRecomandations } from "../api";
-import { Category, Recomandation } from "../types";
+import { extractIdsFromArray, useRecomandation } from "../hooks/use-recomandations";
+import { RequestFileStore, TreeNodeData } from "../types";
+import { apiPutRecomandations } from "../api";
+import { toast } from "@/hooks";
+import { getApiErrorMessages } from "@/utils";
 
-const { TreeNode, SHOW_PARENT } = TreeSelect;
-
-interface RequestFileStore {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}
-interface TreeNodeData {
-  title: string;
-  value: string;
-  children?: TreeNodeData[];
-  checkable?: boolean;
-}
+const { TreeNode } = TreeSelect;
 
 export const useRecomandAnalysisStore = createWithEqualityFn<RequestFileStore>(
   (set) => ({
@@ -38,11 +28,10 @@ export const RecomandAnalysis: React.FC = () => {
   const { t } = useTranslation();
 
   const open = useRecomandAnalysisStore((store) => store.open);
-  const { treeData, isAnalysesLoading } = useRecomandation();
+  const { treeData, isAnalysesLoading, chat_id } = useRecomandation();
 
   const [value, setValue] = React.useState([]);
 
-  const [searchValue, setSearchValue] = React.useState<string>("");
   const onChange = (newValue: React.SetStateAction<never[]>) => {
     setValue(newValue);
   };
@@ -53,47 +42,41 @@ export const RecomandAnalysis: React.FC = () => {
     }
 
     return nodes.map((node) => {
-      const hasChildren = node.children && node.children.length > 0;
-      const matchesSearch =
-        !searchValue || node.title.toLowerCase().includes(searchValue.toLowerCase());
-
-      const showNode = matchesSearch || hasChildren;
-      if (node.children) {
-        // Nod cu copii, afișează recursiv copiii
-        return (
-          showNode && (
-            <TreeNode
-              key={node.value}
-              value={node.value}
-              title={node.title}
-              checkable={!node.children}
-            >
-              {node.children && renderTreeNodes(node.children)}
-            </TreeNode>
-          )
-        );
-      } else if (node.title.toLowerCase().includes(searchValue.toLowerCase())) {
-        // Nod leaf care se potrivește cu căutarea
-        return (
-          showNode && (
-            <TreeNode
-              key={node.value}
-              value={node.value}
-              title={node.title}
-              checkable={!node.children}
-            >
-              {node.children && renderTreeNodes(node.children)}
-            </TreeNode>
-          )
-        );
-      } else {
-        return null; // Nod leaf care nu se potrivește cu căutarea, nu-l afișa
-      }
+      return (
+        <TreeNode key={node.value} value={node.value} title={node.title} checkable={!node.children}>
+          {node.children ? renderTreeNodes(node.children) : null}
+        </TreeNode>
+      );
     });
   };
+  const closeModal = () => setRecomandationAnalysisOpen(false);
 
-  const sendRecomandation = () => {
-    console.log(value);
+  const sendRecomandation = async () => {
+    const extractedIds = extractIdsFromArray(value);
+    const data = { chat_id: chat_id, analyzes: extractedIds };
+    try {
+      await apiPutRecomandations(data);
+      closeModal();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "common:something_went_wrong",
+        description: getApiErrorMessages(error),
+      });
+      closeModal();
+    }
+  };
+  const filterTreeNode = (inputValue: string, treeNode: TreeNodeData): boolean => {
+    if (treeNode.title.toLowerCase().includes(inputValue.toLowerCase())) {
+      return true;
+    }
+
+    if (treeNode.children) {
+      // Recursively check the children
+      return treeNode.children.some((child) => filterTreeNode(inputValue, child));
+    }
+
+    return false;
   };
 
   return (
@@ -102,7 +85,7 @@ export const RecomandAnalysis: React.FC = () => {
       onSubmit={sendRecomandation}
       title={t("conversations:recomand_analysis_dialog:title")}
       isOpen={open}
-      setOpen={() => setRecomandationAnalysisOpen(false)}
+      setOpen={closeModal}
       submitBtnText={t("common:send")}
       cancelBtnText={t("common:cancel")}
       children={
@@ -113,13 +96,14 @@ export const RecomandAnalysis: React.FC = () => {
           <TreeSelect
             value={value}
             showSearch
+            allowClear
+            multiple
             style={{ width: "100%" }}
             placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
-            treeCheckable={true}
-            treeDefaultExpandedKeys={["Favorite", "Categorii"]}
-            treeCheckStrictly={true}
+            treeCheckable
+            treeDefaultExpandAll
+            treeNodeFilterProp="title"
             onChange={onChange}
-            onSearch={(value) => setSearchValue(value)}
           >
             {renderTreeNodes(treeData)}
           </TreeSelect>
