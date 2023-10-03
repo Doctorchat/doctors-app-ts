@@ -33,9 +33,7 @@
         cluster: "eu",
       });
 
-      // chat-patient-doctor-{chat_id}
-
-      var channel = pusher.subscribe("chat-patient-doctor-26614");
+      var channel = pusher.subscribe("private-chat-patient-doctor-26614");
       channel.bind("receive-message-patient", function (data) {
         alert(JSON.stringify(data));
       });
