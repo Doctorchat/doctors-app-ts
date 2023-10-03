@@ -5,42 +5,20 @@ import { useQuery } from "react-query";
 
 import { apiGetConversation, apiGetUserCard } from "../api";
 import Pusher from "pusher-js";
-import io, { Socket } from "socket.io-client";
+import {
+  SOCKET_PUSHER_KEY,
+  SOCKET_PUSHER_CLUSTER,
+  SOCKET_PUSHER_EVENT_RECEIVE,
+  SOCKET_PUSHER_CHANNEL,
+} from "@/config/app";
 
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [id, setId] = React.useState<string | null>(null);
   const [incomingMessages, setIncomingMessages] = React.useState<any[]>([]);
 
-  // const WS = new WebSocket(
-  //   "wss://ws-eu.pusher.com/app/7af3d8908b31f066b0a2?protocol=7&client=js&version=8.3.0&flash=false"
-  // );
-  // console.log(WS);
-
-
-  // // Connection opened
-  // WS.addEventListener("open", (event) => {
-  //   WS.send("Hello Server!");
-  // });
-
-  // // Listen for messages
-  // WS.addEventListener("message", (event) => {
-  //   console.log("Message from server ", event.data);
-  // });
-
-  // const pusher = new Pusher("7af3d8908b31f066b0a2", {
-  //   cluster: "eu",
-  // });
-
-  // const channel = pusher.subscribe("chat-patient");
-  // channel.bind("receive-message-patient", (data: any) => {
-  //   console.log(
-  //     "Here -------------------------------------------------------------------------------",
-  //     data
-  //   );
-  //   alert(JSON.stringify(data));
-  //   setIncomingMessages((prev) => [...prev, data]);
-  // });
+  const [messages, setMessages] = React.useState<string[]>([]);
+  const [newMessage, setNewMessage] = React.useState<string>("");
 
   const {
     data: conversation,
@@ -66,6 +44,29 @@ export const useConversation = () => {
     },
     enabled: Boolean(conversation?.user_id),
   });
+
+  React.useEffect(() => {
+    // Configurează Pusher cu cheia ta
+    const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
+
+    // Abonează-te la canalul Pusher
+    // const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + conversation?.chat_id);
+    // if (conversation?.chat_id) {
+    const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + "26614");
+    console.log(conversation?.chat_id);
+    // Ascultă evenimentul 'new-message' și adaugă mesajul în starea locală
+    channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+      alert(JSON.stringify(data));
+      setMessages((prevMessages) => [...prevMessages, data.message]);
+    });
+    // }
+
+    // Cleanup: Dezabonează-te de la canal la dezasamblare
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [conversation?.chat_id]);
 
   React.useEffect(() => {
     if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
