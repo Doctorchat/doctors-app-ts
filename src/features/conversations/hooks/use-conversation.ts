@@ -45,28 +45,28 @@ export const useConversation = () => {
     enabled: Boolean(conversation?.user_id),
   });
 
-  React.useEffect(() => {
-    // Configurează Pusher cu cheia ta
-    const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
+  // React.useEffect(() => {
+  //   // Configurează Pusher cu cheia ta
+  //   const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
 
-    // Abonează-te la canalul Pusher
-    // const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + conversation?.chat_id);
-    // if (conversation?.chat_id) {
-    const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + "26614");
-    console.log(conversation?.chat_id);
-    // Ascultă evenimentul 'new-message' și adaugă mesajul în starea locală
-    channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
-      alert(JSON.stringify(data));
-      setMessages((prevMessages) => [...prevMessages, data.message]);
-    });
-    // }
+  //   // Abonează-te la canalul Pusher
+  //   // const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + conversation?.chat_id);
+  //   // if (conversation?.chat_id) {
+  //   const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + "26614");
+  //   console.log(conversation?.chat_id);
+  //   // Ascultă evenimentul 'new-message' și adaugă mesajul în starea locală
+  //   channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+  //     alert(JSON.stringify(data));
+  //     setMessages((prevMessages) => [...prevMessages, data.message]);
+  //   });
+  //   // }
 
-    // Cleanup: Dezabonează-te de la canal la dezasamblare
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [conversation?.chat_id]);
+  //   // Cleanup: Dezabonează-te de la canal la dezasamblare
+  //   return () => {
+  //     channel.unbind_all();
+  //     channel.unsubscribe();
+  //   };
+  // }, [conversation?.chat_id]);
 
   React.useEffect(() => {
     if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
