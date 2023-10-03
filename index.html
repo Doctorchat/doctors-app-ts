@@ -30,6 +30,7 @@
 
       var pusher = new Pusher("19727a34d355626f8a23", {
         cluster: "eu",
+        encrypted: true,
       });
 
       var channel = pusher.subscribe("private-chat-patient-doctor-26614");
