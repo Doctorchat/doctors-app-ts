@@ -13,6 +13,7 @@ import {
 import { apiPutRecomandations } from "@/features/conversations/api";
 import { useNavigate } from "react-router-dom";
 import { Spinner } from "@/components/ui";
+import { useQueryClient } from "react-query";
 
 const { TreeNode } = TreeSelect;
 
@@ -37,10 +38,11 @@ export const useRecomandationTemplatesStore = createWithEqualityFn<MessageTempla
   shallow
 );
 export const View = () => {
-  const { treeData, chat_id } = useRecomandation();
+  const { treeData, chat_id, typeConversetion } = useRecomandation();
   const [value, setValue] = React.useState([]);
   const navigate = useNavigate();
   const [isSending, setIsSending] = React.useState(false);
+  const queryClient = useQueryClient();
   const onChange = (newValue: React.SetStateAction<never[]>) => {
     setValue(newValue);
   };
@@ -59,11 +61,17 @@ export const View = () => {
   };
 
   const sendRecomandation = async () => {
+    console.log(typeConversetion);
+    console.log(chat_id);
     const extractedIds = extractIdsFromArray(value);
     const data = { chat_id: chat_id, analyzes: extractedIds };
     try {
       setIsSending(true);
       await apiPutRecomandations(data);
+      await Promise.allSettled([
+        queryClient.invalidateQueries(["conversations", "patients"]),
+        queryClient.invalidateQueries(["conversation", chat_id]),
+      ]);
 
       navigate(`/conversations?id=${chat_id}&anonymous=false`);
     } catch (error) {

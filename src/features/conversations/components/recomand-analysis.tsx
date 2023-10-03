@@ -12,6 +12,8 @@ import { RequestFileStore, TreeNodeData } from "../types";
 import { apiPutRecomandations } from "../api";
 import { toast } from "@/hooks";
 import { getApiErrorMessages } from "@/utils";
+import { useConversationLayoutStore } from "./layout";
+import { useQueryClient } from "react-query";
 
 const { TreeNode } = TreeSelect;
 
@@ -22,10 +24,14 @@ export const useRecomandAnalysisStore = createWithEqualityFn<RequestFileStore>(
   }),
   shallow
 );
-
-export const RecomandAnalysis: React.FC = () => {
+type RecProps = {
+  id: any;
+  conversationsType: any;
+};
+export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) => {
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const open = useRecomandAnalysisStore((store) => store.open);
   const { treeData, isAnalysesLoading, chat_id } = useRecomandation();
@@ -50,19 +56,22 @@ export const RecomandAnalysis: React.FC = () => {
     });
   };
   const closeModal = () => setRecomandationAnalysisOpen(false);
-
   const sendRecomandation = async () => {
     const extractedIds = extractIdsFromArray(value);
     const data = { chat_id: chat_id, analyzes: extractedIds };
     try {
       await apiPutRecomandations(data);
-      closeModal();
+      await Promise.allSettled([
+        queryClient.invalidateQueries(["conversations", conversationsType]),
+        queryClient.invalidateQueries(["conversation", id]),
+      ]);
     } catch (error) {
       toast({
         variant: "destructive",
         title: "common:something_went_wrong",
         description: getApiErrorMessages(error),
       });
+    } finally {
       closeModal();
     }
   };

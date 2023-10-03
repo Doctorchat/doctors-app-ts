@@ -114,7 +114,9 @@ export const MessageBar: React.FC = () => {
                     <DropdownMenuItem
                       onClick={() =>
                         isMobile
-                          ? navigate(`/recomandation-analyze?id=${conversation.chat_id}`)
+                          ? navigate(
+                              `/recomandation-analyze?id=${conversation.chat_id}?type=${conversationsType}`
+                            )
                           : setRecomandationAnalysisOpen(true)
                       }
                     >
@@ -161,7 +163,7 @@ export const MessageBar: React.FC = () => {
         <UploadFile />
         <RequestFile />
         <MessageTemplates />
-        <RecomandAnalysis />
+        <RecomandAnalysis conversationsType={conversationsType} id={id} />
       </>
     );
   }

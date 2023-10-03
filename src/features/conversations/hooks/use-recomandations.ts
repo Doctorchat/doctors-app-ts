@@ -12,11 +12,17 @@ export const useRecomandation = () => {
   });
   const [searchParams] = useSearchParams();
   const [chat_id, setChatId] = React.useState<number | null>(null);
+  const [typeConversetion, setTypeConversetion] = React.useState<string | null>(null);
+
   React.useEffect(() => {
     if (searchParams.has("id")) {
       const id = searchParams.get("id") ?? null;
       id && setChatId(parseInt(id));
     } else setChatId(null);
+    if (searchParams.has("type")) {
+      const type = searchParams.get("type") ?? null;
+      type && setTypeConversetion(type);
+    } else setTypeConversetion(null);
   }, [searchParams]);
   const treeData: TreeNodeData[] = [
     {
@@ -51,8 +57,9 @@ export const useRecomandation = () => {
       treeData,
       chat_id,
       isAnalysesLoading,
+      typeConversetion,
     }),
-    [treeData, chat_id, isAnalysesLoading]
+    [treeData, chat_id, typeConversetion, isAnalysesLoading]
   );
 };
 
