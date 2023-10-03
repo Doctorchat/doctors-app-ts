@@ -33,8 +33,12 @@
       });
 
       var channel = pusher.subscribe("private-chat-patient-doctor-26614");
+      var channel2 = pusher.subscribe("private-chat-patient-doctor-26614");
       channel.bind("receive-message-patient", function (data) {
-        alert(JSON.stringify(data));
+        alert(JSON.stringify(data), channel);
+      });
+      channel2.bind("receive-message-patient", function (data) {
+        alert(JSON.stringify(data), channel2);
       });
     </script>
   </body>
