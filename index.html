@@ -34,12 +34,16 @@
       });
 
       var channel1 = pusher.subscribe("public-channel-chat-26614");
-      var channel2 = pusher.subscribe("private-chat-patient-doctor-26614");
+      var channel2 = pusher.subscribe("private-chat-26614");
+      var channel3 = pusher.subscribe("private-chat-patient-doctor-26614");
       channel1.bind("receive-message-patient", function (data) {
         alert(JSON.stringify(data), channel1);
       });
       channel2.bind("receive-message-patient", function (data) {
         alert(JSON.stringify(data), channel2);
+      });
+      channel3.bind("receive-message-patient", function (data) {
+        alert(JSON.stringify(data), channel3);
       });
     </script>
   </body>
