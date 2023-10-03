@@ -30,15 +30,10 @@
 
       var pusher = new Pusher("19727a34d355626f8a23", {
         cluster: "eu",
-        encrypted: true,
       });
 
-      var channel = pusher.subscribe("chat-patient-doctor");
-      var channel1 = pusher.subscribe("chat-patient-doctor-26614");
+      var channel1 = pusher.subscribe("public-channel-chat-26614");
       var channel2 = pusher.subscribe("private-chat-patient-doctor-26614");
-      channel.bind("receive-message-patient", function (data) {
-        alert(JSON.stringify(data), channel);
-      });
       channel1.bind("receive-message-patient", function (data) {
         alert(JSON.stringify(data), channel1);
       });
