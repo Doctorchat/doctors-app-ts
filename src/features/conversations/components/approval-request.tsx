@@ -30,6 +30,7 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
+import { useChat } from "./chat-context";
 
 const schema = z.object({
   message: z.string().min(10),
@@ -42,7 +43,8 @@ export interface ApprovalRequestProps extends React.HTMLAttributes<HTMLDivElemen
 export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...props }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { id, conversation } = useConversation();
+  const { id } = useConversation();
+  const { state, dispatch } = useChat();
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
@@ -95,14 +97,14 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
     }
   };
 
-  if (conversation?.isAccepted === false && conversation?.status === "open") {
+  if (state.conversation?.isAccepted === false && state.conversation?.status === "open") {
     return (
       <>
         <div
           className={cn(
             "absolute inset-x-0 bottom-0 z-40 w-full rounded-b-lg p-5 text-center",
             "bg-white",
-            className,
+            className
           )}
           {...props}
         >

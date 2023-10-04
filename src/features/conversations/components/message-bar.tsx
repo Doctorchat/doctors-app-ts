@@ -36,12 +36,13 @@ import { useChat } from "./chat-context";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
-  const { id, conversation } = useConversation();
+  const { id } = useConversation();
   // console.log(conversation)
   // console.log(conversation);
   const { toast } = useToast();
   const [chatIdWs, setChatIdWs] = React.useState<string | null>(null);
   const [searchParams] = useSearchParams();
+
 
   // React.useEffect(() => {
   //   const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
@@ -77,11 +78,11 @@ export const MessageBar: React.FC = () => {
   const [isFocused, setIsFocused] = React.useState(false);
   const { state, dispatch } = useChat();
   const onSendMessageHandler = async () => {
-    if (conversation?.chat_id) {
+    if (state.conversation?.chat_id) {
       setIsSending(true);
       try {
         await apiSendMessage({
-          chat_id: conversation.chat_id,
+          chat_id: state.conversation.chat_id,
           content,
         });
 
@@ -104,7 +105,7 @@ export const MessageBar: React.FC = () => {
     }
   };
 
-  if (conversation?.isAccepted && conversation?.status === "open") {
+  if (state.conversation?.isAccepted && state.conversation?.status === "open") {
     return (
       <>
         <div className="p-3 md:p-5 lg:p-3 xl:p-5">

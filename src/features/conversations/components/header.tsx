@@ -23,18 +23,20 @@ import {
 } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { useChat } from "./chat-context";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, isCardLoading, isCardErrored, conversation } = useConversation();
+  const { card, isCardLoading, isCardErrored } = useConversation();
+    const { state, dispatch } = useChat();
 
   const navigate = useNavigate();
 
   const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const isLoading = isCardLoading || (!conversation?.user_id && !isCardErrored);
+  const isLoading = isCardLoading || (!state.conversation?.user_id && !isCardErrored);
 
   return (
     <>

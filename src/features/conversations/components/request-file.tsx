@@ -21,6 +21,7 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { getApiErrorMessages } from "@/utils";
+import { useChat } from "./chat-context";
 
 interface RequestFileStore {
   open: boolean;
@@ -32,13 +33,14 @@ export const useRequestFileStore = createWithEqualityFn<RequestFileStore>(
     open: false,
     setOpen: (open) => set({ open }),
   }),
-  shallow,
+  shallow
 );
 
 export const RequestFile: React.FC = () => {
   const { t } = useTranslation();
-  const { id, conversation } = useConversation();
+  const { id } = useConversation();
   const { toast } = useToast();
+  const { state, dispatch } = useChat();
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
@@ -56,11 +58,11 @@ export const RequestFile: React.FC = () => {
   };
 
   const onRequestFileHandler = async () => {
-    if (content && conversation?.chat_id) {
+    if (content && state.conversation?.chat_id) {
       setIsSending(true);
       try {
         await apiRequestFile({
-          chat_id: conversation.chat_id,
+          chat_id: state.conversation.chat_id,
           content,
         });
         await Promise.allSettled([

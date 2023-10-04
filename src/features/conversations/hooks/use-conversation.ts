@@ -34,40 +34,38 @@ export const useConversation = () => {
     enabled: Boolean(id),
   });
 
-  // const {
-  //   data: card,
-  //   isLoading: isCardLoading,
-  //   isError: isCardErrored,
-  // } = useQuery({
-  //   queryKey: ["user-card", conversation?.user_id],
-  //   queryFn: async () => {
-  //     if (conversation?.user_id)
-  //       return apiGetUserCard(conversation.user_id, searchParams.get("anonymous") === "true");
-  //   },
-  //   enabled: Boolean(conversation?.user_id),
-  // });
-  const socketChannels = {};
+  const {
+    data: card,
+    isLoading: isCardLoading,
+    isError: isCardErrored,
+  } = useQuery({
+    queryKey: ["user-card", state.conversation?.user_id],
+    queryFn: async () => {
+      if (state.conversation?.user_id)
+        return apiGetUserCard(state.conversation.user_id, searchParams.get("anonymous") === "true");
+    },
+    enabled: Boolean(state.conversation?.user_id),
+  });
 
   React.useEffect(() => {
     const role = current_user.role === 2;
+    console.log(conversationData);
 
-    if (pusher && conversationData && !hasProcessedData1) {
+    if (pusher && conversationData && state.conversation.messages) {
       const channel = pusher.subscribe(
         (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + current_chat_id
       );
       channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
         const { content_data } = data;
         const { message } = JSON.parse(content_data);
-        console.log(message);
-        if (!hasProcessedData1) {
-          hasProcessedData1 = true;
-          const payloaData = message;
-          // const payloaData = messages.message;
-          console.log(message);
-          dispatch({ type: "ADD_MESSAGE", payload: payloaData });
-
+        if (
+          !state.conversation.messages.some((existingMessage) => existingMessage.id === message.id)
+        ) {
+          // Adăugați mesajul în starea Redux doar dacă nu există deja
+          dispatch({ type: "ADD_MESSAGE", payload: message });
+          console.log(state.conversation.messages, conversationData.messages, message);
           alert(JSON.stringify(data));
-          console.log(state, conversationData?.messages.length);
+          // return;
         }
       });
 
@@ -79,7 +77,7 @@ export const useConversation = () => {
         // pusher.unsubscribe("your-channel-name");
       };
     }
-  }, [pusher, conversationData]);
+  }, [pusher, state.conversation.messages]);
 
   React.useEffect(() => {
     if (conversationData) {
@@ -97,14 +95,25 @@ export const useConversation = () => {
   // console.log(conversation, state.conversation);
 
   // console.log(state.messages, conversation?.messages);
-
+  // console.log(card);
   return React.useMemo(
     () => ({
       id,
+      card,
+      isCardLoading,
+      isCardErrored,
       conversation: state.conversation,
       isConversationLoading,
       isConversationErrored,
     }),
-    [state.conversation, id, isConversationErrored, isConversationLoading]
+    [
+      state.conversation,
+      id,
+      card,
+      isCardLoading,
+      isCardErrored,
+      isConversationErrored,
+      isConversationLoading,
+    ]
   );
 };

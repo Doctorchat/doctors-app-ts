@@ -19,11 +19,13 @@ import { ConversationMessage } from "../types";
 
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
+import { useChat } from "./chat-context";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, conversation } = useConversation();
+  const { card } = useConversation();
+  const { state, dispatch } = useChat();
 
   const ref = React.useRef<HTMLDivElement>(null);
   const scroll = React.useRef(0);
@@ -31,7 +33,7 @@ export const View: React.FC = () => {
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
 
-    for (const message of conversation?.messages ?? []) {
+    for (const message of state.conversation?.messages ?? []) {
       const groupKey = format(parseISO(message.created), "yyyy-MM-dd");
 
       if (groupKey in groups) {
@@ -45,7 +47,7 @@ export const View: React.FC = () => {
       key,
       messages,
     }));
-  }, [conversation?.messages]);
+  }, [state.conversation?.messages]);
 
   React.useEffect(() => {
     const onUpdate = () => {
