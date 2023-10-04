@@ -130,7 +130,6 @@ export const View: React.FC = () => {
           </div>
         ))}
       </div>
-
       <ApprovalRequest />
       <MessageBar />
     </div>

@@ -20,5 +20,6 @@ export const FIREBASE_PERMISSION = "notificationPermission";
 
 export const SOCKET_PUSHER_KEY = "19727a34d355626f8a23";
 export const SOCKET_PUSHER_CLUSTER = "eu";
-export const SOCKET_PUSHER_EVENT_RECEIVE = "receive-message-patient"
-export const SOCKET_PUSHER_CHANNEL = "chat-patient-doctor-";
+export const SOCKET_PUSHER_EVENT_RECEIVE = "receive-message-patient";
+export const SOCKET_PUSHER_CHANNEL_DOCTOR = "chat-doctor-to-patient-";
+export const SOCKET_PUSHER_CHANNEL_PATIENT = "chat-patient-to-doctor-";
