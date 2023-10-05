@@ -36,6 +36,5 @@ export const initialState: ChatState = {
     status: "",
     type: "",
     user_id: 0,
-    // ... alte proprietăți ale conversation
   },
 };

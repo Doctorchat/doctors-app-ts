@@ -23,3 +23,5 @@ export const SOCKET_PUSHER_CLUSTER = "eu";
 export const SOCKET_PUSHER_EVENT_RECEIVE = "receive-message-patient";
 export const SOCKET_PUSHER_CHANNEL_DOCTOR = "chat-doctor-to-patient-";
 export const SOCKET_PUSHER_CHANNEL_PATIENT = "chat-patient-to-doctor-";
+export const SOCKET_PUSHER_CHANNEL_LIST_CHATS = "chat-list-";
+export const SOCKET_PUSHER_EVENT_LIST_CHATS = "update-chat-list";
