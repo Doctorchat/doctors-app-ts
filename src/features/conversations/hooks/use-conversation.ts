@@ -12,7 +12,6 @@ import usePusher from "./usePusher";
 import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
 
 let hasProcessedData = false;
-let hasProcessedData1 = false;
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [id, setId] = React.useState<string | null>(null);
@@ -42,12 +41,12 @@ export const useConversation = () => {
     isLoading: isCardLoading,
     isError: isCardErrored,
   } = useQuery({
-    queryKey: ["user-card", chatContent?.user_id],
+    queryKey: ["user-card", conversationData?.user_id],
     queryFn: async () => {
-      if (chatContent?.user_id)
-        return apiGetUserCard(chatContent.user_id, searchParams.get("anonymous") === "true");
+      if (conversationData?.user_id)
+        return apiGetUserCard(conversationData.user_id, searchParams.get("anonymous") === "true");
     },
-    enabled: Boolean(chatContent?.user_id),
+    enabled: Boolean(id),
   });
 
   React.useEffect(() => {
@@ -60,14 +59,12 @@ export const useConversation = () => {
       channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
         const { content_data } = data;
         const { message } = JSON.parse(content_data);
-        // console.log(chatContent, message);
         if (
           !chatContent.messages.some(
             (existingMessage: { id: any }) => existingMessage.id === message.id
           )
         ) {
           dispatch(addMessage(message));
-          // alert(JSON.stringify(data));
         }
       });
 
@@ -80,14 +77,14 @@ export const useConversation = () => {
 
   React.useEffect(() => {
     if (conversationData) {
-      if (!hasProcessedData) {
+      if (!hasProcessedData || chatContent?.chat_id !== id) {
         hasProcessedData = true;
         dispatch(
           addMessages({ conversation: conversationData, messages: conversationData.messages })
         );
       }
     }
-  }, [conversationData, dispatch]);
+  }, [conversationData]);
 
   React.useEffect(() => {
     if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
