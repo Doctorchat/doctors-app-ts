@@ -20,20 +20,21 @@ import { ConversationMessage } from "../types";
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
 import { useChat } from "./chat-context";
+import { useDispatch, useSelector } from "react-redux";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
   const { card } = useConversation();
-  const { state, dispatch } = useChat();
-
   const ref = React.useRef<HTMLDivElement>(null);
   const scroll = React.useRef(0);
-
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
 
-    for (const message of state.conversation?.messages ?? []) {
+    for (const message of chatConversation?.messages ?? []) {
       const groupKey = format(parseISO(message.created), "yyyy-MM-dd");
 
       if (groupKey in groups) {
@@ -47,7 +48,7 @@ export const View: React.FC = () => {
       key,
       messages,
     }));
-  }, [state.conversation?.messages]);
+  }, [chatConversation?.messages]);
 
   React.useEffect(() => {
     const onUpdate = () => {

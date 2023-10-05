@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { ConversationMessage } from "../types";
 
+import { Provider } from "react-redux";
+
 interface ChatState {
   conversation: {
     messages: ConversationMessage[];
@@ -81,6 +83,8 @@ interface ChatProviderProps {
 
 export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(chatReducer, initialState);
+
+  // Utilizați Provider din react-redux pentru a furniza starea și dispatcher-ul
   return <ChatContext.Provider value={{ state, dispatch }}>{children}</ChatContext.Provider>;
 };
 

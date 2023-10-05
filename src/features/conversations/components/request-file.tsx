@@ -22,6 +22,7 @@ import {
 import { useToast } from "@/hooks";
 import { getApiErrorMessages } from "@/utils";
 import { useChat } from "./chat-context";
+import { useSelector } from "react-redux";
 
 interface RequestFileStore {
   open: boolean;
@@ -40,7 +41,9 @@ export const RequestFile: React.FC = () => {
   const { t } = useTranslation();
   const { id } = useConversation();
   const { toast } = useToast();
-  const { state, dispatch } = useChat();
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
@@ -58,11 +61,11 @@ export const RequestFile: React.FC = () => {
   };
 
   const onRequestFileHandler = async () => {
-    if (content && state.conversation?.chat_id) {
+    if (content && chatConversation?.chat_id) {
       setIsSending(true);
       try {
         await apiRequestFile({
-          chat_id: state.conversation.chat_id,
+          chat_id: chatConversation.chat_id,
           content,
         });
         await Promise.allSettled([

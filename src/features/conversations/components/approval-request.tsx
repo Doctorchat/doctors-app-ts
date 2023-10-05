@@ -31,6 +31,7 @@ import {
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
 import { useChat } from "./chat-context";
+import { useSelector } from "react-redux";
 
 const schema = z.object({
   message: z.string().min(10),
@@ -44,7 +45,9 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   const { t } = useTranslation();
   const { toast } = useToast();
   const { id } = useConversation();
-  const { state, dispatch } = useChat();
+   const { chatConversation } = useSelector((store: any) => ({
+     chatConversation: store.chatContent?.conversation,
+   }));
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
@@ -97,7 +100,7 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
     }
   };
 
-  if (state.conversation?.isAccepted === false && state.conversation?.status === "open") {
+  if (chatConversation?.isAccepted === false && chatConversation?.status === "open") {
     return (
       <>
         <div
