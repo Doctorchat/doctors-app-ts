@@ -14,7 +14,6 @@ import { useConversation } from "../hooks";
 import { Button, Dialog, DialogContent, DialogFooter } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { bytesToSize, cn, getApiErrorMessages, validateFile } from "@/utils";
-import { useChat } from "./chat-context";
 import { useSelector } from "react-redux";
 
 export const ALLOWED_FILE_TYPES = [

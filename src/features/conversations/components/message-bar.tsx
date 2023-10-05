@@ -32,7 +32,7 @@ import { cn, getApiErrorMessages } from "@/utils";
 import Pusher from "pusher-js";
 import { SOCKET_PUSHER_CLUSTER, SOCKET_PUSHER_EVENT_RECEIVE, SOCKET_PUSHER_KEY } from "@/config";
 import { useSearchParams } from "react-router-dom";
-import { useChat } from "./chat-context";
+
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -70,7 +70,6 @@ export const MessageBar: React.FC = () => {
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
-  const { state, dispatch } = useChat();
   const onSendMessageHandler = async () => {
     if (conversation?.chat_id) {
       setIsSending(true);

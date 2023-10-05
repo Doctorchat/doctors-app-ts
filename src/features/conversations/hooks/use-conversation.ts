@@ -34,6 +34,7 @@ export const useConversation = () => {
       if (id) return apiGetConversation(id);
     },
     enabled: Boolean(id),
+    staleTime: 0,
   });
 
   const {
@@ -46,7 +47,7 @@ export const useConversation = () => {
       if (conversationData?.user_id)
         return apiGetUserCard(conversationData.user_id, searchParams.get("anonymous") === "true");
     },
-    enabled: Boolean(id),
+    enabled: Boolean(conversationData?.user_id),
   });
 
   React.useEffect(() => {

@@ -19,8 +19,7 @@ import { ConversationMessage } from "../types";
 
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
-import { useChat } from "./chat-context";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();

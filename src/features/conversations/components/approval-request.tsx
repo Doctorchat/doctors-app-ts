@@ -30,7 +30,6 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
-import { useChat } from "./chat-context";
 import { useSelector } from "react-redux";
 
 const schema = z.object({
