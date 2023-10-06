@@ -56,3 +56,15 @@ export const apiSendFile = async (data: { chat_id: number; file: File }) => {
 export const apiRequestFile = async (data: { chat_id: number; content: string }) => {
   return await axiosInstance.post(`/chat/request-media/${data.chat_id}`, { content: data.content });
 };
+export const apiReceiveDoctorsList = async (doctor_id: number) => {
+  return await axiosInstance
+    .get(`/doctor/doctors-list?doctor_id=${doctor_id}`)
+    .then((res) => res.data);
+};
+
+export const apiCreateNewChat = async (data: { title: string; doctorIds: number[] }) => {
+  return await axiosInstance.post(`/doctor/new`, {
+    title: data.title,
+    doctorIds: data.doctorIds,
+  });
+};

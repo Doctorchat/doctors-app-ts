@@ -2,6 +2,7 @@
   "conversations": "Диалоги",
   "recent_conversations": "Последние диалоги",
   "select_conversation": "Выберите диалог",
+  "create_conversation": "Выберите или создайте диалог",
   "patients": "Пациенты",
   "doctors": "Врачи",
   "corporate_client": "Корпоративный",
@@ -23,6 +24,18 @@
     "title": "Запрос файла",
     "description": "Пожалуйста, укажите причину запроса файла",
     "placeholder": "Причина запроса файла..."
+  },
+  "new_chat_doctors": {
+    "title": "Создание нового чата",
+    "create_button": "Создание чата",
+    "input": {
+      "description": "Название чата",
+      "placeholder": "Имя ..."
+    },
+    "select": {
+      "description": "Выберите врачей",
+      "placeholder": "Выберите ..."
+    }
   },
   "enter_message": "Введите сообщение",
   "upload_file": "Загрузить файл",

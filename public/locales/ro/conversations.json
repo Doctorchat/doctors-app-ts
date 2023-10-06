@@ -2,12 +2,13 @@
   "conversations": "Conversații",
   "recent_conversations": "Conversații recente",
   "select_conversation": "Selectați o conversație",
+  "create_conversation": "Selectați sau creați o conversație",
   "patients": "Pacienți",
   "doctors": "Doctori",
   "corporate_client": "Corporativ",
-  "actualy_chats":"Actuale",
-  "chats_closed":"Chat-uri închise",
-  "soon":"Coming soon",
+  "actualy_chats": "Actuale",
+  "chats_closed": "Chat-uri închise",
+  "soon": "Coming soon",
   "no_conversations": "Nu aveți nici o solicitare",
   "no_schedule": "Nu aveți nici o programare",
   "schedule": "Agenda",
@@ -23,6 +24,18 @@
     "title": "Solicitare fișier",
     "description": "Vă rugăm să furnizați un motiv pentru solicitarea fișierului",
     "placeholder": "Motivul solicitării fișierului..."
+  },
+  "new_chat_doctors": {
+    "title": "Crearea unui chat nou",
+    "create_button":"Crearea chatului",
+    "input": {
+      "description": "Denumirea chatului",
+      "placeholder": "Denumirea ..."
+    },
+    "select": {
+      "description": "Selectați doctorii",
+      "placeholder": "Selectați ..."
+    }
   },
   "enter_message": "Introduceți mesajul",
   "upload_file": "Încărcați un fișier",

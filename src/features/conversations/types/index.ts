@@ -11,8 +11,40 @@ export interface ConversationPreview {
   type: string;
   unread: number;
   updated: string;
+  title?: string;
+  lastMessage?: {
+    content?: string;
+  };
+  unreadCount?: number;
 }
-
+export interface ConversationDoctors {
+  created_at: string;
+  id: number;
+  lastMessage: LastMessageDc[];
+  messages: LastMessageDc[];
+  participants: ParticipantsList[];
+  title: string;
+  unreadCount: number;
+  updated_at: string;
+}
+export interface LastMessageDc {
+  content: string;
+  created_at: string;
+  doctor_chat_id: number;
+  id: number;
+  seen: number;
+  type: string;
+  updated_at: string;
+  user_id: 1;
+}
+export interface ParticipantsList {
+  created_at: string;
+  doctor_chat_id: number;
+  id: number;
+  updated_at: string;
+  user: any;
+  user_id: 1;
+}
 export interface ConversationMessageFile {
   id: number;
   name: string;

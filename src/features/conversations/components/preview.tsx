@@ -1,4 +1,4 @@
-import type { ConversationPreview } from "../types";
+import type { ConversationDoctors, ConversationPreview } from "../types";
 
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -17,12 +17,15 @@ export interface PreviewProps {
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
+  console.log(conversation);
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";
   return (
     <Link
-      to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${conversation.isAnonym}`}
+      to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${
+        conversation.isAnonym ?? "false"
+      }`}
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",
@@ -31,8 +34,11 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
     >
       <div className="relative flex-shrink-0">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={conversation.avatar} alt={conversation.name} />
-          <AvatarFallback>{getInitials(conversation.name)}</AvatarFallback>
+          <AvatarImage
+            src={conversation.avatar ?? null}
+            alt={conversation.name ?? conversation.title}
+          />
+          <AvatarFallback>{getInitials(conversation.name ?? conversation.title)}</AvatarFallback>
         </Avatar>
         {conversation.isOnline && (
           <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
@@ -42,7 +48,9 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
       <div className="ml-3 flex-1 overflow-hidden">
         <div className="flex h-5 items-center overflow-hidden">
           <div className="flex flex-1 items-center overflow-hidden">
-            <h2 className="truncate font-medium text-typography-primary">{conversation.name}</h2>
+            <h2 className="truncate font-medium text-typography-primary">
+              {conversation.name ?? conversation.title}
+            </h2>
 
             {conversation.company_id && (
               <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
@@ -66,10 +74,15 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
         </div>
 
         <div className="mt-1.5 flex h-5 items-center overflow-hidden">
-          <p className="flex-1 truncate text-sm">{conversation.description}</p>
-          {conversation.unread > 0 && (
+          {conversation.description && (
+            <p className="flex-1 truncate text-sm">{conversation.description}</p>
+          )}
+          {conversation.lastMessage && (
+            <p className="flex-1 truncate text-sm">{conversation.lastMessage.content}</p>
+          )}
+          {(conversation.unread ?? conversation.unreadCount) > 0 && (
             <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
-              {conversation.unread}
+              {conversation.unread ?? conversation.unreadCount}
             </span>
           )}
         </div>
