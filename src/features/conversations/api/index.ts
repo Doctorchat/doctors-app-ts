@@ -24,6 +24,12 @@ export const apiGetUserCard = async (id: number, anonymous: boolean) => {
     .then((res) => res.data);
 };
 
+export const apiGetDoctorChatCard = async (doctor_chat_id: number) => {
+  return await axiosInstance
+    .get<any>(`/doctor/chat-info/${doctor_chat_id}`)
+    .then((res) => res.data);
+};
+
 export const apiAcceptConversation = async (id: string) => {
   return await axiosInstance.post("/chat/accept", {
     chat_id: id,

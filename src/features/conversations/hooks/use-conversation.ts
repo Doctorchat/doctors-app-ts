@@ -3,7 +3,12 @@ import { useSearchParams } from "react-router-dom";
 
 import { useQuery } from "react-query";
 
-import { apiGetConversation, apiGetConversationDoctors, apiGetUserCard } from "../api";
+import {
+  apiGetConversation,
+  apiGetConversationDoctors,
+  apiGetDoctorChatCard,
+  apiGetUserCard,
+} from "../api";
 
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
@@ -31,15 +36,24 @@ export const useConversation = () => {
     isLoading: isCardLoading,
     isError: isCardErrored,
   } = useQuery({
-    queryKey: ["user-card", conversation?.user_id ?? conversation?.doctor_chat_id],
+    queryKey: ["user-card", conversation?.user_id],
     queryFn: async () => {
-      if (conversation?.user_id || conversation?.doctor_chat_id)
-        return apiGetUserCard(
-          conversation.user_id ?? conversation?.doctor_chat_id,
-          searchParams.get("anonymous") === "true"
-        );
+      if (conversation?.user_id)
+        return apiGetUserCard(conversation.user_id, searchParams.get("anonymous") === "true");
     },
-    enabled: Boolean(conversation?.user_id ?? conversation?.doctor_chat_id),
+    enabled: Boolean(conversation?.user_id),
+  });
+
+  const {
+    data: cardDoctors,
+    isLoading: isCardDoctorsLoading,
+    isError: isCardDoctorsErrored,
+  } = useQuery({
+    queryKey: ["card-doctor", conversation?.doctor_chat_id],
+    queryFn: async () => {
+      if (conversation?.doctor_chat_id) return apiGetDoctorChatCard(conversation?.doctor_chat_id);
+    },
+    enabled: Boolean(conversation?.doctor_chat_id),
   });
 
   React.useEffect(() => {
@@ -57,7 +71,10 @@ export const useConversation = () => {
 
   return React.useMemo(
     () => ({
-      patientId,
+      id:patientId,
+      cardDoctors,
+      isCardDoctorsLoading,
+      isCardDoctorsErrored,
       doctorId,
       conversation,
       isConversationLoading,
@@ -68,6 +85,9 @@ export const useConversation = () => {
     }),
     [
       card,
+      cardDoctors,
+      isCardDoctorsLoading,
+      isCardDoctorsErrored,
       patientId,
       doctorId,
       conversation,

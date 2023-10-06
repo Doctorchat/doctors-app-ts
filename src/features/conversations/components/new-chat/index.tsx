@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import Select from "@/components/ui/SelectElstar";
 import { toast } from "@/hooks";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { apiCreateNewChat, apiReceiveDoctorsList } from "../../api";
 import { CustomControlMulti, CustomSelectOption } from "./custom-select";
 import { getApiErrorMessages } from "@/utils";
@@ -47,7 +47,7 @@ export const AddChatDoctors: React.FC = () => {
   const open = useNewChatDoctors((state) => state.open);
   const setOpen = useNewChatDoctors((state) => state.setOpen);
   const user = JSON.parse(localStorage.getItem("session:user") || "");
-  const { data: doctorsList, isLoading } = useQuery({
+  const { data: doctorsList } = useQuery({
     queryKey: ["doctorsList"],
     queryFn: async () => {
       return apiReceiveDoctorsList(user?.id);
@@ -55,6 +55,7 @@ export const AddChatDoctors: React.FC = () => {
   });
 
   const form = useForm<any>({});
+  const queryClient = useQueryClient();
   const [isSending, setIsSending] = React.useState(false);
   const onCreateChat = async () => {
     if (nameChat && idsDoctors?.length) {
@@ -64,6 +65,7 @@ export const AddChatDoctors: React.FC = () => {
           title: nameChat,
           doctorIds: idsDoctors,
         });
+        queryClient.invalidateQueries(["conversations", "doctors"]);
 
         setOpen(false);
       } catch (error) {
@@ -87,9 +89,6 @@ export const AddChatDoctors: React.FC = () => {
   }));
   const [idsDoctors, setIdsDoctors] = React.useState<number[] | null>(null);
   const [nameChat, setNameChat] = React.useState<string | null>("");
-  const SelectMembers = (values: any) => {
-    setIdsDoctors(values.flatMap((item: { value: any }) => item.value));
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

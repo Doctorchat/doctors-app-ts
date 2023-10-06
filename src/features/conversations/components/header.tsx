@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading = isCardLoading || (!conversation?.user_id && !isCardErrored);
-console.log(card);
+
   return (
     <>
       <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={card} />

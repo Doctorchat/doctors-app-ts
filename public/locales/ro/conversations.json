@@ -26,6 +26,8 @@
     "placeholder": "Motivul solicitării fișierului..."
   },
   "new_chat_doctors": {
+    "members": "participanți",
+    "member": "participant",
     "title": "Crearea unui chat nou",
     "create_button":"Crearea chatului",
     "input": {

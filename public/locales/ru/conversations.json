@@ -26,6 +26,8 @@
     "placeholder": "Причина запроса файла..."
   },
   "new_chat_doctors": {
+    "members": "участники",
+    "member": "участник",
     "title": "Создание нового чата",
     "create_button": "Создание чата",
     "input": {

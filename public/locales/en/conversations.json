@@ -26,6 +26,8 @@
     "placeholder": "Reason for file request..."
   },
   "new_chat_doctors": {
+    "members": "members",
+    "member": "member",
     "title": "Creating a new chat",
     "create_button": "Creating the chat",
     "input": {
