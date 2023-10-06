@@ -19,9 +19,12 @@ import { ConversationMessage } from "../types";
 
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { apiReadMessages } from "../api";
+import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 
 export const View: React.FC = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { locale } = useAppI18n();
   const { card } = useConversation();
@@ -30,6 +33,8 @@ export const View: React.FC = () => {
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
+
+  console.log(chatConversation);
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
 
@@ -85,6 +90,27 @@ export const View: React.FC = () => {
     ref
   );
 
+  React.useEffect(() => {
+    if (chatConversation?.messages) {
+      const unreadedMessages = chatConversation?.messages
+        .filter((msg: any) => !msg.seen)
+        .map((msg: any) => msg.id)
+        .join(",");
+      console.log(unreadedMessages, chatConversation?.chat_id);
+
+      if (unreadedMessages.length) {
+        const fetchDataAndDelay = async () => {
+          setTimeout(async () => {
+            console.log(chatConversation?.chat_id);
+
+            dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
+            await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
+          }, 750);
+        };
+        fetchDataAndDelay();
+      }
+    }
+  }, [chatConversation?.messages]);
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
       <Header />

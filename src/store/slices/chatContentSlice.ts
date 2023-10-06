@@ -1,5 +1,5 @@
 import { Conversation, ConversationMessage } from "@/features/conversations/types";
-import { ChatState, initialState } from "@/redux/types/chatTypes";
+import { ChatState, initialState } from "@/store/types/chatTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const chatContentSlice = createSlice({

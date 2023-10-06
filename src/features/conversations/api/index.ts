@@ -50,3 +50,7 @@ export const apiSendFile = async (data: { chat_id: number; file: File }) => {
 export const apiRequestFile = async (data: { chat_id: number; content: string }) => {
   return await axiosInstance.post(`/chat/request-media/${data.chat_id}`, { content: data.content });
 };
+
+export const apiReadMessages = async (data: { id: number; messages: number[] }) => {
+  return await axiosInstance.post(`/chat/read`, { id: data.id, messages: data.messages });
+};
