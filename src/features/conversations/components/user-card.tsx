@@ -24,7 +24,7 @@ export const UserCard: React.FC<UserCardProps> = ({ card, ...props }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
 
-  const investigation = card?.investigations[0];
+  const investigation = card?.investigations && card?.investigations[0];
   const age = investigation?.birth_date && calculateAge(new Date(investigation.birth_date));
 
   return (

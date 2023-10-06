@@ -68,6 +68,7 @@ export interface Conversation {
   isAccepted: boolean;
   status: "open" | "closed";
   messages: ConversationMessage[];
+  doctor_chat_id?: number;
 }
 
 export interface UserCardInvestigation {

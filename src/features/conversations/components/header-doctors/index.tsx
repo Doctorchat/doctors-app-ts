@@ -5,10 +5,6 @@ import { ArrowLeftIcon, EllipsisVerticalIcon, UserCircleIcon } from "@heroicons/
 import { formatDistance, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
-
-import { UserCard } from "./user-card";
-import { useConversation } from "../hooks";
-
 import {
   Avatar,
   AvatarFallback,
@@ -23,8 +19,10 @@ import {
 } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { useConversation } from "../../hooks";
+import { UserCard } from "../user-card";
 
-export const Header: React.FC = () => {
+export const HeaderDoctors: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
   const { card, isCardLoading, isCardErrored, conversation } = useConversation();
@@ -35,10 +33,10 @@ export const Header: React.FC = () => {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading = isCardLoading || (!conversation?.user_id && !isCardErrored);
-console.log(card);
+  console.log(card);
   return (
     <>
-      <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={card} />
+      {/* <UserCard open={isUserCardOpen/} onOpenChange={setIsUserCardOpen} card={card} /> */}
 
       <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
         <div className="flex flex-1 items-center">

@@ -19,6 +19,8 @@ import { ConversationMessage } from "../types";
 
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
+import { useConversationLayoutStore } from "./layout";
+import { HeaderDoctors } from "./header-doctors";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -30,7 +32,6 @@ export const View: React.FC = () => {
 
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
-    console.log(conversation?.messages);
 
     for (const message of conversation?.messages ?? []) {
       const groupKey = format(parseISO(message?.created ?? message?.updated), "yyyy-MM-dd");
@@ -83,10 +84,10 @@ export const View: React.FC = () => {
     },
     ref
   );
-
+  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
-      <Header />
+      {conversationsType === "patients" ? <Header /> : <HeaderDoctors />}
 
       <div ref={ref} className="flex-1 space-y-4 overflow-y-auto p-3 md:p-5 lg:p-3 xl:p-5">
         {grouped.map(({ key, messages }) => (

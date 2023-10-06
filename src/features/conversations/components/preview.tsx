@@ -17,7 +17,6 @@ export interface PreviewProps {
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  console.log(conversation);
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";

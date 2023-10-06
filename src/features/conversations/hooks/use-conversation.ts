@@ -9,7 +9,7 @@ export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [patientId, setPatientId] = React.useState<string | null>(null);
   const [doctorId, setDoctorId] = React.useState<string | null>(null);
-  console.log(doctorId);
+
   const {
     data: conversation,
     isLoading: isConversationLoading,
@@ -31,12 +31,15 @@ export const useConversation = () => {
     isLoading: isCardLoading,
     isError: isCardErrored,
   } = useQuery({
-    queryKey: ["user-card", conversation?.user_id],
+    queryKey: ["user-card", conversation?.user_id ?? conversation?.doctor_chat_id],
     queryFn: async () => {
-      if (conversation?.user_id)
-        return apiGetUserCard(conversation.user_id, searchParams.get("anonymous") === "true");
+      if (conversation?.user_id || conversation?.doctor_chat_id)
+        return apiGetUserCard(
+          conversation.user_id ?? conversation?.doctor_chat_id,
+          searchParams.get("anonymous") === "true"
+        );
     },
-    enabled: Boolean(conversation?.user_id),
+    enabled: Boolean(conversation?.user_id ?? conversation?.doctor_chat_id),
   });
 
   React.useEffect(() => {
