@@ -59,4 +59,7 @@ export const apiPutRecomandations = async (data: {
   analyzes: number[];
 }) => {
   return await axiosInstance.put<any>("/analyzes/recommend", data).then((res) => res.data);
+}
+export const apiReadMessages = async (data: { id: number; messages: number[] }) => {
+  return await axiosInstance.post(`/chat/read`, { id: data.id, messages: data.messages });
 };

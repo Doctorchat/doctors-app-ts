@@ -1,27 +1,31 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { useQuery } from "react-query";
-
+import { useSelector, useDispatch } from "react-redux";
 import { apiGetConversation, apiGetUserCard } from "../api";
-import Pusher from "pusher-js";
 import {
-  SOCKET_PUSHER_KEY,
-  SOCKET_PUSHER_CLUSTER,
   SOCKET_PUSHER_EVENT_RECEIVE,
-  SOCKET_PUSHER_CHANNEL,
+  SOCKET_PUSHER_CHANNEL_DOCTOR,
+  SOCKET_PUSHER_CHANNEL_PATIENT,
 } from "@/config/app";
+import usePusher from "./usePusher";
+import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
 
+let hasProcessedData = false;
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [id, setId] = React.useState<string | null>(null);
-  const [incomingMessages, setIncomingMessages] = React.useState<any[]>([]);
 
-  const [messages, setMessages] = React.useState<string[]>([]);
-  const [newMessage, setNewMessage] = React.useState<string>("");
+  const { pusher } = usePusher();
+  const current_chat_id = searchParams.get("id");
+  const current_user = JSON.parse(localStorage.getItem("session:user") || "");
+  const dispatch = useDispatch();
+  const { chatContent } = useSelector((store: any) => ({
+    chatContent: store.chatContent?.conversation,
+  }));
 
   const {
-    data: conversation,
+    data: conversationData,
     isLoading: isConversationLoading,
     isError: isConversationErrored,
   } = useQuery({
@@ -30,6 +34,7 @@ export const useConversation = () => {
       if (id) return apiGetConversation(id);
     },
     enabled: Boolean(id),
+    staleTime: 0,
   });
 
   const {
@@ -37,36 +42,50 @@ export const useConversation = () => {
     isLoading: isCardLoading,
     isError: isCardErrored,
   } = useQuery({
-    queryKey: ["user-card", conversation?.user_id],
+    queryKey: ["user-card", conversationData?.user_id],
     queryFn: async () => {
-      if (conversation?.user_id)
-        return apiGetUserCard(conversation.user_id, searchParams.get("anonymous") === "true");
+      if (conversationData?.user_id)
+        return apiGetUserCard(conversationData.user_id, searchParams.get("anonymous") === "true");
     },
-    enabled: Boolean(conversation?.user_id),
+    enabled: Boolean(conversationData?.user_id),
   });
 
-  // React.useEffect(() => {
-  //   // Configurează Pusher cu cheia ta
-  //   const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
+  React.useEffect(() => {
+    const role = current_user.role === 2;
 
-  //   // Abonează-te la canalul Pusher
-  //   // const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + conversation?.chat_id);
-  //   // if (conversation?.chat_id) {
-  //   const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + "26614");
-  //   console.log(conversation?.chat_id);
-  //   // Ascultă evenimentul 'new-message' și adaugă mesajul în starea locală
-  //   channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
-  //     alert(JSON.stringify(data));
-  //     setMessages((prevMessages) => [...prevMessages, data.message]);
-  //   });
-  //   // }
+    if (pusher && conversationData) {
+      const channel = pusher.subscribe(
+        (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + current_chat_id
+      );
+      channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+        const { content_data } = data;
+        const { message } = JSON.parse(content_data);
+        if (
+          !chatContent.messages.some(
+            (existingMessage: { id: any }) => existingMessage.id === message.id
+          )
+        ) {
+          dispatch(addMessage(message));
+        }
+      });
 
-  //   // Cleanup: Dezabonează-te de la canal la dezasamblare
-  //   return () => {
-  //     channel.unbind_all();
-  //     channel.unsubscribe();
-  //   };
-  // }, [conversation?.chat_id]);
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
+      };
+    }
+  }, [pusher, chatContent.messages]);
+
+  React.useEffect(() => {
+    if (conversationData) {
+      if (!hasProcessedData || chatContent?.chat_id !== id) {
+        hasProcessedData = true;
+        dispatch(
+          addMessages({ conversation: conversationData, messages: conversationData.messages })
+        );
+      }
+    }
+  }, [conversationData]);
 
   React.useEffect(() => {
     if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
@@ -76,19 +95,19 @@ export const useConversation = () => {
   return React.useMemo(
     () => ({
       id,
-      conversation,
+      card,
+      isCardLoading,
+      isCardErrored,
+      conversation: chatContent,
       isConversationLoading,
       isConversationErrored,
-      card,
-      isCardLoading,
-      isCardErrored,
     }),
     [
-      card,
-      conversation,
       id,
-      isCardErrored,
+      card,
+      chatContent,
       isCardLoading,
+      isCardErrored,
       isConversationErrored,
       isConversationLoading,
     ]

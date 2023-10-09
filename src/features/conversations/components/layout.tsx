@@ -23,9 +23,9 @@ export const useConversationLayoutStore = createWithEqualityFn<
       conversationsType: "patients",
       setConversationsType: (conversationsType) => set({ conversationsType }),
     }),
-    { name: "conversations-layout", storage: createJSONStorage(() => localStorage) },
+    { name: "conversations-layout", storage: createJSONStorage(() => localStorage) }
   ),
-  shallow,
+  shallow
 );
 
 export interface LayoutProps {

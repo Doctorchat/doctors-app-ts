@@ -22,12 +22,12 @@ export interface ConversationMessageFile {
 
 export interface ConversationMessage {
   id: number;
-  side: "in" | "out" | "center";
+  side?: "in" | "out" | "center";
   content: string | null;
   files: ConversationMessageFile[];
   created: string;
-  updated: string;
   recommendations: RecomandationsAnalyzes[];
+  updated?: string;
 }
 
 export interface Conversation {
