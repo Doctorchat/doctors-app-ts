@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { useQuery } from "react-query";
 
@@ -42,7 +42,7 @@ export const List: React.FC = () => {
       )}
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
-        {conversationsType === "patients"
+        {conversationsType === "doctors"
           ? listDoctors?.map((conversationDoctor) => (
               <Preview
                 key={conversationDoctor.id}
@@ -58,7 +58,8 @@ export const List: React.FC = () => {
               />
             ))}
 
-        {isLoading && Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
+        {(isLoading || isLodingListDoctors) &&
+          Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
       </div>
     </div>
   );

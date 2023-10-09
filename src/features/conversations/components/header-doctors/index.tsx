@@ -25,7 +25,7 @@ import { UserCard } from "../user-card";
 export const HeaderDoctors: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { cardDoctors, isCardDoctorsLoading, isCardDoctorsErrored, conversation } =
+  const { cardDoctors, isCardDoctorsLoading, isCardDoctorsErrored, conversationDoctors } =
     useConversation();
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export const HeaderDoctors: React.FC = () => {
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading =
-    isCardDoctorsLoading || (!conversation?.doctor_chat_id && !isCardDoctorsErrored);
+    isCardDoctorsLoading || (!conversationDoctors?.doctor_chat_id && !isCardDoctorsErrored);
 
   return (
     <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">

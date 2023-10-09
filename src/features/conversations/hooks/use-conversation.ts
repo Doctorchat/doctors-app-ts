@@ -68,7 +68,7 @@ export const useConversation = () => {
     queryKey: ["patient-card", patientId],
     queryFn: async () => {
       if (conversationPatients?.user_id)
-       return  apiGetUserCard(conversationPatients.user_id, searchParams.get("anonymous") === "true"):
+       return  apiGetUserCard(conversationPatients.user_id, searchParams.get("anonymous") === "true")
     },
     enabled: Boolean(conversationPatients?.user_id),
   });
