@@ -28,7 +28,11 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",
-        { "bg-neutral-200": Number(searchParams.get("id")) === conversation.id }
+        {
+          "bg-neutral-200":
+            Number(searchParams.get("patientId") ?? searchParams.get("doctorId")) ===
+            conversation.id,
+        }
       )}
     >
       <div className="relative flex-shrink-0">
