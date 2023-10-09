@@ -1,4 +1,4 @@
-import type { Conversation, ConversationPreview, UserCard } from "../types";
+import type { Conversation, ConversationPreview, Recomandation, UserCard } from "../types";
 
 import axiosInstance from "@/lib/axios";
 
@@ -73,4 +73,17 @@ export const apiCreateNewChat = async (data: { title: string; doctorIds: number[
     title: data.title,
     doctorIds: data.doctorIds,
   });
+}
+
+export const apiGetRecomandations = async () => {
+  return await axiosInstance.get<Recomandation>("/analyzes").then((res) => res.data);
+};
+export const apiPutRecomandations = async (data: {
+  chat_id: number | null;
+  analyzes: number[];
+}) => {
+  return await axiosInstance.put<any>("/analyzes/recommend", data).then((res) => res.data);
+}
+export const apiReadMessages = async (data: { id: number; messages: number[] }) => {
+  return await axiosInstance.post(`/chat/read`, { id: data.id, messages: data.messages });
 };

@@ -14,6 +14,7 @@ import { useConversation } from "../hooks";
 import { Button, Dialog, DialogContent, DialogFooter } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { bytesToSize, cn, getApiErrorMessages, validateFile } from "@/utils";
+import { useSelector } from "react-redux";
 
 export const ALLOWED_FILE_TYPES = [
   ".png",
@@ -85,7 +86,10 @@ export const useUploadFileStore = createWithEqualityFn<UploadFileStore>(
 
 export const UploadFile: React.FC = () => {
   const { t } = useTranslation();
-  const { id, conversation } = useConversation();
+  const { id } = useConversation();
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
   const { toast } = useToast();
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
@@ -109,11 +113,11 @@ export const UploadFile: React.FC = () => {
   };
 
   const onUploadFileHandler = async () => {
-    if (file && conversation?.chat_id) {
+    if (file && chatConversation.chat_id) {
       setIsSending(true);
       try {
         await apiSendFile({
-          chat_id: conversation.chat_id,
+          chat_id: chatConversation.chat_id,
           file,
         });
         await Promise.allSettled([

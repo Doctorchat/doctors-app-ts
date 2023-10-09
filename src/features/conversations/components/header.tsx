@@ -23,18 +23,22 @@ import {
 } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { useSelector } from "react-redux";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, isCardLoading, isCardErrored, conversation } = useConversation();
+  const { card, isCardLoading, isCardErrored } = useConversation();
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
 
   const navigate = useNavigate();
 
   const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const isLoading = isCardLoading || (!conversation?.user_id && !isCardErrored);
+  const isLoading = isCardLoading || (!chatConversation?.user_id && !isCardErrored) || !card;
 
   return (
     <>

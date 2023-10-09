@@ -55,11 +55,12 @@ export interface ConversationMessageFile {
 
 export interface ConversationMessage {
   id: number;
-  side: "in" | "out" | "center";
+  side?: "in" | "out" | "center";
   content: string | null;
   files: ConversationMessageFile[];
   created: string;
-  updated: string;
+  recommendations: RecomandationsAnalyzes[];
+  updated?: string;
 }
 
 export interface Conversation {
@@ -69,6 +70,10 @@ export interface Conversation {
   status: "open" | "closed";
   messages: ConversationMessage[];
   doctor_chat_id?: number;
+}
+export interface RecomandationsAnalyzes {
+  name: string;
+  synevo_id: string;
 }
 
 export interface UserCardInvestigation {
@@ -95,4 +100,34 @@ export interface UserCard {
   last_seen: string;
   isOnline: boolean;
   investigations: UserCardInvestigation[];
+}
+
+export interface Category {
+  id: number;
+  synevo_id: string;
+  name: string;
+  tests: Test[];
+}
+
+export interface Test {
+  id: number;
+  synevo_id: string;
+  name: string;
+}
+
+export interface Recomandation {
+  favorite: Category[];
+  categories: Category[];
+}
+
+export interface RequestFileStore {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+export interface TreeNodeData {
+  title: string;
+  value: string;
+  children?: TreeNodeData[];
+  checkable?: boolean;
+  key?: any;
 }

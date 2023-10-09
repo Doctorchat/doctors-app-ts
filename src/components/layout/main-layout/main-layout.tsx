@@ -1,8 +1,10 @@
+import { Provider } from "react-redux";
 import { MainLayoutHeader } from "./main-layout-header";
 import { MainLayoutSidenav } from "./main-layout-sidenav";
 
 import { ScrollArea } from "@/components/ui";
 import { cn } from "@/utils";
+import { store } from "@/store";
 
 export interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -14,7 +16,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, className, ...
       <MainLayoutSidenav />
       <main className="flex w-full flex-col overflow-hidden">
         <MainLayoutHeader />
-        {children}
+        <Provider store={store}>{children}</Provider>
       </main>
     </div>
   );

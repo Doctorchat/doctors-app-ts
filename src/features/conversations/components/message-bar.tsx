@@ -2,6 +2,7 @@ import React from "react";
 
 import {
   ArrowPathRoundedSquareIcon,
+  ClipboardDocumentListIcon,
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
   PaperClipIcon,
@@ -29,21 +30,53 @@ import {
 } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
+import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis";
+import { useMediaQuery } from "usehooks-ts";
+import { useNavigate } from "react-router-dom";
+import Pusher from "pusher-js";
+import { SOCKET_PUSHER_CLUSTER, SOCKET_PUSHER_EVENT_RECEIVE, SOCKET_PUSHER_KEY } from "@/config";
+import { useSearchParams } from "react-router-dom";
+
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
-  const { id, conversation } = useConversation();
+  const { conversation, id } = useConversation();
   const { toast } = useToast();
+  // React.useEffect(() => {
+  //   const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
+  //   const current_chat_id = searchParams.get("id");
+  //   const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + current_chat_id);
+  //   const current_user = JSON.parse(localStorage.getItem("session:user") || "");
+
+  //   channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+  //     const { message } = data;
+  //     const { chat_id, user_id } = message;
+  //     current_chat_id && parseInt(current_chat_id);
+
+  //     //  console.log(searchParams.get("id"));
+  //     console.log(current_user.id);
+
+  //     alert(JSON.stringify(data));
+  //     // setMessages((prevMessages) => [...prevMessages, data.message]);
+  //   });
+  //   return () => {
+  //     channel.unbind_all();
+  //     channel.unsubscribe();
+  //   };
+  // }, []);
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
+  const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setMessageTemplatesOpen = useMessageTemplatesStore((store) => store.setOpen);
 
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const navigate = useNavigate();
 
   const onSendMessageHandler = async () => {
     if (conversation?.chat_id) {
@@ -53,10 +86,6 @@ export const MessageBar: React.FC = () => {
           chat_id: conversation.chat_id,
           content,
         });
-        await Promise.allSettled([
-          queryClient.invalidateQueries(["conversations", conversationsType]),
-          queryClient.invalidateQueries(["conversation", id]),
-        ]);
         setContent("");
       } catch (error) {
         toast({
@@ -104,6 +133,20 @@ export const MessageBar: React.FC = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="top" align="start" className="w-48">
+                    <DropdownMenuItem
+                      onClick={() =>
+                        isMobile
+                          ? navigate(
+                              `/recomandation-analyze?id=${conversation.chat_id}?type=${conversationsType}`
+                            )
+                          : setRecomandationAnalysisOpen(true)
+                      }
+                    >
+                      {t("conversations:recomand_analysis_dialog:title")}
+                      <DropdownMenuShortcut>
+                        <ClipboardDocumentListIcon className="h-5 w-5" />
+                      </DropdownMenuShortcut>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setUploadFileOpen(true)}>
                       {t("conversations:upload_file")}
                       <DropdownMenuShortcut>
@@ -142,6 +185,7 @@ export const MessageBar: React.FC = () => {
         <UploadFile />
         <RequestFile />
         <MessageTemplates />
+        <RecomandAnalysis conversationsType={conversationsType} id={id} />
       </>
     );
   }

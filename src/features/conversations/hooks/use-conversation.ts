@@ -1,6 +1,5 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-
 import { useQuery } from "react-query";
 
 import {
@@ -9,39 +8,69 @@ import {
   apiGetDoctorChatCard,
   apiGetUserCard,
 } from "../api";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  SOCKET_PUSHER_EVENT_RECEIVE,
+  SOCKET_PUSHER_CHANNEL_DOCTOR,
+  SOCKET_PUSHER_CHANNEL_PATIENT,
+} from "@/config/app";
+import usePusher from "./usePusher";
+import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
 
+let hasProcessedData = false;
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [patientId, setPatientId] = React.useState<string | null>(null);
   const [doctorId, setDoctorId] = React.useState<string | null>(null);
 
+  const { pusher } = usePusher();
+  const current_chat_id = searchParams.get("id");
+  const current_user = JSON.parse(localStorage.getItem("session:user") || "");
+  const dispatch = useDispatch();
+  const { chatContent } = useSelector((store: any) => ({
+    chatContent: store.chatContent?.conversation,
+  }));
+
   const {
-    data: conversation,
+    data: conversationPatients,
     isLoading: isConversationLoading,
     isError: isConversationErrored,
   } = useQuery({
-    queryKey: ["conversation", patientId ?? doctorId],
-    queryFn: async () => {
-      if (patientId) {
+    queryKey: ["conversation", patientId],
+    queryFn: async () => {    
+      if(patientId)
         return apiGetConversation(patientId);
-      } else if (doctorId) {
+    },
+    enabled: Boolean(patientId),
+    staleTime: 0,
+  });
+
+    const {
+    data: conversationDoctors,
+    isLoading: isConversationDLoading,
+    isError: isConversationDErrored,
+  } = useQuery({
+    queryKey: ["conversation", doctorId],
+    queryFn: async () => {
+       if (doctorId) {
         return apiGetConversationDoctors(doctorId);
       }
     },
-    enabled: Boolean(patientId) || Boolean(doctorId),
+    enabled: Boolean(doctorId),
+    staleTime: 0,
   });
 
   const {
-    data: card,
-    isLoading: isCardLoading,
-    isError: isCardErrored,
+    data: cardPatient,
+    isLoading: isCardPLoading,
+    isError: isCardPErrored,
   } = useQuery({
-    queryKey: ["user-card", conversation?.user_id],
+    queryKey: ["patient-card", patientId],
     queryFn: async () => {
-      if (conversation?.user_id)
-        return apiGetUserCard(conversation.user_id, searchParams.get("anonymous") === "true");
+      if (conversationPatients?.user_id)
+       return  apiGetUserCard(conversationPatients.user_id, searchParams.get("anonymous") === "true"):
     },
-    enabled: Boolean(conversation?.user_id),
+    enabled: Boolean(conversationPatients?.user_id),
   });
 
   const {
@@ -49,11 +78,11 @@ export const useConversation = () => {
     isLoading: isCardDoctorsLoading,
     isError: isCardDoctorsErrored,
   } = useQuery({
-    queryKey: ["card-doctor", conversation?.doctor_chat_id],
+    queryKey: ["doctor-card", conversationDoctors?.doctor_chat_id],
     queryFn: async () => {
-      if (conversation?.doctor_chat_id) return apiGetDoctorChatCard(conversation?.doctor_chat_id);
+      if (conversationDoctors?.doctor_chat_id) return apiGetDoctorChatCard(conversationDoctors?.doctor_chat_id);
     },
-    enabled: Boolean(conversation?.doctor_chat_id),
+    enabled: Boolean(conversationDoctors?.doctor_chat_id),
   });
 
   React.useEffect(() => {
@@ -67,34 +96,77 @@ export const useConversation = () => {
       setPatientId(null);
       setDoctorId(null);
     }
-  }, [searchParams]);
+  },[searchParams])
+
+  React.useEffect(() => {
+    const role = current_user.role === 2;
+
+    if (pusher && conversationPatients) {
+      const channel = pusher.subscribe(
+        (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + current_chat_id
+      );
+      channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+        const { content_data } = data;
+        const { message } = JSON.parse(content_data);
+        if (
+          !chatContent.messages.some(
+            (existingMessage: { id: any }) => existingMessage.id === message.id
+          )
+        ) {
+          dispatch(addMessage(message));
+        }
+      });
+
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
+      };
+    }
+  }, [pusher, chatContent.messages]);
+
+  React.useEffect(() => {
+    if (conversationPatients) {
+      if (!hasProcessedData || chatContent?.chat_id !== patientId) {
+        hasProcessedData = true;
+        dispatch(
+          addMessages({ conversation: conversationPatients, messages: conversationPatients.messages })
+        );
+      }
+    }
+  }, [conversationPatients]);
 
   return React.useMemo(
     () => ({
-      id:patientId,
-      cardDoctors,
-      isCardDoctorsLoading,
-      isCardDoctorsErrored,
-      doctorId,
-      conversation,
+      conversationPatients,
       isConversationLoading,
       isConversationErrored,
-      card,
-      isCardLoading,
-      isCardErrored,
-    }),
-    [
-      card,
+      conversationDoctors,
+      isConversationDLoading,
+      isConversationDErrored,
+      cardPatient,
+      isCardPLoading,
+      isCardPErrored,
       cardDoctors,
       isCardDoctorsLoading,
       isCardDoctorsErrored,
       patientId,
-      doctorId,
-      conversation,
-      isCardErrored,
-      isCardLoading,
-      isConversationErrored,
+      doctorId
+    }),
+    [
+      conversationPatients,
       isConversationLoading,
+      isConversationErrored,
+      conversationDoctors,
+      isConversationDLoading,
+      isConversationDErrored,
+      cardPatient,
+      isCardPLoading,
+      isCardPErrored,
+      cardDoctors,
+      isCardDoctorsLoading,
+      isCardDoctorsErrored,
+      patientId,
+      doctorId
     ]
   );
 };

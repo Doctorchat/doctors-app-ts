@@ -21,20 +21,29 @@ import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
 import { useConversationLayoutStore } from "./layout";
 import { HeaderDoctors } from "./header-doctors";
+import { useDispatch, useSelector } from "react-redux";
+import { apiReadMessages } from "../api";
+import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 
 export const View: React.FC = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, conversation } = useConversation();
-
+  const { card } = useConversation();
   const ref = React.useRef<HTMLDivElement>(null);
   const scroll = React.useRef(0);
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
 
+  console.log(chatConversation);
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
 
-    for (const message of conversation?.messages ?? []) {
-      const groupKey = format(parseISO(message?.created ?? message?.updated), "yyyy-MM-dd");
+    // for (const message of conversation?.messages ?? []) {
+    //   const groupKey = format(parseISO(message?.created ?? message?.updated), "yyyy-MM-dd");
+    for (const message of chatConversation?.messages ?? []) {
+      const groupKey = format(parseISO(message.created?? message?.updated), "yyyy-MM-dd");
 
       if (groupKey in groups) {
         groups[groupKey].push(message);
@@ -47,7 +56,7 @@ export const View: React.FC = () => {
       key,
       messages,
     }));
-  }, [conversation?.messages]);
+  }, [chatConversation?.messages]);
 
   React.useEffect(() => {
     const onUpdate = () => {
@@ -85,6 +94,28 @@ export const View: React.FC = () => {
     ref
   );
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
+
+  React.useEffect(() => {
+    if (chatConversation?.messages) {
+      const unreadedMessages = chatConversation?.messages
+        .filter((msg: any) => !msg.seen)
+        .map((msg: any) => msg.id)
+        .join(",");
+      console.log(unreadedMessages, chatConversation?.chat_id);
+
+      if (unreadedMessages.length) {
+        const fetchDataAndDelay = async () => {
+          setTimeout(async () => {
+            console.log(chatConversation?.chat_id);
+
+            dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
+            await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
+          }, 750);
+        };
+        fetchDataAndDelay();
+      }
+    }
+  }, [chatConversation?.messages]);
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
       {conversationsType === "patients" ? <Header /> : <HeaderDoctors />}
@@ -127,12 +158,23 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
+
+                {message.recommendations?.length > 0 && (
+                  <MessageBubble
+                    variant={message.side === "in" ? "primary" : "secondary"}
+                    className="space-y-1"
+                  >
+                    {t("conversations:recomand_analysis_dialog:recomandation_text")}
+                    {message.recommendations.map((recomandation, index) => (
+                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
+                    ))}
+                  </MessageBubble>
+                )}
               </Message>
             ))}
           </div>
         ))}
       </div>
-
       <ApprovalRequest />
       <MessageBar />
     </div>

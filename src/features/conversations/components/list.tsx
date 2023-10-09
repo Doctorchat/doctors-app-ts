@@ -8,6 +8,8 @@ import { apiGetConversationsWithDoctors, apiGetConversationsWithPatients } from 
 
 import { cn } from "@/utils";
 import { getUser } from "@/features/profile/api";
+import { useChatList } from "../hooks/use-chat-list";
+import { useSelector } from "react-redux";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
@@ -16,18 +18,20 @@ export const List: React.FC = () => {
     queryFn: async () => getUser(),
   });
 
-  const { data: conversations, isLoading } = useQuery({
-    queryKey: ["conversations", conversationsType],
+  const { data: listDoctors, isLoading: isLodingListDoctors } = useQuery({
+    queryKey: ["list-doctors", conversationsType],
     queryFn: async () => {
-      if (conversationsType === "patients") {
-        return apiGetConversationsWithPatients();
-      }
       if (doctorInfo) {
         return apiGetConversationsWithDoctors(doctorInfo.data.id);
       }
     },
     enabled: !!doctorInfo,
   });
+
+  const { isLoading } = useChatList();
+  const { listChats } = useSelector((store: any) => ({
+    listChats: store.listChats.data,
+  }));
 
   return (
     <div
@@ -38,13 +42,21 @@ export const List: React.FC = () => {
       )}
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
-        {conversations?.map((conversation) => (
-          <Preview
-            key={conversation.id}
-            conversation={conversation}
-            typeConversation={conversationsType}
-          />
-        ))}
+        {conversationsType === "patients"
+          ? listDoctors?.map((conversationDoctor) => (
+              <Preview
+                key={conversationDoctor.id}
+                conversation={conversationDoctor}
+                typeConversation={conversationsType}
+              />
+            ))
+          : listChats?.map((conversationPatient: any) => (
+              <Preview
+                key={conversationPatient.id}
+                conversation={conversationPatient}
+                typeConversation={conversationsType}
+              />
+            ))}
 
         {isLoading && Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
       </div>
