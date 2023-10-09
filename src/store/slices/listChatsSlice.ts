@@ -1,6 +1,7 @@
 import { ConversationPreview } from "@/features/conversations/types";
 
 import { initialStateListChats } from "@/store/types/listChatsTypes";
+import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState = {
   data: [] as ConversationPreview[],
@@ -35,7 +36,10 @@ const listChatsSlice = createSlice({
     },
 
     addListChats: (state, action: PayloadAction<ConversationPreview[]>) => {
-      if (!state.data.length) state.data.push(...action.payload);
+      if (state.data.length === 0) {
+        state.data.push(...action.payload);
+        state.data = sortChatsByUpdatedAt(state.data);
+      }
     },
   },
 });

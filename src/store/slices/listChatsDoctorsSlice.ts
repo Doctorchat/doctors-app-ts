@@ -1,6 +1,7 @@
 import { ConversationPreview } from "@/features/conversations/types";
 
 import { initialStateListChats } from "@/store/types/listChatsTypes";
+import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 //TODO tipizarea
 const initialState = {
@@ -34,7 +35,11 @@ const listChatsDoctorsSlice = createSlice({
     },
 
     addListChatsDoctors: (state, action: PayloadAction<any[]>) => {
-      state.data = action.payload;
+      if (state.data.length === 0) {
+        state.data = action.payload;
+        state.data = sortChatsByUpdatedAt(state.data);
+        console.log(sortChatsByUpdatedAt(state.data));
+      }
     },
   },
 });
