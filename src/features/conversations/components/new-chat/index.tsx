@@ -65,8 +65,10 @@ export const AddChatDoctors: React.FC = () => {
           title: nameChat,
           doctorIds: idsDoctors,
         });
-        queryClient.invalidateQueries(["conversations", "doctors"]);
 
+        setTimeout(() => {
+          queryClient.invalidateQueries(["list-doctors", "doctors"]);
+        }, 300);
         setOpen(false);
       } catch (error) {
         toast({

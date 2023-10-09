@@ -38,12 +38,11 @@ export const useRequestFileStore = createWithEqualityFn<RequestFileStore>(
 
 export const RequestFile: React.FC = () => {
   const { t } = useTranslation();
-  const { id } = useConversation();
-  const { toast } = useToast();
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
 
+  const { toast } = useToast();
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
   const open = useRequestFileStore((store) => store.open);
@@ -64,12 +63,12 @@ export const RequestFile: React.FC = () => {
       setIsSending(true);
       try {
         await apiRequestFile({
-          chat_id: chatConversation.chat_id,
+          chat_id: chatConversation?.chat_id,
           content,
         });
         await Promise.allSettled([
-          queryClient.invalidateQueries(["conversations", conversationsType]),
-          queryClient.invalidateQueries(["conversation", id]),
+          queryClient.invalidateQueries(["list-patients", conversationsType]),
+          queryClient.invalidateQueries(["conversation-patient", chatConversation?.chat_id]),
         ]);
         closeWithTransition();
       } catch (error) {

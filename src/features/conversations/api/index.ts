@@ -50,6 +50,10 @@ export const apiSendMessage = async (data: { chat_id: number; content: string })
   });
 };
 
+export const apiSendMessageDoctors = async (data: any) => {
+  return await axiosInstance.post("/doctor/send-message", data);
+};
+
 export const apiSendFile = async (data: { chat_id: number; file: File }) => {
   const formData = new FormData();
 
@@ -73,17 +77,17 @@ export const apiCreateNewChat = async (data: { title: string; doctorIds: number[
     title: data.title,
     doctorIds: data.doctorIds,
   });
-}
+};
 
 export const apiGetRecomandations = async () => {
   return await axiosInstance.get<Recomandation>("/analyzes").then((res) => res.data);
 };
 export const apiPutRecomandations = async (data: {
-  chat_id: number | null;
+  chat_id: string | number | null;
   analyzes: number[];
 }) => {
   return await axiosInstance.put<any>("/analyzes/recommend", data).then((res) => res.data);
-}
+};
 export const apiReadMessages = async (data: { id: number; messages: number[] }) => {
   return await axiosInstance.post(`/chat/read`, { id: data.id, messages: data.messages });
 };

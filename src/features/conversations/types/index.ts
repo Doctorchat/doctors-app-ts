@@ -17,6 +17,7 @@ export interface ConversationPreview {
   };
   unreadCount?: number;
 }
+
 export interface ConversationDoctors {
   created_at: string;
   id: number;

@@ -6,7 +6,7 @@ import { addListChats, updateListChats } from "@/store/slices/listChatsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import usePusher from "./usePusher";
 import { SOCKET_PUSHER_CHANNEL_LIST_CHATS, SOCKET_PUSHER_EVENT_LIST_CHATS } from "@/config/app";
-let hasProcessedData = false;
+
 export const useChatList = () => {
   const { listChats } = useSelector((store: any) => ({
     listChats: store.listChats.data,
@@ -15,17 +15,14 @@ export const useChatList = () => {
   const dispatch = useDispatch();
   const { pusher } = usePusher();
   const { data: conversations, isLoading } = useQuery({
-    queryKey: ["conversations", conversationsType],
+    queryKey: ["list-patients", conversationsType],
     queryFn: async () => {
       return apiGetConversationsWithPatients();
     },
+    onSuccess: (data) => {
+      if (data) return  dispatch(addListChats(data));
+    },
   });
-  React.useEffect(() => {
-    if (conversations && !hasProcessedData) {
-      hasProcessedData = true;
-      dispatch(addListChats(conversations));
-    }
-  }, [conversations]);
 
   const current_user = JSON.parse(localStorage.getItem("session:user") || "");
   React.useEffect(() => {

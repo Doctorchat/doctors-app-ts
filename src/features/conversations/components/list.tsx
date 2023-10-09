@@ -1,36 +1,22 @@
 import React from "react";
-
-import { useQuery } from "react-query";
-
 import { useConversationLayoutStore } from "./layout";
 import { Preview, PreviewSkeleton } from "./preview";
-import { apiGetConversationsWithDoctors, apiGetConversationsWithPatients } from "../api";
-
 import { cn } from "@/utils";
-import { getUser } from "@/features/profile/api";
 import { useChatList } from "../hooks/use-chat-list";
 import { useSelector } from "react-redux";
+import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
-  const { data: doctorInfo } = useQuery({
-    queryKey: ["getUser"],
-    queryFn: async () => getUser(),
-  });
-
-  const { data: listDoctors, isLoading: isLodingListDoctors } = useQuery({
-    queryKey: ["list-doctors", conversationsType],
-    queryFn: async () => {
-      if (doctorInfo) {
-        return apiGetConversationsWithDoctors(doctorInfo.data.id);
-      }
-    },
-    enabled: !!doctorInfo,
-  });
-
+  const { isLoadingListDoctors } = useChatListDoctors();
   const { isLoading } = useChatList();
+
   const { listChats } = useSelector((store: any) => ({
     listChats: store.listChats.data,
+  }));
+
+  const { listChatsDoctors } = useSelector((store: any) => ({
+    listChatsDoctors: store.listChatsDoctors.data,
   }));
 
   return (
@@ -43,7 +29,7 @@ export const List: React.FC = () => {
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
         {conversationsType === "doctors"
-          ? listDoctors?.map((conversationDoctor) => (
+          ? listChatsDoctors?.map((conversationDoctor: any) => (
               <Preview
                 key={conversationDoctor.id}
                 conversation={conversationDoctor}
@@ -58,7 +44,7 @@ export const List: React.FC = () => {
               />
             ))}
 
-        {(isLoading || isLodingListDoctors) &&
+        {(isLoading || isLoadingListDoctors) &&
           Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
       </div>
     </div>

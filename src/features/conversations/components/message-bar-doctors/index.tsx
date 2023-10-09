@@ -35,42 +35,50 @@ import {
   useUploadFileStore,
 } from "..";
 import { useRecomandAnalysisStore } from "../recomand-analysis";
+import { useSelector } from "react-redux";
+import { apiSendMessage, apiSendMessageDoctors } from "../../api";
 
 export const MessageBarDoctors: React.FC = () => {
   const { t } = useTranslation();
-  const { conversationDoctors } = useConversation();
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
+  }));
+  const { doctorInfo } = useSelector((store: any) => ({
+    doctorInfo: store.doctorInfo.doctorInfo,
+  }));
+
   const { toast } = useToast();
-  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
-  const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setMessageTemplatesOpen = useMessageTemplatesStore((store) => store.setOpen);
 
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const navigate = useNavigate();
 
   const onSendMessageHandler = async () => {
-    // if (conversationPatients?.chat_id) {
-    //   setIsSending(true);
-    //   try {
-    //     await apiSendMessage({
-    //       chat_id: conversationPatients.chat_id,
-    //       content,
-    //     });
-    //     setContent("");
-    //   } catch (error) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "common:something_went_wrong",
-    //       description: getApiErrorMessages(error),
-    //     });
-    //   } finally {
-    //     setIsSending(false);
-    //   }
-    // }
+    if (chatContentDoctors?.doctor_chat_id) {
+      setIsSending(true);
+      try {
+        const data = {
+          doctor_chat_id: chatContentDoctors?.doctor_chat_id,
+          content: content,
+          type: "standard",
+          user_id: doctorInfo.id,
+          uploads: [],
+        };
+        await apiSendMessageDoctors(data);
+        setContent("");
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "common:something_went_wrong",
+          description: getApiErrorMessages(error),
+        });
+      } finally {
+        setIsSending(false);
+      }
+    }
   };
 
   return (
@@ -141,9 +149,9 @@ export const MessageBarDoctors: React.FC = () => {
         </div>
       </div>
 
-      <UploadFile />
+      {/* <UploadFile />
       <RequestFile />
-      <MessageTemplates />
+      <MessageTemplates /> */}
     </>
   );
 };

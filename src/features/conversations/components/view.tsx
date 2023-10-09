@@ -21,28 +21,29 @@ import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
 import { HeaderDoctors } from "./header-doctors";
 import { useDispatch, useSelector } from "react-redux";
+import { MessageBarDoctors } from "./message-bar-doctors";
 import { apiReadMessages } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
-import { MessageBarDoctors } from "./message-bar-doctors";
 
 export const View: React.FC = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { cardPatient, patientId, conversationDoctors } = useConversation();
+  const { cardPatient, patientId } = useConversation();
   const ref = React.useRef<HTMLDivElement>(null);
-
+  const dispatch = useDispatch();
   const scroll = React.useRef(0);
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
 
+
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
+  }));
+
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
-    console.log(conversationDoctors, chatConversation);
 
-    // for (const message of conversation?.messages ?? []) {
-    //   const groupKey = format(parseISO(message?.created ?? message?.updated), "yyyy-MM-dd");
     if (patientId) {
       for (const message of chatConversation?.messages ?? []) {
         const groupKey = format(parseISO(message.created ?? message?.updated), "yyyy-MM-dd");
@@ -54,7 +55,7 @@ export const View: React.FC = () => {
         }
       }
     } else {
-      for (const message of conversationDoctors?.messages ?? []) {
+      for (const message of chatContentDoctors?.messages ?? []) {
         const groupKey = format(parseISO(message.created ?? message?.updated), "yyyy-MM-dd");
 
         if (groupKey in groups) {
@@ -68,7 +69,7 @@ export const View: React.FC = () => {
       key,
       messages,
     }));
-  }, [chatConversation?.messages, conversationDoctors?.messages]);
+  }, [chatConversation?.messages, chatContentDoctors?.messages]);
 
   React.useEffect(() => {
     const onUpdate = () => {
@@ -108,22 +109,20 @@ export const View: React.FC = () => {
 
   React.useEffect(() => {
     if (chatConversation?.messages) {
-      // const unreadedMessages = chatConversation?.messages
-      //   .filter((msg: any) => !msg.seen)
-      //   .map((msg: any) => msg.id)
-      //   .join(",");
-
-      // if (unreadedMessages.length) {
-      //   const fetchDataAndDelay = async () => {
-      //     setTimeout(async () => {
-      //       console.log(chatConversation?.chat_id);
-
-      //       dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
-      //       await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
-      //     }, 750);
-      //   };
-      //   fetchDataAndDelay();
-      // }
+      //TODO la doctors list
+      const unreadedMessages = chatConversation?.messages
+        .filter((msg: any) => !msg.seen)
+        .map((msg: any) => msg.id)
+        .join(",");
+      if (unreadedMessages.length) {
+        const fetchDataAndDelay = async () => {
+          setTimeout(async () => {
+            dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
+            await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
+          }, 750);
+        };
+        fetchDataAndDelay();
+      }
     }
   }, [chatConversation?.messages]);
 
@@ -152,7 +151,7 @@ export const View: React.FC = () => {
                   title={
                     message.side === "in" ? cardPatient?.name ?? t("common:untitled") : t("you")
                   }
-                  timestamp={message.updated}
+                  timestamp={message?.updated ?? ""}
                 />
 
                 {message.content && (
