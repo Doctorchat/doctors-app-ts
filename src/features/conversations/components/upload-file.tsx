@@ -86,7 +86,6 @@ export const useUploadFileStore = createWithEqualityFn<UploadFileStore>(
 
 export const UploadFile: React.FC = () => {
   const { t } = useTranslation();
-  const { id } = useConversation();
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
@@ -113,16 +112,16 @@ export const UploadFile: React.FC = () => {
   };
 
   const onUploadFileHandler = async () => {
-    if (file && chatConversation.chat_id) {
+    if (file && chatConversation?.chat_id) {
       setIsSending(true);
       try {
         await apiSendFile({
-          chat_id: chatConversation.chat_id,
+          chat_id: chatConversation?.chat_id,
           file,
         });
         await Promise.allSettled([
-          queryClient.invalidateQueries(["conversations", conversationsType]),
-          queryClient.invalidateQueries(["conversation", id]),
+          queryClient.invalidateQueries(["list-patients", conversationsType]),
+          queryClient.invalidateQueries(["conversation-patient", chatConversation?.chat_id]),
         ]);
         closeWithTransition();
       } catch (error) {

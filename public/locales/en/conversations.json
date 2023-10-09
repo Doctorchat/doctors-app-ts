@@ -2,6 +2,7 @@
   "conversations": "Conversations",
   "recent_conversations": "Recent conversations",
   "select_conversation": "Select conversation",
+  "create_conversation": "Select or create conversation",
   "patients": "Patients",
   "doctors": "Doctors",
   "corporate_client": "Corporate",
@@ -23,6 +24,20 @@
     "title": "File request",
     "description": "Please indicate the reason for the file request",
     "placeholder": "Reason for file request..."
+  },
+  "new_chat_doctors": {
+    "members": "members",
+    "member": "member",
+    "title": "Creating a new chat",
+    "create_button": "Creating the chat",
+    "input": {
+      "description": "Name of the chat",
+      "placeholder": "Name ..."
+    },
+    "select": {
+      "description": "Select the doctors",
+      "placeholder": "Select ..."
+    }
   },
   "enter_message": "Enter message",
   "upload_file": "Upload file",

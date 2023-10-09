@@ -19,40 +19,57 @@ import { ConversationMessage } from "../types";
 
 import { useAppI18n } from "@/hooks";
 import { cn } from "@/utils";
+import { HeaderDoctors } from "./header-doctors";
 import { useDispatch, useSelector } from "react-redux";
+import { MessageBarDoctors } from "./message-bar-doctors";
 import { apiReadMessages } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 
 export const View: React.FC = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card } = useConversation();
+  const { cardPatient, patientId } = useConversation();
   const ref = React.useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
   const scroll = React.useRef(0);
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
 
-  console.log(chatConversation);
+
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
+  }));
+
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
 
-    for (const message of chatConversation?.messages ?? []) {
-      const groupKey = format(parseISO(message.created), "yyyy-MM-dd");
+    if (patientId) {
+      for (const message of chatConversation?.messages ?? []) {
+        const groupKey = format(parseISO(message.created ?? message?.updated), "yyyy-MM-dd");
 
-      if (groupKey in groups) {
-        groups[groupKey].push(message);
-      } else {
-        groups[groupKey] = [message];
+        if (groupKey in groups) {
+          groups[groupKey].push(message);
+        } else {
+          groups[groupKey] = [message];
+        }
+      }
+    } else {
+      for (const message of chatContentDoctors?.messages ?? []) {
+        const groupKey = format(parseISO(message.created ?? message?.updated), "yyyy-MM-dd");
+
+        if (groupKey in groups) {
+          groups[groupKey].push(message);
+        } else {
+          groups[groupKey] = [message];
+        }
       }
     }
-
     return Object.entries(groups).map(([key, messages]) => ({
       key,
       messages,
     }));
-  }, [chatConversation?.messages]);
+  }, [chatConversation?.messages, chatContentDoctors?.messages]);
 
   React.useEffect(() => {
     const onUpdate = () => {
@@ -92,17 +109,14 @@ export const View: React.FC = () => {
 
   React.useEffect(() => {
     if (chatConversation?.messages) {
+      //TODO la doctors list
       const unreadedMessages = chatConversation?.messages
         .filter((msg: any) => !msg.seen)
         .map((msg: any) => msg.id)
         .join(",");
-      console.log(unreadedMessages, chatConversation?.chat_id);
-
       if (unreadedMessages.length) {
         const fetchDataAndDelay = async () => {
           setTimeout(async () => {
-            console.log(chatConversation?.chat_id);
-
             dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
             await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
           }, 750);
@@ -111,9 +125,10 @@ export const View: React.FC = () => {
       }
     }
   }, [chatConversation?.messages]);
+
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
-      <Header />
+      {patientId ? <Header /> : <HeaderDoctors />}
 
       <div ref={ref} className="flex-1 space-y-4 overflow-y-auto p-3 md:p-5 lg:p-3 xl:p-5">
         {grouped.map(({ key, messages }) => (
@@ -133,7 +148,9 @@ export const View: React.FC = () => {
             {messages.map((message) => (
               <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
                 <MessageHeader
-                  title={message.side === "in" ? card?.name ?? t("common:untitled") : t("you")}
+                  title={
+                    message.side === "in" ? cardPatient?.name ?? t("common:untitled") : t("you")
+                  }
                   timestamp={message?.updated ?? ""}
                 />
 
@@ -170,8 +187,14 @@ export const View: React.FC = () => {
           </div>
         ))}
       </div>
-      <ApprovalRequest />
-      <MessageBar />
+      {patientId ? (
+        <>
+          <ApprovalRequest />
+          <MessageBar />
+        </>
+      ) : (
+        <MessageBarDoctors />
+      )}
     </div>
   );
 };

@@ -43,10 +43,10 @@ export interface ApprovalRequestProps extends React.HTMLAttributes<HTMLDivElemen
 export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...props }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const { id } = useConversation();
-   const { chatConversation } = useSelector((store: any) => ({
-     chatConversation: store.chatContent?.conversation,
-   }));
+  const { patientId } = useConversation();
+  const { chatConversation } = useSelector((store: any) => ({
+    chatConversation: store.chatContent?.conversation,
+  }));
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
@@ -65,15 +65,15 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   const revalidateQueries = async () => {
     await Promise.allSettled([
       queryClient.invalidateQueries(["conversations", conversationsType]),
-      queryClient.invalidateQueries(["conversation", id]),
+      queryClient.invalidateQueries(["conversation", patientId]),
     ]);
   };
 
   const onAcceptHandler = async () => {
-    if (id) {
+    if (patientId) {
       setIsAcceptLoading(true);
       try {
-        await apiAcceptConversation(id);
+        await apiAcceptConversation(patientId);
         await revalidateQueries();
       } catch (error) {
         toast({
@@ -88,9 +88,9 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   };
 
   const onRejectHandler = async (values: FormValues) => {
-    if (id) {
+    if (patientId) {
       try {
-        await apiRejectConversation(id, values.message);
+        await apiRejectConversation(patientId, values.message);
         await revalidateQueries();
         setIsRejectDialogOpen(false);
       } catch (error) {

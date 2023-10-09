@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 export const Header: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { card, isCardLoading, isCardErrored } = useConversation();
+  const { cardPatient, isCardPLoading, isCardPErrored } = useConversation();
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
@@ -38,11 +38,12 @@ export const Header: React.FC = () => {
   const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const isLoading = isCardLoading || (!chatConversation?.user_id && !isCardErrored) || !card;
+  const isLoading =
+    isCardPLoading || (!chatConversation?.user_id && !isCardPErrored) || !cardPatient;
 
   return (
     <>
-      <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={card} />
+      <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} />
 
       <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
         <div className="flex flex-1 items-center">
@@ -63,8 +64,8 @@ export const Header: React.FC = () => {
             />
           ) : (
             <Avatar className={cn("h-12 w-12", { "ml-4": isMobile })}>
-              <AvatarImage src={card?.avatar} alt={card?.name} />
-              <AvatarFallback>{getInitials(card?.name)}</AvatarFallback>
+              <AvatarImage src={cardPatient?.avatar} alt={cardPatient?.name} />
+              <AvatarFallback>{getInitials(cardPatient?.name)}</AvatarFallback>
             </Avatar>
           )}
 
@@ -75,11 +76,11 @@ export const Header: React.FC = () => {
             </div>
           ) : (
             <div className="ml-3 flex-1 overflow-hidden">
-              <h3 className="truncate font-medium text-typography-primary">{card?.name}</h3>
+              <h3 className="truncate font-medium text-typography-primary">{cardPatient?.name}</h3>
               <p className="truncate text-sm">
-                {card?.last_seen && (
-                  <time dateTime={card?.last_seen}>
-                    {formatDistance(parseISO(card?.last_seen), new Date(), {
+                {cardPatient?.last_seen && (
+                  <time dateTime={cardPatient?.last_seen}>
+                    {formatDistance(parseISO(cardPatient?.last_seen), new Date(), {
                       addSuffix: true,
                       locale: locale(),
                     })}

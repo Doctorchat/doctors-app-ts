@@ -9,8 +9,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
-import { useQueryClient } from "react-query";
-
 import { useConversationLayoutStore } from "./layout";
 import { MessageTemplates, useMessageTemplatesStore } from "./message-templates";
 import { RequestFile, useRequestFileStore } from "./request-file";
@@ -33,40 +31,12 @@ import { cn, getApiErrorMessages } from "@/utils";
 import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis";
 import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
-import Pusher from "pusher-js";
-import { SOCKET_PUSHER_CLUSTER, SOCKET_PUSHER_EVENT_RECEIVE, SOCKET_PUSHER_KEY } from "@/config";
-import { useSearchParams } from "react-router-dom";
-
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
-  const { conversation, id } = useConversation();
+  const { conversationPatients, patientId } = useConversation();
   const { toast } = useToast();
-  // React.useEffect(() => {
-  //   const pusher = new Pusher(SOCKET_PUSHER_KEY, { cluster: SOCKET_PUSHER_CLUSTER });
-  //   const current_chat_id = searchParams.get("id");
-  //   const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL + current_chat_id);
-  //   const current_user = JSON.parse(localStorage.getItem("session:user") || "");
-
-  //   channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
-  //     const { message } = data;
-  //     const { chat_id, user_id } = message;
-  //     current_chat_id && parseInt(current_chat_id);
-
-  //     //  console.log(searchParams.get("id"));
-  //     console.log(current_user.id);
-
-  //     alert(JSON.stringify(data));
-  //     // setMessages((prevMessages) => [...prevMessages, data.message]);
-  //   });
-  //   return () => {
-  //     channel.unbind_all();
-  //     channel.unsubscribe();
-  //   };
-  // }, []);
-
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
-  const queryClient = useQueryClient();
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
@@ -79,11 +49,11 @@ export const MessageBar: React.FC = () => {
   const navigate = useNavigate();
 
   const onSendMessageHandler = async () => {
-    if (conversation?.chat_id) {
+    if (conversationPatients?.chat_id) {
       setIsSending(true);
       try {
         await apiSendMessage({
-          chat_id: conversation.chat_id,
+          chat_id: conversationPatients.chat_id,
           content,
         });
         setContent("");
@@ -99,7 +69,7 @@ export const MessageBar: React.FC = () => {
     }
   };
 
-  if (conversation?.isAccepted && conversation?.status === "open") {
+  if (conversationPatients?.isAccepted && conversationPatients?.status === "open") {
     return (
       <>
         <div className="p-3 md:p-5 lg:p-3 xl:p-5">
@@ -137,7 +107,7 @@ export const MessageBar: React.FC = () => {
                       onClick={() =>
                         isMobile
                           ? navigate(
-                              `/recomandation-analyze?id=${conversation.chat_id}?type=${conversationsType}`
+                              `/recomandation-analyze?id=${conversationPatients.chat_id}?type=${conversationsType}`
                             )
                           : setRecomandationAnalysisOpen(true)
                       }
@@ -185,7 +155,7 @@ export const MessageBar: React.FC = () => {
         <UploadFile />
         <RequestFile />
         <MessageTemplates />
-        <RecomandAnalysis conversationsType={conversationsType} id={id} />
+        <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
       </>
     );
   }

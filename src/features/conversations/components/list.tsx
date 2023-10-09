@@ -1,19 +1,22 @@
 import React from "react";
-
-import { useQuery } from "react-query";
-
 import { useConversationLayoutStore } from "./layout";
 import { Preview, PreviewSkeleton } from "./preview";
-import { apiGetConversationsWithPatients } from "../api";
-
 import { cn } from "@/utils";
 import { useChatList } from "../hooks/use-chat-list";
 import { useSelector } from "react-redux";
+import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
 
 export const List: React.FC = () => {
+  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
+  const { isLoadingListDoctors } = useChatListDoctors();
   const { isLoading } = useChatList();
+
   const { listChats } = useSelector((store: any) => ({
     listChats: store.listChats.data,
+  }));
+
+  const { listChatsDoctors } = useSelector((store: any) => ({
+    listChatsDoctors: store.listChatsDoctors.data,
   }));
 
   return (
@@ -25,11 +28,24 @@ export const List: React.FC = () => {
       )}
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
-        {listChats?.map((conversation: any) => (
-          <Preview key={conversation.id} conversation={conversation} />
-        ))}
+        {conversationsType === "doctors"
+          ? listChatsDoctors?.map((conversationDoctor: any) => (
+              <Preview
+                key={conversationDoctor.id}
+                conversation={conversationDoctor}
+                typeConversation={conversationsType}
+              />
+            ))
+          : listChats?.map((conversationPatient: any) => (
+              <Preview
+                key={conversationPatient.id}
+                conversation={conversationPatient}
+                typeConversation={conversationsType}
+              />
+            ))}
 
-        {isLoading && Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
+        {(isLoading || isLoadingListDoctors) &&
+          Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
       </div>
     </div>
   );

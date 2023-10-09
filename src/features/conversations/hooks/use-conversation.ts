@@ -1,8 +1,14 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
+
+import {
+  apiGetConversation,
+  apiGetConversationDoctors,
+  apiGetDoctorChatCard,
+  apiGetUserCard,
+} from "../api";
 import { useSelector, useDispatch } from "react-redux";
-import { apiGetConversation, apiGetUserCard } from "../api";
 import {
   SOCKET_PUSHER_EVENT_RECEIVE,
   SOCKET_PUSHER_CHANNEL_DOCTOR,
@@ -10,14 +16,15 @@ import {
 } from "@/config/app";
 import usePusher from "./usePusher";
 import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
+import { Conversation } from "../types";
+import { addMessagesDoctors } from "@/store/slices/chatContentDoctorsSlice";
 
-let hasProcessedData = false;
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
-  const [id, setId] = React.useState<string | null>(null);
+  const [patientId, setPatientId] = React.useState<string | null>(null);
+  const [doctorId, setDoctorId] = React.useState<string | null>(null);
 
   const { pusher } = usePusher();
-  const current_chat_id = searchParams.get("id");
   const current_user = JSON.parse(localStorage.getItem("session:user") || "");
   const dispatch = useDispatch();
   const { chatContent } = useSelector((store: any) => ({
@@ -25,37 +32,97 @@ export const useConversation = () => {
   }));
 
   const {
-    data: conversationData,
+    data: conversationPatients,
     isLoading: isConversationLoading,
     isError: isConversationErrored,
   } = useQuery({
-    queryKey: ["conversation", id],
+    queryKey: ["conversation-patient", patientId],
     queryFn: async () => {
-      if (id) return apiGetConversation(id);
+      if (patientId) return apiGetConversation(patientId);
     },
-    enabled: Boolean(id),
+    enabled: Boolean(patientId),
     staleTime: 0,
+    onSuccess: (data: Conversation) => {
+      if (data)
+        return dispatch(
+          addMessages({
+            conversation: data,
+            messages: data.messages,
+          })
+        );
+    },
   });
 
   const {
-    data: card,
-    isLoading: isCardLoading,
-    isError: isCardErrored,
+    data: conversationDoctors,
+    isLoading: isConversationDLoading,
+    isError: isConversationDErrored,
   } = useQuery({
-    queryKey: ["user-card", conversationData?.user_id],
+    queryKey: ["conversation-doctor", doctorId],
     queryFn: async () => {
-      if (conversationData?.user_id)
-        return apiGetUserCard(conversationData.user_id, searchParams.get("anonymous") === "true");
+      if (doctorId) {
+        return apiGetConversationDoctors(doctorId);
+      }
     },
-    enabled: Boolean(conversationData?.user_id),
+    enabled: Boolean(doctorId),
+    staleTime: 0,
+    onSuccess: (data: any) => {
+      if (data)
+        return dispatch(
+          addMessagesDoctors({ doctor_chat_id: data.doctor_chat_id, messages: data.messages })
+        );
+    },
   });
+
+  const {
+    data: cardPatient,
+    isLoading: isCardPLoading,
+    isError: isCardPErrored,
+  } = useQuery({
+    queryKey: ["patient-card", patientId],
+    queryFn: async () => {
+      if (conversationPatients?.user_id)
+        return apiGetUserCard(
+          conversationPatients.user_id,
+          searchParams.get("anonymous") === "true"
+        );
+    },
+    enabled: Boolean(conversationPatients?.user_id),
+  });
+
+  const {
+    data: cardDoctors,
+    isLoading: isCardDoctorsLoading,
+    isError: isCardDoctorsErrored,
+  } = useQuery({
+    queryKey: ["doctor-card", conversationDoctors?.doctor_chat_id],
+    queryFn: async () => {
+      if (conversationDoctors?.doctor_chat_id)
+        return apiGetDoctorChatCard(conversationDoctors?.doctor_chat_id);
+    },
+    enabled: Boolean(conversationDoctors?.doctor_chat_id),
+  });
+
+  React.useEffect(() => {
+    if (searchParams.has("patientId")) {
+      setPatientId(searchParams.get("patientId") ?? null);
+      setDoctorId(null);
+    } else if (searchParams.has("doctorId")) {
+      setDoctorId(searchParams.get("doctorId") ?? null);
+      setPatientId(null);
+    } else {
+      setPatientId(null);
+      setDoctorId(null);
+    }
+  }, [searchParams]);
 
   React.useEffect(() => {
     const role = current_user.role === 2;
 
-    if (pusher && conversationData) {
+    if (pusher && conversationPatients) {
       const channel = pusher.subscribe(
-        (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + current_chat_id
+        (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) +
+          (patientId ?? doctorId)
       );
       channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
         const { content_data } = data;
@@ -76,40 +143,52 @@ export const useConversation = () => {
     }
   }, [pusher, chatContent.messages]);
 
-  React.useEffect(() => {
-    if (conversationData) {
-      if (!hasProcessedData || chatContent?.chat_id !== id) {
-        hasProcessedData = true;
-        dispatch(
-          addMessages({ conversation: conversationData, messages: conversationData.messages })
-        );
-      }
-    }
-  }, [conversationData]);
-
-  React.useEffect(() => {
-    if (searchParams.has("id")) setId(searchParams.get("id") ?? null);
-    else setId(null);
-  }, [searchParams]);
+  // React.useEffect(() => {
+  //   if (conversationPatients) {
+  //     if (!hasProcessedData || chatContent?.chat_id !== patientId) {
+  //       hasProcessedData = true;
+  //       dispatch(
+  //         addMessages({
+  //           conversation: conversationPatients,
+  //           messages: conversationPatients.messages,
+  //         })
+  //       );
+  //     }
+  //   }
+  // }, [conversationPatients]);
 
   return React.useMemo(
     () => ({
-      id,
-      card,
-      isCardLoading,
-      isCardErrored,
-      conversation: chatContent,
+      conversationPatients,
       isConversationLoading,
       isConversationErrored,
+      conversationDoctors,
+      isConversationDLoading,
+      isConversationDErrored,
+      cardPatient,
+      isCardPLoading,
+      isCardPErrored,
+      cardDoctors,
+      isCardDoctorsLoading,
+      isCardDoctorsErrored,
+      patientId,
+      doctorId,
     }),
     [
-      id,
-      card,
-      chatContent,
-      isCardLoading,
-      isCardErrored,
-      isConversationErrored,
+      conversationPatients,
       isConversationLoading,
+      isConversationErrored,
+      conversationDoctors,
+      isConversationDLoading,
+      isConversationDErrored,
+      cardPatient,
+      isCardPLoading,
+      isCardPErrored,
+      cardDoctors,
+      isCardDoctorsLoading,
+      isCardDoctorsErrored,
+      patientId,
+      doctorId,
     ]
   );
 };

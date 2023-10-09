@@ -51,9 +51,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         >
           <TabsList>
             <TabsTrigger value="patients">{t("conversations:patients")}</TabsTrigger>
-            <TabsTrigger disabled value="doctors">
-              {t("conversations:doctors")}
-            </TabsTrigger>
+            <TabsTrigger value="doctors">{t("conversations:doctors")}</TabsTrigger>
           </TabsList>
         </Tabs>
       </header>

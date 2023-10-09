@@ -6,5 +6,8 @@ export const store = configureStore({
   reducer: {
     chatContent: slices.chatContentSlice,
     listChats: slices.listChatsSlice,
+    chatContentDoctors: slices.chatContentDoctorsSlice,
+    listChatsDoctors: slices.listChatsDoctorsSlice,
+    doctorInfo: slices.doctorInfoSlice,
   },
 });

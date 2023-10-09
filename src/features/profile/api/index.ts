@@ -10,11 +10,13 @@ export const updateAvatar = async (file: File) => {
 };
 
 export const toggleChatConversations = async () => {
-  return await axiosInstance.put("/user/card/toggle-chat").then(res => Promise.resolve(res.data));
+  return await axiosInstance.put("/user/card/toggle-chat").then((res) => Promise.resolve(res.data));
 };
 
 export const toggleVideoChatConversations = async () => {
-  return await axiosInstance.put("/user/card/toggle-video").then(res => Promise.resolve(res.data));
+  return await axiosInstance
+    .put("/user/card/toggle-video")
+    .then((res) => Promise.resolve(res.data));
 };
 
 export const updatePassword = async (data: PasswordTypes) => {
@@ -26,5 +28,5 @@ export const getSpecialitites = async () => {
 };
 
 export const getUser = async () => {
-  return await axiosInstance.get("/user");
+  return await axiosInstance.get("/user").then((res) => Promise.resolve(res.data));
 };

@@ -4,21 +4,19 @@ import { useQuery } from "react-query";
 import { apiGetRecomandations } from "../api";
 import { Recomandation, TreeNodeData } from "../types";
 import { useSearchParams } from "react-router-dom";
+import { useConversation } from ".";
 
 export const useRecomandation = () => {
   const { data: analyses, isLoading: isAnalysesLoading } = useQuery<Recomandation>({
     queryKey: ["recomandation"],
     queryFn: async () => apiGetRecomandations(),
   });
+  const { patientId, doctorId } = useConversation();
+  const chat_id = patientId ?? doctorId;
   const [searchParams] = useSearchParams();
-  const [chat_id, setChatId] = React.useState<number | null>(null);
   const [typeConversetion, setTypeConversetion] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    if (searchParams.has("id")) {
-      const id = searchParams.get("id") ?? null;
-      id && setChatId(parseInt(id));
-    } else setChatId(null);
     if (searchParams.has("type")) {
       const type = searchParams.get("type") ?? null;
       type && setTypeConversetion(type);
