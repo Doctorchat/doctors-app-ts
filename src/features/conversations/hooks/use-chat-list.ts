@@ -31,6 +31,7 @@ export const useChatList = () => {
       channel.bind(SOCKET_PUSHER_EVENT_LIST_CHATS, (data: any) => {
         const { chatList, chat_id } = data;
         const chat_update = JSON.parse(chatList);
+        // console.log(chat_update);
         dispatch(updateListChats({ id: chat_id, updatedData: chat_update }));
       });
 

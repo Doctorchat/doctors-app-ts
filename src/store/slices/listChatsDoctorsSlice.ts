@@ -38,7 +38,6 @@ const listChatsDoctorsSlice = createSlice({
       if (state.data.length === 0) {
         state.data = action.payload;
         state.data = sortChatsByUpdatedAt(state.data);
-        console.log(sortChatsByUpdatedAt(state.data));
       }
     },
   },

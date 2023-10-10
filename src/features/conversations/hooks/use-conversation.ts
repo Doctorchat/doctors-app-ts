@@ -125,9 +125,11 @@ export const useConversation = () => {
         (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) +
           (patientId ?? doctorId)
       );
+
       channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
         const { content_data } = data;
         const { message } = JSON.parse(content_data);
+        // console.log(message, chatContent);
         if (
           !chatContent.messages.some(
             (existingMessage: { id: any }) => existingMessage.id === message.id
