@@ -18,12 +18,13 @@ import usePusher from "./usePusher";
 import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
 import { Conversation } from "../types";
 import { addMessagesDoctors } from "@/store/slices/chatContentDoctorsSlice";
+import { useMediaQuery } from "usehooks-ts";
 
 export const useConversation = () => {
   const [searchParams] = useSearchParams();
   const [patientId, setPatientId] = React.useState<string | null>(null);
   const [doctorId, setDoctorId] = React.useState<string | null>(null);
-
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   const { pusher } = usePusher();
   const current_user = JSON.parse(localStorage.getItem("session:user") || "");
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ export const useConversation = () => {
       setPatientId(null);
       setDoctorId(null);
     }
-  }, [searchParams]);
+  }, [searchParams, isMobile]);
 
   React.useEffect(() => {
     const role = current_user.role === 2;

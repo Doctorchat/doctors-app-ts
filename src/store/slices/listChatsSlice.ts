@@ -18,7 +18,6 @@ const listChatsSlice = createSlice({
       action: PayloadAction<{ id: number; updatedData: Partial<ConversationPreview> }>
     ) => {
       const { id, updatedData } = action.payload;
-      console.log(action.payload);
       const index = state.data.findIndex((item) => item.id === id);
 
       if (index !== -1) {

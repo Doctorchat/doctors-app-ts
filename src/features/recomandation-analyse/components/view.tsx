@@ -61,8 +61,6 @@ export const View = () => {
   };
 
   const sendRecomandation = async () => {
-    console.log(typeConversetion);
-    console.log(chat_id);
     const extractedIds = extractIdsFromArray(value);
     const data = { chat_id: chat_id, analyzes: extractedIds };
     try {

@@ -28,14 +28,13 @@ import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 export const View: React.FC = () => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-  const { cardPatient, patientId } = useConversation();
+  const { cardPatient, patientId, doctorId } = useConversation();
   const ref = React.useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const scroll = React.useRef(0);
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
-
 
   const { chatContentDoctors } = useSelector((store: any) => ({
     chatContentDoctors: store.chatContentDoctors.data,
@@ -54,7 +53,7 @@ export const View: React.FC = () => {
           groups[groupKey] = [message];
         }
       }
-    } else {
+    } else if (doctorId) {
       for (const message of chatContentDoctors?.messages ?? []) {
         const groupKey = format(parseISO(message.created ?? message?.updated), "yyyy-MM-dd");
 
@@ -69,13 +68,13 @@ export const View: React.FC = () => {
       key,
       messages,
     }));
-  }, [chatConversation?.messages, chatContentDoctors?.messages]);
+  }, [chatConversation?.messages, chatContentDoctors?.messages, patientId, doctorId]);
 
   React.useEffect(() => {
     const onUpdate = () => {
       if (ref.current) {
         const el = ref.current;
-
+        el.scrollTop = el.scrollHeight;
         if (scroll.current === 0) {
           el.scrollTo({
             top: el.scrollHeight,
@@ -86,13 +85,14 @@ export const View: React.FC = () => {
     };
 
     const observer = new MutationObserver(onUpdate);
-
     if (ref.current) {
-      observer.observe(ref.current, { childList: true });
+      observer.observe(ref.current, { childList: true, subtree: true });
+      ref.current.scrollTop = ref.current.scrollHeight;
     }
-
     return () => {
-      observer.disconnect();
+      if (ref.current) {
+        observer.disconnect();
+      }
     };
   }, []);
 
