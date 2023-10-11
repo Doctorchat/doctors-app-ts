@@ -26,7 +26,8 @@ export const useConversation = () => {
   const [doctorId, setDoctorId] = React.useState<string | null>(null);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const { pusher } = usePusher();
-  const current_user = JSON.parse(localStorage.getItem("session:user") || "");
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+  const current_user = sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const dispatch = useDispatch();
   const { chatContent } = useSelector((store: any) => ({
     chatContent: store.chatContent?.conversation,

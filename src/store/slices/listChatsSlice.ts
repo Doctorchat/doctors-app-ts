@@ -35,10 +35,14 @@ const listChatsSlice = createSlice({
     },
 
     addListChats: (state, action: PayloadAction<ConversationPreview[]>) => {
-      if (state.data.length === 0) {
-        state.data.push(...action.payload);
-        state.data = sortChatsByUpdatedAt(state.data);
-      }
+      // Șterge conținutul stării curente
+      state.data = [];
+
+      // Adaugă conversațiile primite prin action.payload
+      state.data.push(...action.payload);
+
+      // Sortează starea după data actualizării
+      state.data = sortChatsByUpdatedAt(state.data);
     },
   },
 });

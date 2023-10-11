@@ -46,7 +46,8 @@ export const useNewChatDoctors = createWithEqualityFn<NewChatStore>(
 export const AddChatDoctors: React.FC = () => {
   const open = useNewChatDoctors((state) => state.open);
   const setOpen = useNewChatDoctors((state) => state.setOpen);
-  const user = JSON.parse(localStorage.getItem("session:user") || "");
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+  const user = sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const { data: doctorsList } = useQuery({
     queryKey: ["doctorsList"],
     queryFn: async () => {
