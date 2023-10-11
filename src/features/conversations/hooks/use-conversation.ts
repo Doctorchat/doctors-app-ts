@@ -27,7 +27,7 @@ export const useConversation = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const { pusher } = usePusher();
   const sessionUser = localStorage.getItem("session:user") ?? "";
-  const current_user = sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const dispatch = useDispatch();
   const { chatContent } = useSelector((store: any) => ({
     chatContent: store.chatContent?.conversation,
@@ -130,7 +130,6 @@ export const useConversation = () => {
       channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
         const { content_data } = data;
         const { message } = JSON.parse(content_data);
-        // console.log(message, chatContent);
         if (
           !chatContent.messages.some(
             (existingMessage: { id: any }) => existingMessage.id === message.id

@@ -1,3 +1,9 @@
 {
-    "title": "Personalized surveys"
+    "title": "Investigations",
+    "add_question": "Add a question",
+    "add_description": "Adding a custom question to create a survey per patient",
+    "add_modal_description": "Add your custom question",
+    "placeholder_question": "Create the question ...",
+    "add_question_save": "Create the question ...",
+    "question": "The question"
 }

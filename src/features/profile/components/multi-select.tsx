@@ -14,7 +14,7 @@ interface Item {
 export const MultiSelect = (props: any) => {
   const { t } = useTranslation();
   const sessionUser = localStorage.getItem("session:user") ?? "";
-  const user = sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
 
   let initialSelectedItems: Item[];
 

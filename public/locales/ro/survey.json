@@ -1,3 +1,8 @@
 {
-    "title": "Anchete personalizate"
+    "title": "Investigații",
+    "add_question": "Adaugă o întrebare",
+    "add_description": "Adăugarea unor întrebări personalizate pentru a crea o anchetă per pacient",
+    "add_modal_description": "Adaugă întrebarea personalizată",
+    "placeholder_question": "Creează întrebarea ...",
+    "question": "Întrebarea"
 }

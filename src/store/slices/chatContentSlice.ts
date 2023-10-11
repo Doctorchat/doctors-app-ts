@@ -20,7 +20,6 @@ const chatContentSlice = createSlice({
           content: content,
           updated: getCurrentDateTime(),
         };
-        console.log(state.conversation.messages);
       }
     },
     addMessages: (

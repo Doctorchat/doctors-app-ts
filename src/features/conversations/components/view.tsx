@@ -156,7 +156,17 @@ export const View: React.FC = () => {
                   }
                   timestamp={message?.updated ?? ""}
                 />
-
+                {message.recommendations?.length > 0 && (
+                  <MessageBubble
+                    variant={message.side === "in" ? "primary" : "secondary"}
+                    className="space-y-1"
+                  >
+                    {t("conversations:recomand_analysis_dialog:recomandation_text")}
+                    {message.recommendations.map((recomandation, index) => (
+                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
+                    ))}
+                  </MessageBubble>
+                )}
                 {message.content && (
                   <MessageContent isAutoScrollEnabled={isAutoScrollEnabled} message={message} />
                 )}
@@ -168,18 +178,6 @@ export const View: React.FC = () => {
                   >
                     {message.files.map((file) => (
                       <MessageBubbleFile key={file.id} file={file} />
-                    ))}
-                  </MessageBubble>
-                )}
-
-                {message.recommendations?.length > 0 && (
-                  <MessageBubble
-                    variant={message.side === "in" ? "primary" : "secondary"}
-                    className="space-y-1"
-                  >
-                    {t("conversations:recomand_analysis_dialog:recomandation_text")}
-                    {message.recommendations.map((recomandation, index) => (
-                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
                     ))}
                   </MessageBubble>
                 )}

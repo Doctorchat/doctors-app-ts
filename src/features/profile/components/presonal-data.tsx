@@ -102,16 +102,14 @@ export const PersonalData: React.FC = () => {
     defaultValues: info,
     resolver: zodResolver(schema),
   });
-
+  const userStorageData = localStorage.getItem("session:user");
   useEffect(() => {
-    getUser().then((data) => {
-      localStorage.setItem("session:user", JSON.stringify(data.data));
+    getUser().then((data: any) => {
+      localStorage.setItem("session:user", JSON.stringify(data));
     });
   }, []);
 
   useEffect(() => {
-    const userStorageData = localStorage.getItem("session:user");
-
     if (userStorageData) {
       const {
         name,
@@ -188,7 +186,7 @@ export const PersonalData: React.FC = () => {
 
   const userSpecialities = () => {
     const user = localStorage.getItem("session:user");
-    if (user) {
+    if (!!user) {
       return specialities.filter((s: ISpeciality) =>
         JSON.parse(user).category.every((el: ISpeciality) => el.id !== s.id)
       );

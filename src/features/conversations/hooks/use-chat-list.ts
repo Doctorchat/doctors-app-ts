@@ -24,14 +24,14 @@ export const useChatList = () => {
     },
   });
   const sessionUser = localStorage.getItem("session:user") ?? "";
-  const current_user = sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   React.useEffect(() => {
     if (pusher && conversations) {
       const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_LIST_CHATS + current_user.id);
       channel.bind(SOCKET_PUSHER_EVENT_LIST_CHATS, (data: any) => {
         const { chatList, chat_id } = data;
         const chat_update = JSON.parse(chatList);
-        console.log(chat_update);
         dispatch(updateListChats({ id: chat_id, updatedData: chat_update }));
       });
 
