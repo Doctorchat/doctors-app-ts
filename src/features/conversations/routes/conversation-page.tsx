@@ -6,7 +6,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { View, useConversationLayoutStore } from "../components";
 import { useConversation } from "../hooks";
 
-import { Sheet, SheetContent } from "@/components/ui";
+import { Button, Sheet, SheetContent } from "@/components/ui";
 import { AddChatDoctors, useNewChatDoctors } from "../components/new-chat";
 
 export default function ConversationPage() {
@@ -32,16 +32,21 @@ export default function ConversationPage() {
   if ((patientId ?? doctorId) === null) {
     return (
       <div className="flex items-center justify-center rounded-lg border border-neutral-200 lg:col-span-7 xl:col-span-8">
-        <p
-          onClick={conversationsType === "doctors" ? () => setNewChatDoctors(true) : undefined}
-          className={`${
-            conversationsType === "doctors" ? "cursor-pointer" : ""
-          } rounded-md bg-neutral-200 px-2 py-1 text-sm font-medium text-typography-primary`}
-        >
-          {conversationsType === "patients"
-            ? t("conversations:select_conversation")
-            : t("conversations:create_conversation")}
-        </p>
+        {conversationsType === "doctors" ? (
+          <Button
+            size="default"
+            className="xs:hover:bg-primary-hover bg-primary  hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
+            onClick={() => setNewChatDoctors(true)}
+          >
+            {t("conversations:create_conversation")}
+          </Button>
+        ) : (
+          <p
+            className={`rounded-md bg-neutral-200 px-2 py-1 text-sm font-medium text-typography-primary`}
+          >
+            {t("conversations:select_conversation")}
+          </p>
+        )}
         <AddChatDoctors />
       </div>
     );
