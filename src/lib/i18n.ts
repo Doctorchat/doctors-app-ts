@@ -19,6 +19,7 @@ i18n
       "partners",
       "video",
       "vacation",
+      "survey",
     ],
     supportedLngs: ["ro", "ru", "en"],
     defaultNS: "common",
