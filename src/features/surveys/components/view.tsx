@@ -10,12 +10,18 @@ import { useQuery } from "react-query";
 import { getAllQuestions } from "../api";
 import { formatDistance, parseISO } from "date-fns";
 import { useAppI18n } from "@/hooks";
+import { ModalDeleteQuestion, useDeleteQuestion } from "./modal-delete-question";
 export interface ViewProps {
   inContainer?: boolean;
 }
 export const View: React.FC<ViewProps> = ({ inContainer }) => {
   const { t } = useTranslation();
+  const [questionId, setQuestionId] = React.useState<number>(0);
+  const [isEditable, setIsEditable] = React.useState<boolean>(false);
+  const [questionContent, setQuestionContent] = React.useState<string>("");
+
   const setOpenModalQuestion = useOpenModalQuestion((store) => store.setOpen);
+  const setDeleteQuestion = useDeleteQuestion((store) => store.setOpen);
   const { data: questions, isLoading } = useQuery({
     queryKey: ["questions"],
     queryFn: async () => {
@@ -33,11 +39,9 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {questions?.length &&
           questions.map((question: any, index: any) => (
-            <Card bordered>
-              {/* {article.title} */}
+            <Card bordered hoverable>
               <h6 className="mb-4 truncate text-lg">{index + 1 + ". " + t("survey:question")}</h6>
               <div className="min-h-[40px] text-lg font-medium">
-                {/* article.content.replace(/<[^>]*>?/gm, "") */}
                 <TextEllipsis text={question.question} maxTextCount={120} />
               </div>
               <div className="mt-4 flex items-center justify-between">
@@ -52,24 +56,37 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
                 <div className="flex">
                   <Button
                     shape="circle"
-                    variant="plain"
+                    variant="twoTone"
                     size="sm"
                     icon={<HiOutlineTrash />}
-                    // onClick={() => onArticleDelete(article.id)}
+                    onClick={() => {
+                      setDeleteQuestion(true), setQuestionId(question.id);
+                    }}
                   />
 
                   <Button
                     shape="circle"
-                    variant="plain"
+                    variant="twoTone"
                     size="sm"
                     icon={<HiOutlinePencil />}
-                    // onClick={() => onArticleEdit(article.id)}
+                    onClick={() => {
+                      setIsEditable(true),
+                        setQuestionContent(question.question),
+                        setQuestionId(question.id),
+                        setOpenModalQuestion(true);
+                    }}
                   />
                 </div>
               </div>
             </Card>
           ))}
-        <Card hoverable bordered onClick={() => setOpenModalQuestion(true)}>
+        <Card
+          hoverable
+          bordered
+          onClick={() => {
+            setIsEditable(false), setQuestionContent(""), setOpenModalQuestion(true);
+          }}
+        >
           {/* {article.title} */}
           <h6 className="mb-4 truncate text-lg text-primary">{t("survey:add_question")}</h6>
           <div className="min-h-[40px] text-primary">
@@ -85,7 +102,12 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
           />
         </Card>
       </div>
-      <ModalQuestion />
+      <ModalQuestion
+        editable={isEditable}
+        questionId={questionId}
+        questionContent={questionContent}
+      />
+      <ModalDeleteQuestion questionId={questionId} />
     </div>
   );
 };

@@ -1,8 +1,12 @@
 {
     "title": "Обследование",
     "add_question": "Добавить вопрос",
+    "edit_question": "Отредактировать вопрос",
+    "edit_modal_description": "Редактировать вопрос",
     "add_description": "Добавление пользовательского вопроса для создания анкеты для каждого пациента",
     "add_modal_description": "Добавьте собственный вопрос",
     "placeholder_question": "Создайте вопрос ...",
-    "question": "Вопрос"
+    "question": "Вопрос",
+    "delete_question_description": "Вы уверены, что хотите удалить этот вопрос ?",
+    "title_delete": "Удалить"
 }
