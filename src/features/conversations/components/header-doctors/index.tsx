@@ -104,7 +104,7 @@ export const HeaderDoctors: React.FC = () => {
         )}
       </div>
 
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -123,7 +123,7 @@ export const HeaderDoctors: React.FC = () => {
             </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> */}
     </header>
   );
 };
