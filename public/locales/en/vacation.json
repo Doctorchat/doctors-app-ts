@@ -1,5 +1,6 @@
 {
     "vacation": "Vacation",
     "history_vacation": "Leave history",
-    "resources": "Resources"
+    "resources": "Resources",
+    "description": "Select the leave start and end dates"
 }

@@ -19,7 +19,7 @@ const VacationCalendar = () => {
         <div className="py-4">
           <div className="inline-flex">
             <div className="text-red-600">*</div>
-            <p> Selecteaza datele de start si de finisarea a concediului</p>
+            <p> {t("vacation:description")}</p>
           </div>
         </div>
         <RangeCalendar value={value} onChange={setValue} />
