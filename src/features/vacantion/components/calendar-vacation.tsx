@@ -11,14 +11,13 @@ import { apiSendVacation } from "../api";
 import Notification from "@/components/ui/notification";
 
 const VacationCalendar = () => {
-  const initialState: [Date | null, Date | null] = [
-    new Date(),
-    dayjs(new Date()).add(5, "days").toDate(),
-  ];
-  const [value, setValue] = useState(initialState);
-  const description = "Vacation 01.06.2023 - 10.06.2023.";
-  const [isSending, setIsSending] = React.useState(false);
   const { t } = useTranslation();
+  const initialState: [Date | null, Date | null] = [null, null];
+  const [value, setValue] = useState(initialState);
+  const descriptionFinished = t("vacation:vacation") + " 01.10.2023 - 10.10.2023";
+  const descriptionProgress = t("vacation:vacation") + " 15.11.2023 - 31.11.2023";
+  const descriptionWaiting = t("vacation:vacation") + " 25.12.2023 - 03.01.2024";
+  const [isSending, setIsSending] = React.useState(false);
   const [openNotification, setOpenNotification] = React.useState(false);
   const parseDateValues = (dateValues: any) => {
     return dateValues.map((dateString: any) => dayjs(dateString).format("DD.MM.YYYY"));
@@ -74,15 +73,15 @@ const VacationCalendar = () => {
             items={[
               {
                 title: "Finished",
-                description,
+                description: descriptionFinished,
               },
               {
                 title: "In Progress",
-                description,
+                description: descriptionProgress,
               },
               {
                 title: "Waiting",
-                description,
+                description: descriptionWaiting,
               },
             ]}
           />

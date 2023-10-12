@@ -26,6 +26,7 @@ import {
 import { apiLogout, useAuth } from "@/features/auth";
 import { cn, getInitials } from "@/utils";
 import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
+import { useNavigate } from "react-router";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -43,7 +44,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
     shallow
   );
   const isMobile = useMediaQuery("(max-width: 768px)");
-
+  const navigate = useNavigate();
   return (
     <header
       className={cn(
@@ -106,7 +107,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
               </div>
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/profile")}>
               {t("common:settings")}
               <DropdownMenuShortcut>
                 <Cog6ToothIcon className="h-5 w-5" />
