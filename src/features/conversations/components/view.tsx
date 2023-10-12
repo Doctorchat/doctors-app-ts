@@ -167,7 +167,7 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
-                {message.content && (
+                {message.content && !message.files.length && (
                   <MessageContent isAutoScrollEnabled={isAutoScrollEnabled} message={message} />
                 )}
 
