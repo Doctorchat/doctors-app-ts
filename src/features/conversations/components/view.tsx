@@ -32,8 +32,7 @@ export const View: React.FC = () => {
   const ref = React.useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const scroll = React.useRef(0);
-  const [autoScrollEnabled, setAutoScrollEnabled] = React.useState(true);
-
+  const isAutoScrollEnabled = React.useRef(true);
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
@@ -72,7 +71,6 @@ export const View: React.FC = () => {
     }));
   }, [chatConversation?.messages, chatContentDoctors?.messages, patientId, doctorId]);
 
-  const isAutoScrollEnabled = React.useRef(true);
   React.useEffect(() => {
     const onUpdate = () => {
       if (ref.current && isAutoScrollEnabled.current) {
@@ -102,7 +100,7 @@ export const View: React.FC = () => {
   useEventListener(
     "scroll",
     () => {
-      if (ref.current && autoScrollEnabled) {
+      if (ref.current) {
         const el = ref.current;
         scroll.current = el.scrollTop + el.clientHeight - el.scrollHeight;
       }

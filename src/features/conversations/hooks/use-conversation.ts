@@ -13,11 +13,13 @@ import {
   SOCKET_PUSHER_EVENT_RECEIVE,
   SOCKET_PUSHER_CHANNEL_DOCTOR,
   SOCKET_PUSHER_CHANNEL_PATIENT,
+  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_RECEVE,
+  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_RECEVE,
 } from "@/config/app";
 import usePusher from "./usePusher";
 import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
 import { Conversation } from "../types";
-import { addMessagesDoctors } from "@/store/slices/chatContentDoctorsSlice";
+import { addMessagesDoctors, addMessageDoctors } from "@/store/slices/chatContentDoctorsSlice";
 import { useMediaQuery } from "usehooks-ts";
 
 export const useConversation = () => {
@@ -31,6 +33,9 @@ export const useConversation = () => {
   const dispatch = useDispatch();
   const { chatContent } = useSelector((store: any) => ({
     chatContent: store.chatContent?.conversation,
+  }));
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
   }));
 
   const {
@@ -146,19 +151,32 @@ export const useConversation = () => {
     }
   }, [pusher, chatContent.messages]);
 
-  // React.useEffect(() => {
-  //   if (conversationPatients) {
-  //     if (!hasProcessedData || chatContent?.chat_id !== patientId) {
-  //       hasProcessedData = true;
-  //       dispatch(
-  //         addMessages({
-  //           conversation: conversationPatients,
-  //           messages: conversationPatients.messages,
-  //         })
-  //       );
-  //     }
-  //   }
-  // }, [conversationPatients]);
+  React.useEffect(() => {
+    if (pusher && conversationDoctors) {
+      const channel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_RECEVE +
+          (patientId ?? doctorId) +
+          "-" +
+          current_user.id
+      );
+      channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_RECEVE, (data: any) => {
+        const { content_data } = data;
+        const { message } = JSON.parse(content_data);
+        if (
+          !chatContentDoctors.messages.some(
+            (existingMessage: { id: any }) => existingMessage.id === message.id
+          )
+        ) {
+          dispatch(addMessageDoctors(message));
+        }
+      });
+
+      return () => {
+        channel.unbind_all();
+        channel.unsubscribe();
+      };
+    }
+  }, [pusher, chatContentDoctors?.messages]);
 
   return React.useMemo(
     () => ({

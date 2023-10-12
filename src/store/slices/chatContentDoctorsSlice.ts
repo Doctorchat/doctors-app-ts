@@ -12,8 +12,8 @@ const chatContentDoctorsSlice = createSlice({
   name: "chatContentDoctors",
   initialState,
   reducers: {
-    addMessageDoc: (state, action: PayloadAction<any>) => {
-      //   state.conversation.messages.push(action.payload);
+    addMessageDoctors: (state, action: PayloadAction<ContentMessage>) => {
+      state.data.messages.push(action.payload);
     },
     addMessagesDoctors: (
       state,
@@ -31,6 +31,6 @@ const chatContentDoctorsSlice = createSlice({
   },
 });
 
-export const { addMessageDoc, addMessagesDoctors, resetMessagesDoc } =
+export const { addMessageDoctors, addMessagesDoctors, resetMessagesDoc } =
   chatContentDoctorsSlice.actions;
 export default chatContentDoctorsSlice.reducer;

@@ -120,12 +120,6 @@ export const MessageBarDoctors: React.FC = () => {
                       <DocumentArrowUpIcon className="h-5 w-5" />
                     </DropdownMenuShortcut>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setRequestFileOpen(true)}>
-                    {t("conversations:request_file")}
-                    <DropdownMenuShortcut>
-                      <DocumentArrowDownIcon className="h-5 w-5" />
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -146,8 +140,7 @@ export const MessageBarDoctors: React.FC = () => {
       </div>
 
       {/* <UploadFile />
-      <RequestFile />
-      */}
+       */}
     </>
   );
 };

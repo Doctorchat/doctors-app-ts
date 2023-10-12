@@ -18,6 +18,7 @@ interface MessageProps {
 }
 const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }) => {
   const form = useForm({});
+  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const [isEditing, setIsEditing] = React.useState(false);
   const [contentMessage, setContentMessage] = React.useState(message.content ?? "");
   const [isEditingMessageId, setIsEditingMessageId] = React.useState(0);
@@ -51,7 +52,7 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
       clearInterval(intervalId); // Curățăm intervalul la demontare
     };
   }, [message.created]);
-  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
+
   const onEditMessage = async () => {
     const data = { id: isEditingMessageId, content: contentMessage };
     try {
@@ -114,7 +115,7 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
           <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
             <MessageBubbleText>{message.content}</MessageBubbleText>
           </MessageBubble>
-          {message.side !== "in" && isWithinTenMinutes && (
+          {message.side !== "in" && conversationsType === "patients" && isWithinTenMinutes && (
             <EditIcon handlerEditMessage={toggleMessageEditStatus(true)} />
           )}
         </>

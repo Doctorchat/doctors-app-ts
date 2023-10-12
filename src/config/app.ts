@@ -25,3 +25,6 @@ export const SOCKET_PUSHER_CHANNEL_DOCTOR = "chat-doctor-to-patient-";
 export const SOCKET_PUSHER_CHANNEL_PATIENT = "chat-patient-to-doctor-";
 export const SOCKET_PUSHER_CHANNEL_LIST_CHATS = "chat-list-";
 export const SOCKET_PUSHER_EVENT_LIST_CHATS = "update-chat-list";
+
+export const SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_RECEVE = "chat-doctor-";
+export const SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_RECEVE = "doctor-messages";
