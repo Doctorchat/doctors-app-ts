@@ -1,5 +1,6 @@
 {
   "conversations": "Conversations",
+  "on_succes_notification": "Successfully added data",
   "recent_conversations": "Recent conversations",
   "select_conversation": "Select conversation",
   "create_conversation": "Select or create conversation",

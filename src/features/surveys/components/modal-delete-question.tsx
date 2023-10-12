@@ -1,34 +1,26 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-  Input,
-  Textarea,
 } from "@/components/ui";
 import { t } from "i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import React from "react";
-import Select from "@/components/ui/SelectElstar";
+
 import { toast } from "@/hooks";
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { getApiErrorMessages } from "@/utils";
-import { createQuestion, deleteQuestion } from "../api";
+import { deleteQuestion } from "../api";
+import Notification from "@/components/ui/notification";
 
 interface ModalQuestion {
   open: boolean;
@@ -51,7 +43,9 @@ export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
   const setOpen = useDeleteQuestion((state) => state.setOpen);
 
   const form = useForm<any>({});
-
+  const [openNotification, setOpenNotification] = React.useState(false);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setOpenNotification(!!val);
   const queryClient = useQueryClient();
 
   const onDeleteQuestion = async () => {
@@ -61,6 +55,10 @@ export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
       });
       await Promise.allSettled([queryClient.invalidateQueries(["questions"])]);
       setOpen(false);
+      setOpenNotification(true);
+      setTimeout(() => {
+        setOpenNotification(false);
+      }, 3000);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -104,6 +102,12 @@ export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
           </Button>
         </DialogFooter>
       </DialogContent>
+      <Notification
+        onOpenChange={setOnOpenChange(null)}
+        open={openNotification ? true : false}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </Dialog>
   );
 };

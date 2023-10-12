@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMessage } from "@/store/slices/chatContentSlice";
 import { hasPassedTenMinutes } from "@/utils/calculate-edit-message";
 import { useQueryClient } from "react-query";
+import Notification from "@/components/ui/notification";
+
 interface MessageProps {
   message: ConversationMessage;
   isAutoScrollEnabled: any;
@@ -24,6 +26,9 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
   const [isEditingMessageId, setIsEditingMessageId] = React.useState(0);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const [openNotification, setOpenNotification] = React.useState(false);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setOpenNotification(!!val);
   const toggleMessageEditStatus = React.useCallback(
     (status: any) => () => {
       isAutoScrollEnabled.current = false;
@@ -58,6 +63,10 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
     try {
       dispatch(updateMessage(data));
       await apiEditMessage(data);
+      setOpenNotification(true);
+      setTimeout(() => {
+        setOpenNotification(false);
+      }, 3000);
       await Promise.allSettled([
         queryClient.invalidateQueries(["list-patients", conversationsType]),
       ]);
@@ -120,6 +129,12 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
           )}
         </>
       )}
+      <Notification
+        onOpenChange={setOnOpenChange(null)}
+        open={openNotification ? true : false}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </>
   );
 };

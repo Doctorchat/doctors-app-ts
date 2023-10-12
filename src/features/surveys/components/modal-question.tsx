@@ -1,11 +1,7 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,23 +9,18 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-  Input,
   Textarea,
 } from "@/components/ui";
 import { t } from "i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
-import Select from "@/components/ui/SelectElstar";
 import { toast } from "@/hooks";
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { getApiErrorMessages } from "@/utils";
 import { createQuestion, updateQuestion } from "../api";
-
+import Notification from "@/components/ui/notification";
 interface ModalQuestion {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -69,7 +60,7 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
   const user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const language = localStorage.getItem("i18nextLng") ?? "";
   const queryClient = useQueryClient();
-
+  const [openNotification, setOpenNotification] = React.useState(false);
   const onSaveQuestion = async () => {
     setIsSending(true);
     try {
@@ -83,6 +74,10 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
       });
       await Promise.allSettled([queryClient.invalidateQueries(["questions"])]);
       closeWithTransition();
+      setOpenNotification(true);
+      setTimeout(() => {
+        setOpenNotification(false);
+      }, 3000);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -105,6 +100,10 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
       });
       await Promise.allSettled([queryClient.invalidateQueries(["questions"])]);
       closeWithTransition();
+      setOpenNotification(true);
+      setTimeout(() => {
+        setOpenNotification(false);
+      }, 3000);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -115,6 +114,8 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
       setIsSending(false);
     }
   };
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setOpenNotification(!!val);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -169,6 +170,12 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
           </Button>
         </DialogFooter>
       </DialogContent>
+      <Notification
+        onOpenChange={setOnOpenChange(null)}
+        open={openNotification ? true : false}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </Dialog>
   );
 };

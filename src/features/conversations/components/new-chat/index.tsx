@@ -1,11 +1,7 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,15 +9,13 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
   Input,
 } from "@/components/ui";
 import { t } from "i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import React from "react";
 import Select from "@/components/ui/SelectElstar";
 import { toast } from "@/hooks";
@@ -29,6 +23,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { apiCreateNewChat, apiReceiveDoctorsList } from "../../api";
 import { CustomControlMulti, CustomSelectOption } from "./custom-select";
 import { getApiErrorMessages } from "@/utils";
+import Notification from "@/components/ui/notification";
 
 interface NewChatStore {
   open: boolean;
@@ -44,6 +39,9 @@ export const useNewChatDoctors = createWithEqualityFn<NewChatStore>(
 );
 
 export const AddChatDoctors: React.FC = () => {
+  const [openNotification, setOpenNotification] = React.useState(false);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setOpenNotification(!!val);
   const open = useNewChatDoctors((state) => state.open);
   const setOpen = useNewChatDoctors((state) => state.setOpen);
   const sessionUser = localStorage.getItem("session:user") ?? "";
@@ -66,6 +64,10 @@ export const AddChatDoctors: React.FC = () => {
           title: nameChat,
           doctorIds: idsDoctors,
         });
+        setOpenNotification(true);
+        setTimeout(() => {
+          setOpenNotification(false);
+        }, 3000);
 
         setTimeout(() => {
           queryClient.invalidateQueries(["list-doctors", "doctors"]);
@@ -160,6 +162,12 @@ export const AddChatDoctors: React.FC = () => {
           </Button>
         </DialogFooter>
       </DialogContent>
+      <Notification
+        onOpenChange={setOnOpenChange(null)}
+        open={openNotification ? true : false}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </Dialog>
   );
 };
