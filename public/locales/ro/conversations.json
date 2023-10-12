@@ -14,6 +14,10 @@
   "schedule": "Agenda",
   "consultation": "Consultație",
   "consultation_video": "via Video",
+  "close_conversation": {
+    "title": "Închide conversația",
+    "description": "Confirmă că vrei să închizi conversaţia"
+  },
   "approval_request": {
     "title": "Este necesară aprobarea conversației",
     "description": "Pentru a începe conversația, trebuie să acceptați cererea de conversație",
@@ -29,7 +33,7 @@
     "members": "participanți",
     "member": "participant",
     "title": "Crearea unui chat nou",
-    "create_button":"Crearea chatului",
+    "create_button": "Crearea chatului",
     "input": {
       "description": "Denumirea chatului",
       "placeholder": "Denumirea ..."

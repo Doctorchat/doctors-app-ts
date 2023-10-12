@@ -128,10 +128,6 @@ export const MessageBarDoctors: React.FC = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-
-              <Button variant="ghost" size="icon" onClick={() => setMessageTemplatesOpen(true)}>
-                <ArrowPathRoundedSquareIcon className="h-5 w-5" />
-              </Button>
             </div>
             <Button
               variant="default"
@@ -151,7 +147,7 @@ export const MessageBarDoctors: React.FC = () => {
 
       {/* <UploadFile />
       <RequestFile />
-      <MessageTemplates /> */}
+      */}
     </>
   );
 };

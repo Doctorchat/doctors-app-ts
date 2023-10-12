@@ -14,6 +14,10 @@
   "schedule": "Расписание",
   "consultation": "Консультация",
   "consultation_video": "через Видео",
+  "close_conversation": {
+    "title": "Закрыть чат",
+    "description": "Подтвердите, что хотите закрыть чат"
+  },
   "approval_request": {
     "title": "Необходимо подтверждение диалога",
     "description": " Для начала диалога необходимо подтвердить запрос на диалог",

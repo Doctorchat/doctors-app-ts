@@ -24,7 +24,7 @@ export const useMessageTemplatesStore = createWithEqualityFn<MessageTemplatesSto
   }),
   shallow,
 );
-
+//TODO DELETE
 export const MessageTemplates: React.FC = () => {
   const open = useMessageTemplatesStore((store) => store.open);
   const setOpen = useMessageTemplatesStore((store) => store.setOpen);

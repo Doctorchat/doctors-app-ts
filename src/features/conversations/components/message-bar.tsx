@@ -6,6 +6,7 @@ import {
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
   PaperClipIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
@@ -31,6 +32,7 @@ import { cn, getApiErrorMessages } from "@/utils";
 import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis";
 import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
+import { CloseConversation, useCloseConversation } from "./close-conversation";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -40,7 +42,7 @@ export const MessageBar: React.FC = () => {
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
-  const setMessageTemplatesOpen = useMessageTemplatesStore((store) => store.setOpen);
+  const setCloseConversation = useCloseConversation((store) => store.setOpen);
 
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
@@ -132,8 +134,8 @@ export const MessageBar: React.FC = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button variant="ghost" size="icon" onClick={() => setMessageTemplatesOpen(true)}>
-                  <ArrowPathRoundedSquareIcon className="h-5 w-5" />
+                <Button variant="ghost" size="icon" onClick={() => setCloseConversation(true)}>
+                  <XMarkIcon className="h-5 w-5" />
                 </Button>
               </div>
               <Button
@@ -154,7 +156,7 @@ export const MessageBar: React.FC = () => {
 
         <UploadFile />
         <RequestFile />
-        <MessageTemplates />
+        <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
       </>
     );

@@ -14,6 +14,10 @@
   "schedule": "Schedule",
   "consultation": "Appointment",
   "consultation_video": "via Video",
+  "close_conversation": {
+    "title": "Close the conversation",
+    "description": "Confirm that you want to close the conversation"
+  },
   "approval_request": {
     "title": "Dialogue confirmation required",
     "description": " To start a dialogue, you must confirm the dialogue request",
