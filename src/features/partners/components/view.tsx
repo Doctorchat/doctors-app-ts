@@ -34,16 +34,12 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
 
   const TAB_ITEMS = [
     {
-      value: "settings",
-      children: t("common:settings"),
-    },
-    {
       value: "referrals",
       children: t("partners:referrals"),
     },
     {
       value: "payments",
-      children: t("partners:title"),
+      children: t("partners:transactions:title"),
     },
   ];
 
@@ -87,6 +83,7 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
               {t("partners:description", { percent: percent ?? 0 })}
             </p>
           </div>
+          <PartnersSettings />
         </div>
         <div
           className={cn(
@@ -95,7 +92,7 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
               : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[50%]"
           )}
         >
-          <Tabs defaultValue="settings">
+          <Tabs defaultValue="referrals">
             <TabsList className="flex" aria-label="Partners tabs">
               {TAB_ITEMS.map(({ value, children }) => (
                 <TabItem value={value} key={value}>
@@ -103,9 +100,7 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
                 </TabItem>
               ))}
             </TabsList>
-            <TabsContent className="grow rounded-b-md bg-white p-5 outline-none" value="settings">
-              <PartnersSettings />
-            </TabsContent>
+
             <TabsContent className="grow rounded-b-md bg-white outline-none" value="referrals">
               <PartnersReferrals />
             </TabsContent>
