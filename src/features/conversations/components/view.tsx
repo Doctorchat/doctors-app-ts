@@ -175,7 +175,10 @@ export const View: React.FC = () => {
               <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
                 <MessageHeader
                   title={
-                    message.side === "in" ? cardPatient?.name ?? t("common:untitled") : t("you")
+                    message.side === "in"
+                      ? (cardPatient?.name ? cardPatient?.name : message?.name) ??
+                        t("common:untitled")
+                      : t("you")
                   }
                   timestamp={message?.updated ?? ""}
                 />

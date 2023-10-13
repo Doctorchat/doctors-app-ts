@@ -63,6 +63,7 @@ export interface ConversationMessage {
   recommendations: RecomandationsAnalyzes[];
   updated?: string;
   type?: string;
+  name?: string;
 }
 
 export interface Conversation {
