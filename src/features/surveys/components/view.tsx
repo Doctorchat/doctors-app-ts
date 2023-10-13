@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/utils";
 import { Card, Tooltip } from "antd";
 import TextEllipsis from "@/components/ui/textEllipsis";
@@ -11,24 +11,80 @@ import { getAllQuestions } from "../api";
 import { formatDistance, parseISO } from "date-fns";
 import { useAppI18n } from "@/hooks";
 import { ModalDeleteQuestion, useDeleteQuestion } from "./modal-delete-question";
-export interface ViewProps {
-  inContainer?: boolean;
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
+import { SurveyRo } from "./surveyRo";
+import { SurveyRu } from "./surveyRu";
+import { SurveyEn } from "./surveyEn";
+import { IQuestions } from "../types";
+interface Message {
+  id: number;
+  doctor_id: number;
+  question: string;
+  language: "ro" | "ru" | "en";
+  active: number;
+  created_at: string;
+  updated_at: string;
 }
-export const View: React.FC<ViewProps> = ({ inContainer }) => {
+export const View: React.FC = () => {
   const { t } = useTranslation();
   const [questionId, setQuestionId] = React.useState<number>(0);
   const [isEditable, setIsEditable] = React.useState<boolean>(false);
   const [questionContent, setQuestionContent] = React.useState<string>("");
-
+  const [languageQuestion, setLanguageQuestion] = React.useState<"ro" | "ru" | "en">("ro");
   const setOpenModalQuestion = useOpenModalQuestion((store) => store.setOpen);
   const setDeleteQuestion = useDeleteQuestion((store) => store.setOpen);
-  const { data: questions, isLoading } = useQuery({
+
+  const TAB_ITEMS = [
+    {
+      value: "surveyRo",
+      children: t("survey:survey_ro"),
+    },
+    {
+      value: "surveyRu",
+      children: t("survey:survey_ru"),
+    },
+    {
+      value: "surveyEn",
+      children: t("survey:survey_en"),
+    },
+  ];
+  const [groupedMessages, setGroupedMessages] = React.useState<Record<string, Message[]>>({
+    ro: [],
+    ru: [],
+    en: [],
+  });
+
+  const { data: questions } = useQuery({
     queryKey: ["questions"],
     queryFn: async () => {
       return getAllQuestions();
     },
   });
-  const { locale } = useAppI18n();
+
+  useEffect(() => {
+    if (questions) {
+      // Gruparea mesajelor după limbă
+      const grouped = groupByLanguage(questions);
+      setGroupedMessages(grouped);
+    }
+  }, [questions]);
+
+  const groupByLanguage = (messages: IQuestions[]) => {
+    const groupedMessages: Record<string, IQuestions[]> = {
+      ro: [],
+      ru: [],
+      en: [],
+    };
+
+    messages.forEach((message) => {
+      const { language } = message;
+      if (language === "ro" || language === "ru" || language === "en") {
+        groupedMessages[language].push(message);
+      }
+    });
+
+    return groupedMessages;
+  };
 
   return (
     <div
@@ -36,78 +92,67 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
         "custom-scroll-bar h-full w-full p-10 md:rounded-lg md:border md:border-neutral-200"
       )}
     >
-      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {questions?.length &&
-          questions.map((question: any, index: any) => (
-            <Card bordered hoverable>
-              <h6 className="mb-4 truncate text-lg">{index + 1 + ". " + t("survey:question")}</h6>
-              <div className="min-h-[40px] text-lg font-medium">
-                <TextEllipsis text={question.question} maxTextCount={120} />
-              </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="ml-2 whitespace-nowrap text-xs">
-                  <time dateTime={question.updated_at}>
-                    {formatDistance(parseISO(question.updated_at), new Date(), {
-                      addSuffix: true,
-                      locale: locale(),
-                    })}
-                  </time>
-                </span>
-                <div className="flex">
-                  <Button
-                    shape="circle"
-                    variant="twoTone"
-                    size="sm"
-                    icon={<HiOutlineTrash />}
-                    onClick={() => {
-                      setDeleteQuestion(true), setQuestionId(question.id);
-                    }}
-                  />
-
-                  <Button
-                    shape="circle"
-                    variant="twoTone"
-                    size="sm"
-                    icon={<HiOutlinePencil />}
-                    onClick={() => {
-                      setIsEditable(true),
-                        setQuestionContent(question.question),
-                        setQuestionId(question.id),
-                        setOpenModalQuestion(true);
-                    }}
-                  />
-                </div>
-              </div>
-            </Card>
+      <Tabs defaultValue="surveyRo">
+        <TabsList className="flex" aria-label="Survey tabs">
+          {TAB_ITEMS.map(({ value, children }) => (
+            <TabItem value={value} key={value}>
+              {children}
+            </TabItem>
           ))}
-        <Card
-          hoverable
-          bordered
-          onClick={() => {
-            setIsEditable(false), setQuestionContent(""), setOpenModalQuestion(true);
-          }}
-        >
-          {/* {article.title} */}
-          <h6 className="mb-4 truncate text-lg text-primary">{t("survey:add_question")}</h6>
-          <div className="min-h-[40px] text-primary">
-            {/* article.content.replace(/<[^>]*>?/gm, "") */}
-            <TextEllipsis text={t("survey:add_description")} maxTextCount={120} />
-          </div>
-          <Button
-            shape="circle"
-            variant="plain"
-            size="lg"
-            className="text-primary"
-            icon={<HiPlus />}
+        </TabsList>
+
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="surveyRo">
+          <SurveyRo
+            questions={groupedMessages.ro}
+            setLanguageQuestion={setLanguageQuestion}
+            setQuestionId={setQuestionId}
+            setIsEditable={setIsEditable}
+            setQuestionContent={setQuestionContent}
+            setOpenModalQuestion={setOpenModalQuestion}
+            setDeleteQuestion={setDeleteQuestion}
           />
-        </Card>
-      </div>
+        </TabsContent>
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="surveyRu">
+          <SurveyRu
+            questions={groupedMessages.ru}
+            setLanguageQuestion={setLanguageQuestion}
+            setQuestionId={setQuestionId}
+            setIsEditable={setIsEditable}
+            setQuestionContent={setQuestionContent}
+            setOpenModalQuestion={setOpenModalQuestion}
+            setDeleteQuestion={setDeleteQuestion}
+          />
+        </TabsContent>
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="surveyEn">
+          <SurveyEn
+            questions={groupedMessages.en}
+            setLanguageQuestion={setLanguageQuestion}
+            setQuestionId={setQuestionId}
+            setIsEditable={setIsEditable}
+            setQuestionContent={setQuestionContent}
+            setOpenModalQuestion={setOpenModalQuestion}
+            setDeleteQuestion={setDeleteQuestion}
+          />
+        </TabsContent>
+      </Tabs>
       <ModalQuestion
         editable={isEditable}
         questionId={questionId}
         questionContent={questionContent}
+        languageQuestion={languageQuestion}
       />
       <ModalDeleteQuestion questionId={questionId} />
     </div>
+  );
+};
+
+const TabItem = ({ children, value }: { children: React.ReactNode; value: string }) => {
+  return (
+    <TabsTrigger
+      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
+      value={value}
+    >
+      {children}
+    </TabsTrigger>
   );
 };

@@ -41,7 +41,6 @@ interface ModalProps {
 export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
   const open = useDeleteQuestion((state) => state.open);
   const setOpen = useDeleteQuestion((state) => state.setOpen);
-
   const form = useForm<any>({});
   const [openNotification, setOpenNotification] = React.useState(false);
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>

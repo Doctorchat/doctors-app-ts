@@ -8,5 +8,8 @@
     "placeholder_question": "Создайте вопрос ...",
     "question": "Вопрос",
     "delete_question_description": "Вы уверены, что хотите удалить этот вопрос ?",
-    "title_delete": "Удалить"
+    "title_delete": "Удалить",
+    "survey_ro": "Опрос Ro",
+    "survey_en": "Опрос EN",
+    "survey_ru": "Опрос RU"
 }

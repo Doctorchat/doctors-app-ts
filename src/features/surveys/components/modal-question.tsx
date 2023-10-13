@@ -37,9 +37,15 @@ interface ModalProps {
   editable: boolean;
   questionId: number;
   questionContent: string;
+  languageQuestion: "ro" | "en" | "ru";
 }
 
-export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, questionContent }) => {
+export const ModalQuestion: React.FC<ModalProps> = ({
+  editable,
+  questionId,
+  questionContent,
+  languageQuestion,
+}) => {
   const open = useOpenModalQuestion((state) => state.open);
   const setOpen = useOpenModalQuestion((state) => state.setOpen);
   const form = useForm<any>({});
@@ -58,17 +64,14 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
   };
   const sessionUser = localStorage.getItem("session:user") ?? "";
   const user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
-  const language = localStorage.getItem("i18nextLng") ?? "";
   const queryClient = useQueryClient();
   const [openNotification, setOpenNotification] = React.useState(false);
   const onSaveQuestion = async () => {
     setIsSending(true);
     try {
-      console.log({ doctor_id: user.id, language: language, active: 1, question: content });
-
       await createQuestion({
         doctor_id: user.id,
-        language: language,
+        language: languageQuestion,
         active: 1,
         question: content,
       });
@@ -94,7 +97,7 @@ export const ModalQuestion: React.FC<ModalProps> = ({ editable, questionId, ques
       await updateQuestion({
         id: questionId,
         doctor_id: user.id,
-        language: language,
+        language: languageQuestion,
         active: 1,
         question: content,
       });
