@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { useTranslation } from "react-i18next";
 import ChatsView from "../chats/chatsView";
 import { TabsProps } from "../types";
+import { sortChatsByUpdatedOpen } from "@/utils/sort-list";
 
 const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
   const { t } = useTranslation();
@@ -31,13 +32,13 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
         </TabsList>
 
         <TabsContent value="actualy_chats">
-          <ChatsView data={data?.open} loading={loading} />
+          <ChatsView data={sortChatsByUpdatedOpen(data?.open ?? [])} loading={loading} />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="chats_closed">
-          <ChatsView data={data?.closed} loading={loading} />
+          <ChatsView data={sortChatsByUpdatedOpen(data?.closed ?? [])} loading={loading} />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="doctors">
-         <ChatsView data={[]} loading={loading} />
+          <ChatsView data={[]} loading={loading} />
         </TabsContent>
       </Tabs>
     </div>

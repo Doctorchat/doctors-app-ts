@@ -16,6 +16,7 @@ export const DashboardWrapper: React.FC = () => {
   const { data: allData, isLoading } = useQuery(["cardWallet"], () => apiGetDashboard(), {
     keepPreviousData: true,
   });
+
   const [monthReservations, setMonthReservations] = useState(getCurrentMonth());
 
   const {
