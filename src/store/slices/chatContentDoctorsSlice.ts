@@ -24,13 +24,10 @@ const chatContentDoctorsSlice = createSlice({
     ) => {
       state.data.doctor_chat_id = action.payload.doctor_chat_id; // Asignați direct numărul
       state.data.messages = action.payload.messages;
-    },
-    resetMessagesDoc: (state) => {
-      //   state.conversation.messages = [];
-    },
+    }
   },
 });
 
-export const { addMessageDoctors, addMessagesDoctors, resetMessagesDoc } =
+export const { addMessageDoctors, addMessagesDoctors } =
   chatContentDoctorsSlice.actions;
 export default chatContentDoctorsSlice.reducer;
