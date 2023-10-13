@@ -19,6 +19,8 @@ import {
 import { useToast } from "@/hooks";
 import { bytesToSize, cn, getApiErrorMessages, validateFile } from "@/utils";
 import { useSelector } from "react-redux";
+import { useConversation } from "../../hooks";
+import { apiCloseChat } from "../../api";
 
 export const ALLOWED_FILE_TYPES = [
   ".png",
@@ -90,31 +92,13 @@ export const useCloseConversation = createWithEqualityFn<UploadFileStore>(
 
 export const CloseConversation: React.FC = () => {
   const { t } = useTranslation();
-  const { chatConversation } = useSelector((store: any) => ({
-    chatConversation: store.chatContent?.conversation,
-  }));
-  const { toast } = useToast();
-
-  const queryClient = useQueryClient();
+  const { patientId } = useConversation();
   const open = useCloseConversation((state) => state.open);
   const setOpen = useCloseConversation((state) => state.setOpen);
-
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const [file, setFile] = React.useState<File | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
   const [isSending, setIsSending] = React.useState(false);
 
-  const closeWithTransition = () => {
-    setOpen(false);
-    setTimeout(() => {
-      setFile(null);
-      setError(null);
-      if (inputRef.current) inputRef.current.value = "";
-    }, 300);
-  };
-
-  const onUploadFileHandler = async () => {
+  const onCloseConversation = async () => {
+    if (patientId) await apiCloseChat({ chat_id: patientId });
     setOpen(false);
   };
 
@@ -139,7 +123,7 @@ export const CloseConversation: React.FC = () => {
             >
               {t("common:cancel")}
             </Button>
-            <Button className="ml-2 w-full" disabled={isSending} onClick={onUploadFileHandler}>
+            <Button className="ml-2 w-full" disabled={isSending} onClick={onCloseConversation}>
               {t("common:confirm")}
             </Button>
           </div>

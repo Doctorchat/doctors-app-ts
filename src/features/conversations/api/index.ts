@@ -103,3 +103,6 @@ export const apiReadMessagesDoctors = async (data: {
 export const apiEditMessage = async (data: { id: number; content: string }) => {
   return await axiosInstance.put(`/chat/message/update/`, { id: data.id, content: data.content });
 };
+export const apiCloseChat = async (data: { chat_id: string }) => {
+  return await axiosInstance.put(`/chat/close/`, data);
+};
