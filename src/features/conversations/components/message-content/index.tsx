@@ -13,7 +13,7 @@ import { updateMessage } from "@/store/slices/chatContentSlice";
 import { hasPassedTenMinutes } from "@/utils/calculate-edit-message";
 import { useQueryClient } from "react-query";
 import Notification from "@/components/ui/notification";
-import { boolean } from "zod";
+import { MessageType } from "./messageType";
 
 interface MessageProps {
   message: ConversationMessage;
@@ -137,6 +137,7 @@ const MessageContent: React.FC<MessageProps> = ({
         <>
           <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
             <MessageBubbleText>{message.content}</MessageBubbleText>
+            <MessageType type={message?.type} message={message} />
           </MessageBubble>
           {isEditableMessage && isWithinTenMinutes && (
             <EditIcon handlerEditMessage={toggleMessageEditStatus(true)} />

@@ -25,6 +25,7 @@ import { apiReadMessages, apiReadMessagesDoctors } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
 import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
+import { MessageType } from "./message-content/messageType";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();

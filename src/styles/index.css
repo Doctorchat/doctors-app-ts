@@ -264,3 +264,70 @@ body .ant-picker-ok > button[disabled] {
 .ant-card-bordered {
   border: 1px solid #90d7e9;
 }
+.message-meet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  border-top: 1px solid #e9ecef;
+}
+
+.meet-caption {
+  .title {
+    font-size: 15px;
+    margin-bottom: 0;
+    color: #212529;
+  }
+}
+
+.meet-date {
+  color: #495057;
+  font-size: 14px;
+}
+
+.meet-icon {
+  width: 42px;
+  height: 42px;
+  background-color: rgba(#34a853, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #34a853;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.meet-url {
+  color: #06f;
+  a {
+    background-color: rgba(#06f, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 15px;
+    &:hover {
+      background-color: rgba(#06f, 0.2);
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
+  }
+
+  a.disabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+  }
+
+  svg {
+    margin-left: 8px;
+    width: 14px;
+    height: 14px;
+  }
+}

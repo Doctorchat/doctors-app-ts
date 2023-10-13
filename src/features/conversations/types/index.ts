@@ -64,6 +64,8 @@ export interface ConversationMessage {
   updated?: string;
   type?: string;
   name?: string;
+  meet?: any;
+  status?: string;
 }
 
 export interface Conversation {
