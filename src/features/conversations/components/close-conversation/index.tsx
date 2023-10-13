@@ -94,12 +94,19 @@ export const CloseConversation: React.FC = () => {
   const { t } = useTranslation();
   const { patientId } = useConversation();
   const open = useCloseConversation((state) => state.open);
+  const queryClient = useQueryClient();
   const setOpen = useCloseConversation((state) => state.setOpen);
   const [isSending, setIsSending] = React.useState(false);
-
+  const revalidateQueries = async () => {
+    await Promise.allSettled([
+      queryClient.invalidateQueries(["list-patients", "patients"]),
+      queryClient.invalidateQueries(["conversation-patient", patientId]),
+    ]);
+  };
   const onCloseConversation = async () => {
     if (patientId) await apiCloseChat({ chat_id: patientId });
     setOpen(false);
+    revalidateQueries();
   };
 
   return (

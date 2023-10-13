@@ -13,12 +13,20 @@ import { updateMessage } from "@/store/slices/chatContentSlice";
 import { hasPassedTenMinutes } from "@/utils/calculate-edit-message";
 import { useQueryClient } from "react-query";
 import Notification from "@/components/ui/notification";
+import { boolean } from "zod";
 
 interface MessageProps {
   message: ConversationMessage;
   isAutoScrollEnabled: any;
+  isArhived: boolean;
+  openedConversation: boolean;
 }
-const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }) => {
+const MessageContent: React.FC<MessageProps> = ({
+  message,
+  isAutoScrollEnabled,
+  isArhived,
+  openedConversation,
+}) => {
   const form = useForm({});
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const [isEditing, setIsEditing] = React.useState(false);
@@ -27,21 +35,27 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const [openNotification, setOpenNotification] = React.useState(false);
+
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
     setOpenNotification(!!val);
   const toggleMessageEditStatus = React.useCallback(
     (status: any) => () => {
       isAutoScrollEnabled.current = false;
-      console.log(status);
       setIsEditing(status);
       setIsEditingMessageId(message.id);
     },
     []
   );
-
   const [isWithinTenMinutes, setIsWithinTenMinutes] = React.useState(
     hasPassedTenMinutes(message.created)
   );
+  const isEditableMessage =
+    message.side !== "in" &&
+    conversationsType === "patients" &&
+    isWithinTenMinutes &&
+    message?.type === "standard" &&
+    isArhived &&
+    openedConversation;
 
   useEffect(() => {
     // Verificați la fiecare minut dacă a trecut 10 minute
@@ -124,7 +138,7 @@ const MessageContent: React.FC<MessageProps> = ({ message, isAutoScrollEnabled }
           <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
             <MessageBubbleText>{message.content}</MessageBubbleText>
           </MessageBubble>
-          {message.side !== "in" && conversationsType === "patients" && isWithinTenMinutes && (
+          {isEditableMessage && isWithinTenMinutes && (
             <EditIcon handlerEditMessage={toggleMessageEditStatus(true)} />
           )}
         </>

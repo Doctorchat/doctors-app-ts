@@ -62,6 +62,7 @@ export interface ConversationMessage {
   created: string;
   recommendations: RecomandationsAnalyzes[];
   updated?: string;
+  type?: string;
 }
 
 export interface Conversation {

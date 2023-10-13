@@ -111,7 +111,6 @@ export const View: React.FC = () => {
 
   React.useEffect(() => {
     if (chatConversation?.messages) {
-      //TODO la doctors list
       const unreadedMessages = chatConversation?.messages
         .filter((msg: any) => !msg.seen)
         .map((msg: any) => msg.id)
@@ -129,15 +128,12 @@ export const View: React.FC = () => {
   }, [chatConversation?.messages]);
   React.useEffect(() => {
     if (chatContentDoctors?.messages) {
-      //TODO la doctors list
       const unreadedMessages = chatContentDoctors?.messages
         .filter((msg: any) => !msg.seen)
         .map((msg: any) => msg.id)
         .join(",");
       if (unreadedMessages.length) {
         const fetchDataAndDelay = async () => {
-          console.log(unreadedMessages, chatContentDoctors);
-
           setTimeout(async () => {
             dispatch(
               updateUnReadMessageDoctors({
@@ -195,7 +191,12 @@ export const View: React.FC = () => {
                   </MessageBubble>
                 )}
                 {message.content && !message.files.length && (
-                  <MessageContent isAutoScrollEnabled={isAutoScrollEnabled} message={message} />
+                  <MessageContent
+                    isAutoScrollEnabled={isAutoScrollEnabled}
+                    message={message}
+                    isArhived={chatConversation?.isAccepted}
+                    openedConversation={chatConversation?.status === "open"}
+                  />
                 )}
 
                 {message.files.length > 0 && (
