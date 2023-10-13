@@ -3,6 +3,12 @@ import { useTranslation } from "react-i18next";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { Appointment } from "../types";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type AppointmentItemProps = {
   isLoading: boolean;
@@ -14,6 +20,10 @@ type AppointmentItemProps = {
 const AppointmentItem = (props: AppointmentItemProps) => {
   const { isLoading, data, title, completed } = props;
   const { t } = useTranslation();
+  console.log(data);
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  // const inputDate = "2023-10-13T08:26:00Z"; // De exemplu, data în format ISO 8601 cu fus orar UTC
+  // const parsedDate = dayjs(inputDate).tz(userTimeZone);
 
   return (
     <div className="py-3">
@@ -39,7 +49,9 @@ const AppointmentItem = (props: AppointmentItemProps) => {
               <div className="absolute left-[0px] right-1/2 h-10 w-1 rounded-full bg-green-400" />
               <div className="flex flex-col">
                 <span>{t("video:consultation_date")}</span>
-                <p>{appointment.start_time}</p>
+                <p>
+                  {dayjs(appointment.start_time).tz(userTimeZone).format("YYYY-MM-DD HH:mm:ss")}
+                </p>
               </div>
               <div>
                 {/* TO DO 
