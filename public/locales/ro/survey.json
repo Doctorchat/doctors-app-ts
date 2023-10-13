@@ -8,5 +8,8 @@
     "placeholder_question": "Creează întrebarea ...",
     "question": "Întrebarea",
     "delete_question_description": "Ești sigur că vreai să ștergi această întrebare ?",
-    "title_delete": "Ștergere"
+    "title_delete": "Ștergere",
+    "survey_ro": "Sondaj Ro",
+    "survey_en": "Sondaj EN",
+    "survey_ru": "Sondaj RU"
 }

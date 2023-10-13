@@ -49,7 +49,6 @@ interface ModalProps {
 export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
   const open = useDeleteQuestion((state) => state.open);
   const setOpen = useDeleteQuestion((state) => state.setOpen);
-
   const form = useForm<any>({});
 
   const queryClient = useQueryClient();

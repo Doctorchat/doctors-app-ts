@@ -1,7 +1,7 @@
 export interface SurveyQuestions {
   questions: IQuestions[];
 }
-interface IQuestions {
+export interface IQuestions {
   active: number;
   created_at: string;
   doctor_id: number;

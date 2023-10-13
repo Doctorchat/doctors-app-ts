@@ -261,3 +261,6 @@ body .ant-picker-ok > button[disabled] {
 .bg-indigo-900 {
   background-color: rgb(49 46 129 / var(--tw-bg-opacity));
 }
+.ant-card-bordered {
+  border: 1px solid #90d7e9;
+}
