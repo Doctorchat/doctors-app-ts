@@ -21,9 +21,10 @@ import { cn } from "@/utils";
 import { HeaderDoctors } from "./header-doctors";
 import { useDispatch, useSelector } from "react-redux";
 import { MessageBarDoctors } from "./message-bar-doctors";
-import { apiReadMessages } from "../api";
+import { apiReadMessages, apiReadMessagesDoctors } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
+import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -126,6 +127,34 @@ export const View: React.FC = () => {
       }
     }
   }, [chatConversation?.messages]);
+  React.useEffect(() => {
+    if (chatContentDoctors?.messages) {
+      //TODO la doctors list
+      const unreadedMessages = chatContentDoctors?.messages
+        .filter((msg: any) => !msg.seen)
+        .map((msg: any) => msg.id)
+        .join(",");
+      if (unreadedMessages.length) {
+        const fetchDataAndDelay = async () => {
+          console.log(unreadedMessages, chatContentDoctors);
+
+          setTimeout(async () => {
+            dispatch(
+              updateUnReadMessageDoctors({
+                id: chatContentDoctors?.doctor_chat_id,
+                unreadCount: 0,
+              })
+            );
+            await apiReadMessagesDoctors({
+              doctor_chat_id: chatContentDoctors?.doctor_chat_id,
+              messages: unreadedMessages,
+            });
+          }, 750);
+        };
+        fetchDataAndDelay();
+      }
+    }
+  }, [chatContentDoctors?.messages]);
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">

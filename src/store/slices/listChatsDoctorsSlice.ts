@@ -25,13 +25,16 @@ const listChatsDoctorsSlice = createSlice({
       //     state.data[index] = { ...state.data[index], ...updatedData };
       //   }
     },
-    updateUnReadMessageDoc: (state, action: PayloadAction<{ id: number; unread: number }>) => {
-      //   const { id, unread } = action.payload;
-      //   const index = state.data.findIndex((item) => item.id === id);
-      //   if (index !== -1) {
-      //     // Actualizează doar variabilele unread și chat_id
-      //     state.data[index].unread = unread;
-      //   }
+    updateUnReadMessageDoctors: (
+      state,
+      action: PayloadAction<{ id: number; unreadCount: number }>
+    ) => {
+      const { id, unreadCount } = action.payload;
+      const index = state.data.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        // Actualizează doar variabilele unread și chat_id
+        state.data[index].unreadCount = unreadCount;
+      }
     },
 
     addListChatsDoctors: (state, action: PayloadAction<any[]>) => {
@@ -43,6 +46,6 @@ const listChatsDoctorsSlice = createSlice({
   },
 });
 
-export const { updateListChatsDoc, addListChatsDoctors, updateUnReadMessageDoc } =
+export const { updateListChatsDoc, addListChatsDoctors, updateUnReadMessageDoctors } =
   listChatsDoctorsSlice.actions;
 export default listChatsDoctorsSlice.reducer;
