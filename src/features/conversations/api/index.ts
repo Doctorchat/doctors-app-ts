@@ -91,6 +91,15 @@ export const apiPutRecomandations = async (data: {
 export const apiReadMessages = async (data: { id: number; messages: number[] }) => {
   return await axiosInstance.post(`/chat/read`, { id: data.id, messages: data.messages });
 };
+export const apiReadMessagesDoctors = async (data: {
+  doctor_chat_id: number;
+  messages: number[];
+}) => {
+  return await axiosInstance.post(`/doctor/read`, {
+    doctor_chat_id: data.doctor_chat_id,
+    messages: data.messages,
+  });
+};
 export const apiEditMessage = async (data: { id: number; content: string }) => {
   return await axiosInstance.put(`/chat/message/update/`, { id: data.id, content: data.content });
 };
