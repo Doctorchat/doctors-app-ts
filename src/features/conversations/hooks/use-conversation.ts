@@ -13,8 +13,8 @@ import {
   SOCKET_PUSHER_EVENT_RECEIVE,
   SOCKET_PUSHER_CHANNEL_DOCTOR,
   SOCKET_PUSHER_CHANNEL_PATIENT,
-  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_RECEVE,
-  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_RECEVE,
+  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT,
+  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT,
 } from "@/config/app";
 import usePusher from "./usePusher";
 import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
@@ -154,12 +154,9 @@ export const useConversation = () => {
   React.useEffect(() => {
     if (pusher && conversationDoctors) {
       const channel = pusher.subscribe(
-        SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_RECEVE +
-          (patientId ?? doctorId) +
-          "-" +
-          current_user.id
+        SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT + (patientId ?? doctorId) + "-" + current_user.id
       );
-      channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_RECEVE, (data: any) => {
+      channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT, (data: any) => {
         const { content_data } = data;
         const { message } = JSON.parse(content_data);
         if (
