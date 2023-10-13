@@ -50,8 +50,23 @@ export const apiSendMessage = async (data: { chat_id: number; content: string })
   });
 };
 
-export const apiSendMessageDoctors = async (data: any) => {
-  return await axiosInstance.post("/doctor/send-message", data);
+export const apiSendMessageDoctors = async (data: {
+  doctor_chat_id: number;
+  file: File | null;
+  user_id: number;
+  type: string;
+  content: string;
+}) => {
+  const formData = new FormData();
+  data.file
+    ? formData.append("uploads[]", data.file ? data.file : "")
+    : formData.append("uploads", [].toString());
+  formData.append("doctor_chat_id", data.doctor_chat_id.toString());
+  formData.append("user_id", data.user_id.toString());
+  formData.append("type", data.type.toString());
+  formData.append("content", data.content.toString());
+
+  return await axiosInstance.post("/doctor/send-message", formData);
 };
 
 export const apiSendFile = async (data: { chat_id: number; file: File }) => {

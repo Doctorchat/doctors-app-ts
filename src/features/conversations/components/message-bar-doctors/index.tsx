@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  ArrowPathRoundedSquareIcon,
-  DocumentArrowDownIcon,
-  DocumentArrowUpIcon,
-  PaperClipIcon,
-} from "@heroicons/react/24/outline";
+import { DocumentArrowUpIcon, PaperClipIcon } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
 
@@ -22,9 +17,6 @@ import {
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
 
-import { useMediaQuery } from "usehooks-ts";
-import { useNavigate } from "react-router-dom";
-import { useConversation } from "../../hooks";
 import {
   MessageTemplates,
   RequestFile,
@@ -34,9 +26,8 @@ import {
   useRequestFileStore,
   useUploadFileStore,
 } from "..";
-import { useRecomandAnalysisStore } from "../recomand-analysis";
 import { useSelector } from "react-redux";
-import { apiSendMessage, apiSendMessageDoctors } from "../../api";
+import { apiSendMessageDoctors } from "../../api";
 
 export const MessageBarDoctors: React.FC = () => {
   const { t } = useTranslation();
@@ -49,9 +40,6 @@ export const MessageBarDoctors: React.FC = () => {
 
   const { toast } = useToast();
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
-  const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
-  const setMessageTemplatesOpen = useMessageTemplatesStore((store) => store.setOpen);
-
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
@@ -65,7 +53,7 @@ export const MessageBarDoctors: React.FC = () => {
           content: content,
           type: "standard",
           user_id: doctorInfo.id,
-          uploads: [],
+          file: null,
         };
         await apiSendMessageDoctors(data);
         setContent("");
@@ -138,9 +126,7 @@ export const MessageBarDoctors: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* <UploadFile />
-       */}
+      <UploadFile senderFiler="doctors" />
     </>
   );
 };

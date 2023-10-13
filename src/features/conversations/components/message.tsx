@@ -26,7 +26,7 @@ export const Message: React.FC<MessageProps> = ({ align, className, children, ..
           "flex flex-col space-y-1",
           { "items-start": align === "left" },
           { "items-end": align === "right" },
-          className,
+          className
         )}
         {...props}
       >
@@ -55,7 +55,7 @@ export const MessageHeader: React.FC<MessageHeaderProps> = ({
         "flex w-fit",
         { "pl-1": align === "left" },
         { "pr-1": align === "right" },
-        className,
+        className
       )}
       {...props}
     >
@@ -93,7 +93,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         { "rounded-tl-md": align === "left" },
         { "rounded-tr-md": align === "right" },
         variantClasses[variant],
-        className,
+        className
       )}
       {...props}
     >

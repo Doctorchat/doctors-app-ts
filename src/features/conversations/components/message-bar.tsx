@@ -154,7 +154,7 @@ export const MessageBar: React.FC = () => {
           </div>
         </div>
 
-        <UploadFile />
+        <UploadFile senderFiler="patients" />
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />

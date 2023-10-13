@@ -8,7 +8,7 @@ import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 
 import { useConversationLayoutStore } from "./layout";
-import { apiSendFile } from "../api";
+import { apiSendFile, apiSendMessageDoctors } from "../api";
 import { useConversation } from "../hooks";
 
 import { Button, Dialog, DialogContent, DialogFooter } from "@/components/ui";
@@ -83,15 +83,21 @@ export const useUploadFileStore = createWithEqualityFn<UploadFileStore>(
   }),
   shallow
 );
-
-export const UploadFile: React.FC = () => {
+interface UploadFileProps {
+  senderFiler: string;
+}
+export const UploadFile: React.FC<UploadFileProps> = ({ senderFiler }) => {
   const { t } = useTranslation();
   const { chatConversation } = useSelector((store: any) => ({
     chatConversation: store.chatContent?.conversation,
   }));
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
+  }));
+  const { doctorInfo } = useSelector((store: any) => ({
+    doctorInfo: store.doctorInfo.doctorInfo,
+  }));
   const { toast } = useToast();
-
-  const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const queryClient = useQueryClient();
   const open = useUploadFileStore((state) => state.open);
   const setOpen = useUploadFileStore((state) => state.setOpen);
@@ -111,7 +117,7 @@ export const UploadFile: React.FC = () => {
     }, 300);
   };
 
-  const onUploadFileHandler = async () => {
+  const onUploadFilePatientsHandler = async () => {
     if (file && chatConversation?.chat_id) {
       setIsSending(true);
       try {
@@ -120,9 +126,36 @@ export const UploadFile: React.FC = () => {
           file,
         });
         await Promise.allSettled([
-          queryClient.invalidateQueries(["list-patients", conversationsType]),
+          queryClient.invalidateQueries(["list-patients", "patients"]),
           queryClient.invalidateQueries(["conversation-patient", chatConversation?.chat_id]),
         ]);
+        closeWithTransition();
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "common:something_went_wrong",
+          description: getApiErrorMessages(error),
+        });
+      } finally {
+        setIsSending(false);
+      }
+    }
+  };
+  const onUploadFileDoctorsHandler = async () => {
+    if (file) {
+      setIsSending(true);
+      try {
+        await apiSendMessageDoctors({
+          doctor_chat_id: chatContentDoctors?.doctor_chat_id,
+          file,
+          user_id: doctorInfo.id,
+          type: "standard",
+          content: "File",
+        });
+        // await Promise.allSettled([
+        //   queryClient.invalidateQueries(["list-patients", "patients"]),
+        //   queryClient.invalidateQueries(["conversation-patient", chatConversation?.chat_id]),
+        // ]);
         closeWithTransition();
       } catch (error) {
         toast({
@@ -239,7 +272,15 @@ export const UploadFile: React.FC = () => {
               >
                 {t("common:cancel")}
               </Button>
-              <Button className="ml-2 w-full" disabled={isSending} onClick={onUploadFileHandler}>
+              <Button
+                className="ml-2 w-full"
+                disabled={isSending}
+                onClick={
+                  senderFiler === "patients"
+                    ? onUploadFilePatientsHandler
+                    : onUploadFileDoctorsHandler
+                }
+              >
                 {t("common:upload")}
                 {isSending && "..."}
               </Button>
