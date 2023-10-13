@@ -1,5 +1,6 @@
 @import "./react-transition-group-animations.css";
 @import "./scroll-bar.css";
+@import "./_timeline.css";
 
 @tailwind base;
 @tailwind components;
@@ -304,7 +305,7 @@ body .ant-picker-ok > button[disabled] {
 .meet-url {
   color: #06f;
   a {
-    background-color: rgba(#06f, 0.1);
+    background-color: rgba(0, 102, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -312,9 +313,9 @@ body .ant-picker-ok > button[disabled] {
     border-radius: 6px;
     padding: 4px 8px;
     font-size: 15px;
+    box-shadow: rgba(0, 102, 255, 0.1);
     &:hover {
-      background-color: rgba(#06f, 0.2);
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      box-shadow: rgba(4, 6, 11, 0.4) 0px 1px 4px;
     }
   }
 

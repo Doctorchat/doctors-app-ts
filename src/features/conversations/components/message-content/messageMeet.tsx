@@ -12,10 +12,7 @@ interface MessageMeetProps {
 }
 export const MessageMeet: React.FC<MessageMeetProps> = ({ message }) => {
   const { t } = useTranslation();
-  console.log(message.meet);
-
   const { url, time } = message.meet;
-
   const isLinkDisabled = message.status === "closed";
 
   return (
@@ -36,7 +33,7 @@ export const MessageMeet: React.FC<MessageMeetProps> = ({ message }) => {
           rel="noopener noreferrer"
           className={clsx({ disabled: isLinkDisabled })}
         >
-          {t("access_meet")} <LinkIcon />
+          {t("common:access_meet")} <LinkIcon />
         </a>
       </div>
     </div>

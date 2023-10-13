@@ -14,6 +14,7 @@ import { hasPassedTenMinutes } from "@/utils/calculate-edit-message";
 import { useQueryClient } from "react-query";
 import Notification from "@/components/ui/notification";
 import { MessageType } from "./messageType";
+import { MessageSurvey } from "./messageSurvey";
 
 interface MessageProps {
   message: ConversationMessage;
@@ -136,8 +137,9 @@ const MessageContent: React.FC<MessageProps> = ({
       ) : (
         <>
           <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
-            <MessageBubbleText>{message.content}</MessageBubbleText>
-            <MessageType type={message?.type} message={message} />
+            {message.type !== "answer" && <MessageBubbleText>{message.content}</MessageBubbleText>}
+            <MessageType type={message.type} message={message} />
+            <MessageSurvey message={message} />
           </MessageBubble>
           {isEditableMessage && isWithinTenMinutes && (
             <EditIcon handlerEditMessage={toggleMessageEditStatus(true)} />
