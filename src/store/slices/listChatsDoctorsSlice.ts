@@ -19,8 +19,6 @@ const listChatsDoctorsSlice = createSlice({
       action: PayloadAction<{ id: number; lastMessage: Partial<any> }>
     ) => {
       const { id, lastMessage } = action.payload;
-      console.log(lastMessage);
-      
       const index = state.data.findIndex((item) => item.id === id);
       if (index !== -1) {
         state.data[index].lastMessage = lastMessage;
@@ -30,6 +28,7 @@ const listChatsDoctorsSlice = createSlice({
       state,
       action: PayloadAction<{ id: number; unreadCount: number }>
     ) => {
+      console.log(state);
       const { id, unreadCount } = action.payload;
       const index = state.data.findIndex((item) => item.id === id);
       if (index !== -1) {
@@ -39,8 +38,15 @@ const listChatsDoctorsSlice = createSlice({
     },
 
     addListChatsDoctors: (state, action: PayloadAction<any[]>) => {
-      state.data = action.payload;
-      state.data = sortChatsByUpdatedAt(state.data);
+      // Șterge conținutul stării curente
+      if (!state.data.length) {
+        // Adaugă conversațiile primite prin action.payload
+        state.data.push(...action.payload);
+
+        // Sortează starea după data actualizării
+        state.data = sortChatsByUpdatedAt(state.data);
+        console.log(state.data);
+      }
     },
   },
 });

@@ -151,7 +151,7 @@ export const View: React.FC = () => {
         fetchDataAndDelay();
       }
     }
-  }, [doctorId]);
+  }, [chatContentDoctors?.messages]);
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
