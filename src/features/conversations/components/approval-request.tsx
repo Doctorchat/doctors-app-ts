@@ -31,6 +31,7 @@ import {
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   message: z.string().min(10),
@@ -61,20 +62,22 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = React.useState(false);
   const [isAcceptLoading, setIsAcceptLoading] = React.useState(false);
-
+  const navigate = useNavigate();
   const revalidateQueries = async () => {
     await Promise.allSettled([
-      queryClient.invalidateQueries(["conversations", conversationsType]),
-      queryClient.invalidateQueries(["conversation", patientId]),
+      queryClient.invalidateQueries(["list-patients", conversationsType]),
+      queryClient.invalidateQueries(["conversation-patient", patientId]),
     ]);
   };
 
   const onAcceptHandler = async () => {
+    console.log(patientId);
     if (patientId) {
       setIsAcceptLoading(true);
       try {
         await apiAcceptConversation(patientId);
         await revalidateQueries();
+        setIsRejectDialogOpen(false);
       } catch (error) {
         toast({
           variant: "destructive",
@@ -93,6 +96,7 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
         await apiRejectConversation(patientId, values.message);
         await revalidateQueries();
         setIsRejectDialogOpen(false);
+        navigate("/conversations");
       } catch (error) {
         setApiErrors(getApiErrorMessages(error));
       }

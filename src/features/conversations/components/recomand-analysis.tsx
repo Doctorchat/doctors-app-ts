@@ -61,10 +61,6 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
     const data = { chat_id: chat_id, analyzes: extractedIds };
     try {
       await apiPutRecomandations(data);
-      await Promise.allSettled([
-        queryClient.invalidateQueries(["conversations", conversationsType]),
-        queryClient.invalidateQueries(["conversation", id]),
-      ]);
     } catch (error) {
       toast({
         variant: "destructive",
