@@ -29,7 +29,13 @@ type FormFieldTypes =
   | "email"
   | "category"
   | "specialization"
+  | "specialization_ru"
+  | "specialization_ro"
+  | "specialization_en"
   | "bio"
+  | "bio_ru"
+  | "bio_ro"
+  | "bio_en"
   | "professionalTitle"
   | "experience"
   | "workplace"
@@ -38,8 +44,14 @@ type FormFieldTypes =
 interface IFormData {
   name: string;
   email: string;
-  specialization: { [key: string]: string };
+  specialization_en: string;
+  specialization_ro: string;
+  specialization_ru: string;
   bio: { [key: string]: string };
+  bio_ru: string;
+  bio_en: string;
+  bio_ro: string;
+  specialization: { [key: string]: string };
   professionalTitle: string;
   experience: number;
   workplace: string;
@@ -68,7 +80,6 @@ export const PersonalData: React.FC = () => {
   const [specialities, setSpecialities] = useState([]);
   const [tempInputData, setTempInputData] = useState("");
   const [inputEduction, setInputEduction] = useState("");
-  console.log(inputEduction);
 
   const rightItemsList = ["category", "professionalTitle", "experience", "workplace"];
 
@@ -78,6 +89,21 @@ export const PersonalData: React.FC = () => {
       .string()
       .min(4, { message: t("common:zod_mixed_required") })
       .email(t("validations:invalid_email")),
+
+    specialization_en: z.string().optional().nullable(),
+    specialization_ro: z.string().optional().nullable(),
+    specialization_ru: z.string().optional().nullable(),
+    bio_en: z.string().optional().nullable(),
+    bio_ro: z.string().optional().nullable(),
+    bio_ru: z.string().optional().nullable(),
+    professionalTitle: z.string().min(2, { message: t("common:zod_mixed_required") }),
+    experience: z
+      .number()
+      .min(4, { message: t("common:zod_mixed_required") })
+      .refine((v) => v >= 0),
+    workplace: z.string().min(4, { message: t("common:zod_mixed_required") }),
+    education: z.array(z.string().min(4, { message: t("common:zod_mixed_required") })),
+    category: z.array(z.string()),
     specialization: z.object({
       en: z.string().optional().nullable(),
       ro: z.string().optional().nullable(),
@@ -88,14 +114,6 @@ export const PersonalData: React.FC = () => {
       ro: z.string().optional().nullable(),
       ru: z.string().optional().nullable(),
     }),
-    professionalTitle: z.string().min(2, { message: t("common:zod_mixed_required") }),
-    experience: z
-      .number()
-      .min(4, { message: t("common:zod_mixed_required") })
-      .refine((v) => v >= 0),
-    workplace: z.string().min(4, { message: t("common:zod_mixed_required") }),
-    education: z.array(z.string().min(4, { message: t("common:zod_mixed_required") })),
-    category: z.array(z.string()),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -116,7 +134,18 @@ export const PersonalData: React.FC = () => {
       const {
         name,
         email,
-        about: { specialization, bio, professionalTitle, experience },
+        about: {
+          specialization,
+          bio,
+          bio_en,
+          bio_ro,
+          bio_ru,
+          specialization_en,
+          specialization_ro,
+          specialization_ru,
+          professionalTitle,
+          experience,
+        },
         activity: { education, workplace },
         category,
       } = JSON.parse(userStorageData);
@@ -126,6 +155,12 @@ export const PersonalData: React.FC = () => {
         email,
         specialization,
         bio,
+        bio_en,
+        bio_ro,
+        bio_ru,
+        specialization_en,
+        specialization_ro,
+        specialization_ru,
         professionalTitle,
         experience,
         workplace,
@@ -223,6 +258,7 @@ export const PersonalData: React.FC = () => {
     if (category) {
       newValues = { ...values, category: JSON.parse(category) };
     }
+    console.log(category, newValues);
 
     try {
       await updateDoctor(newValues).then(() =>
@@ -266,25 +302,9 @@ export const PersonalData: React.FC = () => {
                           {Array.isArray(field.value) ? (
                             <>
                               {field.value.map((value: string, index: number) => {
-                                console.log(value);
                                 return (
                                   <div key={index} className="mb-4 flex">
-                                    <Input
-                                      {...form.register(`${k}.${index}` as keyof IFormData)}
-                                      value={value}
-                                      onChange={(e) => {
-                                        console.log(...field.value, "...field.value");
-
-                                        const updatedValues = [...field.value]; // Faceți o copie a array-ului
-                                        console.log(updatedValues, "updatedValues");
-                                        updatedValues[index] = e.target.value; // Actualizați valoarea în copia array-ului
-                                        console.log(updatedValues[index], "updatedValues[index]");
-                                        // Aici, trebuie să actualizați starea sau valorile în funcție de actualizarea array-ului
-                                        // De exemplu, puteți utiliza o funcție de acțiune pentru a actualiza starea Redux
-                                      }}
-                                      // onChange={(e) => setInputEduction(e.target.value)}
-                                    />
-
+                                    <Input {...form.register(`${k}.${index}` as keyof IFormData)} />
                                     {index > 0 && (
                                       <Button
                                         variant="ghost"
@@ -387,7 +407,7 @@ export const PersonalData: React.FC = () => {
                             {t(`profile:specialization`)}
                           </FormLabel>
                           <Textarea
-                            {...form.register(`specialization.${lng}` as keyof IFormData)}
+                            {...form.register(`specialization_${lng}` as keyof IFormData)}
                           />
                           <FormMessage />
                         </FormItem>
@@ -405,7 +425,7 @@ export const PersonalData: React.FC = () => {
                           <FormLabel className="mb-2 block text-xs uppercase tracking-wide text-gray-600">
                             {t(`profile:bio`)}
                           </FormLabel>
-                          <Textarea {...form.register(`bio.${lng}` as keyof IFormData)} />
+                          <Textarea {...form.register(`bio_${lng}` as keyof IFormData)} />
                           <FormMessage />
                         </FormItem>
                       );
