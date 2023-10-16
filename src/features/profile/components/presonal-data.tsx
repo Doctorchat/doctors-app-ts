@@ -79,8 +79,6 @@ export const PersonalData: React.FC = () => {
   const [avatar, setAvatar] = useState("");
   const [specialities, setSpecialities] = useState([]);
   const [tempInputData, setTempInputData] = useState("");
-  const [inputEduction, setInputEduction] = useState("");
-
   const rightItemsList = ["category", "professionalTitle", "experience", "workplace"];
 
   const schema = z.object({
