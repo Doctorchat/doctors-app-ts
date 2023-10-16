@@ -30,7 +30,7 @@ export const useChatListDoctors = () => {
     onSuccess: (data: any) => {
       if (data) return dispatch(addDoctorInfo(data));
     },
-  });  
+  });
 
   const { data: dataListDoctors, isLoading: isLoadingListDoctors } = useQuery({
     queryKey: ["list-doctors", conversationsType],
@@ -42,24 +42,24 @@ export const useChatListDoctors = () => {
       if (data) return dispatch(addListChatsDoctors(data));
     },
   });
-    const listDoctors = React.useMemo(() => {
-      return dataListDoctors && sortChatsByUpdatedAt(dataListDoctors);
-    }, [dataListDoctors]);
+  const listDoctors = React.useMemo(() => {
+    return dataListDoctors && sortChatsByUpdatedAt(dataListDoctors);
+  }, [dataListDoctors]);
 
   React.useEffect(() => {
-    if (pusher && listDoctors) {
+    console.log(listDoctors, dataListDoctors);
+    if (pusher) {
       //TODO
       const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST + current_user.id);
       channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST, (data: any) => {
         const listMessage = JSON.parse(data.content_data);
         console.log(listMessage);
-        // unreadCount
-        //updated
-
         dispatch(
           updateListChatsDoctors({
+            unreadCount: listMessage.unreadCount,
             chat_id: listMessage.doctor_chat_id,
             lastMessage: listMessage.message,
+            updated_at: listMessage.updated_at,
           })
         );
       });

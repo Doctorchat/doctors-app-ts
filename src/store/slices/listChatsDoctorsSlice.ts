@@ -1,6 +1,3 @@
-import { ConversationPreview } from "@/features/conversations/types";
-
-import { initialStateListChats } from "@/store/types/listChatsTypes";
 import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 //TODO tipizarea
@@ -16,11 +13,18 @@ const listChatsDoctorsSlice = createSlice({
   reducers: {
     updateListChatsDoctors: (
       state,
-      action: PayloadAction<{ chat_id: number; lastMessage: Partial<any> }>
+      action: PayloadAction<{
+        chat_id: number;
+        unreadCount: number;
+        updated_at: string;
+        lastMessage: Partial<any>;
+      }>
     ) => {
-      const { chat_id, lastMessage } = action.payload;
+      const { chat_id, lastMessage, unreadCount, updated_at } = action.payload;
       const index = state.data.findIndex((item) => item.id === chat_id);
       if (index !== -1) {
+        state.data[index].unreadCount = unreadCount;
+        state.data[index].updated_at = updated_at;
         state.data[index].lastMessage = lastMessage;
       }
     },

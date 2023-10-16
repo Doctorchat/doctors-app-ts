@@ -20,6 +20,14 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";
+  // console.log(
+  //   conversation.updated_at,
+  //   parseISO(conversation.updated ?? conversation.updated_at),
+  //   formatDistance(parseISO(conversation.updated ?? conversation.updated_at), new Date(), {
+  //     addSuffix: true,
+  //     locale: locale(),
+  //   })
+  // );
   return (
     <Link
       to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${
@@ -64,14 +72,14 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
 
           <span className="ml-2 whitespace-nowrap text-xs">
             <time dateTime={conversation.updated ?? conversation.updated_at}>
-              {formatDistance(
+              {/* {formatDistance(
                 parseISO(conversation.updated ?? conversation.updated_at),
                 new Date(),
                 {
                   addSuffix: true,
                   locale: locale(),
                 }
-              )}
+              )} */}
             </time>
           </span>
         </div>
