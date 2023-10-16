@@ -16,10 +16,11 @@ const listChatsDoctorsSlice = createSlice({
   reducers: {
     updateListChatsDoctors: (
       state,
-      action: PayloadAction<{ id: number; lastMessage: Partial<any> }>
+      action: PayloadAction<{ chat_id: number; lastMessage: Partial<any> }>
     ) => {
-      const { id, lastMessage } = action.payload;
-      const index = state.data.findIndex((item) => item.id === id);
+      const { chat_id, lastMessage } = action.payload;
+      console.log(lastMessage);
+      const index = state.data.findIndex((item) => item.id === chat_id);
       if (index !== -1) {
         state.data[index].lastMessage = lastMessage;
       }

@@ -41,6 +41,7 @@ export const useChatListDoctors = () => {
     },
     enabled: !!doctorInfo,
     onSuccess: (data: any) => {
+      console.log(data, "data la list");
       if (data) return dispatch(addListChatsDoctors(data));
     },
   });
@@ -51,9 +52,13 @@ export const useChatListDoctors = () => {
       const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST + current_user.id);
       channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST, (data: any) => {
         const listMessage = JSON.parse(data.content_data);
+        console.log(listMessage);
+        // unreadCount
+        //updated
+
         dispatch(
           updateListChatsDoctors({
-            id: listMessage.doctor_chat_id,
+            chat_id: listMessage.doctor_chat_id,
             lastMessage: listMessage.message,
           })
         );
