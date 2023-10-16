@@ -28,6 +28,7 @@ import {
 } from "..";
 import { useSelector } from "react-redux";
 import { apiSendMessageDoctors } from "../../api";
+import { useConversation } from "../../hooks/use-conversation";
 
 export const MessageBarDoctors: React.FC = () => {
   const { t } = useTranslation();
@@ -43,16 +44,19 @@ export const MessageBarDoctors: React.FC = () => {
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
+  const { doctorId } = useConversation();
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
 
   const onSendMessageHandler = async () => {
-    if (chatContentDoctors?.doctor_chat_id) {
+    if (doctorId) {
       setIsSending(true);
       try {
         const data = {
-          doctor_chat_id: chatContentDoctors?.doctor_chat_id,
+          doctor_chat_id: parseInt(doctorId),
           content: content,
           type: "standard",
-          user_id: doctorInfo.id,
+          user_id: current_user.id,
           file: null,
         };
         await apiSendMessageDoctors(data);

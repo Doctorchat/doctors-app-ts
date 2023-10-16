@@ -51,11 +51,11 @@ export const MessageBar: React.FC = () => {
   const navigate = useNavigate();
 
   const onSendMessageHandler = async () => {
-    if (conversationPatients?.chat_id) {
+    if (patientId) {
       setIsSending(true);
       try {
         await apiSendMessage({
-          chat_id: conversationPatients.chat_id,
+          chat_id: parseInt(patientId),
           content,
         });
         setContent("");

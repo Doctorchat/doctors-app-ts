@@ -8,8 +8,17 @@ import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
+  const { listChatsDoctors } = useSelector((store: any) => ({
+    listChatsDoctors: store.listChatsDoctors.data,
+  }));
+  const { listChats } = useSelector((store: any) => ({
+    listChats: store.listChats.data,
+  }));
   const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading } = useChatList();
+  
+  console.log(listChatsDoctors?.length ? listChatsDoctors : listDoctors);
+
   return (
     <div
       className={cn(
@@ -20,14 +29,16 @@ export const List: React.FC = () => {
     >
       <div className="h-full space-y-0.5 overflow-y-auto p-2">
         {conversationsType === "doctors"
-          ? listDoctors?.map((conversationDoctor: any) => (
-              <Preview
-                key={conversationDoctor.id}
-                conversation={conversationDoctor}
-                typeConversation={conversationsType}
-              />
-            ))
-          : listPatients?.map((conversationPatient: any) => (
+          ? (listChatsDoctors?.length ? listChatsDoctors : listDoctors)?.map(
+              (conversationDoctor: any) => (
+                <Preview
+                  key={conversationDoctor.id}
+                  conversation={conversationDoctor}
+                  typeConversation={conversationsType}
+                />
+              )
+            )
+          : (listChats?.length ? listChats : listPatients)?.map((conversationPatient: any) => (
               <Preview
                 key={conversationPatient.id}
                 conversation={conversationPatient}

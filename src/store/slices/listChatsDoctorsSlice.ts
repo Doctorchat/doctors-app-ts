@@ -24,7 +24,7 @@ const listChatsDoctorsSlice = createSlice({
         state.data[index].lastMessage = lastMessage;
       }
     },
-    
+
     updateUnReadMessageDoctors: (
       state,
       action: PayloadAction<{ id: number; unreadCount: number }>
