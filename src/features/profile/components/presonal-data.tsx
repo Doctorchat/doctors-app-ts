@@ -67,6 +67,8 @@ export const PersonalData: React.FC = () => {
   const [avatar, setAvatar] = useState("");
   const [specialities, setSpecialities] = useState([]);
   const [tempInputData, setTempInputData] = useState("");
+  const [inputEduction, setInputEduction] = useState("");
+  console.log(inputEduction);
 
   const rightItemsList = ["category", "professionalTitle", "experience", "workplace"];
 
@@ -263,25 +265,39 @@ export const PersonalData: React.FC = () => {
                           </FormLabel>
                           {Array.isArray(field.value) ? (
                             <>
-                              {field.value.map((value: string, index: number) => (
-                                <div key={index} className="mb-4 flex">
-                                  <Input
-                                    {...form.register(`${k}.${index}` as keyof IFormData)}
-                                    value={value}
-                                  />
+                              {field.value.map((value: string, index: number) => {
+                                console.log(value);
+                                return (
+                                  <div key={index} className="mb-4 flex">
+                                    <Input
+                                      {...form.register(`${k}.${index}` as keyof IFormData)}
+                                      value={value}
+                                      onChange={(e) => {
+                                        console.log(...field.value, "...field.value");
 
-                                  {index > 0 && (
-                                    <Button
-                                      variant="ghost"
-                                      className="ml-4"
-                                      disabled={value.length < 4}
-                                      onClick={() => removeItemFromList(k, index)}
-                                    >
-                                      <TrashIcon className="h-5 w-5" color="text-red-600" />
-                                    </Button>
-                                  )}
-                                </div>
-                              ))}
+                                        const updatedValues = [...field.value]; // Faceți o copie a array-ului
+                                        console.log(updatedValues, "updatedValues");
+                                        updatedValues[index] = e.target.value; // Actualizați valoarea în copia array-ului
+                                        console.log(updatedValues[index], "updatedValues[index]");
+                                        // Aici, trebuie să actualizați starea sau valorile în funcție de actualizarea array-ului
+                                        // De exemplu, puteți utiliza o funcție de acțiune pentru a actualiza starea Redux
+                                      }}
+                                      // onChange={(e) => setInputEduction(e.target.value)}
+                                    />
+
+                                    {index > 0 && (
+                                      <Button
+                                        variant="ghost"
+                                        className="ml-4"
+                                        disabled={value.length < 4}
+                                        onClick={() => removeItemFromList(k, index)}
+                                      >
+                                        <TrashIcon className="h-5 w-5" color="text-red-600" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                );
+                              })}
 
                               <div className="mt-4 flex">
                                 <Input
@@ -290,7 +306,6 @@ export const PersonalData: React.FC = () => {
                                   value={tempInputData}
                                   onChange={(e) => setTempInputData(e.target.value)}
                                 />
-
                                 <Button
                                   variant="ghost"
                                   disabled={tempInputData.length < 5}
