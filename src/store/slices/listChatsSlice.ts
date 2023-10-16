@@ -27,7 +27,6 @@ const listChatsSlice = createSlice({
     updateUnReadMessage: (state, action: PayloadAction<{ id: number; unread: number }>) => {
       const { id, unread } = action.payload;
       const index = state.data.findIndex((item) => item.id === id);
-
       if (index !== -1) {
         // Actualizează doar variabilele unread și chat_id
         state.data[index].unread = unread;
@@ -35,13 +34,7 @@ const listChatsSlice = createSlice({
     },
 
     addListChats: (state, action: PayloadAction<ConversationPreview[]>) => {
-      // Șterge conținutul stării curente
-      state.data = [];
-
-      // Adaugă conversațiile primite prin action.payload
-      state.data.push(...action.payload);
-
-      // Sortează starea după data actualizării
+      state.data = action.payload;
       state.data = sortChatsByUpdatedAt(state.data);
     },
   },

@@ -71,7 +71,6 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
   };
 
   const onAcceptHandler = async () => {
-    console.log(patientId);
     if (patientId) {
       setIsAcceptLoading(true);
       try {

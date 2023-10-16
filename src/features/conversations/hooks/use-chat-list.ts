@@ -6,6 +6,7 @@ import { addListChats, updateListChats } from "@/store/slices/listChatsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import usePusher from "./usePusher";
 import { SOCKET_PUSHER_CHANNEL_LIST_CHATS, SOCKET_PUSHER_EVENT_LIST_CHATS } from "@/config/app";
+import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 
 export const useChatList = () => {
   const { listChats } = useSelector((store: any) => ({
@@ -14,7 +15,7 @@ export const useChatList = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const dispatch = useDispatch();
   const { pusher } = usePusher();
-  const { data: conversations, isLoading } = useQuery({
+  const { data: dataListPacients, isLoading } = useQuery({
     queryKey: ["list-patients", conversationsType],
     queryFn: async () => {
       return apiGetConversationsWithPatients();
@@ -23,11 +24,15 @@ export const useChatList = () => {
       if (data) return dispatch(addListChats(data));
     },
   });
+  const listPatients = React.useMemo(() => {
+    return dataListPacients && sortChatsByUpdatedAt(dataListPacients);
+  }, [dataListPacients]);
+
   const sessionUser = localStorage.getItem("session:user") ?? "";
 
   const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   React.useEffect(() => {
-    if (pusher && conversations) {
+    if (pusher && listPatients) {
       const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_LIST_CHATS + current_user.id);
       channel.bind(SOCKET_PUSHER_EVENT_LIST_CHATS, (data: any) => {
         const { chatList, chat_id } = data;
@@ -42,5 +47,5 @@ export const useChatList = () => {
     }
   }, [pusher, listChats]);
 
-  return React.useMemo(() => ({ conversations, isLoading }), [conversations, isLoading]);
+  return React.useMemo(() => ({ listPatients, isLoading }), [listPatients, isLoading]);
 };

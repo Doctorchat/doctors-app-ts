@@ -4,16 +4,14 @@ import { useConversationLayoutStore } from "../components/layout";
 import { apiGetConversationsWithDoctors } from "../api";
 import { useDispatch, useSelector } from "react-redux";
 import usePusher from "./usePusher";
-// import { SOCKET_PUSHER_CHANNEL_LIST_CHATS, SOCKET_PUSHER_EVENT_LIST_CHATS } from "@/config/app";
 import { getUser } from "@/features/profile/api";
 import { addListChatsDoctors, updateListChatsDoctors } from "@/store/slices/listChatsDoctorsSlice";
 import { addDoctorInfo } from "@/store/slices/doctorInfoSlice";
-import { DoctorInfo } from "@/store/types/chatTypes";
 import {
   SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST,
-  SOCKET_PUSHER_CHANNEL_LIST_CHATS,
   SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST,
 } from "@/config/app";
+import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 
 export const useChatListDoctors = () => {
   const { listChatsDoctors } = useSelector((store: any) => ({
@@ -32,19 +30,21 @@ export const useChatListDoctors = () => {
     onSuccess: (data: any) => {
       if (data) return dispatch(addDoctorInfo(data));
     },
-  });
+  });  
 
-  const { data: listDoctors, isLoading: isLoadingListDoctors } = useQuery({
+  const { data: dataListDoctors, isLoading: isLoadingListDoctors } = useQuery({
     queryKey: ["list-doctors", conversationsType],
     queryFn: async () => {
       if (doctorInfo) return apiGetConversationsWithDoctors(doctorInfo.id);
     },
     enabled: !!doctorInfo,
     onSuccess: (data: any) => {
-      console.log(data, "data la list");
       if (data) return dispatch(addListChatsDoctors(data));
     },
   });
+    const listDoctors = React.useMemo(() => {
+      return dataListDoctors && sortChatsByUpdatedAt(dataListDoctors);
+    }, [dataListDoctors]);
 
   React.useEffect(() => {
     if (pusher && listDoctors) {
