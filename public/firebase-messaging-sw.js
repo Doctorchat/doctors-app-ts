@@ -43,8 +43,8 @@ messaging.setBackgroundMessageHandler(function (payload) {
     return self.registration.showNotification(title, {
       body: parsedBody.content,
       icon: "./assets/companyIcon.png",
-      typeChat: parsedBody.isPatientDoctorChat,
-      chat_id: parseInt(parsedBody.chat_id),
+      tag: parsedBody.isPatientDoctorChat ? "patientId=" : "doctorId=",
+      data: parseInt(parsedBody.chat_id),
     });
   } else {
     console.error("Invalid or missing 'content' in payload data:", payload);
@@ -53,21 +53,17 @@ messaging.setBackgroundMessageHandler(function (payload) {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const notificationChatId = event.notification.chat_id;
+  const notificationChatId = event.notification.data;
   const notificatioBody = event.notification.body;
-  const notificationTypeChat = event.notification.typeChat;
-
+  const notificationTypeChat = event.notification.tag;
+  console.log(event.notification);
   if (notificatioBody) {
     try {
       if (notificationChatId) {
-        console.log(notificatioBody, notificationChatId);
-        const chat_type = notificationTypeChat ? "patientId=" : "doctorId=";
-        console.log(chat_type);
-
         const url =
           this.location.origin +
           "/conversations?" +
-          chat_type +
+          notificationTypeChat +
           notificationChatId +
           "&anonymous=false";
         event.waitUntil(

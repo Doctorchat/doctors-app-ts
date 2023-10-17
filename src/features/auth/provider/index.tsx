@@ -95,12 +95,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
             )
           : false;
-        console.log(
-          chatId,
-          Number(chatId),
-          Number(bodyData.chat_id),
-          !chatId || Number(chatId) !== Number(bodyData.chat_id)
-        );
 
         if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
           const notification = new Notification(title, {
