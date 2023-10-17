@@ -90,20 +90,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const unsubscribe = onMessage(messaging, (payload: any) => {
         const { title, body } = payload.data;
         const bodyData = JSON.parse(body);
-
-        const patientId = window.location.search
-          ? new URLSearchParams(window.location.search).get("patientId")
+        const chatId = window.location.search
+          ? new URLSearchParams(window.location.search).get(
+              bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
+            )
           : false;
-        if (!patientId || Number(patientId) !== Number(bodyData.chat_id)) {
+        console.log(
+          chatId,
+          Number(chatId),
+          Number(bodyData.chat_id),
+          !chatId || Number(chatId) !== Number(bodyData.chat_id)
+        );
+
+        if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
           const notification = new Notification(title, {
             body: bodyData.content,
             icon: "https://doctorchat.md/wp-content/themes/doctorchat/favicon/apple-touch-icon.png",
           });
-
+          const chat_type = bodyData.isPatientDoctorChat ? "patientId=" : "doctorId=";
           const url =
             window.location.origin +
-            "/conversations?patientId=" +
-            (bodyData.chat_id ?? patientId) +
+            "/conversations?" +
+            chat_type +
+            (bodyData.chat_id ?? chatId) +
             "&anonymous=false";
           notification.onclick = () => {
             window.open(url);

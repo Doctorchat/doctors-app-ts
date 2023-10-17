@@ -36,13 +36,15 @@ messaging.onBackgroundMessage((payload) => {
 });
 messaging.setBackgroundMessageHandler(function (payload) {
   console.log(payload);
+
   const { title, body } = payload.data;
   const parsedBody = JSON.parse(body);
   if (parsedBody && parsedBody.content) {
     return self.registration.showNotification(title, {
       body: parsedBody.content,
       icon: "./assets/companyIcon.png",
-      data: parseInt(parsedBody.chat_id),
+      typeChat: parsedBody.isPatientDoctorChat,
+      chat_id: parseInt(parsedBody.chat_id),
     });
   } else {
     console.error("Invalid or missing 'content' in payload data:", payload);
@@ -51,13 +53,23 @@ messaging.setBackgroundMessageHandler(function (payload) {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const notificationData = event.notification.data;
+  const notificationChatId = event.notification.chat_id;
   const notificatioBody = event.notification.body;
+  const notificationTypeChat = event.notification.typeChat;
 
   if (notificatioBody) {
     try {
-      if (notificationData) {
-        const url = this.location.origin + "/conversations?patientId=" + notificationData;
+      if (notificationChatId) {
+        console.log(notificatioBody, notificationChatId);
+        const chat_type = notificationTypeChat ? "patientId=" : "doctorId=";
+        console.log(chat_type);
+
+        const url =
+          this.location.origin +
+          "/conversations?" +
+          chat_type +
+          notificationChatId +
+          "&anonymous=false";
         event.waitUntil(
           // eslint-disable-next-line no-undef
           clients.openWindow(url).then(() => {
@@ -66,7 +78,7 @@ self.addEventListener("notificationclick", (event) => {
           })
         );
       } else {
-        console.error("chat_id is missing in the notification data:", notificationData);
+        console.error("chat_id is missing in the notification data:", notificationChatId);
       }
     } catch (error) {
       console.error("Error parsing JSON from body:", error);
