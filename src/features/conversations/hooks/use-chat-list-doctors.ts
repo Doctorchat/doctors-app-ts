@@ -47,7 +47,6 @@ export const useChatListDoctors = () => {
   }, [dataListDoctors]);
 
   React.useEffect(() => {
-    console.log(listDoctors, dataListDoctors);
     if (pusher) {
       //TODO
       const channel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST + current_user.id);

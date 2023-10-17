@@ -11,6 +11,9 @@ import { useAppI18n } from "@/hooks";
 import { AppLocale } from "@/types";
 import { fetchToken } from "../../notification-firebase";
 
+import { getMessaging, onMessage } from "firebase/messaging";
+import { firebaseApp } from "@/features/notification-firebase/api/config";
+
 export interface AuthContextValue {
   session: {
     token: string | null;
@@ -41,7 +44,6 @@ export interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { setLanguage } = useAppI18n();
-
   const [token, setToken] = useLocalStorage<string | null>(SESSION_TOKEN_KEY, null);
   const [user, setUser] = useLocalStorage<SessionUser | null>(SESSION_USER_KEY, null);
   const [validating, setValidating] = React.useState(false);
@@ -50,7 +52,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(token);
     setUser(user);
     setLanguage(user.locale as AppLocale);
-    fetchToken(user);
   };
 
   const clearSession = React.useCallback(() => {
@@ -64,25 +65,57 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setValidating(true);
     try {
       const response = await apiGetSessionUser();
-      fetchToken(response);
+
       setUser(response);
     } catch {
       clearSession();
     } finally {
       setValidating(false);
-      fetchToken(null);
+      fetchToken(user);
     }
   }, [clearSession, setUser, token]);
 
   const valid = React.useMemo(() => token !== null && user !== null, [token, user]);
   const session = React.useMemo(
     () => ({ token, user, valid, validating }),
-    [token, user, valid, validating],
+    [token, user, valid, validating]
   );
 
   useEffectOnce(() => {
     revalidateSession();
   });
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      const messaging = getMessaging(firebaseApp);
+      const unsubscribe = onMessage(messaging, (payload: any) => {
+        const { title, body } = payload.data;
+        const bodyData = JSON.parse(body);
+
+        const patientId = window.location.search
+          ? new URLSearchParams(window.location.search).get("patientId")
+          : false;
+        if (!patientId || Number(patientId) !== Number(bodyData.chat_id)) {
+          const notification = new Notification(title, {
+            body: bodyData.content,
+            icon: "https://doctorchat.md/wp-content/themes/doctorchat/favicon/apple-touch-icon.png",
+          });
+
+          const url =
+            window.location.origin +
+            "/conversations?patientId=" +
+            (bodyData.chat_id ?? patientId) +
+            "&anonymous=false";
+          notification.onclick = () => {
+            window.open(url);
+          };
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [window.location.href]);
 
   return (
     <AuthContext.Provider
@@ -97,5 +130,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
 export const useAuth = () => React.useContext(AuthContext);

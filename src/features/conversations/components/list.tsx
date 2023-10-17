@@ -17,8 +17,6 @@ export const List: React.FC = () => {
   const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading } = useChatList();
   
-  console.log(listChatsDoctors?.length ? listChatsDoctors : listDoctors);
-
   return (
     <div
       className={cn(

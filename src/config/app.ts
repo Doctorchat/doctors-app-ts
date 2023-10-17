@@ -16,7 +16,8 @@ export const FIREBASE_STORAGE_BUCKET = "doctorchat-push.appspot.com";
 export const FIREBASE_MESSAGING_SENDER_ID = "373860489948";
 export const FIREBASE_APP_ID = "1:373860489948:web:138a8c02fb772e3ba87219";
 export const FIREBASE_TOKEN_KEY = "firebase:token";
-export const FIREBASE_PERMISSION = "notificationPermission";
+export const FIREBASE_PERMISSION = "notification:firebase";
+
 
 export const SOCKET_PUSHER_KEY = "19727a34d355626f8a23";
 export const SOCKET_PUSHER_CLUSTER = "eu";

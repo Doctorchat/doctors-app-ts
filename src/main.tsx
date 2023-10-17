@@ -10,11 +10,10 @@ import zodErrorMap from "./lib/zod";
 import { router } from "./router";
 
 import { Toaster } from "@/components/ui/toaster";
-
+import "firebase/messaging";
 import "./lib/i18n";
 import "./styles/index.css";
-import { Notification } from "./features/notification-firebase/notification";
-
+import registerServiceWorker from "../public/serviceWorker";
 z.setErrorMap(zodErrorMap);
 
 const queryClient = new QueryClient({
@@ -28,13 +27,13 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <RouterProvider router={router} />
         <Toaster />
-        <Notification/>
       </AuthProvider>
     </QueryClientProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>
 );
+registerServiceWorker();
