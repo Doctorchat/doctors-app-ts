@@ -21,7 +21,6 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log(payload);
   const { title, body } = payload.data;
   const parsedBody = JSON.parse(body); // Parse the JSON string
   if (parsedBody && parsedBody.content) {
@@ -35,8 +34,6 @@ messaging.onBackgroundMessage((payload) => {
   }
 });
 messaging.setBackgroundMessageHandler(function (payload) {
-  console.log(payload);
-
   const { title, body } = payload.data;
   const parsedBody = JSON.parse(body);
   if (parsedBody && parsedBody.content) {
@@ -56,7 +53,6 @@ self.addEventListener("notificationclick", (event) => {
   const notificationChatId = event.notification.data;
   const notificatioBody = event.notification.body;
   const notificationTypeChat = event.notification.tag;
-  console.log(event.notification);
   if (notificatioBody) {
     try {
       if (notificationChatId) {

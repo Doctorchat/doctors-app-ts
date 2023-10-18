@@ -52,6 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(token);
     setUser(user);
     setLanguage(user.locale as AppLocale);
+    fetchToken(user);
   };
 
   const clearSession = React.useCallback(() => {
@@ -65,7 +66,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setValidating(true);
     try {
       const response = await apiGetSessionUser();
-
       setUser(response);
     } catch {
       clearSession();
