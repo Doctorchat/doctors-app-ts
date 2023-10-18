@@ -21,12 +21,20 @@ export interface ConversationPreview {
 export interface ConversationDoctors {
   created_at: string;
   id: number;
-  lastMessage: LastMessageDc[];
+  lastMessage: LastMessageDc;
   messages: LastMessageDc[];
   participants: ParticipantsList[];
   title: string;
+  name?: string;
   unreadCount: number;
   updated_at: string;
+  isAnonym?: string;
+  avatar?: string;
+  isOnline?: string;
+  company_id?: string;
+  updated?: string;
+  description?: string;
+  unread?: number;
 }
 export interface LastMessageDc {
   content: string;

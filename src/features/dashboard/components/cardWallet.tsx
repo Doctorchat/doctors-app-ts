@@ -1,10 +1,10 @@
-import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/utils";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { cn, getInitials } from "@/utils";
 import { MoneyIcon } from "../icons/iconMoney";
 import { useTranslation } from "react-i18next";
 import { CardProps } from "../types";
-import { Avatar, AvatarImage, Skeleton } from "@/components/ui";
-import defaultImageDoctor from "../../../assets/images/default.png";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
+import { useAuth } from "@/features/auth";
 
 const CardItemSkeleton: React.FC = () => {
   return (
@@ -16,6 +16,7 @@ const CardItemSkeleton: React.FC = () => {
 
 const CarddWallet: React.FC<CardProps> = ({ loading, data, image }) => {
   const { t } = useTranslation();
+  const { session } = useAuth();
   if (loading) {
     return (
       <div className="space-y-3">
@@ -28,9 +29,12 @@ const CarddWallet: React.FC<CardProps> = ({ loading, data, image }) => {
 
   return (
     <div className="grid grid-cols-2 gap-1">
-      <div className="flex justify-center">
-        <Avatar className="relative	flex  h-36  w-36 shrink-0 overflow-hidden !rounded-lg ">
-          <AvatarImage src={image ?? defaultImageDoctor} alt="image" />
+      <div className="flex h-full w-full justify-center">
+        <Avatar className="h-36 w-36 rounded-md">
+          <AvatarImage src={session.user?.avatar} alt={session.user?.name} />
+          <AvatarFallback className="rounded-md text-xl">
+            {getInitials(session.user?.name)}
+          </AvatarFallback>
         </Avatar>
       </div>
       <div className="flex h-full grid-rows-2 flex-col gap-6">

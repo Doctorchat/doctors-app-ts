@@ -8,20 +8,21 @@ import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { ConversationDoctors } from "@/features/conversations/types";
 
 export interface PreviewProps {
-  conversation: IChatCloseOrOpen;
+  conversation: IChatCloseOrOpen | ConversationDoctors;
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
-
   const [searchParams] = useSearchParams();
-
   return (
     <Link
-      to={`/conversations?patientId=${conversation.id}&anonymous=${conversation.isAnonym}`}
+      to={`/conversations${conversation.name ? "?patientId=" : "?doctorId="}${
+        conversation.id
+      }&anonymous=${conversation.isAnonym ?? "false"}`}
       className={cn(
         "flex items-center overflow-hidden rounded-lg p-3 transition-colors",
         "active:bg-neutral-200 md:hover:bg-neutral-200",
@@ -30,8 +31,11 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
     >
       <div className="relative flex-shrink-0">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={conversation.avatar ?? ""} alt={conversation.name} />
-          <AvatarFallback>{getInitials(conversation.name)}</AvatarFallback>
+          <AvatarImage
+            src={conversation.avatar ?? ""}
+            alt={conversation.name ?? conversation.title}
+          />
+          <AvatarFallback>{getInitials(conversation.name ?? conversation.title)}</AvatarFallback>
         </Avatar>
         {conversation.isOnline && (
           <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
@@ -41,7 +45,9 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
       <div className="ml-3 flex-1 overflow-hidden">
         <div className="flex h-5 items-center overflow-hidden">
           <div className="flex flex-1 items-center overflow-hidden">
-            <h2 className="truncate font-medium text-typography-primary">{conversation.name}</h2>
+            <h2 className="truncate font-medium text-typography-primary">
+              {conversation.name ?? conversation.title}
+            </h2>
 
             {conversation.company_id && (
               <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
@@ -51,23 +57,39 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">
-            <time dateTime={conversation.updated}>
-              {formatDistance(parseISO(conversation.updated), new Date(), {
-                addSuffix: true,
-                locale: locale(),
-              })}
+            <time dateTime={conversation.updated ?? conversation.updated_at ?? ""}>
+              {formatDistance(
+                parseISO(conversation.updated ?? conversation.updated_at ?? ""),
+                new Date(),
+                {
+                  addSuffix: true,
+                  locale: locale(),
+                }
+              )}
             </time>
           </span>
         </div>
 
-        <div className="mt-1.5 flex h-5 items-center overflow-hidden">
-          <p className="flex-1 truncate text-sm">{conversation.description}</p>
-          {conversation.unread > 0 && (
-            <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
-              {conversation.unread}
-            </span>
-          )}
-        </div>
+        {conversation.description && (
+          <div className="mt-1.5 flex h-5 items-center overflow-hidden">
+            <p className="flex-1 truncate text-sm">{conversation.description}</p>
+            {conversation && conversation.unread && conversation.unread > 0 ? (
+              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
+                {conversation.unread}
+              </span>
+            ) : null}
+          </div>
+        )}
+        {conversation && conversation.lastMessage && conversation.lastMessage && (
+          <div className="mt-1.5 flex h-5 items-center overflow-hidden">
+            <p className="flex-1 truncate text-sm">{conversation.lastMessage.content}</p>
+            {conversation && conversation.unreadCount && conversation.unreadCount > 0 ? (
+              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
+                {conversation.unreadCount}
+              </span>
+            ) : null}
+          </div>
+        )}
       </div>
     </Link>
   );

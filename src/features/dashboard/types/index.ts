@@ -1,3 +1,5 @@
+import { ConversationDoctors, LastMessageDc } from "@/features/conversations/types";
+
 export interface IReferral {
   partner_url: null | number | string | object;
   partner_qr: null | number | string | object;
@@ -89,7 +91,9 @@ export interface IReservations {
 }
 export interface IChats {
   openCount: number;
+  doctorCount: number;
   closedCount: number;
+  doctor: ConversationDoctors[];
   open: IChatCloseOrOpen[];
   closed: IChatCloseOrOpen[];
 }
@@ -107,6 +111,10 @@ export interface IChatCloseOrOpen {
   isOnline: boolean;
   isAnonym: boolean;
   company_id: null | string | number;
+  title?: string;
+  updated_at?: string;
+  lastMessage?: LastMessageDc;
+  unreadCount?: number;
 }
 export interface StatisticsDashboard {
   avatar: string | null;
@@ -120,7 +128,7 @@ export interface StatisticsDashboard {
 
 export interface ChatsProps {
   loading?: boolean;
-  data?: IChatCloseOrOpen[];
+  data?: IChatCloseOrOpen[] | ConversationDoctors[];
 }
 
 export interface TabsProps {

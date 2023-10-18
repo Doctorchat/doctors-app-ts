@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -8,6 +8,7 @@ import { createWithEqualityFn } from "zustand/traditional";
 import { List } from "./list";
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
+import { useLocation } from "react-router-dom";
 
 export interface LayoutStore {
   conversationsType: "patients" | "doctors";
@@ -37,7 +38,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const setConversationsType = useConversationLayoutStore((store) => store.setConversationsType);
+  const navigation = useLocation();
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(navigation.search);
+    const type = searchParams.get("doctorId") ? "doctors" : "patients";
+    setConversationsType(type);
+  }, [navigation]);
   return (
     <div className="mx-auto flex h-full w-full max-w-7xl flex-col overflow-hidden lg:p-5 lg:pt-0">
       <header className="flex h-16 items-center justify-between overflow-hidden px-5 lg:px-0">

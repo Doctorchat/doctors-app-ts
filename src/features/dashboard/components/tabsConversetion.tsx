@@ -1,23 +1,23 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { useTranslation } from "react-i18next";
 import ChatsView from "../chats/chatsView";
-import { TabsProps } from "../types";
-import { sortChatsByUpdatedOpen } from "@/utils/sort-list";
+import { IChats, TabsProps } from "../types";
+import { sortChatsByUpdatedDoctor, sortChatsByUpdatedOpen } from "@/utils/sort-list";
 
 const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
   const { t } = useTranslation();
   const TAB_ITEMS = [
     {
       value: "actualy_chats",
-      children: t("conversations:actualy_chats"),
+      children: t("conversations:actualy_chats", { count: data?.openCount ?? 0 }),
     },
     {
       value: "chats_closed",
-      children: t("conversations:chats_closed"),
+      children: t("conversations:chats_closed", { count: data?.closedCount ?? 0 }),
     },
     {
       value: "doctors",
-      children: t("conversations:doctors"),
+      children: t("conversations:doctors_chats", { count: data?.doctorCount ?? 0 }),
     },
   ];
   return (
@@ -38,7 +38,7 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
           <ChatsView data={sortChatsByUpdatedOpen(data?.closed ?? [])} loading={loading} />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="doctors">
-          <ChatsView data={[]} loading={loading} />
+          <ChatsView data={sortChatsByUpdatedDoctor(data?.doctor ?? [])} loading={loading} />
         </TabsContent>
       </Tabs>
     </div>
