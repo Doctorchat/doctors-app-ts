@@ -58,8 +58,6 @@ export const LoginForm: React.FC = () => {
       }
     }
   }, []);
-  console.log(language);
-
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
