@@ -256,8 +256,6 @@ export const PersonalData: React.FC = () => {
     if (category) {
       newValues = { ...values, category: JSON.parse(category) };
     }
-    console.log(category, newValues);
-
     try {
       await updateDoctor(newValues).then(() =>
         setNotification({ visible: true, message: "profile:personal_info_updated" })

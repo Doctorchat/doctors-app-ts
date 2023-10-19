@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
@@ -31,18 +31,34 @@ import {
   PasswordInput,
 } from "@/components/ui";
 import { getApiErrorMessages } from "@/utils";
+import { useAppI18n } from "@/hooks";
+import { AppLocale } from "@/types";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
   password: z.string().nonempty(),
+  language: z.string(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
 export const LoginForm: React.FC = () => {
+  const [language, setLanguage] = React.useState<AppLocale>("en");
   const { t } = useTranslation();
   const { initializeSession } = useAuth();
   const { isEmulating } = useEmulateLogin();
+
+  useEffect(() => {
+    const localLanguage = localStorage.getItem("i18nextLng");
+    if (localLanguage) {
+      if (localLanguage === "en-US") {
+        setLanguage("en");
+      } else {
+        setLanguage(localLanguage as AppLocale);
+      }
+    }
+  }, []);
+  console.log(language);
 
   const navigate = useNavigate();
 
@@ -50,6 +66,7 @@ export const LoginForm: React.FC = () => {
     defaultValues: {
       phone: "",
       password: "",
+      language: "",
     },
     resolver: zodResolver(schema),
   });
@@ -58,13 +75,14 @@ export const LoginForm: React.FC = () => {
 
   const onSubmitTestIsSubmitting = async (values: FormValues) => {
     try {
-      const response = await apiLogin(values);
+      const response = await apiLogin(values, language);
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
 
       initializeSession(response.token, response.user);
       if (continueFrom) navigate(continueFrom);
       else navigate("/");
     } catch (error) {
+      console.log(error);
       setApiErrors(getApiErrorMessages(error));
     }
   };

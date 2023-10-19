@@ -12,31 +12,22 @@ export const fetchToken = async (user: SessionUser | null) => {
       if (permissionStorage || (!user && getTokenFirebaseStorage)) {
         return;
       }
-
-      console.log("USER -> ", Boolean(user));
       if (user) {
-        console.log("!getTokenFirebaseStorage -> ", !getTokenFirebaseStorage);
         if (!getTokenFirebaseStorage) {
-          console.log("a intrat in !getTokenFirebaseStorage -> ");
           const token = await setTokenStorage();
           if (token) {
             await apiUpdateFCMToken(token);
             localStorage.setItem(FIREBASE_PERMISSION, JSON.stringify("true"));
             localStorage.removeItem(FIREBASE_TOKEN_KEY);
           } else {
-            console.log("Notifications are not active");
           }
         } else if (getTokenFirebaseStorage) {
-          console.log("a intrat in getTokenFirebaseStorage -> ");
           await apiUpdateFCMToken(getTokenFirebaseStorage);
           localStorage.setItem(FIREBASE_PERMISSION, JSON.stringify("true"));
           localStorage.removeItem(FIREBASE_TOKEN_KEY);
         }
       } else if (!user) {
-        console.log("a intrat in !user -> ");
-        console.log("!getTokenFirebaseStorage -> ", !getTokenFirebaseStorage);
         if (!getTokenFirebaseStorage) {
-          console.log(" a intrat in !getTokenFirebaseStorage -> ");
           setTokenStorage();
           return;
         }

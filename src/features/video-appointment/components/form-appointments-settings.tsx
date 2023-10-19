@@ -98,7 +98,6 @@ const FormAppointmentsSettings: React.FC = () => {
   const onSubmitTestIsSubmitting = (values: any) => {
 
     setLoading(true);
-    console.log(values);
     setDisponibility({
       time_frame: parseInt(values.time_frame, 10),
       time_buffer: parseInt(values.time_buffer, 10),
