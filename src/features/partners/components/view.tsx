@@ -9,28 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import PartnersSettings from "./tabs-container/partners-settings";
 import PartnersReferrals from "./tabs-container/partners-referrals";
 import PartnersTransactions from "./tabs-container/partners-transactions";
+import { QrCode } from "./qr-code";
+import { boolean } from "zod";
 export interface ViewProps {
   inContainer?: boolean;
 }
 export const View: React.FC<ViewProps> = ({ inContainer }) => {
   const { t } = useTranslation();
-
-  const {
-    data: partnersData,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["partners"],
-    queryFn: async () => {
-      return getPartners();
-    },
-  });
-
-  if (isLoading || isError || !partnersData) {
-    return <PartnersBalanceFallback type={isLoading ? "loading" : "error"} />;
-  }
-
-  const { earned, referrals, percent, currency } = partnersData;
 
   const TAB_ITEMS = [
     {
@@ -43,12 +28,14 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
     },
   ];
 
+  const TAB_QR = [{ value: "qrCode", children: t("partners:download_qr") }];
+
   return (
     <div
       className={
         cn("custom-scroll-bar h-full w-full md:rounded-lg md:border md:border-neutral-200") +
         " " +
-        cn(inContainer ? "rounded-lg border p-5 text-typography-primary" : "p-10")
+        cn(inContainer ? "rounded-lg border p-1 text-typography-primary" : "p-10")
       }
     >
       <div
@@ -58,33 +45,7 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
             : "xs:flex-col flex flex-col justify-between gap-10 sm:flex-row md:flex-col lg:flex-row xl:flex-row"
         )}
       >
-        <div
-          className={cn(
-            inContainer
-              ? "w-[100%]"
-              : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[40%]"
-          )}
-        >
-          <PartnersBalance
-            earned={earned}
-            referrals={referrals}
-            percent={percent}
-            currency={currency}
-            isLoading={isLoading}
-            isError={isError}
-          />
-          <div
-            className={cn(
-              "item-center mb-4 mt-3 flex justify-center rounded-xl border border-primary bg-primary bg-opacity-10 px-3 py-2 font-medium"
-            )}
-          >
-            <ExclamationCircleIcon className="mr-2 h-5 w-5 text-primary" />
-            <p className="text-center text-sm text-primary">
-              {t("partners:description", { percent: percent ?? 0 })}
-            </p>
-          </div>
-          <PartnersSettings />
-        </div>
+        {!inContainer && <QrCode inContainer={inContainer} />}
         <div
           className={cn(
             inContainer
@@ -92,14 +53,25 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
               : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[50%]"
           )}
         >
-          <Tabs defaultValue="referrals">
+          <Tabs defaultValue={inContainer ? "qrCode" : "referrals"}>
             <TabsList className="flex" aria-label="Partners tabs">
+              {inContainer &&
+                TAB_QR.map(({ value, children }) => (
+                  <TabItem value={value} key={value} inContainer={inContainer}>
+                    {children}
+                  </TabItem>
+                ))}
               {TAB_ITEMS.map(({ value, children }) => (
-                <TabItem value={value} key={value}>
+                <TabItem value={value} key={value} inContainer={inContainer}>
                   {children}
                 </TabItem>
               ))}
             </TabsList>
+            {inContainer && (
+              <TabsContent className="grow rounded-b-md bg-white outline-none" value="qrCode">
+                <QrCode inContainer={inContainer} />
+              </TabsContent>
+            )}
 
             <TabsContent className="grow rounded-b-md bg-white outline-none" value="referrals">
               <PartnersReferrals />
@@ -114,10 +86,20 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
   );
 };
 
-const TabItem = ({ children, value }: { children: React.ReactNode; value: string }) => {
+const TabItem = ({
+  children,
+  value,
+  inContainer,
+}: {
+  children: React.ReactNode;
+  value: string;
+  inContainer?: boolean;
+}) => {
   return (
     <TabsTrigger
-      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
+      className={`flex flex-1 cursor-pointer items-center justify-center bg-white ${
+        inContainer ? "px-0.5 py-3" : "px-5 py-3"
+      }px-5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary`}
       value={value}
     >
       {children}

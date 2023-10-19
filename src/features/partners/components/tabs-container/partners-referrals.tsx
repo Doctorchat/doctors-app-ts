@@ -75,7 +75,7 @@ const PartnersReferrals: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3 mt-5">
+    <div className="space-y-3 mt-5 px-2">
       {referrals.map((referral: ReferralProps) => (
         <ReferralItem key={referral.id} {...referral} />
       ))}

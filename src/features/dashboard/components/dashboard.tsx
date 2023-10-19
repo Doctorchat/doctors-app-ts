@@ -34,40 +34,36 @@ export const DashboardWrapper: React.FC = () => {
   }, [monthReservations]);
 
   return (
-    <div
-      className={cn(
-        "custom-scroll-bar grid h-full w-full gap-4 sm:grid-cols-1 md:grid-cols-2 md:rounded-lg lg:grid-cols-3 xl:grid-cols-3"
-      )}
-    >
-      <div>
-        <Card className={cn("p-4")}>
+    <>
+      <div className="grid grid-rows-3 gap-2 ">
+        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-3 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
           <CarddWallet loading={isLoading} data={allData?.wallet} image={allData?.avatar} />
         </Card>
-        <div className="pt-2">
-          <Card className={cn("p-3")}>
-            <TabsConversersional loading={isLoading} data={allData?.chats} />
-          </Card>
+        <div className="row-span-2">
+          <TabsConversersional loading={isLoading} data={allData?.chats} />
         </div>
       </div>
-      <div>
-        <Card className={cn("p-3")}>
+      <div className="grid grid-rows-3 gap-2">
+        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-1 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
           <BasicLine loading={isLoading} data={allData?.SuccessfullyClosedChats} />
         </Card>
-        <div className="py-2">
+        <div className="row-span-2">
           <View inContainer={true} />
         </div>
       </div>
-      <div>
-        <Card className={cn("p-3")}>
+      <div className="grid grid-rows-3 gap-2">
+        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-1 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
-        <CalendarReservations
-          key="calendar-reservation"
-          loading={calendarLoading}
-          data={reservations?.reservations}
-          setMonth={setMonthReservations}
-        />
+        <div className="row-span-2" key="calendar-reservation">
+          <CalendarReservations
+            key="calendar-reservation"
+            loading={calendarLoading}
+            data={reservations?.reservations}
+            setMonth={setMonthReservations}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -5,11 +5,8 @@ export interface LayoutProps {
   children?: React.ReactNode;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="m-auto flex h-full w-full  flex-col overflow-hidden lg:p-5">
-      <main className="grid flex-1 grid-cols-12 grid-rows-1 gap-5 overflow-hidden">{children}</main>
-    </div>
-  );
-};
+export const Layout: React.FC<LayoutProps> = ({ children }) => (
+  <div className="m-auto flex h-full w-full  flex-col overflow-hidden lg:p-5">
+    <main className="grid flex-1 grid-cols-12 grid-rows-1 gap-5 overflow-hidden">{children}</main>
+  </div>
+);

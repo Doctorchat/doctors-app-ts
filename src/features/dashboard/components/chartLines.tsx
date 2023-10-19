@@ -49,6 +49,7 @@ const BasicLine: React.FC<ChartsLineProps> = ({ loading, data }) => {
       }}
       series={datas}
       height={140}
+      minHeight={140}
     />
   );
 };
