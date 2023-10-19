@@ -9,15 +9,15 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
   const TAB_ITEMS = [
     {
       value: "actualy_chats",
-      children: t("conversations:actualy_chats", { count: data?.openCount ?? 0 }),
+      children: t("conversations:actualy_chats"),
     },
     {
       value: "chats_closed",
-      children: t("conversations:chats_closed", { count: data?.closedCount ?? 0 }),
+      children: t("conversations:chats_closed"),
     },
     {
       value: "doctors",
-      children: t("conversations:doctors_chats", { count: data?.doctorCount ?? 0 }),
+      children: t("conversations:doctors_chats"),
     },
   ];
   return (
