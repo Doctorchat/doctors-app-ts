@@ -1,5 +1,6 @@
 {
   "invalid_phone_number": "Numărul de telefon nu este valid",
+  "forgot_password": "Ai uitat parola?",
   "invalid_email": "Adresa de email nu este validă",
   "otp_6_characters": "Codul OTP trebuie să conțină 6 cifre",
   "invalid_file": "Acest fișier nu este valid",

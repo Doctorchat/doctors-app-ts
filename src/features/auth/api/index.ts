@@ -2,10 +2,7 @@ import type { SessionUser } from "../types";
 
 import axiosInstance from "@/lib/axios";
 
-export const apiLogin = async (body: {
-  language: string; phone: string; password: string 
-}, language: string) => {
-  body.language = language;
+export const apiLogin = async (body: { phone: string; password: string }) => {
   return await axiosInstance
     .post<{ token: string; user: SessionUser }>("/auth/doctor-login", body)
     .then((res) => res.data);

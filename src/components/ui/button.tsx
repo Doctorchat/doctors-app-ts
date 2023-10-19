@@ -24,6 +24,7 @@ const buttonVariants = cva(
           "bg-neutral-100 text-neutral-800 shadow-sm md:hover:text-typography-primary md:hover:bg-neutral-200/90",
           "active:bg-neutral-200/90 active:text-typography-primary",
         ],
+        success: ["bg-blue-900 text-white shadow md:hover:bg-blue-900/90 active:bg-blue-900/90"],
 
         ghost: [
           "md:hover:bg-neutral-100 md:hover:text-typography-primary active:bg-neutral-100 active:text-typography-primary",
@@ -41,7 +42,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -58,7 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = "Button";
 

@@ -1,15 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
-
-import { apiLogin } from "../api";
-import { useEmulateLogin } from "../hooks";
-import { useAuth } from "../provider";
-
 import { CountrySelect } from "@/components/shared";
 import {
   Alert,
@@ -28,54 +23,75 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  PasswordInput,
 } from "@/components/ui";
-import { getApiErrorMessages } from "@/utils";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
-  password: z.string().nonempty(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
-export const LoginForm: React.FC = () => {
+export const RestoreForm: React.FC = () => {
   const { t } = useTranslation();
-  const { initializeSession } = useAuth();
-  const { isEmulating } = useEmulateLogin();
 
   const navigate = useNavigate();
 
   const form = useForm<FormValues>({
     defaultValues: {
       phone: "",
-      password: "",
     },
     resolver: zodResolver(schema),
   });
 
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  const onSubmitTestIsSubmitting = async (values: FormValues) => {
-    try {
-      const response = await apiLogin(values);
-      const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
-
-      initializeSession(response.token, response.user);
-      if (continueFrom) navigate(continueFrom);
-      else navigate("/");
-    } catch (error) {
-      console.log(error);
-      setApiErrors(getApiErrorMessages(error));
-    }
-  };
-
-  const isAuthInProcess = form.formState.isSubmitting || isEmulating;
+  // const onResetPasword = async (values: FormValues) => {
+  //   try {
+  //     console.log(values);
+  //     // const response = await apiRestore(values);
+  //     // const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
+  //     // initializeSession(response.token, response.user);
+  //     // if (continueFrom) navigate(continueFrom);
+  //     // else navigate("/");
+  //   } catch (error) {
+  //     // console.log(error);
+  //     // setApiErrors(getApiErrorMessages(error));
+  //   }
+  // };
+  // const getRecaptchaToken = useGoogleRecaptcha();
+  const onResetPasword = React.useCallback(
+    async (values: FormValues) => {
+      // setLoading(true);
+      try {
+        const data = { ...values };
+        //   data.re_token = await getRecaptchaToken();
+        //   const res = await api.user.resetPassword(data);
+        //   dispatch(notification({ title: "success", descrp: "phone_verification.reset_password" }));
+        //   form.reset({ phone: "" });
+        //   if (res.status === 200) {
+        //     router.push("/auth/reset-password");
+        //   }
+      } catch (error) {
+        //   dispatch(
+        //     notification({
+        //       type: "error",
+        //       title: "error",
+        //       descrp: getApiErrorMessages(error, true),
+        //       duration: 0,
+        //     })
+        //   );
+      } finally {
+        //   setLoading(false);
+      }
+    },
+    [form, navigate]
+  );
+  const isAuthInProcess = form.formState.isSubmitting;
 
   return (
     <Card className="w-full max-w-sm">
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
+        <form onSubmit={form.handleSubmit(onResetPasword)}>
           <CardHeader className="justify-between">
             <div className="text-center">
               <div className="flex items-center justify-center">
@@ -88,7 +104,8 @@ export const LoginForm: React.FC = () => {
                 />
               </div>
               <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
-              <CardDescription>{t("auth:enter_credentials_to_continue")}</CardDescription>
+              <CardDescription>{t("auth:reset_description")}</CardDescription>
+              <Button variant="success">{t("auth:log_in")}</Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -128,35 +145,11 @@ export const LoginForm: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex justify-between">
-                      <FormLabel className="text-typography-secondary">
-                        {t("auth:password")}
-                      </FormLabel>
-                      <FormLabel>
-                        <Link to="/auth/restore/password">
-                          <p className="text-red-500 underline">
-                            {t("validations:forgot_password")}
-                          </p>
-                        </Link>
-                      </FormLabel>
-                    </div>
-                    <FormControl>
-                      <PasswordInput disabled={isAuthInProcess} placeholder="********" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={isAuthInProcess} className="w-full">
-              {t("auth:login")}
+              {t("auth:reset_button")}
               {isAuthInProcess && "..."}
             </Button>
           </CardFooter>

@@ -1,5 +1,6 @@
 {
   "invalid_phone_number": "Неверный номер телефона",
+  "forgot_password": "Забыли пароль?",
   "invalid_email": "Неверный адрес электронной почты",
   "otp_6_characters": "Код OTP должен содержать 6 цифр",
   "invalid_file": "Этот файл недействителен",

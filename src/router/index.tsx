@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { MainLayout } from "@/components/layout";
 import { PrivateRoute, routes as authRoutes } from "@/features/auth";
+import { routes as authRestoreRoutes } from "@/features/restore";
 import { routes as dashboardRoutes } from "@/features/dashboard";
 import { routes as conversationsRoutes } from "@/features/conversations";
 import { routes as walletRoutes } from "@/features/wallet";
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
   {
     path: "/auth/authorize",
     element: <GoogleCalendarCallback />,
+  },
+  {
+    path: "/auth/restore/*",
+    children: authRestoreRoutes,
   },
   {
     path: "/conversations/*",
