@@ -44,7 +44,7 @@ export const DashboardWrapper: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Card className="custom-scroll-bar h-[20%] rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
+        <Card className="custom-scroll-bar h-[20%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <BasicLine loading={isLoading} data={allData?.SuccessfullyClosedChats} />
         </Card>
         <div className=" h-[80%] overflow-y-auto sm:h-[70%] md:h-[80%] lg:h-2/3 xl:h-2/3">
@@ -52,7 +52,7 @@ export const DashboardWrapper: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Card className="custom-scroll-bar h-[30%] rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
+        <Card className="custom-scroll-bar h-[30%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
         <div

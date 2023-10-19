@@ -34,7 +34,7 @@ export const QrCode: React.FC<ViewProps> = ({ inContainer }) => {
     <div
       className={cn(
         inContainer
-          ? "w-[100%] p-5"
+          ? "w-[100%] px-2 py-1"
           : "xs:w-[100%] w-[100%] sm:w-[100%] md:w-[100%] lg:w-[50%] xl:w-[40%]"
       )}
     >

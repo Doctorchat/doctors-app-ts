@@ -53,7 +53,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const setNotification = useProfileLayoutStore((store) => store.setNotification);
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-7xl flex-col overflow-hidden lg:p-5 lg:pt-0">
+    <div className="mx-auto flex h-full w-full  flex-col overflow-hidden lg:p-5 lg:pt-0">
       <header className="2md:px-5 flex h-16 flex-col items-center justify-between overflow-hidden px-1 md:flex-row lg:px-0">
         <h1 className="hidden truncate text-lg font-medium text-typography-primary md:block">
           {t("profile:profile")}
