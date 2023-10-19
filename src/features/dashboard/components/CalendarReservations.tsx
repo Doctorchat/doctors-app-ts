@@ -57,7 +57,7 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
   }
   return (
     <Card
-      className="custom-scroll-bar row-span-1 h-full w-full rounded-lg border p-5 text-typography-primary md:rounded-lg md:border md:border-neutral-200"
+      className="custom-scroll-bar h-full w-full rounded-lg border p-5 text-typography-primary md:rounded-lg md:border md:border-neutral-200"
       key="card-calendar"
     >
       <Calendar

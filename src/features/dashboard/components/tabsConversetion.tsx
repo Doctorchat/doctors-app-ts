@@ -21,7 +21,7 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
     },
   ];
   return (
-    <div className="custom-scroll-bar h-full w-full md:rounded-lg md:border md:border-neutral-200 p-1">
+    <div className="custom-scroll-bar h-full w-full rounded-lg border p-1 md:rounded-lg md:border md:border-neutral-200 md:border-neutral-200">
       <Tabs defaultValue="actualy_chats">
         <TabsList className="flex" aria-label="Partners tabs">
           {TAB_ITEMS.map(({ value, children }) => (
@@ -47,10 +47,10 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
 const TabItem = ({ children, value }: { children: React.ReactNode; value: string }) => {
   return (
     <TabsTrigger
-      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-0.5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
+      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-0 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
       value={value}
     >
-      {children}
+      <p className="truncate">{children}</p>
     </TabsTrigger>
   );
 };

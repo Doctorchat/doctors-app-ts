@@ -35,27 +35,30 @@ export const DashboardWrapper: React.FC = () => {
 
   return (
     <>
-      <div className="grid grid-rows-3 gap-2 ">
-        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-3 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
+      <div className="flex flex-col gap-2 md:col-span-1">
+        <Card className="custom-scroll-bar h-[20%] overflow-hidden rounded-lg border p-3 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <CarddWallet loading={isLoading} data={allData?.wallet} image={allData?.avatar} />
         </Card>
-        <div className="row-span-2">
+        <div className="h-[80%] overflow-y-auto sm:h-[70%] md:h-[80%] lg:h-2/3 xl:h-2/3">
           <TabsConversersional loading={isLoading} data={allData?.chats} />
         </div>
       </div>
-      <div className="grid grid-rows-3 gap-2">
-        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-1 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
+      <div className="flex flex-col gap-2">
+        <Card className="custom-scroll-bar h-[20%] rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <BasicLine loading={isLoading} data={allData?.SuccessfullyClosedChats} />
         </Card>
-        <div className="row-span-2">
+        <div className=" h-[80%] overflow-y-auto sm:h-[70%] md:h-[80%] lg:h-2/3 xl:h-2/3">
           <View inContainer={true} />
         </div>
       </div>
-      <div className="grid grid-rows-3 gap-2">
-        <Card className="custom-scroll-bar row-span-1 rounded-lg border p-1 text-typography-primary md:rounded-lg md:border md:border-neutral-200">
+      <div className="flex flex-col gap-2">
+        <Card className="custom-scroll-bar h-[30%] rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
-        <div className="row-span-2" key="calendar-reservation">
+        <div
+          className=" h-[70%] overflow-y-auto sm:h-[70%] md:h-[70%] lg:h-2/3 xl:h-2/3"
+          key="calendar-reservation"
+        >
           <CalendarReservations
             key="calendar-reservation"
             loading={calendarLoading}
