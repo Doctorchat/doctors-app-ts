@@ -2,48 +2,34 @@ import { useEffect, useState } from "react";
 import RangeCalendar from "@/components/ui/range-calendar";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
-import { Steps } from "antd";
 import { Button } from "@/components/ui";
 import React from "react";
 import { toast } from "@/hooks";
 import { getApiErrorMessages } from "@/utils";
 import { apiSendVacation, getVacations } from "../api";
 import Notification from "@/components/ui/notification";
-import { useQuery } from "react-query";
 import { CancelVacation, useCancelVacation } from "./cancel-vacation";
+import StepsVacation from "./steps";
+import { VacationProps } from "../types";
+import { useQueryClient } from "react-query";
 
-const VacationCalendar = () => {
+const VacationCalendar: React.FC<VacationProps> = ({ vacations }) => {
   const { t } = useTranslation();
-
-  const descriptionFinished = t("vacation:vacation") + " 01.10.2023 - 10.10.2023";
-  const descriptionProgress = t("vacation:vacation") + " 15.11.2023 - 31.11.2023";
-  const descriptionWaiting = t("vacation:vacation") + " 25.12.2023 - 03.01.2024";
   const [isSending, setIsSending] = React.useState(false);
   const [openNotification, setOpenNotification] = React.useState(false);
-  interface PropsVacations {
-    currentVacation: {
-      startDate: Date | null;
-      endDate: Date | null;
-    };
-
-    vacationsList: {
-      startDate: Date | null;
-      endDate: Date | null;
-    }[];
-  }
-
-  const { data: vacations } = useQuery<PropsVacations>(["vacations"], () => getVacations());
-
+  const queryClient = useQueryClient();
   const parseDateValues = (dateValues: any) => {
     return dateValues.map((dateString: any) => dayjs(dateString).format("DD.MM.YYYY"));
+  };
+  const revalidateQueries = async () => {
+    await Promise.allSettled([queryClient.invalidateQueries(["vacations"])]);
   };
   const onSaveVacation = async () => {
     setIsSending(true);
     try {
       const parsedDatesFormat = parseDateValues(value);
-      await apiSendVacation({ range: parsedDatesFormat });
+      await apiSendVacation({ range: parsedDatesFormat }).then(() => revalidateQueries());
       isCancelVacation = false;
-       console.log(isCancelVacation);
       setOpenNotification(true);
       setTimeout(() => {
         setOpenNotification(false);
@@ -79,7 +65,6 @@ const VacationCalendar = () => {
     vacations?.currentVacation?.startDate ? new Date(vacations.currentVacation.startDate) : null,
     vacations?.currentVacation?.endDate ? new Date(vacations.currentVacation.endDate) : null,
   ]);
-  console.log(isCancelVacation);
 
   return (
     <div className="grid justify-center sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2  ">
@@ -109,28 +94,9 @@ const VacationCalendar = () => {
           </Button>
         </div>
       </div>
-      <div className="grid">
-        <div className="flex justify-self-center">
-          <Steps
-            direction="vertical"
-            current={1}
-            items={[
-              {
-                title: "Finished",
-                description: descriptionFinished,
-              },
-              {
-                title: "In Progress",
-                description: descriptionProgress,
-              },
-              {
-                title: "Waiting",
-                description: descriptionWaiting,
-              },
-            ]}
-          />
-        </div>
-      </div>
+      {vacations && vacations.currentVacation && vacations.vacationsList && (
+        <StepsVacation limit={1} data={vacations} />
+      )}
       <Notification
         onOpenChange={setOnOpenChange(null)}
         open={openNotification ? true : false}
