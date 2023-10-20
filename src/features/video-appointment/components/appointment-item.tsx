@@ -20,10 +20,31 @@ type AppointmentItemProps = {
 const AppointmentItem = (props: AppointmentItemProps) => {
   const { isLoading, data, title, completed } = props;
   const { t } = useTranslation();
-  console.log(data);
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const getUserTimeZone = () => {
+    // Obțineți informațiile despre limba și regiunea browser-ului utilizatorului
+    const userLocale = navigator.language || "en-US";
+
+    // Obțineți offset-ul UTC actual pentru fusul orar al utilizatorului
+    const userTimeZone = Intl.DateTimeFormat(undefined, { timeZoneName: "short" }).resolvedOptions()
+      .timeZone;
+
+    return { userLocale, userTimeZone };
+  };
+  const calculateDateTimeInTimeZone = (
+    dateTime: string | number | dayjs.Dayjs | Date | null | undefined,
+    timeZone: string | undefined
+  ) => {
+    const dayjsDateTime = dayjs(dateTime).tz(timeZone);
+    return dayjsDateTime.format("YYYY-MM-DD HH:mm:ss");
+  };
+  const { userLocale, userTimeZone } = getUserTimeZone();
+  // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  // console.log(getUserTimeZone);
+  console.log(userLocale, userTimeZone);
   // const inputDate = "2023-10-13T08:26:00Z"; // De exemplu, data în format ISO 8601 cu fus orar UTC
   // const parsedDate = dayjs(inputDate).tz(userTimeZone);
+  // const calculatedDateTime = calculateDateTimeInTimeZone(specificDateTime, userTimeZone);
 
   return (
     <div className="py-3">
@@ -50,7 +71,8 @@ const AppointmentItem = (props: AppointmentItemProps) => {
               <div className="flex flex-col">
                 <span>{t("video:consultation_date")}</span>
                 <p>
-                  {dayjs(appointment.start_time).tz(userTimeZone).format("YYYY-MM-DD HH:mm:ss")}
+                  {dayjs(appointment.start_time).format("YYYY-MM-DD HH:mm:ss")}
+                  {appointment.start_time}
                 </p>
               </div>
               <div>
