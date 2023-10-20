@@ -25,7 +25,6 @@ import { apiReadMessages, apiReadMessagesDoctors } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
 import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
-import { MessageType } from "./message-content/messageType";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -42,6 +41,7 @@ export const View: React.FC = () => {
   const { chatContentDoctors } = useSelector((store: any) => ({
     chatContentDoctors: store.chatContentDoctors.data,
   }));
+
 
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
@@ -127,6 +127,7 @@ export const View: React.FC = () => {
       }
     }
   }, [chatConversation?.messages]);
+
   React.useEffect(() => {
     if (chatContentDoctors?.messages) {
       const unreadedMessages = chatContentDoctors?.messages

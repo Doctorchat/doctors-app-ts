@@ -5,6 +5,7 @@ import { cn } from "@/utils";
 import { useChatList } from "../hooks/use-chat-list";
 import { useSelector } from "react-redux";
 import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
+import { useConversation } from "../hooks";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
@@ -16,7 +17,12 @@ export const List: React.FC = () => {
   }));
   const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading } = useChatList();
-  
+  const { patientId, doctorId } = useConversation();
+  const [isConversationChange, setConversationChange] = React.useState();
+  React.useEffect(() => {
+    console.log(doctorId, patientId, conversationsType);
+  }, [conversationsType]);
+
   return (
     <div
       className={cn(
