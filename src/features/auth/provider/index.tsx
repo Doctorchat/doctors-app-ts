@@ -49,8 +49,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [validating, setValidating] = React.useState(false);
 
   const initializeSession = (token: string, user: SessionUser) => {
-    setToken(token);
-    setUser(user);
+    setToken(null);
+    // setToken(token);
+    setUser(null);
+    // setUser(user);
     setLanguage(user.locale as AppLocale);
     fetchToken(user);
   };
