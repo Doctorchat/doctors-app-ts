@@ -2,5 +2,9 @@
     "vacation": "Concediu",
     "history_vacation": "Istoric concedii",
     "resources": "Resurse",
-    "description": "Selectează datele de începere și de finisarea a concediului"
+    "description": "Selectează datele de începere și de finisarea a concediului",
+    "cancel": {
+        "title": "Anulează concediu",
+        "description": "Ești sigur că vrei să anulezi intervalul curent?"
+    }
 }
