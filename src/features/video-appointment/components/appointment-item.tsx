@@ -56,7 +56,7 @@ const AppointmentItem = (props: AppointmentItemProps) => {
               <div>
                 {/* TO DO 
                 We change url or conversetion with /conversations?doctorId= or /conversations?patientId=*/}
-                <Link to={`/conversations?id=${appointment.chat_id}`}>
+                <Link to={`/conversations?patientId=${appointment.chat_id}&anonymous=false`}>
                   <Button
                     size="sm"
                     className="xs:hover:bg-primary-hover bg-primary px-3 py-2 hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"

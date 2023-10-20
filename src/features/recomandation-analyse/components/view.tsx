@@ -71,7 +71,7 @@ export const View = () => {
         queryClient.invalidateQueries(["conversation", chat_id]),
       ]);
 
-      navigate(`/conversations?id=${chat_id}&anonymous=false`);
+      navigate(`/conversations?patientId=${chat_id}&anonymous=false`);
     } catch (error) {
       toast({
         variant: "destructive",
