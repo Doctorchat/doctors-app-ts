@@ -2,5 +2,9 @@
     "vacation": "Vacation",
     "history_vacation": "Leave history",
     "resources": "Resources",
-    "description": "Select the leave start and end dates"
+    "description": "Select the leave start and end dates",
+    "cancel": {
+        "title": "Cancel vacation",
+        "description": "Are you sure you want to cancel the current interval?"
+    }
 }

@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { shallow } from "zustand/shallow";
@@ -14,16 +13,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
+import { apiCancelVacation } from "../api";
 
-import { useConversation } from "../../hooks";
-import { apiCloseChat } from "../../api";
-
-interface CloseConversation {
+interface CancelVacation {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-export const useCloseConversation = createWithEqualityFn<CloseConversation>(
+export const useCancelVacation = createWithEqualityFn<CancelVacation>(
   (set) => ({
     open: false,
     setOpen: (open) => set({ open }),
@@ -31,23 +28,20 @@ export const useCloseConversation = createWithEqualityFn<CloseConversation>(
   shallow
 );
 
-export const CloseConversation: React.FC = () => {
+export const CancelVacation: React.FC = () => {
   const { t } = useTranslation();
-  const { patientId } = useConversation();
-  const open = useCloseConversation((state) => state.open);
+  const open = useCancelVacation((state) => state.open);
   const queryClient = useQueryClient();
-  const setOpen = useCloseConversation((state) => state.setOpen);
+  const setOpen = useCancelVacation((state) => state.setOpen);
   const [isSending, setIsSending] = React.useState(false);
   const revalidateQueries = async () => {
-    await Promise.allSettled([
-      queryClient.invalidateQueries(["list-patients", "patients"]),
-      queryClient.invalidateQueries(["conversation-patient", patientId]),
-    ]);
+    await Promise.allSettled([queryClient.invalidateQueries(["vacations"])]);
   };
-  const onCloseConversation = async () => {
-    if (patientId) await apiCloseChat({ chat_id: patientId });
-    setOpen(false);
-    revalidateQueries();
+  const onCancelVacation = async () => {
+    setIsSending(true);
+    await apiCancelVacation()
+      .then(() => setOpen(false))
+      .then(() => revalidateQueries());
   };
 
   return (
@@ -58,8 +52,8 @@ export const CloseConversation: React.FC = () => {
         className="max-w-md gap-6"
       >
         <DialogHeader>
-          <DialogTitle>{t("conversations:close_conversation:title")}</DialogTitle>
-          <DialogDescription>{t("conversations:close_conversation:description")}</DialogDescription>
+          <DialogTitle> {t("vacation:cancel.title")}</DialogTitle>
+          <DialogDescription>{t("vacation:cancel.description")}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <div className="flex items-center">
@@ -71,7 +65,7 @@ export const CloseConversation: React.FC = () => {
             >
               {t("common:cancel")}
             </Button>
-            <Button className="ml-2 w-full" disabled={isSending} onClick={onCloseConversation}>
+            <Button className="ml-2 w-full" disabled={isSending} onClick={onCancelVacation}>
               {t("common:confirm")}
             </Button>
           </div>
