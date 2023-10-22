@@ -6,5 +6,8 @@
     "cancel": {
         "title": "Anulează concediu",
         "description": "Ești sigur că vrei să anulezi intervalul curent?"
-    }
+    },
+    "time_progress": "În Proces",
+    "time_finished": "Finisat",
+    "time_waiting": "În Așteptare"
 }

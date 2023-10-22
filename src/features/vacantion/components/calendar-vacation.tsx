@@ -65,6 +65,7 @@ const VacationCalendar: React.FC<VacationProps> = ({ vacations }) => {
     vacations?.currentVacation?.startDate ? new Date(vacations.currentVacation.startDate) : null,
     vacations?.currentVacation?.endDate ? new Date(vacations.currentVacation.endDate) : null,
   ]);
+  const { i18n } = useTranslation();
 
   return (
     <div className="grid justify-center sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2  ">
@@ -75,7 +76,7 @@ const VacationCalendar: React.FC<VacationProps> = ({ vacations }) => {
             <p> {t("vacation:description")}</p>
           </div>
         </div>
-        <RangeCalendar value={value} onChange={setValue} minDate={minDate} />
+        <RangeCalendar locale={i18n.language} value={value} onChange={setValue} minDate={minDate} />
         <div className="inline-flex w-full pt-5">
           <Button
             disabled={isCancelVacation}

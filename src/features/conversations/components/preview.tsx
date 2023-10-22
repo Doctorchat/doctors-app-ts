@@ -65,14 +65,14 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
 
           <span className="ml-2 whitespace-nowrap text-xs">
             <time dateTime={conversation.updated ?? conversation.updated_at}>
-              {/* {formatDistance(
+              {formatDistance(
                 parseISO(conversation.updated ?? conversation.updated_at),
                 new Date(),
                 {
                   addSuffix: true,
                   locale: locale(),
                 }
-              )} */}
+              )}
             </time>
           </span>
         </div>
