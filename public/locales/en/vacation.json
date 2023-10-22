@@ -6,5 +6,8 @@
     "cancel": {
         "title": "Cancel vacation",
         "description": "Are you sure you want to cancel the current interval?"
-    }
+    },
+    "time_progress": "In Progress",
+    "time_finished": "Finished",
+    "time_waiting": "Waiting"
 }

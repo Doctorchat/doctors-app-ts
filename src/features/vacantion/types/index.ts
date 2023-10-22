@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface PropsVacations {
   currentVacation: {
     startDate: string;
@@ -22,7 +24,7 @@ export interface VacationData {
 
 export interface StepItem {
   title: string;
-  description: string | null;
+  description: string | null | ReactNode;
 }
 export interface VacationProps {
   vacations: PropsVacations | undefined;
