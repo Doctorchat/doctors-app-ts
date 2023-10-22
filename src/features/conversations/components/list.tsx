@@ -17,11 +17,6 @@ export const List: React.FC = () => {
   }));
   const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading } = useChatList();
-  const { patientId, doctorId } = useConversation();
-  const [isConversationChange, setConversationChange] = React.useState();
-  React.useEffect(() => {
-    console.log(doctorId, patientId, conversationsType);
-  }, [conversationsType]);
 
   return (
     <div

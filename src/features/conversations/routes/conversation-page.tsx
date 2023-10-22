@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
@@ -15,11 +15,18 @@ export default function ConversationPage() {
 
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 1024px)");
-
+  const [searchParams] = useSearchParams();
   const setNewChatDoctors = useNewChatDoctors((store) => store.setOpen);
 
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
+  const currentPage = searchParams.has("patientId")
+    ? "patients"
+    : searchParams.has("doctorId")
+    ? "doctors"
+    : "";
+
   if (isMobile) {
+    console.log(patientId ?? doctorId);
     return (
       <Sheet open={Boolean(patientId ?? doctorId)} onOpenChange={() => navigate("/conversations")}>
         <SheetContent className="w-full p-0 sm:max-w-full">
@@ -29,7 +36,7 @@ export default function ConversationPage() {
     );
   }
 
-  if ((patientId ?? doctorId) === null) {
+  if ((patientId ?? doctorId) === null || (currentPage && conversationsType !== currentPage)) {
     return (
       <div className="flex items-center justify-center rounded-lg border border-neutral-200 lg:col-span-7 xl:col-span-8">
         {conversationsType === "doctors" ? (
