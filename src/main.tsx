@@ -13,6 +13,7 @@ import "firebase/messaging";
 import "./lib/i18n";
 import "./styles/index.css";
 import registerServiceWorker from "../public/serviceWorker";
+import React from "react";
 z.setErrorMap(zodErrorMap);
 
 const queryClient = new QueryClient({
@@ -26,13 +27,13 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <RouterProvider router={router} />
-      <Toaster />
-    </AuthProvider>
-  </QueryClientProvider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </AuthProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 registerServiceWorker();
