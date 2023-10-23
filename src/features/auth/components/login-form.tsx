@@ -30,7 +30,7 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
-import { getApiErrorMessages } from "@/utils";
+import { getApiErrorMessages, getApiErrorMessagesLogin } from "@/utils";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
@@ -66,7 +66,7 @@ export const LoginForm: React.FC = () => {
       else navigate("/");
     } catch (error) {
       console.log(error);
-      setApiErrors(getApiErrorMessages(error, t));
+      setApiErrors(getApiErrorMessagesLogin(error, t));
     }
   };
 
