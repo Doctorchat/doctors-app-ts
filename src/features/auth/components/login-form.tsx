@@ -66,7 +66,7 @@ export const LoginForm: React.FC = () => {
       else navigate("/");
     } catch (error) {
       console.log(error);
-      setApiErrors(getApiErrorMessages(error));
+      setApiErrors(getApiErrorMessages(error, t));
     }
   };
 
