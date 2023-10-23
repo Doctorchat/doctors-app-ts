@@ -71,7 +71,12 @@ export const CloseConversation: React.FC = () => {
             >
               {t("common:cancel")}
             </Button>
-            <Button className="ml-2 w-full" disabled={isSending} onClick={onCloseConversation}>
+            <Button
+              className="ml-2 w-full"
+              disabled={isSending}
+              onClick={onCloseConversation}
+              variant="primary"
+            >
               {t("common:confirm")}
             </Button>
           </div>

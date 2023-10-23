@@ -101,7 +101,7 @@ export const MessageBarDoctors: React.FC = () => {
             <div className="flex items-center space-x-1.5">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" >
                     <PaperClipIcon className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -116,7 +116,7 @@ export const MessageBarDoctors: React.FC = () => {
               </DropdownMenu>
             </div>
             <Button
-              variant="default"
+              variant="primary"
               size="icon"
               disabled={isSending || content.length === 0}
               onClick={onSendMessageHandler}

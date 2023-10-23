@@ -48,7 +48,6 @@ export const Security = () => {
         });
       }
     });
-    
 
   type FormValues = z.infer<typeof schema>;
 
@@ -132,7 +131,7 @@ export const Security = () => {
                 />
               ))}
             </div>
-            <Button className="mt-4" type="submit" variant="outline">
+            <Button className="mt-4" type="submit" variant="primary">
               {t("common:save")}
             </Button>
           </form>

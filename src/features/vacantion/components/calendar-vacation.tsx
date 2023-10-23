@@ -87,6 +87,7 @@ const VacationCalendar: React.FC<VacationProps> = ({ vacations }) => {
           </Button>
           <Button
             type="submit"
+            variant='primary'
             disabled={isSending}
             className="xs:hover:bg-primary-hover my-2 w-full bg-primary px-2 py-1 text-sm hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
             onClick={onSaveVacation}

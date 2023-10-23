@@ -38,7 +38,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
           <AvatarFallback>{getInitials(conversation.name ?? conversation.title)}</AvatarFallback>
         </Avatar>
         {conversation.isOnline && (
-          <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white" />
+          <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-600 ring-2 ring-white" />
         )}
       </div>
 
@@ -74,7 +74,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
           <div className="mt-1.5 flex h-5 items-center overflow-hidden">
             <p className="flex-1 truncate text-sm">{conversation.description}</p>
             {conversation && conversation.unread && conversation.unread > 0 ? (
-              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
+              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-600 text-xs font-medium text-white">
                 {conversation.unread}
               </span>
             ) : null}
@@ -84,7 +84,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
           <div className="mt-1.5 flex h-5 items-center overflow-hidden">
             <p className="flex-1 truncate text-sm">{conversation.lastMessage.content}</p>
             {conversation && conversation.unreadCount && conversation.unreadCount > 0 ? (
-              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-rose-600 text-xs font-medium text-white">
+              <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-600 text-xs font-medium text-white">
                 {conversation.unreadCount}
               </span>
             ) : null}

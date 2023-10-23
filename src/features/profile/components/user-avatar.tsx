@@ -72,7 +72,7 @@ export const UserAvatar = ({ image }: { image: string }) => {
         multiple={false}
         onChange={onInputChange}
       />
-      <Button onClick={() => inputRef.current?.click()}>
+      <Button variant="primary" onClick={() => inputRef.current?.click()}>
         <span className="mr-2 hidden sm:flex">{t("common:upload")}</span>&nbsp;
         <ArrowUpTrayIcon className="h-5 w-5" />
       </Button>

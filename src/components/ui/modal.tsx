@@ -82,7 +82,7 @@ const ModalComponent: FC<IModalComponentProps> = ({
                   <button
                     type="button"
                     onClick={onSubmit}
-                    className="inline-flex h-9 items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-rose-600/90 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-rose-600/90"
+                    className="active:bg-primary xs:hover:bg-primary-hover  sm:hover:bg-primary-hover md:hover:bg-primary-hover inline-flex h-9 items-center  text-white justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-400 disabled:pointer-events-none disabled:opacity-50"
                   >
                     {submitBtnText ?? "submit"}
                   </button>

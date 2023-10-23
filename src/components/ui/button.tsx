@@ -24,6 +24,9 @@ const buttonVariants = cva(
           "bg-neutral-100 text-neutral-800 shadow-sm md:hover:text-typography-primary md:hover:bg-neutral-200/90",
           "active:bg-neutral-200/90 active:text-typography-primary",
         ],
+        primary: [
+          "xs:hover:bg-primary-hover bg-primary text-white text-sm hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover",
+        ],
         success: ["bg-blue-900 text-white shadow md:hover:bg-blue-900/90 active:bg-blue-900/90"],
 
         ghost: [

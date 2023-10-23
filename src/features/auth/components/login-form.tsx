@@ -155,7 +155,7 @@ export const LoginForm: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isAuthInProcess} className="w-full">
+            <Button type="submit" disabled={isAuthInProcess} className="w-full" variant="primary">
               {t("auth:login")}
               {isAuthInProcess && "..."}
             </Button>

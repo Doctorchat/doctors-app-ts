@@ -155,6 +155,7 @@ export const AddChatDoctors: React.FC = () => {
             {t("common:cancel")}
           </Button>
           <Button
+            variant="primary"
             disabled={isSending || !nameChat || !idsDoctors?.length}
             onClick={() => form.handleSubmit(onCreateChat)()}
           >

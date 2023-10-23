@@ -373,19 +373,19 @@ export const PersonalData: React.FC = () => {
                 >
                   <TabsList>
                     <TabsTrigger
-                      className={`mr-4 border ${tab === "en" && "border-red-600"}`}
+                      className={`mr-4 border ${tab === "en" && "border-sky-600"}`}
                       value="en"
                     >
                       En
                     </TabsTrigger>
                     <TabsTrigger
-                      className={`mr-4 border ${tab === "ru" && "border-red-600"}`}
+                      className={`mr-4 border ${tab === "ru" && "border-sky-600"}`}
                       value="ru"
                     >
                       Ru
                     </TabsTrigger>
                     <TabsTrigger
-                      className={`mr-4 border ${tab === "ro" && "border-red-600"}`}
+                      className={`mr-4 border ${tab === "ro" && "border-sky-600"}`}
                       value="ro"
                     >
                       Ro
@@ -432,7 +432,7 @@ export const PersonalData: React.FC = () => {
               <Button
                 className="float-right mt-4"
                 onClick={(e) => onSubmit(form.getValues(), e)}
-                variant="outline"
+                variant="primary"
               >
                 {t("common:save")}
               </Button>

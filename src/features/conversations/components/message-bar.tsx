@@ -139,7 +139,7 @@ export const MessageBar: React.FC = () => {
                 </Button>
               </div>
               <Button
-                variant="default"
+                variant="primary"
                 size="icon"
                 disabled={isSending || content.length === 0}
                 onClick={onSendMessageHandler}

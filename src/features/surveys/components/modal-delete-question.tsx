@@ -96,7 +96,7 @@ export const ModalDeleteQuestion: React.FC<ModalProps> = ({ questionId }) => {
           <Button variant="outline" onClick={() => setOpen(false)}>
             {t("common:cancel")}
           </Button>
-          <Button onClick={() => form.handleSubmit(onDeleteQuestion)()}>
+          <Button variant='primary' onClick={() => form.handleSubmit(onDeleteQuestion)()}>
             {t("common:confirm")}
           </Button>
         </DialogFooter>

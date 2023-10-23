@@ -166,6 +166,7 @@ export const ModalQuestion: React.FC<ModalProps> = ({
             {t("common:cancel")}
           </Button>
           <Button
+            variant="primary"
             disabled={isSending}
             onClick={() => form.handleSubmit(editable ? onEditQuestion : onSaveQuestion)()}
           >
