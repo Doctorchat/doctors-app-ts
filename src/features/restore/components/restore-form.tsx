@@ -48,7 +48,7 @@ export const RestoreForm: React.FC = () => {
   // const onResetPasword = async (values: FormValues) => {
   //   try {
   //     console.log(values);
-  //     // const response = await apiRestore(values);
+      // const response = await apiRestore(values);
   //     // const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
   //     // initializeSession(response.token, response.user);
   //     // if (continueFrom) navigate(continueFrom);

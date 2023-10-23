@@ -138,11 +138,11 @@ export const LoginForm: React.FC = () => {
                         {t("auth:password")}
                       </FormLabel>
                       <FormLabel>
-                        <Link to="/auth/restore/password">
+                        {/* <Link to="/auth/restore/password">
                           <p className="text-red-500 underline">
                             {t("validations:forgot_password")}
                           </p>
-                        </Link>
+                        </Link> */}
                       </FormLabel>
                     </div>
                     <FormControl>

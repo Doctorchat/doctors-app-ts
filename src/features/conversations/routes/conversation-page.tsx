@@ -26,7 +26,6 @@ export default function ConversationPage() {
     : "";
 
   if (isMobile) {
-    console.log(patientId ?? doctorId);
     return (
       <Sheet open={Boolean(patientId ?? doctorId)} onOpenChange={() => navigate("/conversations")}>
         <SheetContent className="w-full p-0 sm:max-w-full">
