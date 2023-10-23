@@ -30,7 +30,7 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
-import { getApiErrorMessages, getApiErrorMessagesLogin } from "@/utils";
+import { getApiErrorMessagesLogin } from "@/utils";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),

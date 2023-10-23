@@ -31,9 +31,9 @@ const VacationCalendar: React.FC<VacationProps> = ({ vacations }) => {
       await apiSendVacation({ range: parsedDatesFormat }).then(() => revalidateQueries());
       isCancelVacation = false;
       setOpenNotification(true);
-      setTimeout(() => {
-        setOpenNotification(false);
-      }, 3000);
+      // setTimeout(() => {
+      //   setOpenNotification(false);
+      // }, 3000);
     } catch (error) {
       toast({
         variant: "destructive",

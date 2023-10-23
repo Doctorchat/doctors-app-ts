@@ -9,5 +9,8 @@
     },
     "time_progress": "În Proces",
     "time_finished": "Finisat",
-    "time_waiting": "În Așteptare"
+    "time_waiting": "În Așteptare",
+    "default_finished": "Aici se vor afișa intervalul de concediu finisat",
+    "default_waiting": "Aici se vor afișa intervalul de concediu dacă în așteptare",
+    "default_progress": "Aici se vor afișa intervalul de concediu dacă este în proces"
 }

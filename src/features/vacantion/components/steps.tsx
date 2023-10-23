@@ -82,6 +82,44 @@ const StepsVacation: React.FC<StepsProps> = ({ limit, data }) => {
     description: descriptionFinished,
   };
   const items: StepItem[] = [];
+  const defaultItems: StepItem[] = [
+    {
+      title: t("vacation:time_finished"),
+      description: (
+        <Card className="mt-1 p-2 ">
+          <p className="text-sky-500">{t("vacation:default_finished")}</p>
+          <p>
+            Am nevoie de o pauză de la munca zilnică pentru a-mi reîncărca bateriile și a reduce
+            stresul acumulat.
+          </p>
+        </Card>
+      ),
+    },
+    {
+      title: t("vacation:time_progress"),
+      description: (
+        <Card className="mt-1 p-2 ">
+          <p className="text-sky-500"> {t("vacation:default_progress")}</p>
+          <p>
+            Concediul îmi oferă oportunitatea de a petrece timp de calitate cu familia și de a
+            explora locuri noi.
+          </p>
+        </Card>
+      ),
+    },
+    {
+      title: t("vacation:time_waiting"),
+      description: (
+        <Card className="mt-1 p-2 ">
+          <p className="text-sky-500">{t("vacation:default_waiting")}</p>
+          <p>
+            Această pauză îmi va permite să revin la muncă cu energie proaspătă și cu o perspectivă
+            mai clară.
+          </p>
+        </Card>
+      ),
+    },
+  ];
 
   if (descriptionProgress) {
     items.push({ title: t("vacation:time_progress"), description: descriptionProgress });
@@ -96,11 +134,19 @@ const StepsVacation: React.FC<StepsProps> = ({ limit, data }) => {
   }
 
   items.push(...manyDatesFinished);
-
+  console.log(items);
   return (
-    <div className="flex justify-center justify-self-end py-1">
-      <Steps direction="vertical" current={1} items={items} />
-    </div>
+    <>
+      {items.length ? (
+        <div className="flex justify-center justify-self-end py-1">
+          <Steps direction="vertical" current={1} items={items} />
+        </div>
+      ) : (
+        <div className="flex justify-center justify-self-end px-4 py-2">
+          <Steps direction="vertical" current={0} items={defaultItems} />
+        </div>
+      )}
+    </>
   );
 };
 export default StepsVacation;

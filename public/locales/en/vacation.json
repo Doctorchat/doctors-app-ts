@@ -9,5 +9,8 @@
     },
     "time_progress": "In Progress",
     "time_finished": "Finished",
-    "time_waiting": "Waiting"
+    "time_waiting": "Waiting",
+    "default_finished": "Finished leave interval will be displayed here",
+    "default_waiting": "Holiday interval will be displayed here if waiting",
+    "default_progress": "The leave interval will be displayed here if it is in progress"
 }
