@@ -134,7 +134,6 @@ const StepsVacation: React.FC<StepsProps> = ({ limit, data }) => {
   }
 
   items.push(...manyDatesFinished);
-  console.log(items);
   return (
     <>
       {items.length ? (

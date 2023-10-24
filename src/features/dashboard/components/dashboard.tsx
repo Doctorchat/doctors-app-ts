@@ -11,10 +11,20 @@ import { apiGetDashboard, apiGetReservations } from "../api";
 import ChartDonut from "./chartProcent";
 import { useEffect, useState } from "react";
 import { getCurrentMonth } from "../utils/getDates";
+import { useDispatch } from "react-redux";
+import { addClosed, addDoctors, addPatients } from "@/store/slices/listsChatsShortsSlice";
 
 export const DashboardWrapper: React.FC = () => {
-  const { data: allData, isLoading } = useQuery(["cardWallet"], () => apiGetDashboard(), {
-    keepPreviousData: true,
+  const dispatch = useDispatch();
+  const { data: allData, isLoading } = useQuery({
+    queryKey: ["dataDahsboard"],
+    queryFn: async () => apiGetDashboard(),
+    onSuccess: (data: any) => {
+      if (data.chats.open) dispatch(addPatients(data.chats.open));
+      if (data.chats.doctor) dispatch(addDoctors(data.chats.doctor));
+      if (data.chats.closed) dispatch(addClosed(data.chats.closed));
+      return;
+    },
   });
 
   const [monthReservations, setMonthReservations] = useState(getCurrentMonth());

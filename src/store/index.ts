@@ -9,5 +9,6 @@ export const store = configureStore({
     chatContentDoctors: slices.chatContentDoctorsSlice,
     listChatsDoctors: slices.listChatsDoctorsSlice,
     doctorInfo: slices.doctorInfoSlice,
+    listsChatsShorts: slices.listsChatsShortsSlice,
   },
 });

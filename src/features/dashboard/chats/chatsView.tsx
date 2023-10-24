@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 const ChatsView: React.FC<ChatsProps> = ({ loading, data }) => {
   const { t } = useTranslation();
+  
   return (
     <div className="grid overflow-hidden">
       <div className=" overflow-hidden">

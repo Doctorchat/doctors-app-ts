@@ -42,13 +42,15 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(navigation.search);
-    const type = searchParams.get("doctorId")
-      ? "doctors"
-      : searchParams.get("patientId")
-      ? "patients"
-      : "";
-    type && setConversationsType(type);
+    const type = searchParams.get("doctorId") ? "doctors" : "patients";
+    setConversationsType(
+      (searchParams.get("doctorId") && "doctors") ||
+        (searchParams.get("patientId") && "patients") ||
+        "patients"
+    );
+    console.log(type);
   }, [navigation]);
+  console.log(conversationsType);
 
   return (
     <div className="mx-auto flex h-full w-full  flex-col overflow-hidden lg:p-5 lg:pt-0">
@@ -60,6 +62,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           defaultValue={conversationsType}
           onValueChange={(value) => setConversationsType(value as "patients" | "doctors")}
           className="ml-2"
+          value={conversationsType}
         >
           <TabsList>
             <TabsTrigger value="patients">{t("conversations:patients")}</TabsTrigger>

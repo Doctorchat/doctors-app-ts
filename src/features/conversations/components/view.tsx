@@ -25,6 +25,7 @@ import { apiReadMessages, apiReadMessagesDoctors } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
 import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
+import { updateDoctorUnread, updatePatientUnreadCount } from "@/store/slices/listsChatsShortsSlice";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -41,7 +42,9 @@ export const View: React.FC = () => {
   const { chatContentDoctors } = useSelector((store: any) => ({
     chatContentDoctors: store.chatContentDoctors.data,
   }));
-
+  const { listsChatsShorts } = useSelector((store: any) => ({
+    listsChatsShorts: store.listsChatsShorts,
+  }));
 
   const grouped = React.useMemo(() => {
     const groups: Record<string, ConversationMessage[]> = {};
@@ -120,6 +123,9 @@ export const View: React.FC = () => {
         const fetchDataAndDelay = async () => {
           setTimeout(async () => {
             dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
+            if (listsChatsShorts.listPatients.length) {
+              dispatch(updatePatientUnreadCount({ id: +chatConversation?.chat_id, unread: 0 }));
+            }
             await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
           }, 750);
         };
@@ -143,6 +149,11 @@ export const View: React.FC = () => {
                 unreadCount: 0,
               })
             );
+            if (listsChatsShorts.listDoctors.length) {
+              dispatch(
+                updateDoctorUnread({ id: chatContentDoctors?.doctor_chat_id, unreadCount: 0 })
+              );
+            }
             await apiReadMessagesDoctors({
               doctor_chat_id: chatContentDoctors?.doctor_chat_id,
               messages: unreadedMessages,
