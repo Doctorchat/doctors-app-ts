@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Appointment } from "../../types";
 import { useAuth } from "@/features/auth";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
+import { calculateDateTimeInTimeZone } from "@/utils/time-zone";
 
 const DocAppointmentsSlots = () => {
   const { t } = useTranslation();
@@ -56,7 +57,7 @@ const DocAppointmentsSlots = () => {
               <div className="absolute left-[0px] right-1/2 h-10 w-1 rounded-full bg-orange-200" />
               <div className="flex flex-col">
                 <span>{t("video:consultation_date")}</span>
-                <p>{appointment.start_time}</p>
+                <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
               </div>
               <div>
                 <Button variant="primary" size="sm" onClick={() => onRemoveSlot(appointment.id)}>

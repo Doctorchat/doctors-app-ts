@@ -3,12 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { Appointment } from "../types";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { calculateDateTimeInTimeZone } from "@/utils/time-zone";
 
 type AppointmentItemProps = {
   isLoading: boolean;
@@ -20,32 +15,6 @@ type AppointmentItemProps = {
 const AppointmentItem = (props: AppointmentItemProps) => {
   const { isLoading, data, title, completed } = props;
   const { t } = useTranslation();
-
-  const getUserTimeZone = () => {
-    // Obțineți informațiile despre limba și regiunea browser-ului utilizatorului
-    const userLocale = navigator.language || "en-US";
-
-    // Obțineți offset-ul UTC actual pentru fusul orar al utilizatorului
-    const userTimeZone = Intl.DateTimeFormat(undefined, { timeZoneName: "short" }).resolvedOptions()
-      .timeZone;
-
-    return { userLocale, userTimeZone };
-  };
-  const calculateDateTimeInTimeZone = (
-    dateTime: string | number | dayjs.Dayjs | Date | null | undefined,
-    timeZone: string | undefined
-  ) => {
-    const dayjsDateTime = dayjs(dateTime).tz(timeZone);
-    return dayjsDateTime.format("YYYY-MM-DD HH:mm:ss");
-  };
-  const { userLocale, userTimeZone } = getUserTimeZone();
-  // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // console.log(getUserTimeZone);
-  console.log(userLocale, userTimeZone);
-  // const inputDate = "2023-10-13T08:26:00Z"; // De exemplu, data în format ISO 8601 cu fus orar UTC
-  // const parsedDate = dayjs(inputDate).tz(userTimeZone);
-  // const calculatedDateTime = calculateDateTimeInTimeZone(specificDateTime, userTimeZone);
-
   return (
     <div className="py-3">
       <div className="mb-5">
@@ -70,14 +39,9 @@ const AppointmentItem = (props: AppointmentItemProps) => {
               <div className="absolute left-[0px] right-1/2 h-10 w-1 rounded-full bg-green-400" />
               <div className="flex flex-col">
                 <span>{t("video:consultation_date")}</span>
-                <p>
-                  {dayjs(appointment.start_time).format("YYYY-MM-DD HH:mm:ss")}
-                  {appointment.start_time}
-                </p>
+                <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
               </div>
               <div>
-                {/* TO DO 
-                We change url or conversetion with /conversations?doctorId= or /conversations?patientId=*/}
                 <Link to={`/conversations?patientId=${appointment.chat_id}&anonymous=false`}>
                   <Button
                     size="sm"
