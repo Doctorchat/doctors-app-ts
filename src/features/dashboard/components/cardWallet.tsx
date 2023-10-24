@@ -28,11 +28,11 @@ const CarddWallet: React.FC<CardProps> = ({ loading, data, image }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-1">
+    <div className="grid h-full grid-cols-2 gap-1 ">
       <div className="flex h-full w-full justify-center overflow-hidden">
-        <Avatar className="!h-fit	 !w-fit overflow-hidden rounded-md	">
-          <AvatarImage src={session.user?.avatar} alt={session.user?.name} />
-          <AvatarFallback className="rounded-md text-xl">
+        <Avatar className="h-full w-full justify-center overflow-hidden	flex rounded-md">
+          <AvatarImage src={session.user?.avatar} alt={session.user?.name} className="w-[80%]" />
+          <AvatarFallback className="rounded-md text-xl ">
             {getInitials(session.user?.name)}
           </AvatarFallback>
         </Avatar>
@@ -46,8 +46,8 @@ const CarddWallet: React.FC<CardProps> = ({ loading, data, image }) => {
             <p className="truncate">{t("wallet:money_sold")}</p>
           </CardDescription>
           <div className={cn("flex  items-end items-baseline gap-1 font-bold")}>
-            <p className="text-xl truncate">{data?.balance ?? "0.00"}</p>
-            <p className="flex  text-xs truncate">{data?.currency ?? "MDL"}</p>
+            <p className="truncate text-xl">{data?.balance ?? "0.00"}</p>
+            <p className="flex  truncate text-xs">{data?.currency ?? "MDL"}</p>
           </div>
         </div>
         <div className="flex h-full flex-col justify-between">

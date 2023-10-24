@@ -46,10 +46,10 @@ export const DashboardWrapper: React.FC = () => {
   return (
     <>
       <div className="flex flex-col gap-2 md:col-span-1">
-        <Card className="custom-scroll-bar h-[20%] overflow-hidden rounded-lg border p-3 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
+        <Card className="custom-scroll-bar h-[80%] rounded-lg border  p-3 text-typography-primary sm:h-[30%] sm:overflow-auto md:h-[20%] md:overflow-auto md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 lg:overflow-auto xl:h-1/3 xl:overflow-auto">
           <CarddWallet loading={isLoading} data={allData?.wallet} image={allData?.avatar} />
         </Card>
-        <div className="h-[80%] overflow-y-auto sm:h-[70%] md:h-[80%] lg:h-2/3 xl:h-2/3">
+        <div className="h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[80%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto xl:h-2/3 xl:overflow-y-auto">
           <TabsConversersional loading={isLoading} data={allData?.chats} />
         </div>
       </div>
@@ -57,7 +57,7 @@ export const DashboardWrapper: React.FC = () => {
         <Card className="custom-scroll-bar h-[20%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <BasicLine loading={isLoading} data={allData?.SuccessfullyClosedChats} />
         </Card>
-        <div className=" h-[80%] overflow-y-auto sm:h-[70%] md:h-[80%] lg:h-2/3 xl:h-2/3">
+        <div className=" h-[100%] sm:h-[70%]  sm:overflow-y-auto md:h-[80%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto  xl:h-2/3">
           <View inContainer={true} />
         </div>
       </div>
@@ -66,7 +66,7 @@ export const DashboardWrapper: React.FC = () => {
           <ChartDonut loading={isLoading} data={allData?.reviews} />
         </Card>
         <div
-          className=" h-[70%] overflow-y-auto sm:h-[70%] md:h-[70%] lg:h-2/3 xl:h-2/3"
+          className=" h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[70%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto xl:h-2/3 xl:overflow-y-auto"
           key="calendar-reservation"
         >
           <CalendarReservations
