@@ -18,7 +18,7 @@
   "consultation_video": "via Video",
   "close_conversation": {
     "title": "Close the conversation",
-    "description": "Confirm that you want to close the conversation"
+    "description": "Confirm chat resolution. After marking the chat as resolved, the chat will be available for another 24 hours, after which it will be archived"
   },
   "approval_request": {
     "title": "Dialogue confirmation required",

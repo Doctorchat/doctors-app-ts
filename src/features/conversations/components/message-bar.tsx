@@ -71,7 +71,10 @@ export const MessageBar: React.FC = () => {
     }
   };
 
-  if (conversationPatients?.isAccepted && conversationPatients?.status === "open") {
+  if (
+    (conversationPatients?.isAccepted && conversationPatients?.status === "open") ||
+    (conversationPatients?.isAccepted && conversationPatients?.status === "responded")
+  ) {
     return (
       <>
         <div className="p-3 md:p-5 lg:p-3 xl:p-5">
@@ -133,10 +136,11 @@ export const MessageBar: React.FC = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                <Button variant="ghost" size="icon" onClick={() => setCloseConversation(true)}>
-                  <XMarkIcon className="h-5 w-5" />
-                </Button>
+                {conversationPatients?.status !== "responded" && (
+                  <Button variant="ghost" size="icon" onClick={() => setCloseConversation(true)}>
+                    <XMarkIcon className="h-5 w-5" />
+                  </Button>
+                )}
               </div>
               <Button
                 variant="primary"

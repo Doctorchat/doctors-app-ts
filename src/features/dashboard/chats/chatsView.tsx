@@ -10,7 +10,7 @@ const ChatsView: React.FC<ChatsProps> = ({ loading, data }) => {
   return (
     <div className="grid overflow-hidden">
       <div className=" overflow-hidden">
-        <div className="h-full space-y-0.5 overflow-y-auto p-2">
+        <div className="custom-scroll-bar h-full space-y-0.5 overflow-y-auto p-2">
           {data?.map((conversation) => (
             <Preview key={conversation.id} conversation={conversation} />
           ))}

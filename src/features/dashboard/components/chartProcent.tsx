@@ -37,7 +37,7 @@ const ChartDonut: React.FC<ChartDonutProps> = ({ loading, data }) => {
           },
         ],
         legend: {
-          position: "bottom",
+          position: "right",
           markers: {
             fillColors: ["rgb(0, 102, 255)", "rgb(239, 68, 68)"],
           },
@@ -54,7 +54,7 @@ const ChartDonut: React.FC<ChartDonutProps> = ({ loading, data }) => {
         },
       }}
       series={[data?.likes ?? 1, data?.dislikes ?? 0]}
-      height="90%"
+      height="85%"
       type="donut"
     />
   );

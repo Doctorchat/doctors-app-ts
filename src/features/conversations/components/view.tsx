@@ -169,7 +169,10 @@ export const View: React.FC = () => {
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
       {patientId ? <Header /> : <HeaderDoctors />}
 
-      <div ref={ref} className="flex-1 space-y-4 overflow-y-auto p-3 md:p-5 lg:p-3 xl:p-5">
+      <div
+        ref={ref}
+        className="custom-scroll-bar flex-1 space-y-4  overflow-y-auto overflow-x-hidden	 p-3 md:p-5 lg:p-3 xl:p-5"
+      >
         {grouped.map(({ key, messages }) => (
           <div key={key} className="space-y-2.5">
             <div className={cn("relative flex h-10 items-center justify-center px-5")}>

@@ -26,7 +26,7 @@ export const List: React.FC = () => {
         "xl:col-span-4"
       )}
     >
-      <div className="h-full space-y-0.5 overflow-y-auto p-2">
+      <div className="custom-scroll-bar h-full space-y-0.5 overflow-y-auto p-2">
         {conversationsType === "doctors"
           ? (listChatsDoctors?.length ? listChatsDoctors : listDoctors)?.map(
               (conversationDoctor: any) => (
