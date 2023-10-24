@@ -42,9 +42,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(navigation.search);
-    const type = searchParams.get("doctorId") ? "doctors" : "patients";
-    setConversationsType(type);
+    const type = searchParams.get("doctorId")
+      ? "doctors"
+      : searchParams.get("patientId")
+      ? "patients"
+      : "";
+    type && setConversationsType(type);
   }, [navigation]);
+
   return (
     <div className="mx-auto flex h-full w-full  flex-col overflow-hidden lg:p-5 lg:pt-0">
       <header className="flex h-16 items-center justify-between overflow-hidden px-5 lg:px-0">
