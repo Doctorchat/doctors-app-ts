@@ -83,10 +83,9 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
 
     return false;
   };
-
   return (
     <ModalComponent
-      disableSubmitButton={isAnalysesLoading}
+      disableSubmitButton={isAnalysesLoading || !value.length}
       onSubmit={sendRecomandation}
       title={t("conversations:recomand_analysis_dialog:title")}
       isOpen={open}
@@ -106,7 +105,7 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
             style={{ width: "100%" }}
             placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
             treeCheckable
-            treeDefaultExpandAll
+            // treeDefaultExpandAll
             treeNodeFilterProp="title"
             onChange={onChange}
           >

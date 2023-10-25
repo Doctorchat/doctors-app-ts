@@ -205,7 +205,9 @@ export const View: React.FC = () => {
                   >
                     {t("conversations:recomand_analysis_dialog:recomandation_text")}
                     {message.recommendations.map((recomandation, index) => (
-                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
+                      <MessageBubbleText key={index}>
+                        {index + 1 + ". " + recomandation.name}
+                      </MessageBubbleText>
                     ))}
                   </MessageBubble>
                 )}

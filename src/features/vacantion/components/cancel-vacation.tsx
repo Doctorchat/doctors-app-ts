@@ -65,7 +65,12 @@ export const CancelVacation: React.FC = () => {
             >
               {t("common:cancel")}
             </Button>
-            <Button className="ml-2 w-full" disabled={isSending} onClick={onCancelVacation}>
+            <Button
+              className="ml-2 w-full"
+              variant="primary"
+              disabled={isSending}
+              onClick={onCancelVacation}
+            >
               {t("common:confirm")}
             </Button>
           </div>

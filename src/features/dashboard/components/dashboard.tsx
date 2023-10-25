@@ -62,17 +62,17 @@ export const DashboardWrapper: React.FC = () => {
           <View inContainer={true} />
         </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2" >
         <Card className="custom-scroll-bar h-[30%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
-          <div className="  flex w-[4%]  ">
+          <div className="flex w-[4%]  ">
             <ChatBubbleLeftRightIcon />
             <p className="text-sm ">Recenzii</p>
           </div>
         </Card>
         <div
           className=" h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[70%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto xl:h-2/3 xl:overflow-y-auto"
-          key="calendar-reservation"
+          key="calendar-apoitments"
         >
           <CalendarReservations
             key="calendar-reservation"

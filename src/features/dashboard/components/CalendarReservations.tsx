@@ -63,7 +63,7 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
       key="card-calendar"
     >
       <Calendar
-        key="calendar"
+        key="calendar-data"
         onMonthChange={onChangeMonth}
         value={value}
         dayClassName={(date, { selected }) =>
