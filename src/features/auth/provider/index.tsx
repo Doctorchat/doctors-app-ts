@@ -13,7 +13,6 @@ import { fetchToken } from "../../notification-firebase";
 
 import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
-import { useLocation } from "react-router-dom";
 
 export interface AuthContextValue {
   session: {
@@ -87,7 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     revalidateSession();
   });
 
-  const location = useLocation();
   React.useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       const messaging = getMessaging(firebaseApp);
@@ -123,7 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         unsubscribe();
       };
     }
-  }, [window.location.href, location.search, location]);
+  }, [window.location, window.location.href]);
 
   return (
     <AuthContext.Provider
