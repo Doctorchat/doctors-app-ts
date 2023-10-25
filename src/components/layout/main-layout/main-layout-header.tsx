@@ -27,12 +27,64 @@ import { apiLogout, useAuth } from "@/features/auth";
 import { cn, getInitials } from "@/utils";
 import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 import { useNavigate } from "react-router";
+import React from "react";
+import { getMessaging, onMessage } from "firebase/messaging";
+import { firebaseApp } from "@/features/notification-firebase/api/config";
+import { useLocation } from "react-router-dom";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
 export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, ...props }) => {
   const { t } = useTranslation();
   const { session, clearSession } = useAuth();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      const messaging = getMessaging(firebaseApp);
+      const unsubscribe = onMessage(messaging, (payload: any) => {
+        console.log([payload]);
+        const { title, body } = payload.data;
+        const bodyData = JSON.parse(body);
+        //  const searchParams = new URLSearchParams(location.search);
+        //  const paramValue = searchParams.get("paramName");
+
+        const chatId = location.search
+          ? new URLSearchParams(location.search).get(
+              bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
+            )
+          : false;
+        console.log(
+          !chatId || Number(chatId) !== Number(bodyData.chat_id),
+          location.search,
+          new URLSearchParams(location.search).get(
+            bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
+          )
+        );
+
+        if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
+          const notification = new Notification(title, {
+            body: bodyData.content,
+            icon: "https://doctorchat.md/wp-content/themes/doctorchat/favicon/apple-touch-icon.png",
+          });
+          const chat_type = bodyData.isPatientDoctorChat ? "patientId=" : "doctorId=";
+          const url =
+            window.location.origin +
+            "/conversations?" +
+            chat_type +
+            (bodyData.chat_id ?? chatId) +
+            "&anonymous=false";
+          notification.onclick = () => {
+            window.open(url);
+          };
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [location, location.search]);
 
   const { isCollapsed, setIsCollapsed, isOverlay, setIsOverlay } = useMainLayoutSidenavStore(
     (store) => ({

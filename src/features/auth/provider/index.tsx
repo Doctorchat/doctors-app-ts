@@ -86,42 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     revalidateSession();
   });
 
-  React.useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      const messaging = getMessaging(firebaseApp);
-      const unsubscribe = onMessage(messaging, (payload: any) => {
-        const { title, body } = payload.data;
-        const bodyData = JSON.parse(body);
-        const chatId = window.location.search
-          ? new URLSearchParams(window.location.search).get(
-              bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
-            )
-          : false;
-        console.log(!chatId || Number(chatId) !== Number(bodyData.chat_id));
-
-        if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
-          const notification = new Notification(title, {
-            body: bodyData.content,
-            icon: "https://doctorchat.md/wp-content/themes/doctorchat/favicon/apple-touch-icon.png",
-          });
-          const chat_type = bodyData.isPatientDoctorChat ? "patientId=" : "doctorId=";
-          const url =
-            window.location.origin +
-            "/conversations?" +
-            chat_type +
-            (bodyData.chat_id ?? chatId) +
-            "&anonymous=false";
-          notification.onclick = () => {
-            window.open(url);
-          };
-        }
-      });
-
-      return () => {
-        unsubscribe();
-      };
-    }
-  }, [window.location, window.location.href]);
 
   return (
     <AuthContext.Provider

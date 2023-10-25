@@ -49,6 +49,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
 });
 
 self.addEventListener("notificationclick", (event) => {
+  console.log(event)
   event.notification.close();
   const notificationChatId = event.notification.data;
   const notificatioBody = event.notification.body;
