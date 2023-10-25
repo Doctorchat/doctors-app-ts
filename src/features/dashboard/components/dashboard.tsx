@@ -60,7 +60,7 @@ export const DashboardWrapper: React.FC = () => {
         <Card className="custom-scroll-bar h-[20%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[20%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <BasicLine loading={isLoading} data={allData?.SuccessfullyClosedChats} />
         </Card>
-        <div className=" h-[100%] sm:h-[70%]  sm:overflow-y-auto md:h-[80%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto  xl:h-2/3">
+        <div className="h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[80%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto  xl:h-2/3">
           <View inContainer={true} />
         </div>
       </div>
@@ -68,7 +68,7 @@ export const DashboardWrapper: React.FC = () => {
         <Card className="custom-scroll-bar h-[30%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
           <div
-            className="flex h-[15%]  cursor-pointer items-center justify-end"
+            className="flex h-[15%] cursor-pointer items-center justify-end"
             onClick={() => navigate("/reviews")}
           >
             <div className="flex overflow-hidden rounded bg-sky-200/50 p-1 hover:bg-sky-200">
@@ -78,7 +78,7 @@ export const DashboardWrapper: React.FC = () => {
           </div>
         </Card>
         <div
-          className=" h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[70%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto xl:h-2/3 xl:overflow-y-auto"
+          className="h-[100%] sm:h-[70%] sm:overflow-y-auto md:h-[70%] md:overflow-y-auto lg:h-2/3 lg:overflow-y-auto xl:h-2/3 xl:overflow-y-auto"
           key="calendar-apoitments"
         >
           <CalendarReservations

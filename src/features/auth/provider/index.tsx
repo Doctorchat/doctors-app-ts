@@ -6,13 +6,14 @@ import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 
 import { apiGetSessionUser } from "../api";
 
-import { SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
+import { FIREBASE_PERMISSION, SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
 import { useAppI18n } from "@/hooks";
 import { AppLocale } from "@/types";
 import { fetchToken } from "../../notification-firebase";
 
 import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
+import { useLocation } from "react-router-dom";
 
 export interface AuthContextValue {
   session: {
@@ -59,6 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
     setUser(null);
     fetchToken(null);
+    localStorage.removeItem(FIREBASE_PERMISSION);
   }, [setToken, setUser]);
 
   const revalidateSession = React.useCallback(async () => {
@@ -84,6 +86,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffectOnce(() => {
     revalidateSession();
   });
+
+  const location = useLocation();
   React.useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       const messaging = getMessaging(firebaseApp);
@@ -95,6 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
             )
           : false;
+        console.log(!chatId || Number(chatId) !== Number(bodyData.chat_id));
 
         if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
           const notification = new Notification(title, {
@@ -118,7 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         unsubscribe();
       };
     }
-  }, [window.location.href]);
+  }, [window.location.href, location.search, location]);
 
   return (
     <AuthContext.Provider
