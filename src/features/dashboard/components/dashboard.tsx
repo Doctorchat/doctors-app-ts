@@ -14,6 +14,7 @@ import { getCurrentMonth } from "../utils/getDates";
 import { useDispatch } from "react-redux";
 import { addClosed, addDoctors, addPatients } from "@/store/slices/listsChatsShortsSlice";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router";
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ export const DashboardWrapper: React.FC = () => {
   useEffect(() => {
     refetch();
   }, [monthReservations]);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -62,12 +64,17 @@ export const DashboardWrapper: React.FC = () => {
           <View inContainer={true} />
         </div>
       </div>
-      <div className="flex flex-col gap-2" >
+      <div className="flex flex-col gap-2">
         <Card className="custom-scroll-bar h-[30%] overflow-hidden rounded-lg border p-1 text-typography-primary sm:h-[30%] md:h-[30%] md:rounded-lg md:border md:border-neutral-200 lg:h-1/3 xl:h-1/3">
           <ChartDonut loading={isLoading} data={allData?.reviews} />
-          <div className="flex w-[4%]  ">
-            <ChatBubbleLeftRightIcon />
-            <p className="text-sm ">Recenzii</p>
+          <div
+            className="flex h-[15%]  cursor-pointer items-center justify-end"
+            onClick={() => navigate("/reviews")}
+          >
+            <div className="flex overflow-hidden rounded bg-sky-200/50 p-1 hover:bg-sky-200">
+              <p className="text-xs text-sky-600">Acceseaza recenzii</p>
+              <ChatBubbleLeftRightIcon height={14} width={14} color="#2896cf" className="ml-2" />
+            </div>
           </div>
         </Card>
         <div
