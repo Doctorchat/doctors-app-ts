@@ -29,7 +29,6 @@ export const List: React.FC = () => {
       console.log(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
       setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
     } else {
-      console.log(listChats.length, listChats, listPatients);
       setFilteredConversations(listChats.length ? listChats : listPatients ?? []);
     }
   }, [conversationsType, listChatsDoctors, listDoctors, listChats, listPatients]);
@@ -54,13 +53,11 @@ export const List: React.FC = () => {
       }
 
       setFilteredConversations(filteredList);
-      console.log("aaaaaaaaaaaaaaa,        ", filteredList);
     } else {
       if (conversationsType === "doctors") {
         console.log(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
         setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
       } else {
-        console.log(listChats.length, listChats, listPatients);
         setFilteredConversations(listChats.length ? listChats : listPatients ?? []);
       }
     }

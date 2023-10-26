@@ -112,7 +112,7 @@ export const MessageBar: React.FC = () => {
                       onClick={() =>
                         isMobile
                           ? navigate(
-                              `/recomandation-analyze?id=${conversationPatients.chat_id}?type=${conversationsType}`
+                              `/recomandation-analyze?chatId=${conversationPatients.chat_id}`
                             )
                           : setRecomandationAnalysisOpen(true)
                       }

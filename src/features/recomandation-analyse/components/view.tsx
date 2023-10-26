@@ -11,8 +11,8 @@ import {
   useRecomandation,
 } from "@/features/conversations/hooks/use-recomandations";
 import { apiPutRecomandations } from "@/features/conversations/api";
-import { useNavigate } from "react-router-dom";
-import { Spinner } from "@/components/ui";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button, Spinner } from "@/components/ui";
 import { useQueryClient } from "react-query";
 
 const { TreeNode } = TreeSelect;
@@ -38,7 +38,9 @@ export const useRecomandationTemplatesStore = createWithEqualityFn<MessageTempla
   shallow
 );
 export const View = () => {
-  const { treeData, chat_id, typeConversetion } = useRecomandation();
+  const { treeData } = useRecomandation();
+  const [searchParams] = useSearchParams();
+  const chat_id = Number(searchParams.get("chatId"));
   const [value, setValue] = React.useState([]);
   const navigate = useNavigate();
   const [isSending, setIsSending] = React.useState(false);
@@ -110,21 +112,16 @@ export const View = () => {
           style={{ width: "100%" }}
           placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
           treeCheckable
-          treeDefaultExpandAll
+          treeDefaultExpandedKeys={["Categorii"]}
           treeNodeFilterProp="title"
           onChange={onChange}
         >
           {renderTreeNodes(treeData)}
         </TreeSelect>
         <div className="flex flex-col-reverse space-y-2 space-y-reverse py-3 sm:flex-row sm:justify-end sm:space-x-2 sm:space-y-0">
-          <button
-            onClick={sendRecomandation}
-            type="button"
-            disabled={isSending}
-            className="inline-flex h-9 items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 active:bg-rose-600/90 disabled:pointer-events-none disabled:opacity-50 md:hover:bg-rose-600/90"
-          >
+          <Button onClick={sendRecomandation} disabled={isSending} variant="primary">
             {isSending ? <Spinner className="h-5 w-5 text-white" /> : t("common:send")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

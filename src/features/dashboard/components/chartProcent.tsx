@@ -31,7 +31,7 @@ const ChartDonut: React.FC<ChartDonutProps> = ({ loading, data }) => {
             breakpoint: 480,
             options: {
               chart: {
-                width: 200,
+                width: "100%",
               },
             },
           },
