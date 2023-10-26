@@ -10,7 +10,7 @@ import Notification from "@/components/ui/notification";
 const PartnersSettingsFallback: React.FC = React.memo(() => {
   return (
     <>
-      <Skeleton className="w-full h-24" />
+      <Skeleton className="h-24 w-full" />
     </>
   );
 });
@@ -19,10 +19,7 @@ const PartnersSettings: React.FC = () => {
   const { t } = useTranslation();
   const [openNotification, setOpenNotification] = React.useState<boolean>(false);
 
-  const {
-    data: partnersData,
-    isLoading
-  } = useQuery<PartnerData, Error>(
+  const { data: partnersData, isLoading } = useQuery<PartnerData, Error>(
     ["partners"],
     () => getPartners(),
     {
@@ -32,7 +29,7 @@ const PartnersSettings: React.FC = () => {
 
   if (isLoading || !partnersData) {
     return <PartnersSettingsFallback />;
-  };
+  }
 
   const { partner_qr } = partnersData;
 
@@ -48,17 +45,25 @@ const PartnersSettings: React.FC = () => {
       setOpenNotification(false);
     }, 3000);
   };
+  const [imageLoaded, setImageLoaded] = React.useState(false);
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
   return (
     <>
       <div className="flex flex-col space-y-4">
-        <div
-          className="relative"
-        >
-          <img src={partner_qr} alt="qr" className="mx-auto my-0 h-auto w-[100%] xs:w-[100%] sm:w-[100%] md:w-[60%] lg:w-[60%] xl:w-[60%]" />
+        <div className="relative">
+          {!imageLoaded && <Skeleton className="h-72 w-full" />}
+          <img
+            src={partner_qr}
+            alt="qr"
+            onLoad={handleImageLoad}
+            className="xs:w-[100%] mx-auto my-0 h-auto w-[100%] sm:w-[100%] md:w-[60%] lg:w-[60%] xl:w-[60%]"
+          />
           <Button
             size="sm"
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-3 py-2"
+            className="xs:hover:bg-primary-hover absolute bottom-0 left-1/2 -translate-x-1/2 transform bg-primary px-3 py-2 hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
             onClick={onClickQrButton}
           >
             {t("partners:download_qr")}
@@ -67,7 +72,7 @@ const PartnersSettings: React.FC = () => {
 
         <div className="w-full">
           <Button
-            className="w-full bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-3 py-2"
+            className="xs:hover:bg-primary-hover w-full bg-primary px-3 py-2 hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
             disabled={isLoading}
             onClick={onClickCopyReferalLink}
           >
