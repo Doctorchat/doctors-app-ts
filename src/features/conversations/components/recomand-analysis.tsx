@@ -106,6 +106,7 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
             placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
             treeCheckable
             // treeDefaultExpandAll
+            treeDefaultExpandedKeys={['Categorii']}
             treeNodeFilterProp="title"
             onChange={onChange}
           >
