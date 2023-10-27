@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
 import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import { setDisponibility } from "../api/index";
 
 import {
   Button,
-  Checkbox,
   FormControl,
   FormField,
   FormItem,
@@ -19,84 +18,78 @@ import {
   Skeleton,
 } from "@/components/ui";
 import Notification from "@/components/ui/notification";
-import { parse } from 'date-fns';
-import moment from 'moment';
+import { parse } from "date-fns";
+import moment from "moment";
+import { Checkbox } from "antd";
 
-
-const TimePicker = lazy(() => import('antd').then(module => ({ default: module.TimePicker.RangePicker })));
+const TimePicker = lazy(() =>
+  import("antd").then((module) => ({ default: module.TimePicker.RangePicker }))
+);
 const daysWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as TWeekDays[];
 
 const FormAppointmentsSettings: React.FC = () => {
   const { t } = useTranslation();
   const { session, revalidateSession } = useAuth();
 
-  const [apiResponse, setApiResponse] = React.useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [apiResponse, setApiResponse] = React.useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
   const [timeoutId, setTimeoutId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  const daySchema = z.array(
-    z.union([
-      z.null(),
-      z.any()
-    ])
-  );
+  const daySchema = z.array(z.union([z.null(), z.any()]));
 
-  const timeSchema = (min: number, max: number) => z.string().refine((value: any) => parseInt(value, 10) >= min && parseInt(value, 10) <= max, {
-    message: t("common:zod_number_range", { min, max }),
-  });
+  const timeSchema = (min: number, max: number) =>
+    z.string().refine((value: any) => parseInt(value, 10) >= min && parseInt(value, 10) <= max, {
+      message: t("common:zod_number_range", { min, max }),
+    });
 
-  const daysSchema: Record<string, typeof daySchema> = daysWeek.reduce(
-    (acc, day) => {
-      acc[day] = daySchema;
-      return acc;
-    },
-    {} as Record<string, typeof daySchema>
-  );
+  const daysSchema: Record<string, typeof daySchema> = daysWeek.reduce((acc, day) => {
+    acc[day] = daySchema;
+    return acc;
+  }, {} as Record<string, typeof daySchema>);
 
   const schema = z.object({
     time_frame: timeSchema(1, 120),
     time_buffer: timeSchema(1, 60),
     consultation_auto_renew: boolean(),
-    ...daysSchema
+    ...daysSchema,
   });
 
   type FormValues = z.infer<typeof schema>;
 
   const stringTimeToMoment = (time: string | null): moment.Moment | null => {
     if (!time) return null;
-    const date = parse(time, 'HH:mm', new Date());
+    const date = parse(time, "HH:mm", new Date());
     return moment(date);
   };
-
 
   const defaultDayTime = (day: TWeekDays): [moment.Moment | null, moment.Moment | null] => {
     const disponibility: any = session?.user?.disponibility || {};
     return [
       stringTimeToMoment(disponibility[day]?.[0]),
-      stringTimeToMoment(disponibility[day]?.[1])
+      stringTimeToMoment(disponibility[day]?.[1]),
     ];
   };
 
-  const defaultValuesDays: Record<TWeekDays, [moment.Moment | null, moment.Moment | null]> = daysWeek.reduce(
-    (acc, day) => {
+  const defaultValuesDays: Record<TWeekDays, [moment.Moment | null, moment.Moment | null]> =
+    daysWeek.reduce((acc, day) => {
       acc[day] = defaultDayTime(day);
       return acc;
-    },
-    {} as Record<TWeekDays, [moment.Moment | null, moment.Moment | null]>
-  );
+    }, {} as Record<TWeekDays, [moment.Moment | null, moment.Moment | null]>);
 
   const form = useForm<FormValues>({
     defaultValues: {
       time_frame: `${session?.user?.["time_frame"]}` || "",
       time_buffer: `${session?.user?.["time_buffer"]}` || "",
-      consultation_auto_renew: session?.user?.["consultation_auto_renew"] || true,
+      consultation_auto_renew: session?.user?.consultationAutoRenew,
       ...defaultValuesDays,
     },
     resolver: zodResolver(schema),
   });
 
   const onSubmitTestIsSubmitting = (values: any) => {
-
     setLoading(true);
     setDisponibility({
       time_frame: parseInt(values.time_frame, 10),
@@ -129,18 +122,19 @@ const FormAppointmentsSettings: React.FC = () => {
       });
   };
 
-  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () => setApiResponse(val);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setApiResponse(val);
 
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}
-      >
+      <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
         <Notification
           open={apiResponse ? true : false}
           onOpenChange={setOnOpenChange(null)}
           type={apiResponse?.type}
-          description={apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")}
+          description={
+            apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")
+          }
         />
         <div className={cn("flex flex-col gap-4")}>
           <FormField
@@ -150,12 +144,7 @@ const FormAppointmentsSettings: React.FC = () => {
               <FormItem>
                 <FormLabel>{t("video:consultation_duration")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    className="w-full"
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input type="number" className="w-full" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,40 +157,26 @@ const FormAppointmentsSettings: React.FC = () => {
               <FormItem>
                 <FormLabel>{t("video:consultation_interval")}</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    className="w-full px-2 py-4"
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input type="number" className="w-full px-2 py-4" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormFieldWeekDays
-            form={form}
-            loading={loading}
-          />
+          <FormFieldWeekDays form={form} loading={loading} />
         </div>
-        <div
-          className={cn(
-            "flex justify-between items-center gap-4",
-          )}
-        >
+        <div className={cn("flex items-center justify-between gap-4")}>
           <FormField
             control={form.control}
             name="consultation_auto_renew"
             render={({ field }) => (
-              <FormItem
-                className="flex items-center gap-2"
-              >
+              <FormItem className="flex items-center gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
-                    onCheckedChange={(checked) => field.onChange(checked)}
-                    className="h-6 w-6 m-0"
-                    {...field as any}
+                    onChange={(checked: any) => field.onChange(checked)}
+                    className="!mt-0"
+                    {...(field as any)}
                   />
                 </FormControl>
                 <FormLabel>{t("video:automatic_confirmation")}</FormLabel>
@@ -212,7 +187,7 @@ const FormAppointmentsSettings: React.FC = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-60 mt-4 text-sm bg-primary hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover px-2 py-1"
+            className="xs:hover:bg-primary-hover mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
           >
             {t("common:save")}
             {loading && "..."}
@@ -226,12 +201,12 @@ const FormAppointmentsSettings: React.FC = () => {
 interface FormFieldWeekDaysProps {
   form: UseFormReturn<any>;
   loading?: boolean;
-};
+}
 
 const FormFieldWeekDays: React.FC<FormFieldWeekDaysProps> = (props) => {
   const { form, loading } = props;
   const { t } = useTranslation();
-  const format = 'HH:mm';
+  const format = "HH:mm";
 
   return (
     <>
@@ -244,16 +219,14 @@ const FormFieldWeekDays: React.FC<FormFieldWeekDaysProps> = (props) => {
             <FormItem>
               <FormLabel>{t(`common:days_week.${day}`)}</FormLabel>
               <FormControl>
-                <Suspense fallback={(
-                  <Skeleton className="w-full py-2 h-8" />
-                )}>
+                <Suspense fallback={<Skeleton className="h-8 w-full py-2" />}>
                   <TimePicker
                     className="w-full py-2"
                     placeholder={[t("common:start_time"), t("common:end_time")]}
                     okText={t("common:save")}
                     disabled={loading}
                     format={format}
-                    {...field as any}
+                    {...(field as any)}
                   />
                 </Suspense>
               </FormControl>

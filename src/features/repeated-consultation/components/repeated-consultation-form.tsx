@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -15,29 +16,26 @@ import {
 import Select from "@/components/shared/select";
 import { updateDiscount } from "@/features/repeated-consultation/api";
 import Notification from "@/components/ui/notification";
+import { useAuth } from "@/features/auth";
 
 const RepeatedConsultationForm = () => {
   const { t } = useTranslation();
-  const sessionUser = localStorage.getItem("session:user") ?? "";
-  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
-  const [user, setUser] = React.useState<any>({});
-  useEffect(() => {
-    if (current_user) setUser(current_user);
-  }, []);
-
+  const { session, revalidateSession } = useAuth();
   const isValidSelectOption = (value: string) => {
     return ["yes", "no"].includes(value);
   };
+  const timeSchema = (min: number, max: number) =>
+    z.string().refine((value: any) => parseInt(value, 10) >= min && parseInt(value, 10) <= max, {
+      message: t("common:zod_number_range", { min, max }),
+    });
 
   const schema = z.object({
     offer_discount: z.string().refine((value) => isValidSelectOption(value), {
       message: t("common:zod_mixed_required"),
     }),
-    discount_days: z
-      .string()
-      .refine((value: any) => parseInt(value, 10) < Number.MAX_SAFE_INTEGER, {
-        message: `${t("common:zod_mixed_required")}${t("common:zod_mixed_number")}`,
-      }),
+    discount_days: z.string().refine((value: any) => parseInt(value, 10) < 365, {
+      message: `${t("common:zod_mixed_required")}${t("common:zod_mixed_number")}`,
+    }),
     discount: z
       .string()
       .refine((value: any) => parseInt(value, 10) >= 10 && parseInt(value, 10) <= 50, {
@@ -46,42 +44,23 @@ const RepeatedConsultationForm = () => {
   });
 
   type FormValues = z.infer<typeof schema>;
-  interface IUserData {
-    offer_discount?: "yes" | "no";
-    discount_days?: number;
-    discount?: number;
-  }
   const [apiResponse, setApiResponse] = React.useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
   const [timeoutId, setTimeoutId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [info, setInfo] = React.useState<IUserData>({});
 
-  React.useEffect(() => {
-    if (Object.keys(user).length) {
-      const { offer_discount, discount_days, discount } = user;
-      const userData: IUserData = {
-        offer_discount: offer_discount ? "yes" : "no",
-        discount_days,
-        discount,
-      };
-      setInfo(userData);
-      form.reset(userData);
-    }
-  }, [user]);
-  const form = useForm<any>({
-    defaultValues: info,
+  const form = useForm<FormValues>({
+    defaultValues: {
+      offer_discount: session?.user?.offer_discount ? "yes" : "no",
+      discount_days: `${session?.user?.["discount_days"]}` || "",
+      discount: `${session?.user?.["discount"]}` || "",
+    },
     resolver: zodResolver(schema),
   });
 
   const onSubmitTestIsSubmitting = async (values: any) => {
-    user.offer_discount = values.offer_discount === "yes" ? true : false;
-    user.discount_days = parseInt(values.discount_days, 10);
-    user.discount = parseInt(values.discount, 10);
-    localStorage.setItem("session:user", JSON.stringify(user));
-
     setLoading(true);
     updateDiscount({
       offer_discount: values.offer_discount === "yes" ? true : false,
@@ -90,6 +69,7 @@ const RepeatedConsultationForm = () => {
     })
       .then(() => {
         setApiResponse({ type: "success", message: t("common:success_update") });
+        revalidateSession();
       })
       .catch(() => {
         setApiResponse({ type: "error", message: t("common:error_update") });
@@ -145,13 +125,9 @@ const RepeatedConsultationForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("consultation:repeated_consultations.duration")}</FormLabel>
-                <Input
-                  type="number"
-                  className="w-full"
-                  disabled={loading}
-                  value={field.value}
-                  onChange={field.onChange}
-                />
+                <FormControl>
+                  <Input type="number" className="w-full" disabled={loading} {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -162,13 +138,15 @@ const RepeatedConsultationForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("consultation:repeated_consultations.discount")}</FormLabel>
-                <Input
-                  type="number"
-                  className="w-full px-2 py-4"
-                  disabled={loading}
-                  value={field.value}
-                  onChange={field.onChange}
-                />
+                <FormControl>
+                  <Input
+                    type="number"
+                    className="w-full px-2 py-4"
+                    disabled={loading}
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
