@@ -26,7 +26,6 @@ export const List: React.FC = () => {
   React.useEffect(() => {
     // La încărcarea inițială, afișați toate conversațiile în funcție de valoarea typeConversation
     if (conversationsType === "doctors") {
-      console.log(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
       setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
     } else {
       setFilteredConversations(listChats.length ? listChats : listPatients ?? []);
@@ -40,7 +39,6 @@ export const List: React.FC = () => {
 
       let filteredList = [];
       if (conversationsType === "doctors") {
-        console.log(listChatsDoctors.length ? listChatsDoctors : listDoctors);
         filteredList = (listChatsDoctors.length ? listChatsDoctors : listDoctors).filter(
           (conversationDoctor: any) =>
             conversationDoctor.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -55,7 +53,6 @@ export const List: React.FC = () => {
       setFilteredConversations(filteredList);
     } else {
       if (conversationsType === "doctors") {
-        console.log(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
         setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
       } else {
         setFilteredConversations(listChats.length ? listChats : listPatients ?? []);
@@ -95,9 +92,11 @@ export const List: React.FC = () => {
                 typeConversation={conversationsType}
               />
             ))} */}
-        {(isLoading || isLoadingListDoctors) &&
-          Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)}
-        {filteredConversations.length ? (
+        {isLoading || isLoadingListDoctors ? (
+          // Afișați scheletele în timpul încărcării
+          Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)
+        ) : filteredConversations.length ? (
+          // Afișați conversațiile filtrate dacă nu sunt goale
           filteredConversations.map((conversation: any) => (
             <Preview
               key={conversation.id}
@@ -106,6 +105,7 @@ export const List: React.FC = () => {
             />
           ))
         ) : (
+          // Afișați mesajul "Listă goală" dacă lista este goală
           <div className="mt-8 flex flex-col items-center justify-center">
             <ArchiveBoxXMarkIcon className="h-16 w-16 text-gray-400" />
             <h4 className="text-md mb-2 font-medium text-gray-400">{t("common:empty_list")}</h4>
