@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ArrowLeftIcon, EllipsisVerticalIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { formatDistance, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
@@ -14,11 +14,6 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
   Skeleton,
 } from "@/components/ui";
 import { useAppI18n } from "@/hooks";

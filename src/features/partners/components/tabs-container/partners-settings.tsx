@@ -6,16 +6,17 @@ import { getPartners } from "../../api";
 import { Button, Skeleton } from "@/components/ui";
 import { PartnerData } from "../../types";
 import Notification from "@/components/ui/notification";
+import { boolean } from "zod";
+import { useWindowSize } from "usehooks-ts";
 
 const PartnersSettingsFallback: React.FC = React.memo(() => {
-  return (
-    <>
-      <Skeleton className="h-24 w-full" />
-    </>
-  );
+  return <Skeleton className="h-24 w-full" />;
 });
+interface PartenersProps {
+  screen?: boolean;
+}
 
-const PartnersSettings: React.FC = () => {
+const PartnersSettings: React.FC<PartenersProps> = (props) => {
   const { t } = useTranslation();
   const [openNotification, setOpenNotification] = React.useState<boolean>(false);
 
@@ -45,21 +46,30 @@ const PartnersSettings: React.FC = () => {
       setOpenNotification(false);
     }, 3000);
   };
-  const [imageLoaded, setImageLoaded] = React.useState(false);
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-  };
-
+  const { width } = useWindowSize();
+  const xsStyles = { paddingBottom: "100%" };
+  const smStyles = { paddingBottom: "100%" };
+  const mdStyles = { paddingBottom: "60%" };
+  const lgStyles = { paddingBottom: "60%" };
+  const xlStyles = { paddingBottom: "60%" };
+  let selectedStyles = xsStyles;
+  if (width >= 1280) {
+    selectedStyles = xlStyles;
+  } else if (width >= 1024) {
+    selectedStyles = lgStyles;
+  } else if (width >= 768) {
+    selectedStyles = mdStyles;
+  } else if (width >= 640) {
+    selectedStyles = smStyles;
+  }
   return (
     <>
       <div className="flex flex-col space-y-4">
-        <div className="relative">
-          {!imageLoaded && <Skeleton className="h-72 w-full" />}
+        <div className="relative flex justify-center" style={selectedStyles}>
           <img
             src={partner_qr}
             alt="qr"
-            onLoad={handleImageLoad}
-            className="xs:w-[100%] mx-auto my-0 h-auto w-[100%] sm:w-[100%] md:w-[60%] lg:w-[60%] xl:w-[60%]"
+            className="xs:w-[100%] absolute top-0 mx-auto my-0 h-auto h-full w-[100%] sm:w-[100%] md:w-[60%] lg:w-[60%] xl:w-[60%]"
           />
           <Button
             size="sm"
@@ -69,6 +79,7 @@ const PartnersSettings: React.FC = () => {
             {t("partners:download_qr")}
           </Button>
         </div>
+        {/* </div> */}
 
         <div className="w-full">
           <Button

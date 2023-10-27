@@ -5,13 +5,12 @@ import { useQuery } from "react-query";
 import { getPartners } from "../api";
 import PartnersBalance, { PartnersBalanceFallback } from "./partners-balance";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import PartnersSettings from "./tabs-container/partners-settings";
-import PartnersReferrals from "./tabs-container/partners-referrals";
-import PartnersTransactions from "./tabs-container/partners-transactions";
+
 export interface ViewProps {
   inContainer?: boolean;
 }
+
 export const QrCode: React.FC<ViewProps> = ({ inContainer }) => {
   const { t } = useTranslation();
   const {
@@ -56,7 +55,7 @@ export const QrCode: React.FC<ViewProps> = ({ inContainer }) => {
           {t("partners:description", { percent: percent ?? 0 })}
         </p>
       </div>
-      <PartnersSettings />
+      <PartnersSettings screen={true}/>
     </div>
   );
 };
