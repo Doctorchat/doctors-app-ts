@@ -45,17 +45,19 @@ export const QrCode: React.FC<ViewProps> = ({ inContainer }) => {
         isLoading={isLoading}
         isError={isError}
       />
-      <div
-        className={cn(
-          "item-center mb-4 mt-3 flex justify-center rounded-xl border border-primary bg-primary bg-opacity-10 px-3 py-2 font-medium"
-        )}
-      >
-        <ExclamationCircleIcon className="mr-2 h-5 w-5 text-primary" />
-        <p className="text-center text-sm text-primary">
-          {t("partners:description", { percent: percent ?? 0 })}
-        </p>
-      </div>
-      <PartnersSettings screen={true}/>
+      {!inContainer && (
+        <div
+          className={cn(
+            "item-center mb-4 mt-3 flex justify-center rounded-xl border border-primary bg-primary bg-opacity-10 px-3 py-2 font-medium"
+          )}
+        >
+          <ExclamationCircleIcon className="mr-2 h-5 w-5 text-primary" />
+          <p className="text-center text-sm text-primary">
+            {t("partners:description", { percent: percent ?? 0 })}
+          </p>
+        </div>
+      )}
+      <PartnersSettings inContainer={inContainer} />
     </div>
   );
 };
