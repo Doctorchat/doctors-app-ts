@@ -1,4 +1,4 @@
-name: Doctochat Prod CI/CD
+name: Doctochat Doctors APP Prod CI/CD
 
 on:
   push:
