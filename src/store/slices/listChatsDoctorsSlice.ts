@@ -26,6 +26,7 @@ const listChatsDoctorsSlice = createSlice({
         state.data[index].unreadCount = unreadCount;
         state.data[index].updated_at = updated_at;
         state.data[index].lastMessage = lastMessage;
+        state.data = sortChatsByUpdatedAt(state.data);
       }
     },
 

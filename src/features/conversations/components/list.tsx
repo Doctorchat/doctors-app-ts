@@ -76,22 +76,23 @@ export const List: React.FC = () => {
         style={{ height: "calc(100% - 50px)" }}
       >
         {/* {conversationsType === "doctors"
-          ? (listChatsDoctors?.length ? listChatsDoctors : listDoctors)?.map(
-              (conversationDoctor: any) => (
+            ? (listChatsDoctors?.length ? listChatsDoctors : listDoctors)?.map(
+                (conversationDoctor: any) => (
+                  <Preview
+                    key={conversationDoctor.id}
+                    conversation={conversationDoctor}
+                    typeConversation={conversationsType}
+                  />
+                )
+              )
+            : (listChats?.length ? listChats : listPatients)?.map((conversationPatient: any) => (
                 <Preview
-                  key={conversationDoctor.id}
-                  conversation={conversationDoctor}
+                  key={conversationPatient.id}
+                  conversation={conversationPatient}
                   typeConversation={conversationsType}
                 />
-              )
-            )
-          : (listChats?.length ? listChats : listPatients)?.map((conversationPatient: any) => (
-              <Preview
-                key={conversationPatient.id}
-                conversation={conversationPatient}
-                typeConversation={conversationsType}
-              />
-            ))} */}
+              ))} 
+          */}
         {isLoading || isLoadingListDoctors ? (
           // Afișați scheletele în timpul încărcării
           Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)

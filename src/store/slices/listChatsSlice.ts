@@ -23,6 +23,7 @@ const listChatsSlice = createSlice({
       if (index !== -1) {
         state.data[index] = { ...state.data[index], ...updatedData };
       }
+      state.data = sortChatsByUpdatedAt(state.data);
     },
     updateUnReadMessage: (state, action: PayloadAction<{ id: number; unread: number }>) => {
       const { id, unread } = action.payload;

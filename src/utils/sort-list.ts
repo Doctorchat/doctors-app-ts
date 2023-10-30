@@ -2,12 +2,32 @@ import { ConversationDoctors, ConversationPreview } from "@/features/conversatio
 import { IChatCloseOrOpen } from "@/features/dashboard/types";
 
 export const sortChatsByUpdatedAt = (chats: ConversationPreview[]): ConversationPreview[] => {
-  return chats.slice().sort((a, b) => {
+  const supportChat = chats.find((chat) => chat.type === "support");
+  if (supportChat) {
+    chats = chats.filter((chat) => chat !== supportChat);
+  }
+  const unreadChats = chats.filter((chat) => chat.unread === 1 || chat.unreadCount === 1);
+  const readChats = chats.filter((chat) => !unreadChats.includes(chat));
+
+  readChats.sort((a, b) => {
     const dateA = new Date(a.updated ?? a.updated_at);
     const dateB = new Date(b.updated ?? b.updated_at);
 
     return dateB.getTime() - dateA.getTime();
   });
+
+  unreadChats.sort((a, b) => {
+    const dateA = new Date(a.updated ?? a.updated_at);
+    const dateB = new Date(b.updated ?? b.updated_at);
+
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  const sortedChats = supportChat
+    ? [supportChat, ...unreadChats, ...readChats]
+    : [...unreadChats, ...readChats];
+
+  return sortedChats;
 };
 
 export const sortChatsByUpdatedOpen = (chats: IChatCloseOrOpen[]): IChatCloseOrOpen[] => {

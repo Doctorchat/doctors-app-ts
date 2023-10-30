@@ -40,7 +40,6 @@ export default function QrCodeFull() {
       if (parteneryQr) {
         setImageLoaded(true);
       }
-      console.log(parteneryQr);
     };
   }, [conversationsType, parteneryQr]);
   const { width } = useWindowSize();

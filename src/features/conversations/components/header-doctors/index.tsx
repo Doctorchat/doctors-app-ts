@@ -1,26 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ArrowLeftIcon, EllipsisVerticalIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { formatDistance, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-  Skeleton,
-} from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Button, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { useConversation } from "../../hooks";
-import { UserCard } from "../user-card";
 
 export const HeaderDoctors: React.FC = () => {
   const { t } = useTranslation();
@@ -75,20 +63,22 @@ export const HeaderDoctors: React.FC = () => {
               </p>
             ) : (
               cardDoctors?.chatInfo?.members === 1 && (
-                <p className="truncate text-sm">
+                <div className="truncate text-sm">
                   {cardDoctors.members &&
                     Object.keys(cardDoctors?.members)?.map((item: any, index: any) => {
                       return index === 0 && cardDoctors?.members[item].updated ? (
-                        <time dateTime={cardDoctors?.members[item].updated}>
-                          {formatDistance(
-                            parseISO(cardDoctors?.members[item].updated),
-                            new Date(),
-                            {
-                              addSuffix: true,
-                              locale: locale(),
-                            }
-                          )}
-                        </time>
+                        <p>
+                          <time dateTime={cardDoctors?.members[item].updated}>
+                            {formatDistance(
+                              parseISO(cardDoctors?.members[item].updated),
+                              new Date(),
+                              {
+                                addSuffix: true,
+                                locale: locale(),
+                              }
+                            )}
+                          </time>
+                        </p>
                       ) : (
                         <p className="truncate text-sm">
                           {cardDoctors?.chatInfo?.members +
@@ -97,7 +87,7 @@ export const HeaderDoctors: React.FC = () => {
                         </p>
                       );
                     })}
-                </p>
+                </div>
               )
             )}
           </div>
