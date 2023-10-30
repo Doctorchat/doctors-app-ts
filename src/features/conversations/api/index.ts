@@ -121,3 +121,7 @@ export const apiEditMessage = async (data: { id: number; content: string }) => {
 export const apiCloseChat = async (data: { chat_id: string }) => {
   return await axiosInstance.put(`/chat/close/`, data);
 };
+
+export const apiGetTemplates = async () => {
+  return await axiosInstance.get<any[]>(`/chat/templates`).then((res) => res.data);
+};

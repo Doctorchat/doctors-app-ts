@@ -55,5 +55,13 @@
   },
   "request_file": "Запросить файл",
   "click_to_select_file": "Нажмите, чтобы выбрать файл",
-  "select_different_file": "Выберите другой файл"
+  "select_different_file": "Выберите другой файл",
+  "message_template": {
+    "templates": "Шаблоны",
+    "placeholder": "Введите текст шаблона",
+    "edit_template": "Редактировать шаблон",
+    "add_template": "Добавить шаблон",
+    "create_template": "Создать шаблон",
+    "select_template": "Выберите шаблон"
+  }
 }
