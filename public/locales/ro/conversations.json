@@ -45,6 +45,7 @@
     }
   },
   "enter_message": "Introduceți mesajul",
+  "arhived_chat": "CHATUL ESTE ARHIVAT",
   "upload_file": "Încărcați un fișier",
   "recomand_analysis_dialog": {
     "title": "Recomandă analize",

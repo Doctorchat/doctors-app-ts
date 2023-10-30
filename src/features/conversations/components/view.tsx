@@ -166,11 +166,8 @@ export const View: React.FC = () => {
   }, [chatContentDoctors?.messages]);
 
   const isVisibleApprovalRequest = React.useMemo(() => {
-    return (
-      chatConversation?.isAccepted === false &&
-      chatConversation?.status === "open" &&
-      chatConversation?.type !== "support"
-    );
+    console.log(chatConversation?.type !== "support", chatConversation?.type);
+    return chatConversation?.type !== "support";
   }, [chatConversation?.messages]);
   // isAccepted, status, user?.data?.role;
   return (
@@ -245,7 +242,7 @@ export const View: React.FC = () => {
       </div>
       {patientId ? (
         <>
-          {isVisibleApprovalRequest && <ApprovalRequest />}
+          <ApprovalRequest />
           <MessageBar />
         </>
       ) : (

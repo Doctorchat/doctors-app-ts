@@ -45,6 +45,7 @@
     }
   },
   "enter_message": "Введите сообщение",
+  "arhived_chat": "ЧАТ В АРХИВЕ",
   "upload_file": "Загрузить файл",
   "recomand_analysis_dialog": {
     "title": "Рекомендовать анализ",

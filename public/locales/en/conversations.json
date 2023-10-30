@@ -46,6 +46,7 @@
     }
   },
   "enter_message": "Enter message",
+  "arhived_chat": "THE CHAT IS ARCHIVED",
   "upload_file": "Upload file",
   "recomand_analysis_dialog": {
     "title": "Recommend analysis",
