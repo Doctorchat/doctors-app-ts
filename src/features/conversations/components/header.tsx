@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ArrowLeftIcon} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { formatDistance, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
@@ -9,13 +9,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { UserCard } from "./user-card";
 import { useConversation } from "../hooks";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  Skeleton,
-} from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Button, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { useSelector } from "react-redux";
@@ -73,14 +67,16 @@ export const Header: React.FC = () => {
             <div className="ml-3 flex-1 overflow-hidden">
               <h3 className="truncate font-medium text-typography-primary">{cardPatient?.name}</h3>
               <p className="truncate text-sm">
-                {cardPatient?.last_seen && (
-                  <time dateTime={cardPatient?.last_seen}>
-                    {formatDistance(parseISO(cardPatient?.last_seen), new Date(), {
-                      addSuffix: true,
-                      locale: locale(),
-                    })}
-                  </time>
-                )}
+                {cardPatient.isOnline
+                  ? t("common:is_online")
+                  : cardPatient?.last_seen && (
+                      <time dateTime={cardPatient?.last_seen}>
+                        {formatDistance(parseISO(cardPatient?.last_seen), new Date(), {
+                          addSuffix: true,
+                          locale: locale(),
+                        })}
+                      </time>
+                    )}
               </p>
             </div>
           )}

@@ -83,6 +83,7 @@ export interface Conversation {
   status: "open" | "closed" | "responded";
   messages: ConversationMessage[];
   doctor_chat_id?: number;
+  type: "standard" | "consilium" | "auto" | "support" | "internal";
 }
 export interface RecomandationsAnalyzes {
   name: string;

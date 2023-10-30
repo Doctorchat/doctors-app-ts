@@ -71,10 +71,12 @@ export const MessageBar: React.FC = () => {
     }
   };
 
-  if (
+  const isVisibleMessageBar =
     (conversationPatients?.isAccepted && conversationPatients?.status === "open") ||
-    (conversationPatients?.isAccepted && conversationPatients?.status === "responded")
-  ) {
+    (conversationPatients?.isAccepted && conversationPatients?.status === "responded") ||
+    conversationPatients?.type === "support";
+
+  if (isVisibleMessageBar) {
     return (
       <>
         <div className="p-3 md:p-5 lg:p-3 xl:p-5">

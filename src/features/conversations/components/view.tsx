@@ -165,6 +165,14 @@ export const View: React.FC = () => {
     }
   }, [chatContentDoctors?.messages]);
 
+  const isVisibleApprovalRequest = React.useMemo(() => {
+    return (
+      chatConversation?.isAccepted === false &&
+      chatConversation?.status === "open" &&
+      chatConversation?.type !== "support"
+    );
+  }, [chatConversation?.messages]);
+  // isAccepted, status, user?.data?.role;
   return (
     <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
       {patientId ? <Header /> : <HeaderDoctors />}
@@ -237,7 +245,7 @@ export const View: React.FC = () => {
       </div>
       {patientId ? (
         <>
-          <ApprovalRequest />
+          {isVisibleApprovalRequest && <ApprovalRequest />}
           <MessageBar />
         </>
       ) : (
