@@ -56,5 +56,13 @@
   },
   "request_file": "Request file",
   "click_to_select_file": "Click to select a file",
-  "select_different_file": "Choose another file"
+  "select_different_file": "Choose another file",
+  "message_template": {
+    "templates": "Templates",
+    "placeholder": "Enter template text",
+    "edit_template": "Edit template",
+    "add_template": "Add template",
+    "create_template": "Create template",
+    "select_template": "Select a template"
+  }
 }

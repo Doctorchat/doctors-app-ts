@@ -5,6 +5,7 @@ import {
   ClipboardDocumentListIcon,
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
+  DocumentTextIcon,
   PaperClipIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -34,6 +35,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
 import { CloseConversation, useCloseConversation } from "./close-conversation";
 import isDisabled from "./../../../components/ui/DatePicker/tables/components/props/isDisabled";
+import { SelectTemplate, useSelectTemplateStore } from "./select-template";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -44,6 +46,7 @@ export const MessageBar: React.FC = () => {
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setCloseConversation = useCloseConversation((store) => store.setOpen);
+  const setSelectTemplateOpen = useSelectTemplateStore((store) => store.setOpen);
 
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
@@ -131,6 +134,14 @@ export const MessageBar: React.FC = () => {
                       >
                         {t("conversations:recomand_analysis_dialog:title")}
                         <DropdownMenuShortcut>
+                          <DocumentTextIcon className="h-5 w-5" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    )}
+                    {isSuportChat && (
+                      <DropdownMenuItem onClick={() => setSelectTemplateOpen(true)}>
+                        {t("conversations:message_template:select_template")}
+                        <DropdownMenuShortcut>
                           <ClipboardDocumentListIcon className="h-5 w-5" />
                         </DropdownMenuShortcut>
                       </DropdownMenuItem>
@@ -182,6 +193,7 @@ export const MessageBar: React.FC = () => {
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
+        <SelectTemplate />
       </>
     );
   }
