@@ -19,7 +19,7 @@ jobs:
         run: yarn install
       - name: Create env configs
         run: |        
-          echo "${{ secrets.API_PATH }}" >> .env       
+          echo "${{ secrets.API_PATH_DEV }}" >> .env       
 
       - name: Build
         run: CI=false yarn build
