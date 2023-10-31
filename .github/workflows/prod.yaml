@@ -1,4 +1,4 @@
-name: Doctochat Prod CI/CD
+name: Doctochat Doctors APP Prod CI/CD
 
 on:
   push:
@@ -14,6 +14,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+
+      - name: Create env configs
+        run: |        
+          echo "${{ secrets.API_PATH }}" >> .env      
 
       - name: Install Dependencies with Yarn
         run: yarn install
