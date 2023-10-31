@@ -64,5 +64,6 @@
     "add_template": "Add template",
     "create_template": "Create template",
     "select_template": "Select a template"
-  }
+  },
+  "search_chat": "Firstname / Lastname"
 }

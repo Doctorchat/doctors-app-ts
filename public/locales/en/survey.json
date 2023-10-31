@@ -1,5 +1,5 @@
 {
-    "title": "Investigations",
+    "title": "Survey",
     "add_question": "Add a question",
     "edit_question": "Edit question",
     "edit_modal_description": "Edit custom question",
@@ -10,7 +10,7 @@
     "question": "The question",
     "delete_question_description": "Are you sure you want to delete this question ?",
     "title_delete": "Delete",
-    "survey_ro":"Survey Ro",
+    "survey_ro": "Survey Ro",
     "survey_en": "Survey EN",
     "survey_ru": "Survey RU"
 }
