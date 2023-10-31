@@ -15,6 +15,10 @@ jobs:
         with:
           node-version: "18.x"
 
+      - name: Create env configs
+        run: |        
+          echo "${{ secrets.API_PATH }}" >> .env      
+
       - name: Install Dependencies with Yarn
         run: yarn install
 
