@@ -1,5 +1,5 @@
 {
-    "title": "Опрос",
+    "title": "Анкета",
     "add_question": "Добавить вопрос",
     "edit_question": "Отредактировать вопрос",
     "edit_modal_description": "Редактировать вопрос",
@@ -9,7 +9,7 @@
     "question": "Вопрос",
     "delete_question_description": "Вы уверены, что хотите удалить этот вопрос ?",
     "title_delete": "Удалить",
-    "survey_ro": "Опрос Ro",
-    "survey_en": "Опрос EN",
-    "survey_ru": "Опрос RU"
+    "survey_ro": "Анкета Ro",
+    "survey_en": "Анкета EN",
+    "survey_ru": "Анкета RU"
 }

@@ -63,5 +63,6 @@
     "add_template": "Добавить шаблон",
     "create_template": "Создать шаблон",
     "select_template": "Выберите шаблон"
-  }
+  },
+  "search_chat": "Имя / Фамилия"
 }

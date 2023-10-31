@@ -63,5 +63,6 @@
     "add_template": "Adăugați un șablon",
     "create_template": "Creați un șablon",
     "select_template": "Selectați un șablon"
-  }
+  },
+  "search_chat":"Nume / Prenume"
 }

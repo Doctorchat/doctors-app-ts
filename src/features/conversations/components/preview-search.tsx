@@ -1,6 +1,7 @@
 import { HiOutlineSearch } from "react-icons/hi";
 import { Input } from "antd";
 import { ChangeEventHandler } from "react";
+import { t } from "i18next";
 
 export interface PreviewSearchProps {
   onSearch: ChangeEventHandler<HTMLInputElement> | undefined;
@@ -9,7 +10,7 @@ export interface PreviewSearchProps {
 export const PreviewSearch: React.FC<PreviewSearchProps> = ({ onSearch }) => (
   <Input
     size="large"
-    placeholder="Cautare chatului"
+    placeholder={t("conversations:search_chat")}
     prefix={<HiOutlineSearch />}
     allowClear
     onChange={onSearch}

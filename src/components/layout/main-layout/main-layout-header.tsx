@@ -31,6 +31,7 @@ import React from "react";
 import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
 import { useLocation } from "react-router-dom";
+import { Tooltip } from "antd";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -120,15 +121,17 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
       </Button>
       <div className="ml-2 flex items-center justify-center">
         <ProfileChangeLang />
-        <Button
-          key="notifications"
-          variant="ghost"
-          size="icon"
-          aria-label="Notifications"
-          className="h-10 w-10 rounded-full"
-        >
-          <BellIcon className="h-6 w-6" />
-        </Button>
+        <Tooltip title={t("common:coming_soon")} color="#2db7f5">
+          <Button
+            key="notifications"
+            variant="ghost"
+            size="icon"
+            aria-label="Notifications"
+            className="h-10 w-10 rounded-full"
+          >
+            <BellIcon className="h-6 w-6" />
+          </Button>
+        </Tooltip>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
