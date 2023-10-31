@@ -4,7 +4,7 @@
 
 
 ```
-VITE_API_URL=https://your-backed-url.here
+VITE_API_URL=https://your-backend-url.here
 ```
 
 
