@@ -192,7 +192,7 @@ export const MessageBar: React.FC = () => {
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
-        <SelectTemplate />
+        <SelectTemplate setContent={setContent} />
       </>
     );
   }

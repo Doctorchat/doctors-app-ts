@@ -58,11 +58,12 @@
   "select_different_file": "Selectați alt fișier",
   "message_template": {
     "templates": "Șabloane",
-    "placeholder": "Introduceți textul șablonului",
     "edit_template": "Editați șablonul",
     "add_template": "Adăugați un șablon",
     "create_template": "Creați un șablon",
-    "select_template": "Selectați un șablon"
+    "select_template": "Selectați un șablon",
+    "title_template": "Titlu",
+    "name_template": "Șabloan"
   },
-  "search_chat":"Nume / Prenume"
+  "search_chat": "Nume / Prenume"
 }

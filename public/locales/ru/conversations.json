@@ -58,11 +58,12 @@
   "select_different_file": "Выберите другой файл",
   "message_template": {
     "templates": "Шаблоны",
-    "placeholder": "Введите текст шаблона",
     "edit_template": "Редактировать шаблон",
     "add_template": "Добавить шаблон",
     "create_template": "Создать шаблон",
-    "select_template": "Выберите шаблон"
+    "select_template": "Выберите шаблон",
+    "title_template": "Заголовок",
+    "name_template": "Шаблон"
   },
   "search_chat": "Имя / Фамилия"
 }

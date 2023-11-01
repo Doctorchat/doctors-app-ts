@@ -125,3 +125,22 @@ export const apiCloseChat = async (data: { chat_id: string }) => {
 export const apiGetTemplates = async () => {
   return await axiosInstance.get<any[]>(`/chat/templates`).then((res) => res.data);
 };
+
+export const apiPostTemplate = async (data: {
+  doctor_id: number;
+  title: string;
+  content: string;
+}) => {
+  return await axiosInstance.post<any[]>(`/chat/templates`, data).then((res) => res.data);
+};
+export const apiDeleteTemplate = async (id: number) => {
+  return await axiosInstance.delete(`/chat/templates/${id}`).then((res) => res.data);
+};
+export const apiPutTemplate = async (data: {
+  doctor_id: number;
+  title: string;
+  content: string;
+  id: number;
+}) => {
+  return await axiosInstance.put(`/chat/templates/${data.id}`, data).then((res) => res.data);
+};
