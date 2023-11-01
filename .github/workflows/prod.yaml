@@ -54,21 +54,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ✅ <b>[PROD] Doctor's APP (Success)</b>
+            ✅ <b>[PROD] Doctor's APP</b>
             🥷 <b>User</b>: ${{ github.actor }}
             📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">{{{ github.event.commits[0].message }}</a>
             📌 <b>Branch:</b> ${{ github.ref }}
-        if: success()
-        
-      - name: Send telegram notification on failure
-        uses: appleboy/telegram-action@master
-        with:
-          format: html
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ❌ <b>[PROD] Doctor's APP (Failed)</b>
-            🥷 <b>User</b>: ${{ github.actor }}
-            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">{{{ github.event.commits[0].message }}</a>
-            📌 <b>Branch:</b> ${{ github.ref }}
-        if: failure()
