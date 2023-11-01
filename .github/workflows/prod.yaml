@@ -25,7 +25,8 @@ jobs:
           node-version: "18.x"
 
       - name: Create env configs
-        run: |        
+        run: |
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'        
           if [ ! -f .env ]; then
             echo "${{ secrets.API_PATH }}" >> .env
             echo "${{ secrets.PUSHER_ENV }}" >> .env
@@ -47,15 +48,29 @@ jobs:
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
           scp_target: ${{ secrets.TARGET_DOCTORS_APP }}
-
-      - name: Send telegram message on push
+          
+      - name: Send telegram notification on success
         uses: appleboy/telegram-action@master
         with:
           format: html
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ if success() }}✅ <b>[PROD] Doctor's APP</b>${{ else }}❌ <b>[PROD] Doctor's APP - (Failed)</b>${{ endif }}
+            ✅ <b>[PROD] Doctor's APP (Success)</b>
             🥷 <b>User</b>: ${{ github.actor }}
             📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">{{{ github.event.commits[0].message }}</a>
             📌 <b>Branch:</b> ${{ github.ref }}
+        if: success()
+        
+      - name: Send telegram notification on failure
+        uses: appleboy/telegram-action@master
+        with:
+          format: html
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ <b>[PROD] Doctor's APP (Failed)</b>
+            🥷 <b>User</b>: ${{ github.actor }}
+            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">{{{ github.event.commits[0].message }}</a>
+            📌 <b>Branch:</b> ${{ github.ref }}
+        if: failure()
