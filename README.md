@@ -1,14 +1,13 @@
-# 👨‍⚕️ Doctor's Cabinet - React + TypeScript + Vite
+[![Doctors APP](https://github.com/Doctorchat/doctors-app-ts/actions/workflows/prod.yaml/badge.svg?branch=main)](https://github.com/Doctorchat/doctors-app-ts/actions/workflows/prod.yaml)
+# 👨‍⚕️ Doctor's Cabinet 
 
 ## API ENV:
-
 
 ```
 VITE_API_URL=
 ```
 
 ## Pusher ENV
-
 ```
 VITE_SOCKET_PUSHER_EVENT_RECEIVE=
 VITE_SOCKET_PUSHER_CHANNEL_DOCTOR=
@@ -24,7 +23,6 @@ VITE_SOCKET_PUSHER_CLUSTER=
 ```
 
 ## Firebase ENV
-
 ```
 VITE_FIREBASE_VAPID_KEY=
 VITE_FIREBASE_API_KEY=
