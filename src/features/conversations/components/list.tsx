@@ -8,6 +8,8 @@ import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
 import { PreviewSearch } from "./preview-search";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { t } from "i18next";
+import { ChatNewPreview } from "./new-chat/chat-preview";
+import { AddChatDoctors, useNewChatDoctors } from "./new-chat";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
@@ -59,7 +61,7 @@ export const List: React.FC = () => {
       }
     }
   };
-
+  const setNewChatDoctors = useNewChatDoctors((store) => store.setOpen);
   return (
     <div
       className={cn(
@@ -71,33 +73,14 @@ export const List: React.FC = () => {
       <div className="px-2 pt-2">
         <PreviewSearch onSearch={onSearchChat} />
       </div>
+      {conversationsType === "doctors" && <ChatNewPreview setNewChatDoctors={setNewChatDoctors} />}
       <div
         className="custom-scroll-bar  space-y-0.5 overflow-y-auto p-2"
         style={{ height: "calc(100% - 50px)" }}
       >
-        {/* {conversationsType === "doctors"
-            ? (listChatsDoctors?.length ? listChatsDoctors : listDoctors)?.map(
-                (conversationDoctor: any) => (
-                  <Preview
-                    key={conversationDoctor.id}
-                    conversation={conversationDoctor}
-                    typeConversation={conversationsType}
-                  />
-                )
-              )
-            : (listChats?.length ? listChats : listPatients)?.map((conversationPatient: any) => (
-                <Preview
-                  key={conversationPatient.id}
-                  conversation={conversationPatient}
-                  typeConversation={conversationsType}
-                />
-              ))} 
-          */}
         {isLoading || isLoadingListDoctors ? (
-          // Afișați scheletele în timpul încărcării
           Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)
         ) : filteredConversations.length ? (
-          // Afișați conversațiile filtrate dacă nu sunt goale
           filteredConversations.map((conversation: any) => (
             <Preview
               key={conversation.id}
@@ -106,13 +89,13 @@ export const List: React.FC = () => {
             />
           ))
         ) : (
-          // Afișați mesajul "Listă goală" dacă lista este goală
           <div className="mt-8 flex flex-col items-center justify-center">
             <ArchiveBoxXMarkIcon className="h-16 w-16 text-gray-400" />
             <h4 className="text-md mb-2 font-medium text-gray-400">{t("common:empty_list")}</h4>
           </div>
         )}
       </div>
+      <AddChatDoctors />
     </div>
   );
 };
