@@ -34,7 +34,6 @@ import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis"
 import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
 import { CloseConversation, useCloseConversation } from "./close-conversation";
-import isDisabled from "./../../../components/ui/DatePicker/tables/components/props/isDisabled";
 import { SelectTemplate, useSelectTemplateStore } from "./select-template";
 
 export const MessageBar: React.FC = () => {
@@ -193,7 +192,7 @@ export const MessageBar: React.FC = () => {
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
-        <SelectTemplate />
+        <SelectTemplate setContent={setContent} />
       </>
     );
   }

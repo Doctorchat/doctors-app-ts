@@ -166,7 +166,7 @@ export const View: React.FC = () => {
   }, [chatContentDoctors?.messages]);
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
+    <div key="conversations" className="relative flex h-full flex-col overflow-hidden rounded-lg">
       {patientId ? <Header /> : <HeaderDoctors />}
 
       <div

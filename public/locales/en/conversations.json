@@ -59,11 +59,12 @@
   "select_different_file": "Choose another file",
   "message_template": {
     "templates": "Templates",
-    "placeholder": "Enter template text",
     "edit_template": "Edit template",
     "add_template": "Add template",
     "create_template": "Create template",
-    "select_template": "Select a template"
+    "select_template": "Select a template",
+    "title_template": "Title",
+    "name_template": "Template"
   },
   "search_chat": "Firstname / Lastname"
 }
