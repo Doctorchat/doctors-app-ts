@@ -17,10 +17,12 @@ jobs:
 
       - name: Create env configs
         run: |        
-          echo "${{ secrets.API_PATH }}" >> .env      
+          echo "${{ secrets.API_PATH }}" >> .env
+          echo "${{ secrets.PUSHER_ENV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV }}" >> .env
 
       - name: Install Dependencies with Yarn
-        run: yarn install
+        run: yarn install --immutable-cache
 
       - name: Build
         run: CI=false yarn build
