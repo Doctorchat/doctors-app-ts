@@ -47,3 +47,20 @@ jobs:
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
           scp_target: ${{ secrets.TARGET_DOCTORS_APP }}
+
+      - name: Send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          format: html
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ <b>[PROD] Doctor's APP</b>
+            🥷 <b>User</b>: ${{ github.actor }}
+            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
+            📌 <b>Branch:</b> ${{ github.ref }}
+            📌 <b>Commit:</b> ${{ github.sha }}
+            📌 <b>Repository:</b> ${{ github.repository }}
+            📌 <b>Workflow:</b> ${{ github.workflow }}
+            📌 <b>Run:</b> ${{ github.run_id }}
+            📌 <b>Run Number:</b> ${{ github.run_number }}
