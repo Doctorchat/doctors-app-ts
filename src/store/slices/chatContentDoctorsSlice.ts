@@ -13,7 +13,11 @@ const chatContentDoctorsSlice = createSlice({
   initialState,
   reducers: {
     addMessageDoctors: (state, action: PayloadAction<ContentMessage>) => {
-      state.data.messages.push(action.payload);
+      const newMessage = action.payload;
+      const existingMessageIds = new Set(state.data.messages.map((message) => message.id));
+      if (!existingMessageIds.has(newMessage.id)) {
+        state.data.messages.push(newMessage);
+      }
     },
     addMessagesDoctors: (
       state,
