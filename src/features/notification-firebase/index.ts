@@ -58,6 +58,9 @@ const setTokenStorage = async () => {
     appId: FIREBASE_APP_ID,
   });
   return await Notification.requestPermission().then(async (permission) => {
+    console.log(permission);
+    console.log(FIREBASE_VAPID_KEY);
+    console.log(messaging);
     if (permission === "granted") {
       const currentToken = await getToken(messaging, {
         vapidKey: FIREBASE_VAPID_KEY,
