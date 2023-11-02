@@ -11,8 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache Node modules
-        uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v3
+        id: cache-yarn
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -32,7 +42,8 @@ jobs:
           echo "${{ secrets.FIREBASE_ENV }}" >> .env
 
       - name: Install Dependencies with Yarn
-        run: yarn install --immutable-cache
+        if: steps.cache-node-modules.outputs.cache-hit != 'true' && steps.cache-yarn.outputs.cache-hit != 'true'
+        run: yarn install --check-cache --prefer-offline --non-interactive
 
       - name: Build
         run: CI=false yarn build
@@ -45,4 +56,4 @@ jobs:
           password: ${{ secrets.SSH_PASS }}
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_APP }}  
+          scp_target: ${{ secrets.TARGET_DOCTORS_APP }}
