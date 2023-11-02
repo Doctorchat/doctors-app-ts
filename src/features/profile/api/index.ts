@@ -5,8 +5,8 @@ export const updateDoctor = async (data: {}) => {
   return await axiosInstance.post("/user/update-doctor", data).then((res) => res.data);
 };
 
-export const updateAvatar = async (file: File) => {
-  return await axiosInstance.post("/user/update-avatar", file).then((res) => res.data);
+export const updateAvatar = async (avatar: any) => {
+  return await axiosInstance.post("/user/update-avatar", avatar).then((res) => res.data);
 };
 
 export const toggleChatConversations = async () => {
