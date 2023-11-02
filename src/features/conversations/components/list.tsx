@@ -3,13 +3,23 @@ import { useConversationLayoutStore } from "./layout";
 import { Preview, PreviewSkeleton } from "./preview";
 import { cn } from "@/utils";
 import { useChatList } from "../hooks/use-chat-list";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useChatListDoctors } from "../hooks/use-chat-list-doctors";
 import { PreviewSearch } from "./preview-search";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { t } from "i18next";
 import { ChatNewPreview } from "./new-chat/chat-preview";
 import { AddChatDoctors, useNewChatDoctors } from "./new-chat";
+import usePusher from "../hooks/usePusher";
+import {
+  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST,
+  SOCKET_PUSHER_CHANNEL_LIST_CHATS,
+  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST,
+  SOCKET_PUSHER_EVENT_LIST_CHATS,
+} from "@/config";
+import { updateListChatsDoctors } from "@/store/slices/listChatsDoctorsSlice";
+import { updateListChats } from "@/store/slices/listChatsSlice";
+import { Channel } from "pusher-js";
 
 export const List: React.FC = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
@@ -25,8 +35,45 @@ export const List: React.FC = () => {
   const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading } = useChatList();
 
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const { pusher } = usePusher();
+  const dispatch = useDispatch();
   React.useEffect(() => {
-    // La încărcarea inițială, afișați toate conversațiile în funcție de valoarea typeConversation
+    let doctorsListChannel: Channel;
+    let patientslistChannel: Channel;
+
+    if (pusher) {
+      doctorsListChannel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST + current_user.id
+      );
+      patientslistChannel = pusher.subscribe(SOCKET_PUSHER_CHANNEL_LIST_CHATS + current_user.id);
+      doctorsListChannel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST, (data: any) => {
+        const listMessage = JSON.parse(data.content_data);
+        dispatch(
+          updateListChatsDoctors({
+            unreadCount: listMessage.unreadCount,
+            chat_id: listMessage.doctor_chat_id,
+            lastMessage: listMessage.message,
+            updated_at: listMessage.updated_at,
+          })
+        );
+      });
+
+      patientslistChannel.bind(SOCKET_PUSHER_EVENT_LIST_CHATS, (data: any) => {
+        const { chatList, chat_id } = data;
+        const chat_update = JSON.parse(chatList);
+        dispatch(updateListChats({ id: chat_id, updatedData: chat_update }));
+      });
+    }
+    return () => {
+      doctorsListChannel?.unsubscribe();
+      patientslistChannel?.unsubscribe();
+    };
+  }, [pusher]);
+
+  React.useEffect(() => {
     if (conversationsType === "doctors") {
       setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
     } else {

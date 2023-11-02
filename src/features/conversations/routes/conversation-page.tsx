@@ -8,11 +8,22 @@ import { AddChatDoctors, useNewChatDoctors } from "../components/new-chat";
 
 import React from "react";
 import QrCodeFull from "../components/qr-code";
+import usePusher from "../hooks/usePusher";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  SOCKET_PUSHER_CHANNEL_DOCTOR,
+  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT,
+  SOCKET_PUSHER_CHANNEL_PATIENT,
+  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT,
+  SOCKET_PUSHER_EVENT_RECEIVE,
+} from "@/config";
+import { addMessage } from "@/store/slices/chatContentSlice";
+import { addMessageDoctors } from "@/store/slices/chatContentDoctorsSlice";
+import { Channel } from "pusher-js";
 
 export default function ConversationPage() {
   const { t } = useTranslation();
   const { patientId, doctorId } = useConversation();
-  const [parteneryQr, setParteneryQr] = React.useState<string>("");
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [searchParams] = useSearchParams();
@@ -23,6 +34,63 @@ export default function ConversationPage() {
     : searchParams.has("doctorId")
     ? "doctors"
     : "";
+  const { pusher } = usePusher();
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const dispatch = useDispatch();
+
+  const { chatContent } = useSelector((store: any) => ({
+    chatContent: store.chatContent?.conversation,
+  }));
+  const { chatContentDoctors } = useSelector((store: any) => ({
+    chatContentDoctors: store.chatContentDoctors.data,
+  }));
+
+  React.useEffect(() => {
+    let patientConversation: Channel;
+    let doctorConversation: Channel;
+    const role = current_user.role === 2;
+
+    if (pusher && (patientId ?? doctorId)) {
+      if (patientId) {
+        patientConversation = pusher.subscribe(
+          (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + patientId
+        );
+
+        patientConversation.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
+          const { content_data } = data;
+          const { message } = JSON.parse(content_data);
+          if (
+            !chatContent.messages.some(
+              (existingMessage: { id: any }) => existingMessage.id === message.id
+            )
+          ) {
+            dispatch(addMessage(message));
+          }
+        });
+      } else if (doctorId) {
+        doctorConversation = pusher.subscribe(
+          SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT + doctorId + "-" + current_user.id
+        );
+        doctorConversation.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT, (data: any) => {
+          const { content_data } = data;
+          const { message } = JSON.parse(content_data);
+          if (
+            !chatContentDoctors.messages.some(
+              (existingMessage: { id: any }) => existingMessage.id === message.id
+            )
+          ) {
+            dispatch(addMessageDoctors(message));
+          }
+        });
+      }
+
+      return () => {
+        doctorConversation?.unsubscribe();
+        patientConversation?.unsubscribe();
+      };
+    }
+  }, [pusher, patientId, doctorId]);
 
   if (isMobile) {
     return (
