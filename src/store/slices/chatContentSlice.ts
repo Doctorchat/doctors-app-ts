@@ -8,7 +8,11 @@ const chatContentSlice = createSlice({
   initialState,
   reducers: {
     addMessage: (state, action: PayloadAction<ConversationMessage>) => {
-      state.conversation.messages.push(action.payload);
+      const newMessage = action.payload;
+      const existingMessageIds = new Set(state.conversation.messages.map((message) => message.id));
+      if (!existingMessageIds.has(newMessage.id)) {
+        state.conversation.messages.push(newMessage);
+      }
     },
     updateMessage: (state, action: PayloadAction<{ id: number; content: string }>) => {
       const { id, content } = action.payload;

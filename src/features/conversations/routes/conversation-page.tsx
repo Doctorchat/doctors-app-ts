@@ -39,34 +39,20 @@ export default function ConversationPage() {
   const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const dispatch = useDispatch();
 
-  const { chatContent } = useSelector((store: any) => ({
-    chatContent: store.chatContent?.conversation,
-  }));
-  const { chatContentDoctors } = useSelector((store: any) => ({
-    chatContentDoctors: store.chatContentDoctors.data,
-  }));
-
   React.useEffect(() => {
     let patientConversation: Channel;
     let doctorConversation: Channel;
     const role = current_user.role === 2;
-
     if (pusher && (patientId ?? doctorId)) {
       if (patientId) {
         patientConversation = pusher.subscribe(
           (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) + patientId
         );
-
         patientConversation.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
           const { content_data } = data;
           const { message } = JSON.parse(content_data);
-          if (
-            !chatContent.messages.some(
-              (existingMessage: { id: any }) => existingMessage.id === message.id
-            )
-          ) {
-            dispatch(addMessage(message));
-          }
+
+          dispatch(addMessage(message));
         });
       } else if (doctorId) {
         doctorConversation = pusher.subscribe(
@@ -75,13 +61,8 @@ export default function ConversationPage() {
         doctorConversation.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT, (data: any) => {
           const { content_data } = data;
           const { message } = JSON.parse(content_data);
-          if (
-            !chatContentDoctors.messages.some(
-              (existingMessage: { id: any }) => existingMessage.id === message.id
-            )
-          ) {
-            dispatch(addMessageDoctors(message));
-          }
+
+          dispatch(addMessageDoctors(message));
         });
       }
 
