@@ -130,6 +130,7 @@ export const PersonalData: React.FC = () => {
   useEffect(() => {
     if (userStorageData) {
       const {
+        avatar,
         name,
         email,
         about: {
