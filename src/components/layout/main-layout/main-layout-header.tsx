@@ -169,8 +169,8 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
               </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => {
-                apiLogout().catch(() => {});
+              onClick={async () => {
+                await apiLogout();
                 clearSession();
               }}
             >
