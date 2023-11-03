@@ -4,6 +4,8 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 // eslint-disable-next-line no-undef
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
+import process from "node:process";
+
 // Initialize the Firebase app in the service worker by passing the generated config
 var firebaseConfig = {
   apiKey: process.env.VITE_FIREBASE_API_KEY,
