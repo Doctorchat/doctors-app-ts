@@ -32,6 +32,8 @@ import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
 import { useLocation } from "react-router-dom";
 import { Tooltip } from "antd";
+import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -98,6 +100,9 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
   );
   const isMobile = useMediaQuery("(max-width: 768px)");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
   return (
     <header
       className={cn(
@@ -171,6 +176,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
             <DropdownMenuItem
               onClick={async () => {
                 await apiLogout();
+                queryClient.clear();
                 clearSession();
               }}
             >
