@@ -59,7 +59,6 @@ export const FormTemplate: React.FC<FormTemplateProps> = ({
     },
     resolver: zodResolver(schema),
   });
-  console.log(templateItem);
   const [apiResponse, setApiResponse] = React.useState<{
     type: "success" | "error";
     message: string;
@@ -70,12 +69,7 @@ export const FormTemplate: React.FC<FormTemplateProps> = ({
 
   const onSaveTemplate = async (values: FormValues) => {
     setLoading(true);
-    console.log(values);
-    console.log({
-      ...values,
-      id: templateItem.id,
-      doctor_id: session?.user?.id ?? 0,
-    });
+  
     if (templateItem) {
       await apiPutTemplate({
         ...values,
