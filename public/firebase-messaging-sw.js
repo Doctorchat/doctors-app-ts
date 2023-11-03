@@ -6,12 +6,12 @@ importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js")
 
 // Initialize the Firebase app in the service worker by passing the generated config
 var firebaseConfig = {
-  apiKey: `${process.env.VITE_APP_API_KEY}`,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "doctorchat-push.firebaseapp.com",
   projectId: "doctorchat-push",
   storageBucket: "doctorchat-push.appspot.com",
-  messagingSenderId: `${process.env.VITE_APP_FIREBASE_API_KEY}`,
-  appId: `${process.env.VITE_FIREBASE_APP_ID}`,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 // eslint-disable-next-line no-undef
 firebase.initializeApp(firebaseConfig);
