@@ -14,10 +14,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children, className, ...
   return (
     <div className={cn("flex h-full", className)} {...props}>
       <MainLayoutSidenav />
-      <main className="flex w-full flex-col overflow-hidden">
-        <MainLayoutHeader />
-        <Provider store={store}>{children}</Provider>
-      </main>
+      <Provider store={store}>
+        <main className="flex w-full flex-col overflow-hidden">
+          <MainLayoutHeader />
+          {children}
+        </main>
+      </Provider>
     </div>
   );
 };
