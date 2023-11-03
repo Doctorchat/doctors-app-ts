@@ -11,15 +11,6 @@ VITE_API_URL=
 ```
 VITE_SOCKET_PUSHER_KEY=
 VITE_SOCKET_PUSHER_CLUSTER=
-VITE_SOCKET_PUSHER_EVENT_RECEIVE=receive-message-patient
-VITE_SOCKET_PUSHER_CHANNEL_DOCTOR=chat-doctor-to-patient-
-VITE_SOCKET_PUSHER_CHANNEL_PATIENT=chat-patient-to-doctor-
-VITE_SOCKET_PUSHER_CHANNEL_LIST_CHATS=chat-list-
-VITE_SOCKET_PUSHER_EVENT_LIST_CHATS=update-chat-list
-VITE_SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT=chat-doctor-
-VITE_SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT=doctor-messages
-VITE_SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST=doctors-message-list-
-VITE_SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST=update-doctors-message-list
 ```
 
 ## Firebase ENV
@@ -37,6 +28,7 @@ VITE_FIREBASE_APP_ID=
 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
 
 Currently, two official plugins are available:
 

@@ -30,7 +30,9 @@ export const sortChatsByUpdatedAt = (chats: ConversationPreview[]): Conversation
   return sortedChats;
 };
 
-export const sortChatsByUpdatedOpen = (chats: IChatCloseOrOpen[]): IChatCloseOrOpen[] => {
+export const sortChatsByUpdatedOpen = (
+  chats: IChatCloseOrOpen[] | ConversationPreview[]
+): IChatCloseOrOpen[] | ConversationPreview[] => {
   return chats.slice().sort((a, b) => {
     const dateA = new Date(a.updated);
     const dateB = new Date(b.updated);

@@ -8,7 +8,7 @@ import { ConversationMessage } from "../../types";
 import { toast } from "@/hooks";
 import { apiEditMessage } from "../../api";
 import { getApiErrorMessages } from "@/utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateMessage } from "@/store/slices/chatContentSlice";
 import { hasPassedTenMinutes } from "@/utils/calculate-edit-message";
 import { useQueryClient } from "react-query";
