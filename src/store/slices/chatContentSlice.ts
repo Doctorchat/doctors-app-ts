@@ -36,11 +36,8 @@ const chatContentSlice = createSlice({
       state.conversation = { ...state.conversation, ...action.payload.conversation };
       state.conversation.messages = action.payload.messages;
     },
-    resetMessages: (state) => {
-      state.conversation.messages = [];
-    },
   },
 });
 
-export const { addMessage, addMessages, updateMessage, resetMessages } = chatContentSlice.actions;
+export const { addMessage, addMessages, updateMessage } = chatContentSlice.actions;
 export default chatContentSlice.reducer;

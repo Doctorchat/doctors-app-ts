@@ -8,10 +8,10 @@ import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
-import { ConversationDoctors } from "@/features/conversations/types";
+import { ConversationDoctors, ConversationPreview } from "@/features/conversations/types";
 
 export interface PreviewProps {
-  conversation: IChatCloseOrOpen | ConversationDoctors;
+  conversation: IChatCloseOrOpen | ConversationDoctors | ConversationPreview;
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation }) => {

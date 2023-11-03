@@ -123,7 +123,9 @@ export const List: React.FC = () => {
       {conversationsType === "doctors" && <ChatNewPreview setNewChatDoctors={setNewChatDoctors} />}
       <div
         className="custom-scroll-bar  space-y-0.5 overflow-y-auto p-2"
-        style={{ height: "calc(100% - 50px)" }}
+        style={{
+          height: conversationsType === "doctors" ? "calc(100% - 130px)" : "calc(100% - 50px)",
+        }}
       >
         {isLoading || isLoadingListDoctors ? (
           Array.from({ length: 10 }).map((_, index) => <PreviewSkeleton key={index} />)
