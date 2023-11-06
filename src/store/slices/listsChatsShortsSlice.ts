@@ -10,6 +10,68 @@ const listsChatsShortsSlice = createSlice({
   name: "listsChatsShorts",
   initialState,
   reducers: {
+    updatePatientChatList: (
+      state,
+      action: PayloadAction<{ id: number; updatedData: Partial<ConversationPreview> }>
+    ) => {
+      const { id, updatedData } = action.payload;
+      const patientIndex = state.listPatients.findIndex((item) => item.id === id);
+      if (patientIndex !== -1) {
+        state.listPatients[patientIndex] = {
+          ...state.listPatients[patientIndex],
+          ...updatedData,
+        };
+        state.listPatients = sortChatsByUpdatedAt(state.listPatients);
+      } else {
+        const newPatient: ConversationPreview = {
+          ...(updatedData as ConversationPreview),
+        };
+        state.listPatients.push(newPatient);
+        state.listPatients = sortChatsByUpdatedAt(state.listPatients);
+      }
+    },
+
+    updateDoctorChatList: (
+      state,
+      action: PayloadAction<{
+        chat_id: number;
+        lastMessage: Partial<ConversationPreview["lastMessage"]>;
+        unreadCount: number;
+        updated_at: string;
+        // title:string
+      }>
+    ) => {
+      const {
+        chat_id,
+        lastMessage,
+        unreadCount,
+        updated_at,
+        // title
+      } = action.payload;
+      const doctorIndex = state.listDoctors.findIndex((item) => item.id === chat_id);
+
+      if (doctorIndex !== -1) {
+        state.listDoctors[doctorIndex] = {
+          ...state.listDoctors[doctorIndex],
+          lastMessage,
+          unreadCount,
+          updated_at,
+          id: chat_id,
+          // title:title
+        };
+        state.listDoctors = sortChatsByUpdatedAt(state.listDoctors);
+      } else {
+        const newDoctor: any = {
+          id: chat_id,
+          lastMessage,
+          unreadCount,
+          updated_at,
+          // title:title
+        };
+        state.listDoctors.push(newDoctor);
+        state.listDoctors = sortChatsByUpdatedAt(state.listDoctors);
+      }
+    },
     updateDoctorUnread: (state, action: PayloadAction<{ id: number; unreadCount: number }>) => {
       const { id, unreadCount } = action.payload;
       const doctorIndex = state.listDoctors.findIndex((item) => item.id === id);
@@ -28,10 +90,11 @@ const listsChatsShortsSlice = createSlice({
 
     addDoctors: (state, action: PayloadAction<ConversationPreview[]>) => {
       state.listDoctors = action.payload;
+      state.listDoctors = sortChatsByUpdatedAt(state.listDoctors);
     },
-
     addPatients: (state, action: PayloadAction<ConversationPreview[]>) => {
       state.listPatients = action.payload;
+      state.listPatients = sortChatsByUpdatedAt(state.listPatients);
     },
     addClosed: (state, action: PayloadAction<ConversationPreview[]>) => {
       state.listClosed = action.payload;
@@ -39,6 +102,13 @@ const listsChatsShortsSlice = createSlice({
   },
 });
 
-export const { addDoctors, addPatients, addClosed, updateDoctorUnread, updatePatientUnreadCount } =
-  listsChatsShortsSlice.actions;
+export const {
+  addDoctors,
+  addPatients,
+  addClosed,
+  updateDoctorUnread,
+  updatePatientUnreadCount,
+  updatePatientChatList,
+  updateDoctorChatList,
+} = listsChatsShortsSlice.actions;
 export default listsChatsShortsSlice.reducer;
