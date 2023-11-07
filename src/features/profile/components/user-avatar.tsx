@@ -18,7 +18,6 @@ export const UserAvatar = ({ image }: { image: string }) => {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-
   const content = () => {
     if (file) {
       return <img src={URL.createObjectURL(file)} alt="image" className="w-full rounded" />;
