@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/toaster";
 import "firebase/messaging";
 import "./lib/i18n";
 import "./styles/index.css";
+
 import registerServiceWorker from "../public/serviceWorker";
 import React from "react";
 z.setErrorMap(zodErrorMap);
