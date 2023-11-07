@@ -1,16 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import {
   DocAppointmentsList,
   DocAppointmentsSettings,
-  DocAppointmentsSlots
+  DocAppointmentsSlots,
 } from "./tabs-container";
 
 export const View: React.FC = () => {
@@ -28,42 +23,30 @@ export const View: React.FC = () => {
     {
       value: "slots",
       children: t("common:slots"),
-    }
+    },
   ];
 
   return (
-    <div className={cn("col-span-12 md:col-span-8 xl:col-span-4 h-full w-full md:rounded-lg md:border md:border-neutral-200 p-10 custom-scroll-bar")}>
-      <Tabs
-        defaultValue="appointments"
-      >
-        <TabsList
-          className="flex" aria-label="Partners tabs"
-        >
+    <div
+      className={cn(
+        "custom-scroll-bar col-span-12 h-full w-full p-10 md:col-span-8 md:rounded-lg md:border md:border-neutral-200 xl:col-span-4"
+      )}
+    >
+      <Tabs defaultValue="appointments">
+        <TabsList className="flex" aria-label="Partners tabs">
           {TAB_ITEMS.map(({ value, children }) => (
-            <TabItem
-              value={value}
-              key={value}
-            >
+            <TabItem value={value} key={value}>
               {children}
             </TabItem>
           ))}
         </TabsList>
-        <TabsContent
-          className="grow bg-white rounded-b-md outline-none"
-          value="settings"
-        >
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="settings">
           <DocAppointmentsSettings />
         </TabsContent>
-        <TabsContent
-          className="grow bg-white rounded-b-md outline-none"
-          value="appointments"
-        >
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="appointments">
           <DocAppointmentsList />
         </TabsContent>
-        <TabsContent
-          className="grow bg-white rounded-b-md outline-none"
-          value="slots"
-        >
+        <TabsContent className="grow rounded-b-md bg-white outline-none" value="slots">
           <DocAppointmentsSlots />
         </TabsContent>
       </Tabs>
@@ -71,10 +54,10 @@ export const View: React.FC = () => {
   );
 };
 
-const TabItem = ({ children, value }: { children: React.ReactNode, value: string }) => {
+const TabItem = ({ children, value }: { children: React.ReactNode; value: string }) => {
   return (
     <TabsTrigger
-      className="bg-white px-5 py-3 flex-1 flex items-center justify-center text-sm text-primary hover:font-medium cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none data-[state=active]:text-primary data-[state=active]:font-bold"
+      className="flex flex-1 cursor-pointer items-center justify-center bg-white px-5 py-3 text-sm text-primary hover:font-medium data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-primary"
       value={value}
     >
       {children}

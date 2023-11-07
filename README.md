@@ -1,6 +1,34 @@
-# React + TypeScript + Vite
+[![Doctors APP](https://github.com/Doctorchat/doctors-app-ts/actions/workflows/prod.yaml/badge.svg?branch=main)](https://github.com/Doctorchat/doctors-app-ts/actions/workflows/prod.yaml)
+# 👨‍⚕️ Doctor's Cabinet 
+
+## API ENV:
+
+```
+VITE_API_URL=
+```
+
+## Pusher ENV
+```
+VITE_SOCKET_PUSHER_KEY=
+VITE_SOCKET_PUSHER_CLUSTER=
+```
+
+## Firebase ENV
+```
+VITE_FIREBASE_VAPID_KEY=
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
 
 Currently, two official plugins are available:
 

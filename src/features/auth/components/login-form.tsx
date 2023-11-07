@@ -30,7 +30,7 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
-import { getApiErrorMessages } from "@/utils";
+import { getApiErrorMessagesLogin } from "@/utils";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
@@ -66,7 +66,7 @@ export const LoginForm: React.FC = () => {
       else navigate("/");
     } catch (error) {
       console.log(error);
-      setApiErrors(getApiErrorMessages(error));
+      setApiErrors(getApiErrorMessagesLogin(error, t));
     }
   };
 
@@ -138,11 +138,11 @@ export const LoginForm: React.FC = () => {
                         {t("auth:password")}
                       </FormLabel>
                       <FormLabel>
-                        <Link to="/auth/restore/password">
+                        {/* <Link to="/auth/restore/password">
                           <p className="text-red-500 underline">
                             {t("validations:forgot_password")}
                           </p>
-                        </Link>
+                        </Link> */}
                       </FormLabel>
                     </div>
                     <FormControl>
@@ -155,7 +155,7 @@ export const LoginForm: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isAuthInProcess} className="w-full">
+            <Button type="submit" disabled={isAuthInProcess} className="w-full" variant="primary">
               {t("auth:login")}
               {isAuthInProcess && "..."}
             </Button>

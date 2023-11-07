@@ -13,6 +13,7 @@ import { HiVideoCamera } from "react-icons/hi";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui";
+import { useNavigate } from "react-router-dom";
 
 const CalendarFallback = () => {
   const { t } = useTranslation();
@@ -36,6 +37,7 @@ const CalendarFallback = () => {
 
 const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], setMonth }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const initialValue = new Date() ? new Date() : null;
   const [value, setValue] = useState<Date | null>(initialValue);
   const [scheduleOfDay, setSchedule] = useState<any>();
@@ -51,7 +53,7 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
   };
   useEffect(() => {
     setSchedule(findAppointmentsByDate(new Date(), data));
-  }, []);
+  }, [loading]);
   if (loading) {
     return <CalendarFallback />;
   }
@@ -61,7 +63,7 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
       key="card-calendar"
     >
       <Calendar
-        key="calendar"
+        key="calendar-data"
         onMonthChange={onChangeMonth}
         value={value}
         dayClassName={(date, { selected }) =>
@@ -110,7 +112,10 @@ const CalendarReservations: React.FC<CalendarProps> = ({ loading, data = [], set
         {scheduleOfDay?.map((event: any) => (
           <div
             key={event.id}
-            className="user-select mb-2 flex cursor-pointer items-center justify-between rounded-md p-2 hover:bg-gray-50 dark:hover:bg-gray-600/40"
+            className="user-select hover mb-2 flex cursor-pointer items-center justify-between rounded-md border p-2 hover:bg-gray-200 dark:hover:bg-gray-600/40"
+            onClick={() =>
+              navigate("/conversations?patientId=" + event.chat_id + "&anonymous=false")
+            }
           >
             <div className="flex items-center gap-3">
               <div

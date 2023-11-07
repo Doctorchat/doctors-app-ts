@@ -1,5 +1,5 @@
 {
-    "title": "Investigații",
+    "title": "Anchete",
     "add_question": "Adaugă o întrebare",
     "edit_question": "Editează întrebarea",
     "edit_modal_description": "Editează întrebarea personalizată",
@@ -9,7 +9,7 @@
     "question": "Întrebarea",
     "delete_question_description": "Ești sigur că vreai să ștergi această întrebare ?",
     "title_delete": "Ștergere",
-    "survey_ro": "Sondaj Ro",
-    "survey_en": "Sondaj EN",
-    "survey_ru": "Sondaj RU"
+    "survey_ro": "Ancheta Ro",
+    "survey_en": "Ancheta EN",
+    "survey_ru": "Ancheta RU"
 }

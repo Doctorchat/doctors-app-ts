@@ -12,8 +12,6 @@ import { RequestFileStore, TreeNodeData } from "../types";
 import { apiPutRecomandations } from "../api";
 import { toast } from "@/hooks";
 import { getApiErrorMessages } from "@/utils";
-import { useConversationLayoutStore } from "./layout";
-import { useQueryClient } from "react-query";
 
 const { TreeNode } = TreeSelect;
 
@@ -31,8 +29,6 @@ type RecProps = {
 export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) => {
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
-
   const open = useRecomandAnalysisStore((store) => store.open);
   const { treeData, isAnalysesLoading, chat_id } = useRecomandation();
 
@@ -83,10 +79,9 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
 
     return false;
   };
-
   return (
     <ModalComponent
-      disableSubmitButton={isAnalysesLoading}
+      disableSubmitButton={isAnalysesLoading || !value.length}
       onSubmit={sendRecomandation}
       title={t("conversations:recomand_analysis_dialog:title")}
       isOpen={open}
@@ -106,7 +101,7 @@ export const RecomandAnalysis: React.FC<RecProps> = ({ id, conversationsType }) 
             style={{ width: "100%" }}
             placeholder={t("conversations:recomand_analysis_dialog.placeholder")}
             treeCheckable
-            treeDefaultExpandAll
+            treeDefaultExpandedKeys={["Categorii"]}
             treeNodeFilterProp="title"
             onChange={onChange}
           >

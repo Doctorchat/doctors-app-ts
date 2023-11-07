@@ -2,5 +2,15 @@
     "vacation": "Vacation",
     "history_vacation": "Leave history",
     "resources": "Resources",
-    "description": "Select the leave start and end dates"
+    "description": "Select the leave start and end dates",
+    "cancel": {
+        "title": "Cancel vacation",
+        "description": "Are you sure you want to cancel the current interval?"
+    },
+    "time_progress": "In Progress",
+    "time_finished": "Finished",
+    "time_waiting": "Waiting",
+    "default_finished": "Finished leave interval will be displayed here",
+    "default_waiting": "Holiday interval will be displayed here if waiting",
+    "default_progress": "The leave interval will be displayed here if it is in progress"
 }

@@ -2,13 +2,14 @@
   "conversations": "Conversații",
   "recent_conversations": "Conversații recente",
   "select_conversation": "Selectați o conversație",
-  "create_conversation": "Incepe o conversație",
+  "create_conversation": "Începe sau selectează un grup",
   "patients": "Pacienți",
   "doctors_chats": "Doctori",
   "doctors": "Doctori",
   "corporate_client": "Corporativ",
-  "actualy_chats": "Actuale",
+  "actualy_chats": "Chat-uri actuale",
   "chats_closed": "Chat-uri închise",
+  "create_chat_doc": "Creează un grup nou",
   "soon": "Coming soon",
   "no_conversations": "Nu aveți nici o solicitare",
   "no_schedule": "Nu aveți nici o programare",
@@ -17,7 +18,7 @@
   "consultation_video": "via Video",
   "close_conversation": {
     "title": "Închide conversația",
-    "description": "Confirmă că vrei să închizi conversaţia"
+    "description": "Confirmă soluționarea chatului. După marcarea chatului că s-a soluționat, chatul va fi disponibil încă 24 de ore, după care va fi arhivat"
   },
   "approval_request": {
     "title": "Este necesară aprobarea conversației",
@@ -45,6 +46,7 @@
     }
   },
   "enter_message": "Introduceți mesajul",
+  "arhived_chat": "CHATUL ESTE ARHIVAT",
   "upload_file": "Încărcați un fișier",
   "recomand_analysis_dialog": {
     "title": "Recomandă analize",
@@ -54,5 +56,15 @@
   },
   "request_file": "Solicitați un fișier",
   "click_to_select_file": "Faceți clic pentru a selecta un fișier",
-  "select_different_file": "Selectați alt fișier"
+  "select_different_file": "Selectați alt fișier",
+  "message_template": {
+    "templates": "Șabloane",
+    "edit_template": "Editați șablonul",
+    "add_template": "Adăugați un șablon",
+    "create_template": "Creați un șablon",
+    "select_template": "Selectați un șablon",
+    "title_template": "Titlu",
+    "name_template": "Șabloan"
+  },
+  "search_chat": "Nume / Prenume"
 }

@@ -17,28 +17,13 @@ import {
 import { useToast } from "@/hooks";
 import { cn, getApiErrorMessages } from "@/utils";
 
-import {
-  MessageTemplates,
-  RequestFile,
-  UploadFile,
-  useConversationLayoutStore,
-  useMessageTemplatesStore,
-  useRequestFileStore,
-  useUploadFileStore,
-} from "..";
-import { useSelector } from "react-redux";
+import { UploadFile, useUploadFileStore } from "..";
+
 import { apiSendMessageDoctors } from "../../api";
 import { useConversation } from "../../hooks/use-conversation";
 
 export const MessageBarDoctors: React.FC = () => {
   const { t } = useTranslation();
-  const { chatContentDoctors } = useSelector((store: any) => ({
-    chatContentDoctors: store.chatContentDoctors.data,
-  }));
-  const { doctorInfo } = useSelector((store: any) => ({
-    doctorInfo: store.doctorInfo.doctorInfo,
-  }));
-
   const { toast } = useToast();
   const setUploadFileOpen = useUploadFileStore((store) => store.setOpen);
   const [content, setContent] = React.useState("");
@@ -116,7 +101,7 @@ export const MessageBarDoctors: React.FC = () => {
               </DropdownMenu>
             </div>
             <Button
-              variant="default"
+              variant="primary"
               size="icon"
               disabled={isSending || content.length === 0}
               onClick={onSendMessageHandler}

@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-import { ArrowUpTrayIcon, DocumentTextIcon, NoSymbolIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { shallow } from "zustand/shallow";
@@ -16,73 +14,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
-import { useToast } from "@/hooks";
-import { bytesToSize, cn, getApiErrorMessages, validateFile } from "@/utils";
-import { useSelector } from "react-redux";
+
 import { useConversation } from "../../hooks";
 import { apiCloseChat } from "../../api";
 
-export const ALLOWED_FILE_TYPES = [
-  ".png",
-  ".jpeg",
-  ".jpg",
-  ".bmp",
-  ".doc",
-  ".docx",
-  ".pdf",
-  ".xlsx",
-  ".xls",
-  ".mov",
-  ".avi",
-  ".mp4",
-];
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
-
-interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
-  error: string | null;
-}
-
-const Dropzone: React.FC<DropzoneProps> = ({ error, className, ...props }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div
-      className={cn(
-        "flex w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-neutral-500 bg-neutral-50 px-4 py-10",
-        "active:border-neutral-600 active:bg-neutral-200 md:hover:border-neutral-600 md:hover:bg-neutral-200",
-        "transition-colors duration-200 ease-in-out",
-        { "border-none bg-red-50": error },
-        className
-      )}
-      {...props}
-    >
-      {error === null && (
-        <>
-          <ArrowUpTrayIcon className="h-9 w-9" />
-          <p className="mt-4 select-none text-sm font-medium">
-            {t("conversations:click_to_select_file")}
-          </p>
-        </>
-      )}
-      {Boolean(error) && (
-        <>
-          <NoSymbolIcon className="h-10 w-10 text-red-600" />
-          <h3 className="mt-4 select-none font-medium text-red-600">
-            {t("validations:invalid_file")}
-          </h3>
-          <p className="mt-2 text-center text-sm text-red-600">{error}</p>
-        </>
-      )}
-    </div>
-  );
-};
-
-interface UploadFileStore {
+interface CloseConversation {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-export const useCloseConversation = createWithEqualityFn<UploadFileStore>(
+export const useCloseConversation = createWithEqualityFn<CloseConversation>(
   (set) => ({
     open: false,
     setOpen: (open) => set({ open }),
@@ -130,7 +71,12 @@ export const CloseConversation: React.FC = () => {
             >
               {t("common:cancel")}
             </Button>
-            <Button className="ml-2 w-full" disabled={isSending} onClick={onCloseConversation}>
+            <Button
+              className="ml-2 w-full"
+              disabled={isSending}
+              onClick={onCloseConversation}
+              variant="primary"
+            >
               {t("common:confirm")}
             </Button>
           </div>

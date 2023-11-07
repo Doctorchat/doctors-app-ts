@@ -5,6 +5,7 @@ import {
   ClipboardDocumentListIcon,
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
+  DocumentTextIcon,
   PaperClipIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -33,6 +34,7 @@ import { RecomandAnalysis, useRecomandAnalysisStore } from "./recomand-analysis"
 import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
 import { CloseConversation, useCloseConversation } from "./close-conversation";
+import { SelectTemplate, useSelectTemplateStore } from "./select-template";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -43,6 +45,7 @@ export const MessageBar: React.FC = () => {
   const setRecomandationAnalysisOpen = useRecomandAnalysisStore((store) => store.setOpen);
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setCloseConversation = useCloseConversation((store) => store.setOpen);
+  const setSelectTemplateOpen = useSelectTemplateStore((store) => store.setOpen);
 
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
@@ -71,7 +74,15 @@ export const MessageBar: React.FC = () => {
     }
   };
 
-  if (conversationPatients?.isAccepted && conversationPatients?.status === "open") {
+  const isVisibleMessageBar =
+    (conversationPatients?.isAccepted && conversationPatients?.status === "open") ||
+    (conversationPatients?.isAccepted && conversationPatients?.status === "responded") ||
+    conversationPatients?.type === "support" ||
+    conversationPatients?.status === "closed";
+  const isSuportChat = conversationPatients?.type !== "support";
+  const isRespondedChat = conversationPatients?.status !== "responded";
+  const isChatClosed = conversationPatients?.status === "closed";
+  if (isVisibleMessageBar) {
     return (
       <>
         <div className="p-3 md:p-5 lg:p-3 xl:p-5">
@@ -81,9 +92,14 @@ export const MessageBar: React.FC = () => {
             })}
           >
             <Textarea
+              disabled={isChatClosed}
               minRows={1}
               maxRows={10}
-              placeholder={`${t("conversations:enter_message")}...`}
+              placeholder={
+                isChatClosed
+                  ? `${t("conversations:arhived_chat")}...`
+                  : `${t("conversations:enter_message")}...`
+              }
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onKeyDown={(e) => {
@@ -99,49 +115,67 @@ export const MessageBar: React.FC = () => {
             <div className="flex items-center justify-between space-x-2 p-2">
               <div className="flex items-center space-x-1.5">
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                  <DropdownMenuTrigger asChild disabled={isChatClosed}>
                     <Button variant="ghost" size="icon">
                       <PaperClipIcon className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="top" align="start" className="w-48">
-                    <DropdownMenuItem
-                      onClick={() =>
-                        isMobile
-                          ? navigate(
-                              `/recomandation-analyze?id=${conversationPatients.chat_id}?type=${conversationsType}`
-                            )
-                          : setRecomandationAnalysisOpen(true)
-                      }
-                    >
-                      {t("conversations:recomand_analysis_dialog:title")}
-                      <DropdownMenuShortcut>
-                        <ClipboardDocumentListIcon className="h-5 w-5" />
-                      </DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    {isSuportChat && (
+                      <DropdownMenuItem
+                        onClick={() =>
+                          isMobile
+                            ? navigate(
+                                `/recomandation-analyze?chatId=${conversationPatients?.chat_id}`
+                              )
+                            : setRecomandationAnalysisOpen(true)
+                        }
+                      >
+                        {t("conversations:recomand_analysis_dialog:title")}
+                        <DropdownMenuShortcut>
+                          <DocumentTextIcon className="h-5 w-5" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    )}
+                    {isSuportChat && (
+                      <DropdownMenuItem onClick={() => setSelectTemplateOpen(true)}>
+                        {t("conversations:message_template:select_template")}
+                        <DropdownMenuShortcut>
+                          <ClipboardDocumentListIcon className="h-5 w-5" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem onClick={() => setUploadFileOpen(true)}>
                       {t("conversations:upload_file")}
                       <DropdownMenuShortcut>
                         <DocumentArrowUpIcon className="h-5 w-5" />
                       </DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setRequestFileOpen(true)}>
-                      {t("conversations:request_file")}
-                      <DropdownMenuShortcut>
-                        <DocumentArrowDownIcon className="h-5 w-5" />
-                      </DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    {isSuportChat && (
+                      <DropdownMenuItem onClick={() => setRequestFileOpen(true)}>
+                        {t("conversations:request_file")}
+                        <DropdownMenuShortcut>
+                          <DocumentArrowDownIcon className="h-5 w-5" />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                <Button variant="ghost" size="icon" onClick={() => setCloseConversation(true)}>
-                  <XMarkIcon className="h-5 w-5" />
-                </Button>
+                {isRespondedChat && isSuportChat && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setCloseConversation(true)}
+                    disabled={isChatClosed}
+                  >
+                    <XMarkIcon className="h-5 w-5" />
+                  </Button>
+                )}
               </div>
               <Button
-                variant="default"
+                variant="primary"
                 size="icon"
-                disabled={isSending || content.length === 0}
+                disabled={isSending || content.length === 0 || isChatClosed}
                 onClick={onSendMessageHandler}
               >
                 {isSending ? (
@@ -158,6 +192,7 @@ export const MessageBar: React.FC = () => {
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
+        <SelectTemplate setContent={setContent} />
       </>
     );
   }

@@ -3,13 +3,14 @@
   "on_succes_notification": "Successfully added data",
   "recent_conversations": "Recent conversations",
   "select_conversation": "Select conversation",
-  "create_conversation": "Select or create conversation",
+  "create_conversation": "Select or create a group",
   "patients": "Patients",
   "doctors": "Doctors",
   "doctors_chats": "Doctors",
   "corporate_client": "Corporate",
-  "actualy_chats": "Current",
+  "actualy_chats": "Current chats",
   "chats_closed": "Closed chats",
+  "create_chat_doc": "Create a new group",
   "soon": "Coming soon",
   "no_conversations": "You have no request",
   "no_schedule": "You have no appointment",
@@ -18,7 +19,7 @@
   "consultation_video": "via Video",
   "close_conversation": {
     "title": "Close the conversation",
-    "description": "Confirm that you want to close the conversation"
+    "description": "Confirm chat resolution. After marking the chat as resolved, the chat will be available for another 24 hours, after which it will be archived"
   },
   "approval_request": {
     "title": "Dialogue confirmation required",
@@ -46,6 +47,7 @@
     }
   },
   "enter_message": "Enter message",
+  "arhived_chat": "THE CHAT IS ARCHIVED",
   "upload_file": "Upload file",
   "recomand_analysis_dialog": {
     "title": "Recommend analysis",
@@ -55,5 +57,15 @@
   },
   "request_file": "Request file",
   "click_to_select_file": "Click to select a file",
-  "select_different_file": "Choose another file"
+  "select_different_file": "Choose another file",
+  "message_template": {
+    "templates": "Templates",
+    "edit_template": "Edit template",
+    "add_template": "Add template",
+    "create_template": "Create template",
+    "select_template": "Select a template",
+    "title_template": "Title",
+    "name_template": "Template"
+  },
+  "search_chat": "Firstname / Lastname"
 }

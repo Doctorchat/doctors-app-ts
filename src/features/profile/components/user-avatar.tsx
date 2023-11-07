@@ -5,23 +5,18 @@ import { ArrowUpTrayIcon, UserIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { updateAvatar } from "../api";
+import { useAuth } from "@/features/auth";
 
 const ALLOWED_FILE_TYPES = [".png", ".jpeg", ".jpg"];
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 export const UserAvatar = ({ image }: { image: string }) => {
   const { t } = useTranslation();
-
+  const { revalidateSession } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    axiosInstance.get(image).catch((e) => {
-      if (e) setError("error");
-    });
-  }, []);
 
   const content = () => {
     if (file) {
@@ -33,7 +28,7 @@ export const UserAvatar = ({ image }: { image: string }) => {
     return <UserIcon className="w-full" />;
   };
 
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
@@ -54,7 +49,11 @@ export const UserAvatar = ({ image }: { image: string }) => {
       } else {
         setError(null);
         setFile(file);
-        updateAvatar(file);
+        const formData = new FormData();
+        formData.append("avatar", file);
+        await updateAvatar(formData)
+          .then(() => revalidateSession())
+          .catch((e: any) => console.error(e));
       }
     }
 
@@ -72,7 +71,7 @@ export const UserAvatar = ({ image }: { image: string }) => {
         multiple={false}
         onChange={onInputChange}
       />
-      <Button onClick={() => inputRef.current?.click()}>
+      <Button variant="primary" onClick={() => inputRef.current?.click()}>
         <span className="mr-2 hidden sm:flex">{t("common:upload")}</span>&nbsp;
         <ArrowUpTrayIcon className="h-5 w-5" />
       </Button>

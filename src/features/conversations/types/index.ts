@@ -80,9 +80,10 @@ export interface Conversation {
   chat_id: number;
   user_id: number;
   isAccepted: boolean;
-  status: "open" | "closed";
+  status: "open" | "closed" | "responded";
   messages: ConversationMessage[];
   doctor_chat_id?: number;
+  type: "standard" | "consilium" | "auto" | "support" | "internal";
 }
 export interface RecomandationsAnalyzes {
   name: string;

@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import ChatsView from "../chats/chatsView";
 import { IChats, TabsProps } from "../types";
 import { sortChatsByUpdatedDoctor, sortChatsByUpdatedOpen } from "@/utils/sort-list";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
+import { ConversationPreview } from "@/features/conversations/types";
 
 const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
   const { t } = useTranslation();
@@ -20,6 +23,21 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
       children: t("conversations:doctors_chats"),
     },
   ];
+
+  type RootState = {
+    listsChatsShorts: {
+      listPatients: ConversationPreview[];
+      listClosed: ConversationPreview[];
+      listDoctors: ConversationPreview[];
+    };
+  };
+
+  const { patients, closed, doctors } = useSelector((store: RootState) => ({
+    patients: store.listsChatsShorts.listPatients,
+    closed: store.listsChatsShorts.listClosed,
+    doctors: store.listsChatsShorts.listDoctors,
+  }));
+
   return (
     <div className="custom-scroll-bar h-full w-full rounded-lg border p-1 md:rounded-lg md:border md:border-neutral-200 md:border-neutral-200">
       <Tabs defaultValue="actualy_chats">
@@ -32,13 +50,16 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
         </TabsList>
 
         <TabsContent value="actualy_chats">
-          <ChatsView data={sortChatsByUpdatedOpen(data?.open ?? [])} loading={loading} />
+          {/* data?.open ?? [] */}
+          <ChatsView data={sortChatsByUpdatedOpen(patients ?? [])} loading={loading} />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="chats_closed">
-          <ChatsView data={sortChatsByUpdatedOpen(data?.closed ?? [])} loading={loading} />
+          {/* data?.closed ?? [] */}
+          <ChatsView data={sortChatsByUpdatedOpen(closed ?? [])} loading={loading} />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="doctors">
-          <ChatsView data={sortChatsByUpdatedDoctor(data?.doctor ?? [])} loading={loading} />
+          {/* (data?.doctor ?? [] */}
+          <ChatsView data={sortChatsByUpdatedOpen(doctors ?? [])} loading={loading} />
         </TabsContent>
       </Tabs>
     </div>

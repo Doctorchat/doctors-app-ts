@@ -6,7 +6,7 @@ import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 
 import { apiGetSessionUser } from "../api";
 
-import { SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
+import { FIREBASE_PERMISSION, SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
 import { useAppI18n } from "@/hooks";
 import { AppLocale } from "@/types";
 import { fetchToken } from "../../notification-firebase";
@@ -59,6 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(null);
     setUser(null);
     fetchToken(null);
+    localStorage.removeItem(FIREBASE_PERMISSION);
   }, [setToken, setUser]);
 
   const revalidateSession = React.useCallback(async () => {
@@ -84,41 +85,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffectOnce(() => {
     revalidateSession();
   });
-  React.useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      const messaging = getMessaging(firebaseApp);
-      const unsubscribe = onMessage(messaging, (payload: any) => {
-        const { title, body } = payload.data;
-        const bodyData = JSON.parse(body);
-        const chatId = window.location.search
-          ? new URLSearchParams(window.location.search).get(
-              bodyData.isPatientDoctorChat ? "patientId" : "doctorId"
-            )
-          : false;
 
-        if (!chatId || Number(chatId) !== Number(bodyData.chat_id)) {
-          const notification = new Notification(title, {
-            body: bodyData.content,
-            icon: "https://doctorchat.md/wp-content/themes/doctorchat/favicon/apple-touch-icon.png",
-          });
-          const chat_type = bodyData.isPatientDoctorChat ? "patientId=" : "doctorId=";
-          const url =
-            window.location.origin +
-            "/conversations?" +
-            chat_type +
-            (bodyData.chat_id ?? chatId) +
-            "&anonymous=false";
-          notification.onclick = () => {
-            window.open(url);
-          };
-        }
-      });
-
-      return () => {
-        unsubscribe();
-      };
-    }
-  }, [window.location.href]);
 
   return (
     <AuthContext.Provider

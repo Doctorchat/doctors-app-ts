@@ -1,4 +1,8 @@
-import { ConversationDoctors, LastMessageDc } from "@/features/conversations/types";
+import {
+  ConversationDoctors,
+  ConversationPreview,
+  LastMessageDc,
+} from "@/features/conversations/types";
 
 export interface IReferral {
   partner_url: null | number | string | object;
@@ -128,7 +132,7 @@ export interface StatisticsDashboard {
 
 export interface ChatsProps {
   loading?: boolean;
-  data?: IChatCloseOrOpen[] | ConversationDoctors[];
+  data?: IChatCloseOrOpen[] | ConversationDoctors[] | ConversationPreview[];
 }
 
 export interface TabsProps {

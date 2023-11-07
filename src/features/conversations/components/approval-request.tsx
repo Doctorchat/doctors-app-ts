@@ -102,7 +102,11 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
     }
   };
 
-  if (chatConversation?.isAccepted === false && chatConversation?.status === "open") {
+  if (
+    chatConversation?.isAccepted === false &&
+    chatConversation?.status === "open" &&
+    chatConversation?.type !== "support"
+  ) {
     return (
       <>
         <div

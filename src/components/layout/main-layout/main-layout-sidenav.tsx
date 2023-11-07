@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslation } from "react-i18next";
@@ -40,9 +40,9 @@ export const useMainLayoutSidenavStore = createWithEqualityFn<
       onRehydrateStorage: (state) => {
         state.isOverlay = false;
       },
-    },
+    }
   ),
-  shallow,
+  shallow
 );
 
 const SidenavContent = React.memo(() => {
@@ -52,13 +52,14 @@ const SidenavContent = React.memo(() => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const isCollapsedImpl = isCollapsed && isMobile === false;
-
+  const navigate = useNavigate();
   return (
     <>
       <header
-        className={cn("flex h-16 flex-shrink-0 items-center px-5", {
+        className={cn("flex h-16 flex-shrink-0 cursor-pointer items-center px-5", {
           "px-[19px]": isCollapsedImpl,
         })}
+        onClick={() => navigate("/")}
       >
         <div className="flex items-center">
           <img
@@ -91,7 +92,7 @@ const SidenavContent = React.memo(() => {
                         "transition-colors md:hover:bg-neutral-200 md:hover:text-typography-primary",
                         "active:bg-neutral-200 active:text-typography-primary",
                         { "px-2.5": isCollapsedImpl },
-                        { "bg-neutral-200 text-typography-primary": isActive },
+                        { "bg-neutral-200 text-typography-primary": isActive }
                       )
                     }
                   >
@@ -134,7 +135,7 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
       isOverlay: store.isOverlay,
       setIsOverlay: store.setIsOverlay,
     }),
-    shallow,
+    shallow
   );
   const location = useLocation();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -174,7 +175,7 @@ export const MainLayoutSidenav: React.FC<MainLayoutSidenavProps> = ({
       }}
       className={cn(
         "flex flex-shrink-0 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-100 transition-[width]",
-        className,
+        className
       )}
       {...props}
     >

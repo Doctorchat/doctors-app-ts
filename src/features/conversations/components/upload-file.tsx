@@ -256,6 +256,7 @@ export const UploadFile: React.FC<UploadFileProps> = ({ senderFiler }) => {
           <DialogFooter className={cn({ "sm:justify-between": Boolean(file) })}>
             {file && (
               <Button
+                variant="primary"
                 className="w-full sm:w-auto"
                 disabled={isSending}
                 onClick={() => inputRef.current?.click()}
@@ -275,6 +276,7 @@ export const UploadFile: React.FC<UploadFileProps> = ({ senderFiler }) => {
               <Button
                 className="ml-2 w-full"
                 disabled={isSending}
+                variant="primary"
                 onClick={
                   senderFiler === "patients"
                     ? onUploadFilePatientsHandler

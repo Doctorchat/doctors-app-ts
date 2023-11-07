@@ -25,7 +25,7 @@ import { apiReadMessages, apiReadMessagesDoctors } from "../api";
 import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
 import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
-import { MessageType } from "./message-content/messageType";
+import { updateDoctorUnread, updatePatientUnreadCount } from "@/store/slices/listsChatsShortsSlice";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -41,6 +41,9 @@ export const View: React.FC = () => {
 
   const { chatContentDoctors } = useSelector((store: any) => ({
     chatContentDoctors: store.chatContentDoctors.data,
+  }));
+  const { listsChatsShorts } = useSelector((store: any) => ({
+    listsChatsShorts: store.listsChatsShorts,
   }));
 
   const grouped = React.useMemo(() => {
@@ -120,6 +123,9 @@ export const View: React.FC = () => {
         const fetchDataAndDelay = async () => {
           setTimeout(async () => {
             dispatch(updateUnReadMessage({ id: +chatConversation?.chat_id, unread: 0 }));
+            if (listsChatsShorts.listPatients.length) {
+              dispatch(updatePatientUnreadCount({ id: +chatConversation?.chat_id, unread: 0 }));
+            }
             await apiReadMessages({ id: chatConversation?.chat_id, messages: unreadedMessages });
           }, 750);
         };
@@ -127,6 +133,7 @@ export const View: React.FC = () => {
       }
     }
   }, [chatConversation?.messages]);
+
   React.useEffect(() => {
     if (chatContentDoctors?.messages) {
       const unreadedMessages = chatContentDoctors?.messages
@@ -142,6 +149,11 @@ export const View: React.FC = () => {
                 unreadCount: 0,
               })
             );
+            if (listsChatsShorts.listDoctors.length) {
+              dispatch(
+                updateDoctorUnread({ id: chatContentDoctors?.doctor_chat_id, unreadCount: 0 })
+              );
+            }
             await apiReadMessagesDoctors({
               doctor_chat_id: chatContentDoctors?.doctor_chat_id,
               messages: unreadedMessages,
@@ -154,10 +166,13 @@ export const View: React.FC = () => {
   }, [chatContentDoctors?.messages]);
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-lg">
+    <div key="conversations" className="relative flex h-full flex-col overflow-hidden rounded-lg">
       {patientId ? <Header /> : <HeaderDoctors />}
 
-      <div ref={ref} className="flex-1 space-y-4 overflow-y-auto p-3 md:p-5 lg:p-3 xl:p-5">
+      <div
+        ref={ref}
+        className="custom-scroll-bar flex-1 space-y-4  overflow-y-auto overflow-x-hidden	 p-3 md:p-5 lg:p-3 xl:p-5"
+      >
         {grouped.map(({ key, messages }) => (
           <div key={key} className="space-y-2.5">
             <div className={cn("relative flex h-10 items-center justify-center px-5")}>
@@ -190,7 +205,9 @@ export const View: React.FC = () => {
                   >
                     {t("conversations:recomand_analysis_dialog:recomandation_text")}
                     {message.recommendations.map((recomandation, index) => (
-                      <MessageBubbleText>{index + 1 + ". " + recomandation.name}</MessageBubbleText>
+                      <MessageBubbleText key={index}>
+                        {index + 1 + ". " + recomandation.name}
+                      </MessageBubbleText>
                     ))}
                   </MessageBubble>
                 )}

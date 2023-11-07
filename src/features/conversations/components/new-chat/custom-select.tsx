@@ -12,7 +12,9 @@ export const CustomSelectOption = ({
   updated,
   data,
   isSelected,
+  ...props
 }: any) => {
+  console.log(innerProps, label, avatar, seen, updated, data, isSelected);
   return (
     <div
       className={`flex items-center justify-between p-2 ${
@@ -22,7 +24,7 @@ export const CustomSelectOption = ({
     >
       <div className="flex items-center">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={avatar} alt={avatar} />
+          <AvatarImage src={data.avatar} alt={data.avatar} />
           <AvatarFallback>{getInitials(label)}</AvatarFallback>
         </Avatar>
         <span className="ml-2 rtl:mr-2">{label}</span>
@@ -33,6 +35,7 @@ export const CustomSelectOption = ({
   );
 };
 export const CustomControlMulti = ({ children, label, avatar, seen, data, ...props }: any) => {
+
   return (
     <MultiValueLabel {...props}>
       <div className="inline-flex items-center">

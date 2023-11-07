@@ -63,7 +63,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.9.1",
-    "zod": "^3.22.2",
+    "zod": "^3.22.3",
     "zustand": "^4.4.1"
   },
   "devDependencies": {
@@ -85,7 +85,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "postcss": "^8.4.29",
+    "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^12.0.1",
     "prettier": "^2.8.8",

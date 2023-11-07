@@ -1,16 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
-import { useQuery } from "react-query";
-import { getPartners } from "../api";
-import PartnersBalance, { PartnersBalanceFallback } from "./partners-balance";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
-import PartnersSettings from "./tabs-container/partners-settings";
 import PartnersReferrals from "./tabs-container/partners-referrals";
 import PartnersTransactions from "./tabs-container/partners-transactions";
 import { QrCode } from "./qr-code";
-import { boolean } from "zod";
 export interface ViewProps {
   inContainer?: boolean;
 }
@@ -35,7 +29,7 @@ export const View: React.FC<ViewProps> = ({ inContainer }) => {
       className={
         cn("custom-scroll-bar h-full w-full md:rounded-lg md:border md:border-neutral-200") +
         " " +
-        cn(inContainer ? "rounded-lg border p-1 text-typography-primary" : "p-10")
+        cn(inContainer ? "rounded-lg border p-1 text-typography-primary" : "p-7")
       }
     >
       <div

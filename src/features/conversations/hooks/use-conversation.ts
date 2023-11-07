@@ -8,18 +8,11 @@ import {
   apiGetDoctorChatCard,
   apiGetUserCard,
 } from "../api";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  SOCKET_PUSHER_EVENT_RECEIVE,
-  SOCKET_PUSHER_CHANNEL_DOCTOR,
-  SOCKET_PUSHER_CHANNEL_PATIENT,
-  SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT,
-  SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT,
-} from "@/config/app";
-import usePusher from "./usePusher";
-import { addMessage, addMessages } from "@/store/slices/chatContentSlice";
+import { useDispatch } from "react-redux";
+
+import { addMessages } from "@/store/slices/chatContentSlice";
 import { Conversation } from "../types";
-import { addMessagesDoctors, addMessageDoctors } from "@/store/slices/chatContentDoctorsSlice";
+import { addMessagesDoctors } from "@/store/slices/chatContentDoctorsSlice";
 import { useMediaQuery } from "usehooks-ts";
 
 export const useConversation = () => {
@@ -27,17 +20,7 @@ export const useConversation = () => {
   const [patientId, setPatientId] = React.useState<string | null>(null);
   const [doctorId, setDoctorId] = React.useState<string | null>(null);
   const isMobile = useMediaQuery("(max-width: 1024px)");
-  const { pusher } = usePusher();
-  const sessionUser = localStorage.getItem("session:user") ?? "";
-  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
   const dispatch = useDispatch();
-  const { chatContent } = useSelector((store: any) => ({
-    chatContent: store.chatContent?.conversation,
-  }));
-  const { chatContentDoctors } = useSelector((store: any) => ({
-    chatContentDoctors: store.chatContentDoctors.data,
-  }));
-
   const {
     data: conversationPatients,
     isLoading: isConversationLoading,
@@ -122,58 +105,6 @@ export const useConversation = () => {
       setDoctorId(null);
     }
   }, [searchParams, isMobile]);
-
-  React.useEffect(() => {
-    const role = current_user.role === 2;
-
-    if (pusher && conversationPatients) {
-      const channel = pusher.subscribe(
-        (role ? SOCKET_PUSHER_CHANNEL_DOCTOR : SOCKET_PUSHER_CHANNEL_PATIENT) +
-          (patientId ?? doctorId)
-      );
-
-      channel.bind(SOCKET_PUSHER_EVENT_RECEIVE, (data: any) => {
-        const { content_data } = data;
-        const { message } = JSON.parse(content_data);
-        if (
-          !chatContent.messages.some(
-            (existingMessage: { id: any }) => existingMessage.id === message.id
-          )
-        ) {
-          dispatch(addMessage(message));
-        }
-      });
-
-      return () => {
-        channel.unbind_all();
-        channel.unsubscribe();
-      };
-    }
-  }, [pusher, chatContent.messages]);
-
-  React.useEffect(() => {
-    if (pusher && conversationDoctors) {
-      const channel = pusher.subscribe(
-        SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_CHAT + (patientId ?? doctorId) + "-" + current_user.id
-      );
-      channel.bind(SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT, (data: any) => {
-        const { content_data } = data;
-        const { message } = JSON.parse(content_data);
-        if (
-          !chatContentDoctors.messages.some(
-            (existingMessage: { id: any }) => existingMessage.id === message.id
-          )
-        ) {
-          dispatch(addMessageDoctors(message));
-        }
-      });
-
-      return () => {
-        channel.unbind_all();
-        channel.unsubscribe();
-      };
-    }
-  }, [pusher, chatContentDoctors?.messages]);
 
   return React.useMemo(
     () => ({

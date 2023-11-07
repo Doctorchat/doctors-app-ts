@@ -8,7 +8,6 @@ const extractDayFromDate = (dateString: string): number => {
 
 export const extractDaysFromAppointments = (data: ICalendar[] = []): number[] => {
   const days: number[] = [];
-
   for (const appointment of data) {
     const day = extractDayFromDate(appointment.start_time);
     if (!days.includes(day)) {
@@ -23,7 +22,7 @@ export const findAppointmentsByDate = (date: any, data: ICalendar[] = []): ICale
   const inputDateObj = new Date(date);
   const matchingAppointments: ICalendar[] = [];
   for (const appointment of data) {
-    const appointmentDate = appointment.start_time.substr(0, 10); // Extrage doar partea de dată a start_time
+    const appointmentDate = new Date(appointment.start_time)
     const appointmentDateObj = new Date(appointmentDate);
     if (appointmentDateObj.getDate() === inputDateObj.getDate()) {
       matchingAppointments.push(appointment);

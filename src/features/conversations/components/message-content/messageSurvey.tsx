@@ -7,7 +7,6 @@ interface MessageSurveyProps {
   message: ConversationMessage;
 }
 export const MessageSurvey: React.FC<MessageSurveyProps> = ({ message }) => {
-  const { t } = useTranslation();
   if (message.type !== "answer") return null;
   const contentMessage = message.content && JSON.parse(message.content);
 

@@ -2,13 +2,14 @@
   "conversations": "Диалоги",
   "recent_conversations": "Последние диалоги",
   "select_conversation": "Выберите диалог",
-  "create_conversation": "Выберите или создайте диалог",
+  "create_conversation": "Выберите или создайте группу",
   "patients": "Пациенты",
   "doctors": "Врачи",
   "doctors_chats": "Врачи",
   "corporate_client": "Корпоративный",
-  "actualy_chats": "Текущие",
+  "actualy_chats": "Текущие чаты",
   "chats_closed": "Закрытые чаты",
+  "create_chat_doc": "Создать новую группу",
   "soon": "Coming soon",
   "no_conversations": "У вас нет запроса",
   "no_schedule": "У вас нет расписания",
@@ -17,7 +18,7 @@
   "consultation_video": "через Видео",
   "close_conversation": {
     "title": "Закрыть чат",
-    "description": "Подтвердите, что хотите закрыть чат"
+    "description": "Подтвердите разрешение чата. После отметки чата как решенного, чат будет доступен еще 24 часа, после чего будет заархивирован."
   },
   "approval_request": {
     "title": "Необходимо подтверждение диалога",
@@ -45,6 +46,7 @@
     }
   },
   "enter_message": "Введите сообщение",
+  "arhived_chat": "ЧАТ В АРХИВЕ",
   "upload_file": "Загрузить файл",
   "recomand_analysis_dialog": {
     "title": "Рекомендовать анализ",
@@ -54,5 +56,15 @@
   },
   "request_file": "Запросить файл",
   "click_to_select_file": "Нажмите, чтобы выбрать файл",
-  "select_different_file": "Выберите другой файл"
+  "select_different_file": "Выберите другой файл",
+  "message_template": {
+    "templates": "Шаблоны",
+    "edit_template": "Редактировать шаблон",
+    "add_template": "Добавить шаблон",
+    "create_template": "Создать шаблон",
+    "select_template": "Выберите шаблон",
+    "title_template": "Заголовок",
+    "name_template": "Шаблон"
+  },
+  "search_chat": "Имя / Фамилия"
 }

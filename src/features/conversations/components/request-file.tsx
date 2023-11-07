@@ -109,7 +109,11 @@ export const RequestFile: React.FC = () => {
           <Button variant="outline" disabled={isSending} onClick={() => setOpen(false)}>
             {t("common:cancel")}
           </Button>
-          <Button disabled={isSending || content.length === 0} onClick={onRequestFileHandler}>
+          <Button
+            disabled={isSending || content.length === 0}
+            onClick={onRequestFileHandler}
+            variant="primary"
+          >
             {t("common:send")}
           </Button>
         </DialogFooter>
