@@ -51,15 +51,27 @@ const TabsConversersional: React.FC<TabsProps> = ({ loading, data }) => {
 
         <TabsContent value="actualy_chats">
           {/* data?.open ?? [] */}
-          <ChatsView data={sortChatsByUpdatedOpen(patients ?? [])} loading={loading} />
+          <ChatsView
+            data={sortChatsByUpdatedOpen(patients ?? [])}
+            loading={loading}
+            typeChat="patients"
+          />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="chats_closed">
           {/* data?.closed ?? [] */}
-          <ChatsView data={sortChatsByUpdatedOpen(closed ?? [])} loading={loading} />
+          <ChatsView
+            data={sortChatsByUpdatedOpen(closed ?? [])}
+            loading={loading}
+            typeChat="closed"
+          />
         </TabsContent>
         <TabsContent className="grow rounded-b-md bg-white outline-none" value="doctors">
           {/* (data?.doctor ?? [] */}
-          <ChatsView data={sortChatsByUpdatedOpen(doctors ?? [])} loading={loading} />
+          <ChatsView
+            data={sortChatsByUpdatedOpen(doctors ?? [])}
+            loading={loading}
+            typeChat="doctors"
+          />
         </TabsContent>
       </Tabs>
     </div>

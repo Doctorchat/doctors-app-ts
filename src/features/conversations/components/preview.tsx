@@ -20,7 +20,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";
-
+  console.log(typeConversation === "patients", conversation?.status);
   return (
     <Link
       to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${
@@ -56,11 +56,20 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
               {conversation.name ?? conversation.title}
             </h2>
 
-            {conversation.company_id && (
-              <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
-                {t("conversations:corporate_client")}
-              </Badge>
-            )}
+            {typeConversation === "patients" &&
+              (conversation?.status === "closed" ? (
+                <Badge variant="primary" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_closed")}
+                </Badge>
+              ) : conversation?.status === "open" ? (
+                <Badge variant="progress" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_open")}
+                </Badge>
+              ) : (
+                <Badge variant="success" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_responded")}
+                </Badge>
+              ))}
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">
@@ -85,7 +94,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
             <p className="flex-1 truncate text-sm">{conversation.lastMessage.content}</p>
           )}
           {(conversation.unread ?? conversation.unreadCount) > 0 && (
-            <span className="bg-green-600 ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full	 text-xs font-medium text-white">
+            <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-600	 text-xs font-medium text-white">
               {conversation.unread ?? conversation.unreadCount}
             </span>
           )}

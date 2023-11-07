@@ -1,4 +1,5 @@
 export interface ConversationPreview {
+  status?: string | any;
   updated_at?: string;
   id: number;
   user_id: number;
@@ -35,6 +36,7 @@ export interface ConversationDoctors {
   updated?: string;
   description?: string;
   unread?: number;
+  status?: string;
 }
 export interface LastMessageDc {
   content: string;
