@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
-
 import {
   Button,
   Dialog,
@@ -14,9 +13,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
-
+import Notification from "@/components/ui/notification";
 import { useConversation } from "../../hooks";
 import { apiCloseChat } from "../../api";
+import { useToast } from "@/hooks";
+import { getApiErrorMessages } from "@/utils";
 
 interface CloseConversation {
   open: boolean;
@@ -33,6 +34,7 @@ export const useCloseConversation = createWithEqualityFn<CloseConversation>(
 
 export const CloseConversation: React.FC = () => {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { patientId } = useConversation();
   const open = useCloseConversation((state) => state.open);
   const queryClient = useQueryClient();
@@ -44,12 +46,33 @@ export const CloseConversation: React.FC = () => {
       queryClient.invalidateQueries(["conversation-patient", patientId]),
     ]);
   };
+  const [openNotification, setOpenNotification] = React.useState(false);
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setOpenNotification(!!val);
   const onCloseConversation = async () => {
-    if (patientId)
-      await apiCloseChat({ chat_id: patientId })
-        .then(() => setIsSending(true))
-        .then(() => revalidateQueries())
-        .then(() => setOpen(false));
+    setIsSending(true);
+    console.log(patientId);
+
+    if (patientId) {
+      try {
+        await apiCloseChat({ chat_id: patientId }).then(() => revalidateQueries());
+
+        setOpenNotification(true);
+        setTimeout(() => {
+          setOpenNotification(false);
+        }, 3000);
+        setIsSending(false);
+        setOpen(false);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "common:something_went_wrong",
+          description: getApiErrorMessages(error),
+        });
+        setIsSending(false);
+        setOpen(false);
+      }
+    }
   };
 
   return (
@@ -79,6 +102,12 @@ export const CloseConversation: React.FC = () => {
           </div>
         </DialogFooter>
       </DialogContent>
+      <Notification
+        onOpenChange={setOnOpenChange(null)}
+        open={openNotification ? true : false}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </Dialog>
   );
 };

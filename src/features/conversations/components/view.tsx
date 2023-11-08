@@ -216,7 +216,12 @@ export const View: React.FC = () => {
                     isAutoScrollEnabled={isAutoScrollEnabled}
                     message={message}
                     isArhived={chatConversation?.isAccepted}
-                    openedConversation={chatConversation?.status === "open"}
+                    openedConversation={
+                      !!(
+                        chatConversation?.status === "open" ||
+                        chatConversation?.status === "responded"
+                      )
+                    }
                   />
                 )}
 
