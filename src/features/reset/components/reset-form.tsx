@@ -4,21 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import OtpInput from "react-otp-input";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
-import { CountrySelect } from "@/components/shared";
 import Notification from "@/components/ui/notification";
 import { toast } from "@/hooks";
-import { getApiErrorMessages, getApiErrorMessagesLogin } from "@/utils";
+import { getApiErrorMessages } from "@/utils";
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   FormControl,
@@ -26,14 +19,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Input,
   PasswordInput,
 } from "@/components/ui";
 import { apiCheckCode, apiRestorePassword } from "../api";
 import { useMutation } from "react-query";
 
 const schema = z.object({
-  password: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
+  password: z.string().nonempty(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -103,12 +95,11 @@ export const ResetForm: React.FC = () => {
         <div
           style={{
             display: step === 1 ? "none" : "flex",
-            // visibility: step === 1 ? "hidden" : "visible",
             marginTop: "2rem",
-            width: "100%"
+            width: "100%",
           }}
         >
-          <FormProvider {...form} >
+          <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onResetSubmit)} className="w-full">
               <FormField
                 control={form.control}
