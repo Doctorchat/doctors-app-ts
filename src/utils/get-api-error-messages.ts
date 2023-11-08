@@ -56,7 +56,6 @@ export const getApiErrorMessagesLogin = (response: any, t: any): string[] | stri
 };
 
 export const getApiErrorMessages = (response: unknown): string[] | string => {
-  const { t } = useTranslation();
   if (axios.isAxiosError(response)) {
     if (response.response?.status === 422) {
       const error = response as ApiErrorResponse;
@@ -74,6 +73,20 @@ export const getApiErrorMessages = (response: unknown): string[] | string => {
       }
       if (error.response?.data.message || error.message) {
         return error.response?.data.message || error.message;
+      }
+    }
+    if (response.response?.status === 400) {
+      const error = response as ApiErrorResponse;
+
+      if (error.response?.data.errors) {
+        return Object.values(error.response.data.errors).flat();
+      }
+      if (error.response?.data.message || error.message) {
+        return (
+          error.response?.data.message ||
+          (typeof error.response?.data === "string" && error.response?.data) ||
+          error.message
+        );
       }
     }
   }
