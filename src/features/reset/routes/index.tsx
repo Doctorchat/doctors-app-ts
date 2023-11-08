@@ -8,7 +8,7 @@ import { Layout } from "../components";
 import { Spinner } from "@/components/ui";
 import { PublicRoute } from "@/features/auth/components";
 
-const RestorePage = React.lazy(() => import("./restore-page"));
+const ResetPage = React.lazy(() => import("./reset-page"));
 
 const RoutesWrapper: React.FC = () => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <RestorePage />,
+        element: <ResetPage />,
       },
       {
         path: "*",

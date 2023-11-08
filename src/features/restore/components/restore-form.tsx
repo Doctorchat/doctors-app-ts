@@ -6,6 +6,9 @@ import { useTranslation } from "react-i18next";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
 import { CountrySelect } from "@/components/shared";
+import Notification from "@/components/ui/notification";
+import { toast } from "@/hooks";
+import { getApiErrorMessages, getApiErrorMessagesLogin } from "@/utils";
 import {
   Alert,
   AlertDescription,
@@ -24,6 +27,7 @@ import {
   FormMessage,
   Input,
 } from "@/components/ui";
+import { apiRestore } from "../api";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
@@ -42,51 +46,31 @@ export const RestoreForm: React.FC = () => {
     },
     resolver: zodResolver(schema),
   });
-
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  // const onResetPasword = async (values: FormValues) => {
-  //   try {
-  //     console.log(values);
-      // const response = await apiRestore(values);
-  //     // const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
-  //     // initializeSession(response.token, response.user);
-  //     // if (continueFrom) navigate(continueFrom);
-  //     // else navigate("/");
-  //   } catch (error) {
-  //     // console.log(error);
-  //     // setApiErrors(getApiErrorMessages(error));
-  //   }
-  // };
-  // const getRecaptchaToken = useGoogleRecaptcha();
   const onResetPasword = React.useCallback(
     async (values: FormValues) => {
-      // setLoading(true);
       try {
         const data = { ...values };
-        //   data.re_token = await getRecaptchaToken();
-        //   const res = await api.user.resetPassword(data);
-        //   dispatch(notification({ title: "success", descrp: "phone_verification.reset_password" }));
-        //   form.reset({ phone: "" });
-        //   if (res.status === 200) {
-        //     router.push("/auth/reset-password");
-        //   }
+
+        await apiRestore(data).then(() => {
+          setApiErrors(null);
+          setOpenNotification(true);
+          setTimeout(() => {
+            setOpenNotification(false);
+            navigate("/auth/reset-password");
+            form.reset({ phone: "" });
+          }, 1000);
+        });
       } catch (error) {
-        //   dispatch(
-        //     notification({
-        //       type: "error",
-        //       title: "error",
-        //       descrp: getApiErrorMessages(error, true),
-        //       duration: 0,
-        //     })
-        //   );
-      } finally {
-        //   setLoading(false);
+        console.log(error);
+        setApiErrors(getApiErrorMessagesLogin(error, t));
       }
     },
     [form, navigate]
   );
   const isAuthInProcess = form.formState.isSubmitting;
+  const [openNotification, setOpenNotification] = React.useState<boolean>(false);
 
   return (
     <Card className="w-full max-w-sm">
@@ -141,7 +125,6 @@ export const RestoreForm: React.FC = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -155,6 +138,12 @@ export const RestoreForm: React.FC = () => {
           </CardFooter>
         </form>
       </FormProvider>
+      <Notification
+        open={openNotification ? true : false}
+        onOpenChange={setOpenNotification.bind(null, false)}
+        type={"success"}
+        description={t("auth:reset_password")}
+      />
     </Card>
   );
 };
