@@ -56,7 +56,7 @@ export const LoginForm: React.FC = () => {
 
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  const onSubmitTestIsSubmitting = async (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const response = await apiLogin(values);
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
@@ -75,7 +75,7 @@ export const LoginForm: React.FC = () => {
   return (
     <Card className="w-full max-w-sm">
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader className="justify-between">
             <div className="text-center">
               <div className="flex items-center justify-center">
@@ -88,7 +88,9 @@ export const LoginForm: React.FC = () => {
                 />
               </div>
               <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
-              <CardDescription>{t("auth:enter_credentials_to_continue")}</CardDescription>
+              <p className=" text-sm text-typography-secondary">
+                {t("auth:enter_credentials_to_continue")}
+              </p>
             </div>
           </CardHeader>
           <CardContent>
@@ -138,11 +140,11 @@ export const LoginForm: React.FC = () => {
                         {t("auth:password")}
                       </FormLabel>
                       <FormLabel>
-                        {/* <Link to="/auth/restore/password">
-                          <p className="text-red-500 underline">
+                        <Link to="/auth/restore">
+                          <p className="text-sky-500 underline">
                             {t("validations:forgot_password")}
                           </p>
-                        </Link> */}
+                        </Link>
                       </FormLabel>
                     </div>
                     <FormControl>
