@@ -12,9 +12,23 @@ import ChartDonut from "./chartProcent";
 import { useEffect, useState } from "react";
 import { getCurrentMonth } from "../utils/getDates";
 import { useDispatch } from "react-redux";
-import { addClosed, addDoctors, addPatients } from "@/store/slices/listsChatsShortsSlice";
+import {
+  addClosed,
+  addDoctors,
+  addPatients,
+  updateDoctorChatList,
+  updatePatientChatList,
+} from "@/store/slices/listsChatsShortsSlice";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router";
+import usePusher from "@/features/conversations/hooks/usePusher";
+import { Channel } from "pusher-js";
+import {
+  SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST,
+  SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST,
+  SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST,
+  SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST,
+} from "@/config";
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,7 +36,10 @@ export const DashboardWrapper: React.FC = () => {
     queryKey: ["dataDahsboard"],
     queryFn: async () => apiGetDashboard(),
     onSuccess: (data: any) => {
-      if (data.chats.open) dispatch(addPatients(data.chats.open));
+      if (data.chats.open) {
+        dispatch(addPatients(data.chats.open));
+        console.log("data open : ", data.chats.open);
+      }
       if (data.chats.doctor) dispatch(addDoctors(data.chats.doctor));
       if (data.chats.closed) dispatch(addClosed(data.chats.closed));
       return;
@@ -45,6 +62,52 @@ export const DashboardWrapper: React.FC = () => {
     refetch();
   }, [monthReservations]);
   const navigate = useNavigate();
+
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const { pusher } = usePusher();
+
+  useEffect(() => {
+    let doctorsListChannel: Channel;
+    let patientslistChannel: Channel;
+    console.log("---------------------------------------------------------------------------");
+    if (pusher) {
+      doctorsListChannel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST + current_user.id
+      );
+      patientslistChannel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST + current_user.id
+      );
+      console.log("Here");
+
+      doctorsListChannel.bind(SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST, (data: any) => {
+        const listMessage = JSON.parse(data.content_data);
+        console.log(listMessage);
+
+        dispatch(
+          updateDoctorChatList({
+            unreadCount: listMessage.unreadCount,
+            chat_id: listMessage.doctor_chat_id,
+            lastMessage: listMessage.message,
+            updated_at: listMessage.updated_at,
+            // title: listMessage.title,
+          })
+        );
+      });
+      patientslistChannel.bind(SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST, (data: any) => {
+        const { chatList, chat_id } = data;
+
+        const chat_update = JSON.parse(chatList);
+        console.log(chat_update);
+        dispatch(updatePatientChatList({ id: chat_id, updatedData: chat_update }));
+      });
+    }
+    return () => {
+      doctorsListChannel?.unsubscribe();
+      patientslistChannel?.unsubscribe();
+    };
+  }, [pusher]);
 
   return (
     <>
