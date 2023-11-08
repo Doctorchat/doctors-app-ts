@@ -45,9 +45,11 @@ export const CloseConversation: React.FC = () => {
     ]);
   };
   const onCloseConversation = async () => {
-    if (patientId) await apiCloseChat({ chat_id: patientId });
-    setOpen(false);
-    revalidateQueries();
+    if (patientId)
+      await apiCloseChat({ chat_id: patientId })
+        .then(() => setIsSending(true))
+        .then(() => revalidateQueries())
+        .then(() => setOpen(false));
   };
 
   return (
@@ -63,12 +65,7 @@ export const CloseConversation: React.FC = () => {
         </DialogHeader>
         <DialogFooter>
           <div className="flex items-center">
-            <Button
-              variant="outline"
-              className="w-full"
-              disabled={isSending}
-              onClick={() => setOpen(false)}
-            >
+            <Button variant="outline" className="w-full" onClick={() => setOpen(false)}>
               {t("common:cancel")}
             </Button>
             <Button
