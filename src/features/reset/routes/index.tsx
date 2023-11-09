@@ -5,10 +5,11 @@ import { Layout } from "../components";
 import { Spinner } from "@/components/ui";
 import { PublicRoute } from "@/features/auth/components";
 
-const RestorePage = React.lazy(() => import("./restore-page"));
+const ResetPage = React.lazy(() => import("./reset-page"));
 
-const RoutesWrapperRestore: React.FC = () => {
+const RoutesWrapperReset: React.FC = () => {
   const { t } = useTranslation();
+
   return (
     <Layout>
       <PublicRoute>
@@ -29,11 +30,11 @@ const RoutesWrapperRestore: React.FC = () => {
 
 export const routes: RouteObject[] = [
   {
-    element: <RoutesWrapperRestore />,
+    element: <RoutesWrapperReset />,
     children: [
       {
         index: true,
-        element: <RestorePage />,
+        element: <ResetPage />,
       },
       {
         path: "*",
