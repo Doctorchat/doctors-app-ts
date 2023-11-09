@@ -1,6 +1,7 @@
 @import "./react-transition-group-animations.css";
 @import "./scroll-bar.css";
 @import "./_timeline.css";
+@import "./badge.css";
 
 @tailwind base;
 @tailwind components;
