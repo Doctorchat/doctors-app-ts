@@ -1,16 +1,13 @@
 import React from "react";
 import { Navigate, Outlet, RouteObject } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
-
 import { Layout } from "../components";
-
 import { Spinner } from "@/components/ui";
 import { PublicRoute } from "@/features/auth/components";
 
 const ResetPage = React.lazy(() => import("./reset-page"));
 
-const RoutesWrapper: React.FC = () => {
+const RoutesWrapperReset: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -33,7 +30,7 @@ const RoutesWrapper: React.FC = () => {
 
 export const routes: RouteObject[] = [
   {
-    element: <RoutesWrapper />,
+    element: <RoutesWrapperReset />,
     children: [
       {
         index: true,

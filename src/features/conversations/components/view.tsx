@@ -189,15 +189,17 @@ export const View: React.FC = () => {
 
             {messages.map((message) => (
               <Message key={message.id} align={message.side === "in" ? "left" : "right"}>
-                <MessageHeader
-                  title={
-                    message.side === "in"
-                      ? (cardPatient?.name ? cardPatient?.name : message?.name) ??
-                        t("common:untitled")
-                      : t("you")
-                  }
-                  timestamp={message?.updated ?? ""}
-                />
+                {message.type !== "request-media" && (
+                  <MessageHeader
+                    title={
+                      message.side === "in"
+                        ? (cardPatient?.name ? cardPatient?.name : message?.name) ??
+                          t("common:untitled")
+                        : t("you")
+                    }
+                    timestamp={message?.updated ?? ""}
+                  />
+                )}
                 {message.recommendations?.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}
@@ -211,7 +213,7 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
-                {message.content && !message.files.length && (
+                {message.content && message.type !== "request-media" && (
                   <MessageContent
                     isAutoScrollEnabled={isAutoScrollEnabled}
                     message={message}
@@ -224,7 +226,6 @@ export const View: React.FC = () => {
                     }
                   />
                 )}
-
                 {message.files.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}
