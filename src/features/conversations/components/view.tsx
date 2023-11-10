@@ -198,6 +198,7 @@ export const View: React.FC = () => {
                   }
                   timestamp={message?.updated ?? ""}
                 />
+
                 {message.recommendations?.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}
@@ -211,15 +212,19 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
-                {message.content && !message.files.length && (
+                {message.content && (
                   <MessageContent
                     isAutoScrollEnabled={isAutoScrollEnabled}
                     message={message}
                     isArhived={chatConversation?.isAccepted}
-                    openedConversation={chatConversation?.status === "open"}
+                    openedConversation={
+                      !!(
+                        chatConversation?.status === "open" ||
+                        chatConversation?.status === "responded"
+                      )
+                    }
                   />
                 )}
-
                 {message.files.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}

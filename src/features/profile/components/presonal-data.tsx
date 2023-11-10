@@ -23,6 +23,7 @@ import { UserAvatar } from "./user-avatar";
 import { getSpecialitites, getUser, updateDoctor } from "../api";
 import { getApiErrorMessages } from "@/utils";
 import { MultiSelect, useProfileLayoutStore } from ".";
+import { useAuth } from "@/features/auth";
 
 type FormFieldTypes =
   | "name"
@@ -120,6 +121,7 @@ export const PersonalData: React.FC = () => {
     defaultValues: info,
     resolver: zodResolver(schema),
   });
+  const { revalidateSession } = useAuth();
   const userStorageData = localStorage.getItem("session:user");
   useEffect(() => {
     getUser().then((data: any) => {
@@ -258,9 +260,9 @@ export const PersonalData: React.FC = () => {
       newValues = { ...values, category: JSON.parse(category) };
     }
     try {
-      await updateDoctor(newValues).then(() =>
-        setNotification({ visible: true, message: "profile:personal_info_updated" })
-      );
+      await updateDoctor(newValues)
+        .then(() => setNotification({ visible: true, message: "profile:personal_info_updated" }))
+        .then(() => revalidateSession());
       setApiErrors(null);
     } catch (error) {
       setApiErrors(getApiErrorMessages(error));

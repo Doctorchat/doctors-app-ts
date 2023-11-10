@@ -1,7 +1,7 @@
 import axiosInstance from "@/lib/axios";
 
-export const apiRestore = async (body: { phone: string; password: string }) => {
-  // return await axiosInstance
-  //   .post<{ token: string; user: SessionUser }>("/auth/doctor-login", body)
-  //   .then((res) => res.data);
+export const apiRestore = async (data:any) => {
+  return await axiosInstance
+    .post("/auth/forgot-password", data)
+    .then((res) => res.data);
 };
