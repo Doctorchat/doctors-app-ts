@@ -13,7 +13,9 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@/components/ui/BadgePoint";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
-const notificationList = [
+import { Link } from "react-router-dom";
+import { useConfig } from "@/components/ui/ConfigProvider";
+const notificationLists = [
   {
     id: "b06ca3f5-8fb0-4979-a016-30dfe63e8fd6",
     target: "Jean Bowman",
@@ -87,6 +89,17 @@ const notificationList = [
     readed: true,
   },
 ];
+export const useThemeClass = () => {
+  const { themeColor, primaryColorLevel } = useConfig();
+  const color = `indigo-600`;
+
+  return {
+    ringTheme: `ring-indigo-600`,
+    borderTheme: `border-indigo-600`,
+    bgTheme: `bg-indigo-600`,
+    textTheme: `text-indigo-600`,
+  };
+};
 
 const NotificationDropdown: React.FC = () => {
   const [unreadNotification, setUnreadNotification] = useState(false);
@@ -95,6 +108,8 @@ const NotificationDropdown: React.FC = () => {
   const [notificationList, setNotificationList] = useState<any[]>([]);
   const getNotificationCount = useCallback(async () => {
     // const resp = await apiGetNotificationCount();
+
+    const { bgTheme } = useThemeClass();
     const resp = { data: { count: 4 } };
     if (resp.data.count > 0) {
       setNoResult(false);
@@ -106,15 +121,25 @@ const NotificationDropdown: React.FC = () => {
 
   useEffect(() => {
     getNotificationCount();
-  }, [getNotificationCount]);
-  const onNotificationOpen = useCallback(async () => {
     if (notificationList.length === 0) {
       setLoading(true);
       // const resp = await apiGetNotificationList();
       setLoading(false);
-      setNotificationList(notificationList);
+      console.log(notificationLists);
+
+      setNotificationList(notificationLists);
     }
-  }, [notificationList, setLoading]);
+  }, [getNotificationCount, notificationLists]);
+  // const onNotificationOpen = useCallback(async () => {
+  //   if (notificationLists.length === 0) {
+  //     setLoading(true);
+  //     // const resp = await apiGetNotificationList();
+  //     setLoading(false);
+  //     console.log(notificationLists);
+
+  //     setNotificationList(notificationLists);
+  //   }
+  // }, [notificationList, setLoading]);
 
   const onMarkAllAsRead = useCallback(() => {
     const list = notificationList.map((item: any) => {
@@ -144,14 +169,14 @@ const NotificationDropdown: React.FC = () => {
     },
     [notificationList]
   );
-  const isLastChild =(arr: Array<unknown>, index: number)=> {
-    return arr.length === index + 1
-}
+  const isLastChild = (arr: Array<unknown>, index: number) => {
+    return arr.length === index + 1;
+  };
 
   return (
     <div className="mr-2 ">
       <DropdownMenu>
-        <DropdownMenuTrigger onClick={onNotificationOpen} asChild>
+        <DropdownMenuTrigger asChild>
           <Button
             key="NotificationDropdowns"
             variant="ghost"
@@ -171,71 +196,79 @@ const NotificationDropdown: React.FC = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" align="start">
-          <DropdownMenuItem>
-            variant="header"
-            <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
-              <h6>Notifications</h6>
-              <Tooltip title="Mark all as read">
-                <ButtonIcon
-                  variant="plain"
-                  shape="circle"
-                  size="sm"
-                  icon={<HiOutlineMailOpen className="text-xl" />}
-                  onClick={onMarkAllAsRead}
-                />
-              </Tooltip>
-            </div>
-          </DropdownMenuItem>
-          <div className="overflow-y-auto h-72">
-            <div className="custom-scroll-bar  space-y-0.5 overflow-y-auto p-2">
+          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
+            <h6>Notifications</h6>
+            <Tooltip title="Mark all as read">
+              <ButtonIcon
+                variant="plain"
+                shape="circle"
+                size="sm"
+                icon={<HiOutlineMailOpen className="text-xl" />}
+                onClick={onMarkAllAsRead}
+              />
+            </Tooltip>
+          </div>
+
+          <div className="h-72 overflow-y-auto ">
+            <div className="custom-scroll-bar  bg-white-600 space-y-0.5 overflow-y-auto">
               {notificationList.length > 0 &&
                 notificationList.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`relative flex cursor-pointer px-4 py-4 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
-                      !isLastChild(notificationList, index)
-                        ? "border-b border-gray-200 dark:border-gray-600"
-                        : ""
-                    }`}
-                    onClick={() => onMarkAsRead(item.id)}
-                  >
-                    <div>{notificationTypeAvatar(item)}</div>
-                    <div className="ltr:ml-3 rtl:mr-3">
-                      <div>
-                        {item.target && (
-                          <span className="heading-text font-semibold">{item.target} </span>
-                        )}
-                        <span>{item.description}</span>
+                  <DropdownMenuItem className="p-0">
+                    <div
+                      key={item.id}
+                      className={`relative flex w-full cursor-pointer hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
+                        !isLastChild(notificationList, index)
+                          ? "border-b border-gray-200 dark:border-gray-600"
+                          : ""
+                      }`}
+                      onClick={() => onMarkAsRead(item.id)}
+                    >
+                      {/* <div>{notificationTypeAvatar(item)}</div> */}
+                      <div className="ltr:ml-3 rtl:mr-3">
+                        <div>
+                          {item.target && (
+                            <span className="heading-text font-semibold">{item.target} </span>
+                          )}
+                          <span>{item.description}</span>
+                        </div>
+                        <span className="text-xs">{item.date}</span>
                       </div>
-                      <span className="text-xs">{item.date}</span>
+                      <Badge
+                        className="absolute top-4 mt-1.5 ltr:right-4 rtl:left-4"
+                        innerClass={`${
+                          item.readed
+                            ? "bg-gray-300"
+                            : " ring-indigo-600 border-indigo-600 bg-indigo-600 text-indigo-600"
+                        } `}
+                      />
                     </div>
-                    <Badge
-                      className="absolute top-4 mt-1.5 ltr:right-4 rtl:left-4"
-                      innerClass={`${item.readed ? "bg-gray-300" : bgTheme} `}
-                    />
-                  </div>
+                  </DropdownMenuItem>
                 ))}
               {loading && (
-                <div className="flex items-center justify-center h-72">
-                  <Spinner size={40} />
+                <div className="flex h-72 items-center justify-center">
+                  {/* <Spinner size={40} /> */}
                 </div>
               )}
               {noResult && (
-                <div className="flex items-center justify-center h-72">
-                  <div className="text-center">
-                    <img
-                      className="mx-auto mb-2 max-w-[150px]"
-                      src="/img/others/no-notification.png"
-                      alt="no-notification"
-                    />
-                    <h6 className="font-semibold">No notifications!</h6>
-                    <p className="mt-1">Please Try again later</p>
+                <DropdownMenuItem>
+                  <div className="flex h-72 items-center justify-center">
+                    <div className="text-center">
+                      <img
+                        className="mx-auto mb-2 max-w-[150px]"
+                        src="/img/others/no-notification.png"
+                        alt="no-notification"
+                      />
+                      <h6 className="font-semibold">No notifications!</h6>
+                      <p className="mt-1">Please Try again later</p>
+                    </div>
                   </div>
-                </div>
+                </DropdownMenuItem>
               )}
-            </ScrollBar>
+            </div>
           </div>
-          <DropdownMenuItem variant="header">
+
+          {/* variant="header" */}
+          <DropdownMenuItem>
             <div className="flex justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
               <Link
                 to="/app/account/activity-log"
