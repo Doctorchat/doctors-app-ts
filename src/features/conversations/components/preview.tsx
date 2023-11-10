@@ -57,6 +57,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
             </h2>
 
             {typeConversation === "patients" &&
+              conversation.type !== "support" &&
               (conversation?.status === "closed" ? (
                 <Badge variant="primary" className="ml-1 whitespace-nowrap px-2 py-px">
                   {t("conversations:chat_closed")}
