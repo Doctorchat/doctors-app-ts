@@ -71,7 +71,6 @@ export const DashboardWrapper: React.FC = () => {
   useEffect(() => {
     let doctorsListChannel: Channel;
     let patientslistChannel: Channel;
-    console.log("---------------------------------------------------------------------------");
     if (pusher) {
       doctorsListChannel = pusher.subscribe(
         SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST + current_user.id
@@ -79,7 +78,6 @@ export const DashboardWrapper: React.FC = () => {
       patientslistChannel = pusher.subscribe(
         SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST + current_user.id
       );
-      console.log("Here");
 
       doctorsListChannel.bind(SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST, (data: any) => {
         const listMessage = JSON.parse(data.content_data);
@@ -91,7 +89,7 @@ export const DashboardWrapper: React.FC = () => {
             chat_id: listMessage.doctor_chat_id,
             lastMessage: listMessage.message,
             updated_at: listMessage.updated_at,
-            // title: listMessage.title,
+            title: listMessage.title,
           })
         );
       });
