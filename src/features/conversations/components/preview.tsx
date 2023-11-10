@@ -65,11 +65,11 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
                 <Badge variant="progress" className="ml-1 whitespace-nowrap px-2 py-px">
                   {t("conversations:chat_open")}
                 </Badge>
-              ) : (
+              ) : conversation?.status === "responded" ? (
                 <Badge variant="success" className="ml-1 whitespace-nowrap px-2 py-px">
                   {t("conversations:chat_responded")}
                 </Badge>
-              ))}
+              ) : null)}
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">
