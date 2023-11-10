@@ -10,15 +10,18 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "border-transparent bg-neutral-900 text-neutral-50 shadow hover:bg-neutral-900/80",
+        success: "border-transparent bg-green-600 text-neutral-50 shadow hover:bg-green-600/80",
         secondary: "border-transparent bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80",
         destructive: "border-transparent bg-red-500 text-neutral-50 shadow hover:bg-red-500/80",
         outline: "text-typography-primary",
+        progress: "border-transparent bg-yellow-100 text-neutral-900 hover:bg-yellow-100/80",
+        primary: "border-transparent bg-sky-600 text-white hover:bg-sky-600/80",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  },
+  }
 );
 
 export interface BadgeProps
