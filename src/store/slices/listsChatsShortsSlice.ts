@@ -38,16 +38,10 @@ const listsChatsShortsSlice = createSlice({
         lastMessage: Partial<ConversationPreview["lastMessage"]>;
         unreadCount: number;
         updated_at: string;
-        // title:string
+        title: string;
       }>
     ) => {
-      const {
-        chat_id,
-        lastMessage,
-        unreadCount,
-        updated_at,
-        // title
-      } = action.payload;
+      const { chat_id, lastMessage, unreadCount, updated_at, title } = action.payload;
       const doctorIndex = state.listDoctors.findIndex((item) => item.id === chat_id);
 
       if (doctorIndex !== -1) {
@@ -57,7 +51,7 @@ const listsChatsShortsSlice = createSlice({
           unreadCount,
           updated_at,
           id: chat_id,
-          // title:title
+          title: title,
         };
         state.listDoctors = sortChatsByUpdatedAt(state.listDoctors);
       } else {
@@ -66,7 +60,7 @@ const listsChatsShortsSlice = createSlice({
           lastMessage,
           unreadCount,
           updated_at,
-          // title:title
+          title: title,
         };
         state.listDoctors.push(newDoctor);
         state.listDoctors = sortChatsByUpdatedAt(state.listDoctors);
