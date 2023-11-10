@@ -11,10 +11,15 @@ import i18n from "@/lib/i18n";
 import { Avatar, Tooltip } from "antd";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@/components/ui/BadgePoint";
-import { HiOutlineMailOpen } from "react-icons/hi";
+import {
+  HiOutlineBan,
+  HiOutlineCalendar,
+  HiOutlineClipboardCheck,
+  HiOutlineMailOpen,
+} from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
 import { Link } from "react-router-dom";
-import { useConfig } from "@/components/ui/ConfigProvider";
+import acronym, { useTwColorByName } from "@/hooks/useTwColorByName";
 const notificationLists = [
   {
     id: "b06ca3f5-8fb0-4979-a016-30dfe63e8fd6",
@@ -89,16 +94,53 @@ const notificationLists = [
     readed: true,
   },
 ];
-export const useThemeClass = () => {
-  const { themeColor, primaryColorLevel } = useConfig();
-  const color = `indigo-600`;
 
-  return {
-    ringTheme: `ring-indigo-600`,
-    borderTheme: `border-indigo-600`,
-    bgTheme: `bg-indigo-600`,
-    textTheme: `text-indigo-600`,
-  };
+const GeneratedAvatar = ({ target }: { target: string }) => {
+  const color = useTwColorByName();
+  return (
+    <Avatar shape="circle" className={`${color(target)}`}>
+      {acronym(target)}
+    </Avatar>
+  );
+};
+const imagePath = "/img/avatars/";
+const notificationTypeAvatar = (data: {
+  type: number;
+  target: string;
+  image: string;
+  status: string;
+}) => {
+  const { type, target, image, status } = data;
+  switch (type) {
+    case 0:
+      if (image) {
+        return <Avatar shape="circle" src={`${imagePath}${image}`} />;
+      } else {
+        return <GeneratedAvatar target={target} />;
+      }
+    case 1:
+      return (
+        <Avatar
+          shape="circle"
+          className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+          icon={<HiOutlineCalendar />}
+        />
+      );
+    case 2:
+      return (
+        <Avatar
+          shape="circle"
+          className={
+            status === "succeed"
+              ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+              : "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
+          }
+          icon={status === "succeed" ? <HiOutlineClipboardCheck /> : <HiOutlineBan />}
+        />
+      );
+    default:
+      return <Avatar />;
+  }
 };
 
 const NotificationDropdown: React.FC = () => {
@@ -109,7 +151,6 @@ const NotificationDropdown: React.FC = () => {
   const getNotificationCount = useCallback(async () => {
     // const resp = await apiGetNotificationCount();
 
-    const { bgTheme } = useThemeClass();
     const resp = { data: { count: 4 } };
     if (resp.data.count > 0) {
       setNoResult(false);
@@ -129,7 +170,7 @@ const NotificationDropdown: React.FC = () => {
 
       setNotificationList(notificationLists);
     }
-  }, [getNotificationCount, notificationLists]);
+  }, [getNotificationCount, notificationLists, notificationList]);
   // const onNotificationOpen = useCallback(async () => {
   //   if (notificationLists.length === 0) {
   //     setLoading(true);
@@ -141,25 +182,32 @@ const NotificationDropdown: React.FC = () => {
   //   }
   // }, [notificationList, setLoading]);
 
-  const onMarkAllAsRead = useCallback(() => {
-    const list = notificationList.map((item: any) => {
-      if (!item.readed) {
-        item.readed = true;
-      }
-      return item;
-    });
-    setNotificationList(list);
-    setUnreadNotification(false);
-  }, [notificationList]);
+  const onMarkAllAsRead = useCallback(
+    (e: any) => {
+      const list = notificationList.map((item: any) => {
+        if (!item.readed) {
+          item.readed = true;
+        }
+        return item;
+      });
+      setNotificationList(list);
+      setUnreadNotification(false);
+    },
+    [notificationList]
+  );
 
   const onMarkAsRead = useCallback(
-    (id: string) => {
+    (id: string, event: any) => {
+      event.preventDefault();
+
       const list = notificationList.map((item) => {
         if (item.id === id) {
           item.readed = true;
         }
         return item;
       });
+      console.log(notificationList);
+      console.log(list);
       setNotificationList(list);
       const hasUnread = notificationList.some((item) => !item.readed);
 
@@ -195,9 +243,9 @@ const NotificationDropdown: React.FC = () => {
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="top" align="start">
+        <DropdownMenuContent side="bottom" align="end" className="w-80">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
-            <h6>Notifications</h6>
+            <h6 className="font-semibold">Notifications</h6>
             <Tooltip title="Mark all as read">
               <ButtonIcon
                 variant="plain"
@@ -216,14 +264,14 @@ const NotificationDropdown: React.FC = () => {
                   <DropdownMenuItem className="p-0">
                     <div
                       key={item.id}
-                      className={`relative flex w-full cursor-pointer hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
+                      className={`relative flex w-full cursor-pointer py-3 pl-3 pr-6 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
                         !isLastChild(notificationList, index)
                           ? "border-b border-gray-200 dark:border-gray-600"
                           : ""
                       }`}
-                      onClick={() => onMarkAsRead(item.id)}
+                      onClick={(event) => onMarkAsRead(item.id, event)}
                     >
-                      {/* <div>{notificationTypeAvatar(item)}</div> */}
+                      <div>{notificationTypeAvatar(item)}</div>
                       <div className="ltr:ml-3 rtl:mr-3">
                         <div>
                           {item.target && (
@@ -234,7 +282,7 @@ const NotificationDropdown: React.FC = () => {
                         <span className="text-xs">{item.date}</span>
                       </div>
                       <Badge
-                        className="absolute top-4 mt-1.5 ltr:right-4 rtl:left-4"
+                        className="absolute top-3 mt-1.5 ltr:right-4 rtl:left-4"
                         innerClass={`${
                           item.readed
                             ? "bg-gray-300"

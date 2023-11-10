@@ -2,6 +2,7 @@
 @import "./scroll-bar.css";
 @import "./_timeline.css";
 @import "./badge.css";
+@import "./avatar.css";
 
 @tailwind base;
 @tailwind components;
