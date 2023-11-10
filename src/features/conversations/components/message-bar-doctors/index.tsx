@@ -73,10 +73,10 @@ export const MessageBarDoctors: React.FC = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSendMessageHandler();
-              }
+              // if (e.key === "Enter" && !e.shiftKey) {
+              //   e.preventDefault();
+              //   onSendMessageHandler();
+              // }
             }}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
