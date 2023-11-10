@@ -132,7 +132,7 @@ export interface StatisticsDashboard {
 
 export interface ChatsProps {
   loading?: boolean;
-  typeChat?: string;
+  typeChat: string;
   data?: IChatCloseOrOpen[] | ConversationDoctors[] | ConversationPreview[];
 }
 
