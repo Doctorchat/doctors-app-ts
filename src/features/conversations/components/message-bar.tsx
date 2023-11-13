@@ -1,7 +1,5 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import {
-  ArrowPathRoundedSquareIcon,
   ClipboardDocumentListIcon,
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
@@ -12,7 +10,6 @@ import {
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
 import { useConversationLayoutStore } from "./layout";
-import { MessageTemplates, useMessageTemplatesStore } from "./message-templates";
 import { RequestFile, useRequestFileStore } from "./request-file";
 import { UploadFile, useUploadFileStore } from "./upload-file";
 import { apiSendMessage } from "../api";
@@ -35,6 +32,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { useNavigate } from "react-router-dom";
 import { CloseConversation, useCloseConversation } from "./close-conversation";
 import { SelectTemplate, useSelectTemplateStore } from "./select-template";
+import useMessageFromValues from "@/hooks/useMessageFromValues";
 
 export const MessageBar: React.FC = () => {
   const { t } = useTranslation();
@@ -46,7 +44,6 @@ export const MessageBar: React.FC = () => {
   const setRequestFileOpen = useRequestFileStore((store) => store.setOpen);
   const setCloseConversation = useCloseConversation((store) => store.setOpen);
   const setSelectTemplateOpen = useSelectTemplateStore((store) => store.setOpen);
-
   const [content, setContent] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
@@ -62,6 +59,7 @@ export const MessageBar: React.FC = () => {
           content,
         });
         setContent("");
+        resetPersistedValues();
       } catch (error) {
         toast({
           variant: "destructive",
@@ -74,6 +72,27 @@ export const MessageBar: React.FC = () => {
     }
   };
 
+  const { setValues: setPersistedValues, resetValues: resetPersistedValues } =
+    useMessageFromValues(patientId);
+
+  const onTextareaChange = (event: any) => {
+    setContent(event.target.value);
+    setPersistedValues({ ["content"]: event.target.value });
+    if (!event.target.value) {
+      resetPersistedValues();
+    }
+  };
+
+  const storedValue = localStorage.getItem(`message-form:${patientId}`) || "";
+  useEffect(() => {
+    if (storedValue) {
+      const stored = JSON.parse(storedValue)?.content;
+      setContent(stored);
+    } else {
+      setContent("");
+    }
+  }, [storedValue]);
+
   const isVisibleMessageBar =
     (conversationPatients?.isAccepted && conversationPatients?.status === "open") ||
     (conversationPatients?.isAccepted && conversationPatients?.status === "responded") ||
@@ -82,6 +101,7 @@ export const MessageBar: React.FC = () => {
   const isSuportChat = conversationPatients?.type !== "support";
   const isRespondedChat = conversationPatients?.status !== "responded";
   const isChatClosed = conversationPatients?.status === "closed";
+
   if (isVisibleMessageBar) {
     return (
       <>
@@ -100,14 +120,8 @@ export const MessageBar: React.FC = () => {
                   ? `${t("conversations:arhived_chat")}...`
                   : `${t("conversations:enter_message")}...`
               }
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              onKeyDown={(e) => {
-                // if (e.key === "Enter" && !e.shiftKey) {
-                //   e.preventDefault();
-                //   onSendMessageHandler();
-                // }
-              }}
+              value={!isChatClosed ? content : ""}
+              onChange={onTextareaChange}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               className="rounded-none border-none px-3.5 py-3 shadow-none focus:ring-0 focus-visible:ring-0"
@@ -192,7 +206,7 @@ export const MessageBar: React.FC = () => {
         <RequestFile />
         <CloseConversation />
         <RecomandAnalysis conversationsType={conversationsType} id={patientId} />
-        <SelectTemplate setContent={setContent} />
+        <SelectTemplate setContent={setContent} setPersistedValues={setPersistedValues} />
       </>
     );
   }
