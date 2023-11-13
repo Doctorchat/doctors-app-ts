@@ -20,7 +20,6 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";
-  console.log(typeConversation === "patients", conversation?.status);
   return (
     <Link
       to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${
