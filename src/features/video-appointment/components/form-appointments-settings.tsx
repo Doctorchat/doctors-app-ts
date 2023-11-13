@@ -88,32 +88,32 @@ const FormAppointmentsSettings: React.FC = () => {
       time_buffer: parseInt(values.time_buffer, 10),
       consultation_auto_renew: values.consultation_auto_renew,
       mon: [
-        (values.mon && values.mon[0]?.format("HH:mm")) ?? null,
-        (values.mon && values.mon[1]?.format("HH:mm")) ?? null,
+        values.mon ? values.mon[0]?.format("HH:mm") : null,
+        values.mon ? values.mon[1]?.format("HH:mm") : null,
       ],
       tue: [
-        (values.tue && values.tue[0]?.format("HH:mm")) ?? null,
-        (values.tue && values.tue[1]?.format("HH:mm")) ?? null,
+        values.tue ? values.tue[0]?.format("HH:mm") : null,
+        values.tue ? values.tue[1]?.format("HH:mm") : null,
       ],
       wed: [
-        (values.wed && values.wed[0]?.format("HH:mm")) ?? null,
-        (values.wed && values.wed[1]?.format("HH:mm")) ?? null,
+        values.wed ? values.wed[0]?.format("HH:mm") : null,
+        values.wed ? values.wed[1]?.format("HH:mm") : null,
       ],
       thu: [
-        (values.thu && values.thu[0]?.format("HH:mm")) ?? null,
-        (values.thu && values.thu[1]?.format("HH:mm")) ?? null,
+        values.thu ? values.thu[0]?.format("HH:mm") : null,
+        values.thu ? values.thu[1]?.format("HH:mm") : null,
       ],
       fri: [
-        (values.fri && values.fri[0]?.format("HH:mm")) ?? null,
-        (values.fri && values.fri[1]?.format("HH:mm")) ?? null,
+        values.fri ? values.fri[0]?.format("HH:mm") : null,
+        values.fri ? values.fri[1]?.format("HH:mm") : null,
       ],
       sat: [
-        (values.sat && values.sat[0]?.format("HH:mm")) ?? null,
-        (values.sat && values.sat[1]?.format("HH:mm")) ?? null,
+        values.sat ? values.sat[0]?.format("HH:mm") : null,
+        values.sat ? values.sat[1]?.format("HH:mm") : null,
       ],
       sun: [
-        (values.sun && values.sun[0]?.format("HH:mm")) ?? null,
-        (values.sun && values.sun[1]?.format("HH:mm")) ?? null,
+        values.sun ? values.sun[0]?.format("HH:mm") : null,
+        values.sun ? values.sun[1]?.format("HH:mm") : null,
       ],
     })
       .then(() => {
