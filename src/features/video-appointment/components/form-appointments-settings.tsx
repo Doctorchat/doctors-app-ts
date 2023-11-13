@@ -6,7 +6,6 @@ import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TWeekDays, useAuth } from "@/features/auth";
 import { setDisponibility } from "../api/index";
-
 import {
   Button,
   FormControl,
@@ -37,24 +36,17 @@ const FormAppointmentsSettings: React.FC = () => {
   } | null>(null);
   const [timeoutId, setTimeoutId] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
-
-  const daySchema = z.array(z.union([z.null(), z.any()]));
+  const daySchema = z.array(z.any()).nullable();
 
   const timeSchema = (min: number, max: number) =>
     z.string().refine((value: any) => parseInt(value, 10) >= min && parseInt(value, 10) <= max, {
       message: t("common:zod_number_range", { min, max }),
     });
-
-  const daysSchema: Record<string, typeof daySchema> = daysWeek.reduce((acc, day) => {
-    acc[day] = daySchema;
-    return acc;
-  }, {} as Record<string, typeof daySchema>);
-
   const schema = z.object({
     time_frame: timeSchema(1, 120),
     time_buffer: timeSchema(1, 60),
     consultation_auto_renew: boolean(),
-    ...daysSchema,
+    ...Object.fromEntries(daysWeek.map((day) => [day, daySchema.optional()])),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -95,13 +87,34 @@ const FormAppointmentsSettings: React.FC = () => {
       time_frame: parseInt(values.time_frame, 10),
       time_buffer: parseInt(values.time_buffer, 10),
       consultation_auto_renew: values.consultation_auto_renew,
-      mon: [values.mon[0]?.format("HH:mm"), values.mon[1]?.format("HH:mm")],
-      tue: [values.tue[0]?.format("HH:mm"), values.tue[1]?.format("HH:mm")],
-      wed: [values.wed[0]?.format("HH:mm"), values.wed[1]?.format("HH:mm")],
-      thu: [values.thu[0]?.format("HH:mm"), values.thu[1]?.format("HH:mm")],
-      fri: [values.fri[0]?.format("HH:mm"), values.fri[1]?.format("HH:mm")],
-      sat: [values.sat[0]?.format("HH:mm"), values.sat[1]?.format("HH:mm")],
-      sun: [values.sun[0]?.format("HH:mm"), values.sun[1]?.format("HH:mm")],
+      mon: [
+        (values.mon && values.mon[0]?.format("HH:mm")) ?? null,
+        (values.mon && values.mon[1]?.format("HH:mm")) ?? null,
+      ],
+      tue: [
+        (values.tue && values.tue[0]?.format("HH:mm")) ?? null,
+        (values.tue && values.tue[1]?.format("HH:mm")) ?? null,
+      ],
+      wed: [
+        (values.wed && values.wed[0]?.format("HH:mm")) ?? null,
+        (values.wed && values.wed[1]?.format("HH:mm")) ?? null,
+      ],
+      thu: [
+        (values.thu && values.thu[0]?.format("HH:mm")) ?? null,
+        (values.thu && values.thu[1]?.format("HH:mm")) ?? null,
+      ],
+      fri: [
+        (values.fri && values.fri[0]?.format("HH:mm")) ?? null,
+        (values.fri && values.fri[1]?.format("HH:mm")) ?? null,
+      ],
+      sat: [
+        (values.sat && values.sat[0]?.format("HH:mm")) ?? null,
+        (values.sat && values.sat[1]?.format("HH:mm")) ?? null,
+      ],
+      sun: [
+        (values.sun && values.sun[0]?.format("HH:mm")) ?? null,
+        (values.sun && values.sun[1]?.format("HH:mm")) ?? null,
+      ],
     })
       .then(() => {
         setApiResponse({ type: "success", message: t("common:success_update") });
