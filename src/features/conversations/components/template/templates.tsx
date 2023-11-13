@@ -3,10 +3,7 @@ import { useTranslation } from "react-i18next";
 import { shallow } from "zustand/shallow";
 import { createWithEqualityFn } from "zustand/traditional";
 import { Card } from "antd";
-import {
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui";
+import { DialogHeader, DialogTitle } from "@/components/ui";
 import Button from "@/components/ui/buttonIcon";
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi";
 import { useQuery, useQueryClient } from "react-query";
@@ -26,10 +23,12 @@ interface SelectTemplateProps {
   setOpen: any;
   setCreateForm: React.Dispatch<React.SetStateAction<boolean>>;
   setTemplateItem: React.Dispatch<React.SetStateAction<any>>;
+  setPersistedValues: React.Dispatch<React.SetStateAction<{ content: string }>>;
 }
 
 export const Templates: React.FC<SelectTemplateProps> = ({
   setContent,
+  setPersistedValues,
   setOpen,
   setCreateForm,
   setTemplateItem,
@@ -87,6 +86,8 @@ export const Templates: React.FC<SelectTemplateProps> = ({
                 hoverable
                 bodyStyle={{ paddingBottom: 0, paddingTop: 12, paddingInline: 12 }}
                 onClick={() => {
+                  setPersistedValues({ ["content"]: template.content });
+
                   setContent(template.content);
                   setOpen(false);
                 }}

@@ -16,9 +16,13 @@ export const useSelectTemplateStore = createWithEqualityFn<any>(
 );
 interface SelectTemplateProps {
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  setPersistedValues: React.Dispatch<React.SetStateAction<{ content: string }>>;
 }
 
-export const SelectTemplate: React.FC<SelectTemplateProps> = ({ setContent }) => {
+export const SelectTemplate: React.FC<SelectTemplateProps> = ({
+  setContent,
+  setPersistedValues,
+}) => {
   const setSelectTemplateOpen = useSelectTemplateStore((store) => store.setOpen);
   const { t } = useTranslation();
   const [createForm, setCreateForm] = React.useState(false);
@@ -52,6 +56,7 @@ export const SelectTemplate: React.FC<SelectTemplateProps> = ({ setContent }) =>
               setOpen={setOpen}
               setCreateForm={setCreateForm}
               setContent={setContent}
+              setPersistedValues={setPersistedValues}
               setTemplateItem={setTemplateItem}
             />
           )}
