@@ -6,20 +6,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui";
-
-import i18n from "@/lib/i18n";
-import { Avatar, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@/components/ui/BadgePoint";
-import {
-  HiOutlineBan,
-  HiOutlineCalendar,
-  HiOutlineClipboardCheck,
-  HiOutlineMailOpen,
-} from "react-icons/hi";
+import { HiOutlineMailOpen } from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
 import { Link } from "react-router-dom";
-import acronym, { useTwColorByName } from "@/hooks/useTwColorByName";
+import { notificationTypeAvatar } from "./notification-type-avatar";
+
 const notificationLists = [
   {
     id: "b06ca3f5-8fb0-4979-a016-30dfe63e8fd6",
@@ -95,54 +89,6 @@ const notificationLists = [
   },
 ];
 
-const GeneratedAvatar = ({ target }: { target: string }) => {
-  const color = useTwColorByName();
-  return (
-    <Avatar shape="circle" className={`${color(target)}`}>
-      {acronym(target)}
-    </Avatar>
-  );
-};
-const imagePath = "/img/avatars/";
-const notificationTypeAvatar = (data: {
-  type: number;
-  target: string;
-  image: string;
-  status: string;
-}) => {
-  const { type, target, image, status } = data;
-  switch (type) {
-    case 0:
-      if (image) {
-        return <Avatar shape="circle" src={`${imagePath}${image}`} />;
-      } else {
-        return <GeneratedAvatar target={target} />;
-      }
-    case 1:
-      return (
-        <Avatar
-          shape="circle"
-          className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
-          icon={<HiOutlineCalendar />}
-        />
-      );
-    case 2:
-      return (
-        <Avatar
-          shape="circle"
-          className={
-            status === "succeed"
-              ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
-              : "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
-          }
-          icon={status === "succeed" ? <HiOutlineClipboardCheck /> : <HiOutlineBan />}
-        />
-      );
-    default:
-      return <Avatar />;
-  }
-};
-
 const NotificationDropdown: React.FC = () => {
   const [unreadNotification, setUnreadNotification] = useState(false);
   const [noResult, setNoResult] = useState(false);
@@ -154,6 +100,7 @@ const NotificationDropdown: React.FC = () => {
     const resp = { data: { count: 4 } };
     if (resp.data.count > 0) {
       setNoResult(false);
+
       setUnreadNotification(true);
     } else {
       setNoResult(true);
@@ -206,11 +153,11 @@ const NotificationDropdown: React.FC = () => {
         }
         return item;
       });
-      console.log(notificationList);
-      console.log(list);
+      
+    
       setNotificationList(list);
       const hasUnread = notificationList.some((item) => !item.readed);
-
+   console.log(hasUnread);
       if (!hasUnread) {
         setUnreadNotification(false);
       }
@@ -285,7 +232,7 @@ const NotificationDropdown: React.FC = () => {
                         className="absolute top-3 mt-1.5 ltr:right-4 rtl:left-4"
                         innerClass={`${
                           item.readed
-                            ? "bg-gray-300"
+                            ? " !bg-gray-300"
                             : " ring-indigo-600 border-indigo-600 bg-indigo-600 text-indigo-600"
                         } `}
                       />
@@ -315,9 +262,8 @@ const NotificationDropdown: React.FC = () => {
             </div>
           </div>
 
-          {/* variant="header" */}
-          <DropdownMenuItem>
-            <div className="flex justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
+          {/* <DropdownMenuItem>
+            <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
               <Link
                 to="/app/account/activity-log"
                 className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
@@ -325,7 +271,7 @@ const NotificationDropdown: React.FC = () => {
                 View All Activity
               </Link>
             </div>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
