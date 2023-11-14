@@ -7,6 +7,7 @@ import { Appointment } from "../../types";
 import { useAuth } from "@/features/auth";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { calculateDateTimeInTimeZone } from "@/utils/time-zone";
+import Notification from "@/components/ui/notification";
 
 const DocAppointmentsSlots = () => {
   const { t } = useTranslation();
@@ -24,9 +25,22 @@ const DocAppointmentsSlots = () => {
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,
   });
+  const [isSubmited, setIsSubmited] = React.useState<boolean>(false);
+  const [openNotification, setOpenNotification] = React.useState<boolean>(false);
 
   const onRemoveSlot = (slotId: number): void => {
-    removeSlot(slotId).then(() => refetch());
+    removeSlot(slotId)
+      .then(() => {
+        setOpenNotification(true);
+        setTimeout(() => {
+          setOpenNotification(false);
+        }, 3000);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setIsSubmited(false);
+        refetch();
+      });
   };
 
   if (areSlotsLoading) {
@@ -60,14 +74,29 @@ const DocAppointmentsSlots = () => {
                 <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
               </div>
               <div>
-                <Button variant="primary" size="sm" onClick={() => onRemoveSlot(appointment.id)}>
+                <Button
+                  variant="primary"
+                  disabled={isSubmited}
+                  size="sm"
+                  onClick={() => {
+                    setIsSubmited(true);
+                    onRemoveSlot(appointment.id);
+                  }}
+                >
                   {t("survey:title_delete")}
+                  {isSubmited && "..."}
                 </Button>
               </div>
             </div>
           ))}
         </div>
       </div>
+      <Notification
+        open={openNotification ? true : false}
+        onOpenChange={setOpenNotification.bind(null, false)}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </div>
   );
 };

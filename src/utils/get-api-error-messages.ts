@@ -56,6 +56,7 @@ export const getApiErrorMessagesLogin = (response: any, t: any): string[] | stri
 };
 
 export const getApiErrorMessages = (response: unknown): string[] | string => {
+  
   if (axios.isAxiosError(response)) {
     //     'message' => 'Entered password is invalid' -401
     // 'message' => 'Bad credentials' - in caz cind IP adresa e blocata, aici nu stiu ce sa scriu, ca el nu trebuie sa stie ca are IP blocat - 401
