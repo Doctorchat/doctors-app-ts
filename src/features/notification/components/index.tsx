@@ -11,8 +11,9 @@ import { BellIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@/components/ui/BadgePoint";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
-import { Link } from "react-router-dom";
 import { notificationTypeAvatar } from "./notification-type-avatar";
+import { apiGetNotificationList } from "../api";
+import { useQuery } from "react-query";
 
 const notificationLists = [
   {
@@ -94,18 +95,25 @@ const NotificationDropdown: React.FC = () => {
   const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notificationList, setNotificationList] = useState<any[]>([]);
+
+  const { data: NotificationListData, isLoading } = useQuery({
+    queryKey: ["dataDahsboard"],
+    queryFn: async () => apiGetNotificationList(),
+  });
+  console.log(NotificationListData);
+
   const getNotificationCount = useCallback(async () => {
     // const resp = await apiGetNotificationCount();
 
     const resp = { data: { count: 4 } };
-    if (resp.data.count > 0) {
-      setNoResult(false);
 
+    if (resp.data.count > 0) {
       setUnreadNotification(true);
+      setNoResult(false);
     } else {
       setNoResult(true);
     }
-  }, [setUnreadNotification]);
+  }, []);
 
   useEffect(() => {
     getNotificationCount();
@@ -113,7 +121,6 @@ const NotificationDropdown: React.FC = () => {
       setLoading(true);
       // const resp = await apiGetNotificationList();
       setLoading(false);
-      console.log(notificationLists);
 
       setNotificationList(notificationLists);
     }
@@ -123,7 +130,6 @@ const NotificationDropdown: React.FC = () => {
   //     setLoading(true);
   //     // const resp = await apiGetNotificationList();
   //     setLoading(false);
-  //     console.log(notificationLists);
 
   //     setNotificationList(notificationLists);
   //   }
@@ -153,25 +159,23 @@ const NotificationDropdown: React.FC = () => {
         }
         return item;
       });
-      
-    
+
       setNotificationList(list);
       const hasUnread = notificationList.some((item) => !item.readed);
-   console.log(hasUnread);
       if (!hasUnread) {
         setUnreadNotification(false);
       }
     },
     [notificationList]
   );
-  const isLastChild = (arr: Array<unknown>, index: number) => {
+  const isLastChild = (arr: Array<any>, index: number) => {
     return arr.length === index + 1;
   };
 
   return (
     <div className="mr-2 ">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <DropdownMenu key="MenuNotifications">
+        <DropdownMenuTrigger asChild key="NotificationDropdowns">
           <Button
             key="NotificationDropdowns"
             variant="ghost"
@@ -190,7 +194,7 @@ const NotificationDropdown: React.FC = () => {
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end" className="w-80">
+        <DropdownMenuContent side="bottom" align="end" className="w-80" key="NotificationContent">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
             <h6 className="font-semibold">Notifications</h6>
             <Tooltip title="Mark all as read">
@@ -208,7 +212,7 @@ const NotificationDropdown: React.FC = () => {
             <div className="custom-scroll-bar  bg-white-600 space-y-0.5 overflow-y-auto">
               {notificationList.length > 0 &&
                 notificationList.map((item, index) => (
-                  <DropdownMenuItem className="p-0">
+                  <DropdownMenuItem className="p-0" key={index}>
                     <div
                       key={item.id}
                       className={`relative flex w-full cursor-pointer py-3 pl-3 pr-6 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
@@ -242,10 +246,11 @@ const NotificationDropdown: React.FC = () => {
               {loading && (
                 <div className="flex h-72 items-center justify-center">
                   {/* <Spinner size={40} /> */}
+                  Loading ...
                 </div>
               )}
               {noResult && (
-                <DropdownMenuItem>
+                <DropdownMenuItem key="NoData">
                   <div className="flex h-72 items-center justify-center">
                     <div className="text-center">
                       <img
