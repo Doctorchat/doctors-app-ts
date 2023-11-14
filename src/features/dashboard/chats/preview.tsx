@@ -12,9 +12,10 @@ import { ConversationDoctors, ConversationPreview } from "@/features/conversatio
 
 export interface PreviewProps {
   conversation: IChatCloseOrOpen | ConversationDoctors | ConversationPreview;
+  typeChat: string;
 }
 
-export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
+export const Preview: React.FC<PreviewProps> = ({ conversation, typeChat }) => {
   const { t } = useTranslation();
   const { locale } = useAppI18n();
   const [searchParams] = useSearchParams();
@@ -49,11 +50,20 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
               {conversation.name ?? conversation.title}
             </h2>
 
-            {conversation.company_id && (
-              <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
-                {t("conversations:corporate_client")}
-              </Badge>
-            )}
+            {(typeChat === "patients" || typeChat === "closed") &&
+              (conversation?.status === "closed" ? (
+                <Badge variant="primary" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_closed")}
+                </Badge>
+              ) : conversation?.status === "open" ? (
+                <Badge variant="progress" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_open")}
+                </Badge>
+              ) : conversation?.status === "responded" ? (
+                <Badge variant="success" className="ml-1 whitespace-nowrap px-2 py-px">
+                  {t("conversations:chat_responded")}
+                </Badge>
+              ) : null)}
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">

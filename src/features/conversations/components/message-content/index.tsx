@@ -50,6 +50,7 @@ const MessageContent: React.FC<MessageProps> = ({
   const [isWithinTenMinutes, setIsWithinTenMinutes] = React.useState(
     hasPassedTenMinutes(message.created)
   );
+
   const isEditableMessage =
     message.side !== "in" &&
     conversationsType === "patients" &&
@@ -59,17 +60,16 @@ const MessageContent: React.FC<MessageProps> = ({
     openedConversation;
 
   useEffect(() => {
-    // Verificați la fiecare minut dacă a trecut 10 minute
     const intervalId = setInterval(() => {
       const withinTenMinutes = hasPassedTenMinutes(message.created);
       setIsWithinTenMinutes(withinTenMinutes);
       if (!withinTenMinutes) {
-        clearInterval(intervalId); // Oprim verificarea după 10 minute
+        clearInterval(intervalId);
       }
-    }, 60000); // 60000 milisecunde = 1 minut
+    }, 60000);
 
     return () => {
-      clearInterval(intervalId); // Curățăm intervalul la demontare
+      clearInterval(intervalId);
     };
   }, [message.created]);
 

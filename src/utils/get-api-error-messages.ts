@@ -82,6 +82,20 @@ export const getApiErrorMessages = (response: unknown): string[] | string => {
         return error.response?.data.message || error.message;
       }
     }
+    if (response.response?.status === 400) {
+      const error = response as ApiErrorResponse;
+
+      if (error.response?.data.errors) {
+        return Object.values(error.response.data.errors).flat();
+      }
+      if (error.response?.data.message || error.message) {
+        return (
+          error.response?.data.message ||
+          (typeof error.response?.data === "string" && error.response?.data) ||
+          error.message
+        );
+      }
+    }
   }
 
   return "common:unknown_error";

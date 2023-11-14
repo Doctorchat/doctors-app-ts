@@ -31,3 +31,9 @@ export const SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_CHAT = "doctor-messages";
 
 export const SOCKET_PUSHER_CHANNEL_DOCTOR_DOCTORS_LIST = "doctors-message-list-";
 export const SOCKET_PUSHER_EVENT_DOCTOR_DOCTORS_LIST = "update-doctors-message-list";
+
+export const SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST = "dashboard-list-";
+export const SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST = "update-chat-list";
+
+export const SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST = "dashboard-doctors-message-list-";
+export const SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST = "update-doctors-message-list";
