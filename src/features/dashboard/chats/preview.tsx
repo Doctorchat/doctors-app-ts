@@ -13,11 +13,10 @@ import { BadgeType } from "@/features/conversations/components/badge-type";
 
 export interface PreviewProps {
   conversation: IChatCloseOrOpen | ConversationDoctors | ConversationPreview;
-  typeChat: "patients" | "doctors";
+  typeChat: "patients" | "doctors" | "closed";
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeChat }) => {
-  const { t } = useTranslation();
   const { locale } = useAppI18n();
   const [searchParams] = useSearchParams();
   return (

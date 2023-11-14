@@ -9,7 +9,7 @@ type StatusMap = {
 };
 interface BadgeProps {
   conversation: ConversationPreview;
-  typeConversation: "patients" | "doctors";
+  typeConversation: "patients" | "doctors" | "closed";
 }
 export const BadgeType: React.FC<BadgeProps> = ({ typeConversation, conversation }) => {
   const { t } = useTranslation();
