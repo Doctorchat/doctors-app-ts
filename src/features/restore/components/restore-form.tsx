@@ -89,7 +89,9 @@ export const RestoreForm: React.FC = () => {
               </div>
               <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
               <CardDescription>{t("auth:reset_description")}</CardDescription>
-              <Button variant="success">{t("auth:log_in")}</Button>
+              <Button variant="success" onClick={() => navigate("/auth/login")}>
+                {t("auth:log_in")}
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
