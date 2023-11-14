@@ -1,13 +1,10 @@
-import type { ConversationDoctors, ConversationPreview } from "../types";
-
+import type { ConversationPreview } from "../types";
 import { Link, useSearchParams } from "react-router-dom";
-
 import { formatDistance, parseISO } from "date-fns";
-import { useTranslation } from "react-i18next";
-
-import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { BadgeType } from "./badge-type";
 
 export interface PreviewProps {
   conversation: ConversationPreview;
@@ -15,7 +12,6 @@ export interface PreviewProps {
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation }) => {
-  const { t } = useTranslation();
   const { locale } = useAppI18n();
 
   const [searchParams] = useSearchParams();
@@ -54,22 +50,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
             <h2 className="truncate font-medium text-typography-primary">
               {conversation.name ?? conversation.title}
             </h2>
-
-            {typeConversation === "patients" &&
-              conversation.type !== "support" &&
-              (conversation?.status === "closed" ? (
-                <Badge variant="primary" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_closed")}
-                </Badge>
-              ) : conversation?.status === "open" ? (
-                <Badge variant="progress" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_open")}
-                </Badge>
-              ) : conversation?.status === "responded" ? (
-                <Badge variant="success" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_responded")}
-                </Badge>
-              ) : null)}
+            <BadgeType typeConversation={typeConversation} conversation={conversation} />
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">

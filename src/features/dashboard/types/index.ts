@@ -119,6 +119,7 @@ export interface IChatCloseOrOpen {
   updated_at?: string;
   lastMessage?: LastMessageDc;
   unreadCount?: number;
+  isAccepted?: boolean;
 }
 export interface StatisticsDashboard {
   avatar: string | null;
