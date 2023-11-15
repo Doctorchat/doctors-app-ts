@@ -25,10 +25,10 @@ const DocAppointmentsSlots = () => {
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,
   });
-  const [isSubmited, setIsSubmited] = React.useState<boolean>(false);
   const [openNotification, setOpenNotification] = React.useState<boolean>(false);
-
+  const [loadingStates, setLoadingStates] = React.useState<{ [key: string]: boolean }>({});
   const onRemoveSlot = (slotId: number): void => {
+    setLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [slotId]: true }));
     removeSlot(slotId)
       .then(() => {
         setOpenNotification(true);
@@ -38,7 +38,10 @@ const DocAppointmentsSlots = () => {
       })
       .catch((error) => console.error(error))
       .finally(() => {
-        setIsSubmited(false);
+        setLoadingStates((prevLoadingStates) => ({
+          ...prevLoadingStates,
+          [slotId]: false,
+        }));
         refetch();
       });
   };
@@ -73,18 +76,16 @@ const DocAppointmentsSlots = () => {
                 <span>{t("video:consultation_date")}</span>
                 <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
               </div>
-              <div>
+              <div key={appointment.id}>
                 <Button
                   variant="primary"
-                  disabled={isSubmited}
+                  disabled={loadingStates[appointment.id]}
                   size="sm"
-                  onClick={() => {
-                    setIsSubmited(true);
-                    onRemoveSlot(appointment.id);
-                  }}
+                  onClick={() => onRemoveSlot(appointment.id)}
                 >
                   {t("survey:title_delete")}
-                  {isSubmited && "..."}
+
+                  {loadingStates[appointment.id] && <span style={{ marginLeft: "4px" }}>...</span>}
                 </Button>
               </div>
             </div>
