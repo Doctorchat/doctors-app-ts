@@ -1,7 +1,4 @@
 import React, { useCallback } from "react";
-
-import { LanguageIcon } from "@heroicons/react/24/outline";
-
 import { Button } from "@/components/ui";
 import {
   DropdownMenu,
@@ -16,7 +13,7 @@ import i18n from "@/lib/i18n";
 import { Avatar } from "antd";
 
 export interface ProfileChangeLangProps {
-  disabled?: boolean;
+  isShortText?: boolean;
 }
 
 const langs: { [index: string]: string } = {
@@ -25,7 +22,13 @@ const langs: { [index: string]: string } = {
   en: "English",
 };
 
-const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
+const langsShort: { [index: string]: string } = {
+  ro: "RO",
+  ru: "RU",
+  en: "EN",
+};
+
+const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ isShortText = false }) => {
   const { setLanguage } = useAppI18n();
 
   const changeLanguage = useCallback((lng: string) => {
@@ -35,7 +38,7 @@ const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
   }, []);
 
   return (
-    <div className="mr-2 ">
+    <div className="mr-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="select-none px-2" variant="ghost">
@@ -45,7 +48,7 @@ const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
               src={`/img/countries/${i18n.language}.png`}
               className="mr-2"
             />
-            {langs[i18n.language]}
+            {isShortText ? langsShort[i18n.language] : langs[i18n.language]}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="top" align="start">
@@ -56,7 +59,7 @@ const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ disabled }) => {
               onClick={() => changeLanguage(lng)}
             >
               <Avatar size={18} shape="circle" src={`/img/countries/${lng}.png`} />
-              {langs[lng]}
+              {isShortText ? langsShort[lng] : langs[lng]}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

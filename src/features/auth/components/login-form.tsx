@@ -31,6 +31,7 @@ import {
   PasswordInput,
 } from "@/components/ui";
 import { getApiErrorMessagesLogin } from "@/utils";
+import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
@@ -79,13 +80,18 @@ export const LoginForm: React.FC = () => {
           <CardHeader className="justify-between">
             <div className="text-center">
               <div className="flex items-center justify-center">
-                <img
-                  src="/assets/logo.svg"
-                  width="36"
-                  height="36"
-                  alt="Doctorchat"
-                  className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
-                />
+                <div className="ml-auto mr-[-55px]">
+                  <img
+                    src="/assets/logo.svg"
+                    width="36"
+                    height="36"
+                    alt="Doctorchat"
+                    className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
+                  />
+                </div>
+                <div className="ml-auto flex justify-end">
+                  <ProfileChangeLang isShortText={true} />
+                </div>
               </div>
               <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
               <p className=" text-sm text-typography-secondary">
