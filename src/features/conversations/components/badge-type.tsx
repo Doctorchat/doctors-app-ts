@@ -25,7 +25,7 @@ export const BadgeType: React.FC<BadgeProps> = ({ typeConversation, conversation
 
   const { isAccepted, status } = conversation;
   const { variant, message } = statusMap[status as keyof typeof statusMap] || {};
-  if (!isAccepted) {
+  if (!isAccepted && status !=="closed") {
     return (
       <Badge variant="destructive" className="ml-1 whitespace-nowrap px-2 py-px">
         {t("conversations:chat_not_accept")}
