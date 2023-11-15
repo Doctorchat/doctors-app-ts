@@ -32,14 +32,15 @@ import {
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
-  const { data: allData, isLoading } = useQuery({
+  const {
+    data: allData,
+    isLoading,
+    refetch: refetching,
+  } = useQuery({
     queryKey: ["dataDahsboard"],
     queryFn: async () => apiGetDashboard(),
     onSuccess: (data: any) => {
-      if (data.chats.open) {
-        dispatch(addPatients(data.chats.open));
-        console.log("data open : ", data.chats.open);
-      }
+      if (data.chats.open) dispatch(addPatients(data.chats.open));
       if (data.chats.doctor) dispatch(addDoctors(data.chats.doctor));
       if (data.chats.closed) dispatch(addClosed(data.chats.closed));
       return;
@@ -58,9 +59,15 @@ export const DashboardWrapper: React.FC = () => {
       return apiGetReservations(monthReservations as string);
     },
   });
+
   useEffect(() => {
     refetch();
   }, [monthReservations]);
+
+  useEffect(() => {
+    refetching();
+  }, []);
+
   const navigate = useNavigate();
 
   const sessionUser = localStorage.getItem("session:user") ?? "";
