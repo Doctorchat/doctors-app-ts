@@ -97,7 +97,7 @@ const NotificationDropdown: React.FC = () => {
   const [notificationList, setNotificationList] = useState<any[]>([]);
 
   const { data: NotificationListData, isLoading } = useQuery({
-    queryKey: ["dataDahsboard"],
+    queryKey: ["notificationList"],
     queryFn: async () => apiGetNotificationList(),
   });
   console.log(NotificationListData);
