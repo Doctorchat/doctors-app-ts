@@ -11,7 +11,7 @@ import { sortChatsByUpdatedAt } from "@/utils/sort-list";
 export const useChatListDoctors = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const dispatch = useDispatch();
-  const { data: doctorInfo } = useQuery({
+  const { data: doctorInfo} = useQuery({
     queryKey: ["getUser"],
     queryFn: async () => getUser(),
     onSuccess: (data: any) => {
@@ -19,7 +19,11 @@ export const useChatListDoctors = () => {
     },
   });
 
-  const { data: dataListDoctors, isLoading: isLoadingListDoctors } = useQuery({
+  const {
+    data: dataListDoctors,
+    isLoading: isLoadingListDoctors,
+    refetch: refetchingListDoctors,
+  } = useQuery({
     queryKey: ["list-doctors", conversationsType],
     queryFn: async () => {
       if (doctorInfo) return apiGetConversationsWithDoctors(doctorInfo.id);
@@ -34,7 +38,7 @@ export const useChatListDoctors = () => {
   }, [dataListDoctors]);
 
   return React.useMemo(
-    () => ({ listDoctors, isLoadingListDoctors }),
-    [listDoctors, isLoadingListDoctors]
+    () => ({ listDoctors, isLoadingListDoctors, refetchingListDoctors }),
+    [listDoctors, isLoadingListDoctors, refetchingListDoctors]
   );
 };

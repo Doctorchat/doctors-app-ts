@@ -10,7 +10,11 @@ export const useChatList = () => {
   const conversationsType = useConversationLayoutStore((store) => store.conversationsType);
   const dispatch = useDispatch();
 
-  const { data: dataListPacients, isLoading } = useQuery({
+  const {
+    data: dataListPacients,
+    isLoading,
+    refetch: refetchingListPatients,
+  } = useQuery({
     queryKey: ["list-patients", conversationsType],
     queryFn: async () => {
       return apiGetConversationsWithPatients();
@@ -23,5 +27,8 @@ export const useChatList = () => {
     return dataListPacients && sortChatsByUpdatedAt(dataListPacients);
   }, [dataListPacients]);
 
-  return React.useMemo(() => ({ listPatients, isLoading }), [listPatients, isLoading]);
+  return React.useMemo(
+    () => ({ listPatients, isLoading, refetchingListPatients }),
+    [listPatients, isLoading, refetchingListPatients]
+  );
 };
