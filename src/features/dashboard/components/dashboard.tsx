@@ -36,10 +36,7 @@ export const DashboardWrapper: React.FC = () => {
     queryKey: ["dataDahsboard"],
     queryFn: async () => apiGetDashboard(),
     onSuccess: (data: any) => {
-      if (data.chats.open) {
-        dispatch(addPatients(data.chats.open));
-        console.log("data open : ", data.chats.open);
-      }
+      if (data.chats.open) dispatch(addPatients(data.chats.open));
       if (data.chats.doctor) dispatch(addDoctors(data.chats.doctor));
       if (data.chats.closed) dispatch(addClosed(data.chats.closed));
       return;
