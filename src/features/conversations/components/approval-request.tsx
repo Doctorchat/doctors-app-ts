@@ -67,6 +67,7 @@ export const ApprovalRequest: React.FC<ApprovalRequestProps> = ({ className, ...
     await Promise.allSettled([
       queryClient.invalidateQueries(["list-patients", conversationsType]),
       queryClient.invalidateQueries(["conversation-patient", patientId]),
+      queryClient.invalidateQueries(["dataDahsboard"]),
     ]);
   };
 
