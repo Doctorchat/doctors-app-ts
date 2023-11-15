@@ -7,6 +7,7 @@ import { Appointment } from "../../types";
 import { useAuth } from "@/features/auth";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import { calculateDateTimeInTimeZone } from "@/utils/time-zone";
+import Notification from "@/components/ui/notification";
 
 const DocAppointmentsSlots = () => {
   const { t } = useTranslation();
@@ -24,9 +25,25 @@ const DocAppointmentsSlots = () => {
     refetchOnWindowFocus: false,
     enabled: !!session?.user?.id,
   });
-
+  const [openNotification, setOpenNotification] = React.useState<boolean>(false);
+  const [loadingStates, setLoadingStates] = React.useState<{ [key: string]: boolean }>({});
   const onRemoveSlot = (slotId: number): void => {
-    removeSlot(slotId).then(() => refetch());
+    setLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [slotId]: true }));
+    removeSlot(slotId)
+      .then(() => {
+        setOpenNotification(true);
+        setTimeout(() => {
+          setOpenNotification(false);
+        }, 3000);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoadingStates((prevLoadingStates) => ({
+          ...prevLoadingStates,
+          [slotId]: false,
+        }));
+        refetch();
+      });
   };
 
   if (areSlotsLoading) {
@@ -59,15 +76,28 @@ const DocAppointmentsSlots = () => {
                 <span>{t("video:consultation_date")}</span>
                 <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
               </div>
-              <div>
-                <Button variant="primary" size="sm" onClick={() => onRemoveSlot(appointment.id)}>
+              <div key={appointment.id}>
+                <Button
+                  variant="primary"
+                  disabled={loadingStates[appointment.id]}
+                  size="sm"
+                  onClick={() => onRemoveSlot(appointment.id)}
+                >
                   {t("survey:title_delete")}
+
+                  {loadingStates[appointment.id] && <span style={{ marginLeft: "4px" }}>...</span>}
                 </Button>
               </div>
             </div>
           ))}
         </div>
       </div>
+      <Notification
+        open={openNotification ? true : false}
+        onOpenChange={setOpenNotification.bind(null, false)}
+        type={"success"}
+        description={t("common:on_succes_notification")}
+      />
     </div>
   );
 };
