@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Button } from "@/components/ui";
 import {
   DropdownMenu,
@@ -31,7 +31,16 @@ const langsShort: { [index: string]: string } = {
 const ProfileChangeLang: React.FC<ProfileChangeLangProps> = ({ isShortText = false }) => {
   const { setLanguage } = useAppI18n();
 
+  useEffect(() => {
+    if (i18n.language === "en-US") setLanguage("en" as AppLocale);
+  }, [i18n.language]);
+
   const changeLanguage = useCallback((lng: string) => {
+    if (isShortText) {
+      localStorage.setItem("i18nextLng", lng);
+      setLanguage(lng as AppLocale);
+      return;
+    }
     setUserLocale(lng);
     localStorage.setItem("i18nextLng", lng);
     setLanguage(lng as AppLocale);
