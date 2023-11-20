@@ -24,15 +24,16 @@ jobs:
         with:
           node-version: "18.x"
 
-      - name: Create env configs
+      - name: Create env configs - MD
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH_DEV }}" >> .env
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=md" >> .env
 
       - name: Install Dependencies with Yarn
-        run: yarn install --immutable-cache
+        run: yarn install --check-cache --prefer-offline --non-interactive
 
       - name: Build
         run: CI=false yarn build
@@ -45,8 +46,56 @@ jobs:
           password: ${{ secrets.SSH_PASS }}
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP }}
-          
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
+
+      - name: Create env configs - RO
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=ro" >> .env
+
+      - name: Install Dependencies with Yarn
+        run: yarn install --check-cache --prefer-offline --non-interactive
+
+      - name: Build
+        run: CI=false yarn build
+
+      - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          scp_source: "build/"
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_RO }}
+
+      - name: Create env configs - ONLINE
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=online" >> .env
+
+      - name: Install Dependencies with Yarn
+        run: yarn install --check-cache --prefer-offline --non-interactive
+
+      - name: Build
+        run: CI=false yarn build
+
+      - name: SSH Server Deploy
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          scp_source: "build/"
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_ONLINE }}
+
       - name: Send telegram message
         uses: appleboy/telegram-action@master
         with:
