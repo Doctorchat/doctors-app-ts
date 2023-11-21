@@ -119,6 +119,7 @@ export interface IChatCloseOrOpen {
   updated_at?: string;
   lastMessage?: LastMessageDc;
   unreadCount?: number;
+  isAccepted?: boolean;
 }
 export interface StatisticsDashboard {
   avatar: string | null;
@@ -132,7 +133,7 @@ export interface StatisticsDashboard {
 
 export interface ChatsProps {
   loading?: boolean;
-  typeChat: string;
+  typeChat: "patients" | "doctors" | "closed";
   data?: IChatCloseOrOpen[] | ConversationDoctors[] | ConversationPreview[];
 }
 
