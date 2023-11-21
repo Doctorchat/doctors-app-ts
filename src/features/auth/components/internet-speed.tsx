@@ -6,8 +6,11 @@ import "react-internet-meter/dist/index.css";
 const OfflineImage = () => {
   const { t } = useTranslation();
   return (
-    <div className="_1alIC null">
-      <span className="_nqCmj">{t("validations:net_title")}</span>
+    <div className="_1alIC_disconnected">
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAACQBAMAAAAVaP+LAAAAGFBMVEUAAABTU1NNTU1TU1NPT09SUlJSUlJTU1O8B7DEAAAAB3RSTlMAoArVKvVgBuEdKgAAAJ1JREFUeF7t1TEOwyAMQNG0Q6/UE+RMXD9d/tC6womIFSL9P+MnAYOXeTIzMzMzMzMzaz8J9Ri6HoITmuHXhISE8nEh9yxDh55aCEUoTGbbQwjqHwIkRAEiIaG0+0AA9VBMaE89Rogeoww936MQrWdBr4GN/z0IAdQ6nQ/FIpRXDwHcA+JIJcQowQAlFUA0MfQpXLlVQfkzR4igS6ENjknm/wiaGhsAAAAASUVORK5CYII="
+        alt="offline"
+      />
       <span className="_2Qem8">{t("validations:net_disconeted")}</span>
     </div>
   );
