@@ -1,11 +1,7 @@
 import type { IChatCloseOrOpen } from "../types";
-
 import { Link, useSearchParams } from "react-router-dom";
-
 import { formatDistance, parseISO } from "date-fns";
-import { useTranslation } from "react-i18next";
-
-import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { ConversationDoctors, ConversationPreview } from "@/features/conversations/types";
