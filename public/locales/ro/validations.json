@@ -9,5 +9,6 @@
   "too_small": "Trebuie să conțină cel puțin {{min}} caractere",
   "net_slow": "Internetul este prea lent",
   "net_disconeted": "Deconectat de la internet",
-  "net_title": "Internet ..."
+  "net_title": "Internet ...",
+  "net_reconect": "Reconectare pe pagină principala"
 }

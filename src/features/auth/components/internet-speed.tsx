@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ReactInternetSpeedMeter } from "react-internet-meter";
@@ -12,6 +13,11 @@ const OfflineImage = () => {
         alt="offline"
       />
       <span className="_2Qem8">{t("validations:net_disconeted")}</span>
+      <div className="reconect">
+        <Button onClick={() => window.location.replace(window.location.origin)}>
+          {t("validations:net_reconect")}
+        </Button>
+      </div>
     </div>
   );
 };
