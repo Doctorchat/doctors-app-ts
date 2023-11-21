@@ -10,5 +10,6 @@
   "too_small": "Must contain at least {{min}} characters",
   "net_slow": "Internet is too slow",
   "net_disconeted": "Diconnected from internet",
-  "net_title": "Internet ..."
+  "net_title": "Internet ...",
+  "net_reconect": "Reconnect to main page"
 }

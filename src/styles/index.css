@@ -358,4 +358,7 @@ body .ant-picker-ok > button[disabled] {
     font-size: 1rem;
     padding: 30px;
   }
+  .reconect {
+    flex-grow: 2;
+  }
 }
