@@ -24,9 +24,8 @@ const OfflineImage = () => {
 
 export const InternetSpeed: React.FC = () => {
   const { t } = useTranslation();
-  const [wifiSpeed, setwifiSpeed] = React.useState("Checking ... ");
   const [online, setOnline] = React.useState(navigator.onLine);
-  console.log(wifiSpeed);
+
   React.useEffect(() => {
     const updateOnlineStatus = () => setOnline(navigator.onLine);
 
@@ -50,8 +49,6 @@ export const InternetSpeed: React.FC = () => {
       threshold={5}
       imageUrl="/offline.jpg"
       downloadSize="1781287"
-      callbackFunctionOnNetworkDown={(speed: any) => console.log(`Internet speed is down ${speed}`)}
-      callbackFunctionOnNetworkTest={(speed: any) => setwifiSpeed(speed)}
     />
   ) : (
     <OfflineImage />
