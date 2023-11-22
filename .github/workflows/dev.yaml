@@ -3,7 +3,7 @@ name: Doctochat Doctors APP DEV CI/CD
 on:
   push:
     branches:
-      - dev
+      - none
 
 jobs:
   build:
