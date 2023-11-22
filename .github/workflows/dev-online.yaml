@@ -14,7 +14,11 @@ jobs:
       - name: Cache Node modules
         uses: actions/cache@v2
         with:
-          path: ~/.cache/yarn
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -68,4 +72,3 @@ jobs:
             ✅ <b>[DEV] Doctor's APP</b>
             🥷 <b>User</b>: ${{ github.actor }}
             📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
-            
