@@ -1,4 +1,4 @@
-name: Doctochat Doctors APP DEV CI/CD
+name: Doctochat Doctors APP DEV ONLINE CI/CD
 
 on:
   push:
@@ -23,6 +23,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install Correct Yarn Version
+        run: yarn set version 3.6.1
 
       - name: Create env configs
         run: |
