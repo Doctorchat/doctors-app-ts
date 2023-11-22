@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 const CalendarFallback = () => {
   const { t } = useTranslation();
   return (
-    <div className="py-2">
+    <div key="fallback" className="py-2">
       <Card className={cn("p-5")}>
         <div className="flex-column flex gap-1">
           <Skeleton className="h-36 w-full" />

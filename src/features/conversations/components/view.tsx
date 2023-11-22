@@ -167,7 +167,7 @@ export const View: React.FC = () => {
 
   return (
     <div key="conversations" className="relative flex h-full flex-col overflow-hidden rounded-lg">
-      {patientId ? <Header /> : <HeaderDoctors />}
+      {patientId ? <Header key="header" /> : <HeaderDoctors key="header-doctors" />}
 
       <div
         ref={ref}

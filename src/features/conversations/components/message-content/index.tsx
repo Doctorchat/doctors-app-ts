@@ -139,7 +139,7 @@ const MessageContent: React.FC<MessageProps> = ({
           <MessageBubble variant={message.side === "in" ? "primary" : "secondary"}>
             {message.type !== "answer" && <MessageBubbleText>{message.content}</MessageBubbleText>}
             <MessageType type={message.type} message={message} />
-            <MessageSurvey message={message} />
+            <MessageSurvey key="message-survey" message={message} />
           </MessageBubble>
           {isEditableMessage && isWithinTenMinutes && (
             <EditIcon handlerEditMessage={toggleMessageEditStatus(true)} />

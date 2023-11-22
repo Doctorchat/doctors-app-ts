@@ -17,16 +17,16 @@ export const HeaderDoctors: React.FC = () => {
     useConversation();
 
   const navigate = useNavigate();
-
-  const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
-
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading =
     isCardDoctorsLoading || (!conversationDoctors?.doctor_chat_id && !isCardDoctorsErrored);
 
   return (
-    <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
-      <div className="flex flex-1 items-center">
+    <header
+      key="header-patient"
+      className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5"
+    >
+      <div key="chat-patient" className="flex flex-1 items-center">
         {isMobile && (
           <Button
             variant="ghost"
@@ -58,7 +58,7 @@ export const HeaderDoctors: React.FC = () => {
               {cardDoctors?.chatInfo?.title}
             </h3>
             {cardDoctors?.chatInfo?.members > 1 ? (
-              <p className="truncate text-sm">
+              <p key="card-text" className="truncate text-sm">
                 {cardDoctors?.chatInfo?.members + " " + t("conversations:new_chat_doctors.members")}
               </p>
             ) : (
@@ -67,7 +67,7 @@ export const HeaderDoctors: React.FC = () => {
                   {cardDoctors.members &&
                     Object.keys(cardDoctors?.members)?.map((item: any, index: any) => {
                       return index === 0 && cardDoctors?.members[item].updated ? (
-                        <p>
+                        <p key="card-time">
                           <time dateTime={cardDoctors?.members[item].updated}>
                             {formatDistance(
                               parseISO(cardDoctors?.members[item].updated),
@@ -80,7 +80,7 @@ export const HeaderDoctors: React.FC = () => {
                           </time>
                         </p>
                       ) : (
-                        <p className="truncate text-sm">
+                        <p key="card-member" className="truncate text-sm">
                           {cardDoctors?.chatInfo?.members +
                             " " +
                             t("conversations:new_chat_doctors.member")}
@@ -93,27 +93,6 @@ export const HeaderDoctors: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            disabled={isLoading}
-            className="h-10 w-10 rounded-full"
-          >
-            <EllipsisVerticalIcon className="h-6 w-6" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end" className="w-40">
-          <DropdownMenuItem onClick={() => setIsUserCardOpen(true)}>
-            {t("common:details")}
-            <DropdownMenuShortcut>
-              <UserCircleIcon className="h-5 w-5" />
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu> */}
     </header>
   );
 };

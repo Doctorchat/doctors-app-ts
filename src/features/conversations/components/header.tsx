@@ -32,9 +32,9 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} />
+      <UserCard key="user-card" open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} />
 
-      <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
+      <header key="header-patient" className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
         <div className="flex flex-1 items-center">
           {isMobile && (
             <Button

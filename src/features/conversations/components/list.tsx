@@ -37,7 +37,6 @@ export const List: React.FC = () => {
   const { listPatients, isLoading, refetchingListPatients } = useChatList();
 
   React.useEffect(() => {
-    refetchingListDoctors();
     refetchingListPatients();
   }, []);
   
@@ -81,6 +80,8 @@ export const List: React.FC = () => {
 
   React.useEffect(() => {
     if (conversationsType === "doctors") {
+      console.log(listChatsDoctors.length, listChatsDoctors, listDoctors);
+      
       setFilteredConversations(listChatsDoctors.length ? listChatsDoctors : listDoctors ?? []);
     } else {
       setFilteredConversations(listChats.length ? listChats : listPatients ?? []);
