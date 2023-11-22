@@ -45,7 +45,7 @@ jobs:
 
       - name: Install Dependencies with Yarn
         if: steps.cache-node-modules.outputs.cache-hit != 'true' && steps.cache-yarn.outputs.cache-hit != 'true'
-        run: npm install -g corepack && corepack enable && yarn install --check-cache
+        run: yarn install
 
       - name: Build
         run: CI=false yarn build

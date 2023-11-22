@@ -45,7 +45,7 @@ jobs:
 
       - name: Install Dependencies with Yarn
         if: steps.cache-node-modules.outputs.cache-hit != 'true' && steps.cache-yarn.outputs.cache-hit != 'true'
-        run: yarn install --check-cache --prefer-offline --non-interactive
+        run: yarn install
 
       - name: Build
         run: CI=false yarn build
