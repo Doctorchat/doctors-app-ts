@@ -1,4 +1,4 @@
-name: Doctochat Doctors APP DEV ONLINE CI/CD
+name: Doctochat Doctors APP DEV CI/CD
 
 on:
   push:
@@ -11,18 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      - name: Cache Yarn cache
-        uses: actions/cache@v3
-        id: cache-yarn
+      - name: Cache Node modules
+        uses: actions/cache@v2
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -37,15 +27,13 @@ jobs:
       - name: Create env configs
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH }}" >> .env
-          echo "${{ secrets.PUSHER_ENV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV }}" >> .env
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=online" >> .env
 
-
       - name: Install Dependencies with Yarn
-        if: steps.cache-node-modules.outputs.cache-hit != 'true' && steps.cache-yarn.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn install --immutable-cache
 
       - name: Build
         run: CI=false yarn build
@@ -59,3 +47,15 @@ jobs:
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
           scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_ONLINE }}
+
+      - name: Send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          format: html
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ <b>[DEV] Doctor's APP</b>
+            🥷 <b>User</b>: ${{ github.actor }}
+            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
+            
