@@ -8,6 +8,8 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-yarn.outputs.cache-key }}
     steps:
       - uses: actions/checkout@v3
 
