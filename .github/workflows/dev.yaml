@@ -1,4 +1,4 @@
-name: Doctochat Doctors APP DEV CI/CD
+name: Deploy Doctor's APP - DEV - MD
 
 on:
   push:
@@ -11,8 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache Node modules
-        uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Cache Yarn cache
+        uses: actions/cache@v3
+        id: cache-yarn
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -22,7 +32,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "18"
+          cache: 'yarn'
+
+      - name: Check node version
+        run: node -v
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set Yarn version
+        run: yarn set version stable
 
       - name: Create env configs
         run: |
@@ -30,9 +50,10 @@ jobs:
           echo "${{ secrets.API_PATH_DEV }}" >> .env
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=md" >> .env
 
       - name: Install Dependencies with Yarn
-        run: yarn install --immutable-cache
+        run: yarn install --check-cache
 
       - name: Build
         run: CI=false yarn build
@@ -45,8 +66,8 @@ jobs:
           password: ${{ secrets.SSH_PASS }}
           private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
           scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP }}
-          
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
+
       - name: Send telegram message
         uses: appleboy/telegram-action@master
         with:
@@ -57,4 +78,3 @@ jobs:
             ✅ <b>[DEV] Doctor's APP</b>
             🥷 <b>User</b>: ${{ github.actor }}
             📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
-            
