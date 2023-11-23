@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  setup:
+  Setup-Ecosystem:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-yarn.outputs.cache-key }}
@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
   Deploy-MD:
-    needs: setup
+    needs: Setup-Ecosystem
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -82,7 +82,7 @@ jobs:
           scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
 
   Deploy-RO:
-    needs: setup
+    needs: Setup-Ecosystem
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -132,7 +132,7 @@ jobs:
           scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_RO }}
 
   Deploy-ONLINE:
-    needs: setup
+    needs: Setup-Ecosystem
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
