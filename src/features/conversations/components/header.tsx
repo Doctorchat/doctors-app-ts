@@ -1,15 +1,29 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftIcon,
+  BackwardIcon,
+  EllipsisVerticalIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { formatDistance, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "usehooks-ts";
-
 import { UserCard } from "./user-card";
 import { useConversation } from "../hooks";
 
-import { Avatar, AvatarFallback, AvatarImage, Button, Skeleton } from "@/components/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+  Skeleton,
+} from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { useSelector } from "react-redux";
@@ -24,15 +38,17 @@ export const Header: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
+  // const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading =
     isCardPLoading || (!chatConversation?.user_id && !isCardPErrored) || !cardPatient;
+  console.log(chatConversation, cardPatient);
+  const isPrevisionConsultation = chatConversation?.prevision;
 
   return (
     <>
-      <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} />
+      {/* <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} /> */}
 
       <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
         <div className="flex flex-1 items-center">
@@ -81,27 +97,30 @@ export const Header: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={isLoading}
-              className="h-10 w-10 rounded-full"
-            >
-              <EllipsisVerticalIcon className="h-6 w-6" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end" className="w-40">
-            <DropdownMenuItem onClick={() => setIsUserCardOpen(true)}>
-              {t("common:details")}
-              <DropdownMenuShortcut>
-                <UserCircleIcon className="h-5 w-5" />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu> */}
+        {/* {isPrevisionConsultation && ( */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={isLoading}
+                className="h-10 w-10 rounded-full"
+              >
+                <EllipsisVerticalIcon className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="bottom" align="end" className="w-40">
+              <DropdownMenuItem
+                onClick={() => navigate("/conversations?patientId=29104&anonymous=false")}
+              >
+                {t("common:prevision_consult")}
+                <DropdownMenuShortcut>
+                  <BackwardIcon className="h-5 w-5" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        {/* )} */}
       </header>
     </>
   );
