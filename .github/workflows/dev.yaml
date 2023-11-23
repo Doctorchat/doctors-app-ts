@@ -1,4 +1,4 @@
-name: Deploy Doctor's APP - DEV - MD
+name: Deploy Doctor's APP - DEV
 
 on:
   push:
@@ -11,20 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Cache node_modules
+      - name: Cache Yarn
         uses: actions/cache@v3
-        id: cache-node-modules
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      - name: Cache Yarn cache
-        uses: actions/cache@v3
-        id: cache-yarn
-        with:
-          path: ~/.cache/yarn
+          path: |
+            .yarn/cache
+            .yarn/unplugged
+            .yarn/build-state.yml
+            .yarn/install-state.gz
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -33,15 +27,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
-      - name: Check node version
-        run: node -v
+          cache: 'yarn'
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Set Yarn version
-#        run: yarn set version stable
         run: yarn set version 3.6.1
 
       - name: Create env configs
