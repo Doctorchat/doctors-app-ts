@@ -29,6 +29,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+  Deploy-MD:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Cache from Setup
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/yarn
+          key: ${{ needs.setup.outputs.cache-key }}
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -43,126 +55,142 @@ jobs:
       - name: Set Yarn version
         run: yarn set version 3.6.1
 
-Deploy-MD:
-  needs: setup
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
+      - name: Create env configs - MD
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=md" >> .env
 
-    - name: Use Cache from Setup
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/yarn
-        key: ${{ needs.setup.outputs.cache-key }}
+      - name: Install Dependencies with Yarn
+        run: yarn install --immutable
 
-    - name: Create env configs - MD
-      run: |
-        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-        echo "${{ secrets.API_PATH_DEV }}" >> .env
-        echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-        echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
-        echo "VITE_API_PREFIX=md" >> .env
+      - name: Build
+        run: CI=false yarn build
 
-    - name: Install Dependencies with Yarn
-      run: yarn install --immutable
+      - name: SSH Server Deploy - MD
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          scp_source: "build/"
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
 
-    - name: Build
-      run: CI=false yarn build
+  Deploy-RO:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: SSH Server Deploy - MD
-      uses: kostya-ten/ssh-server-deploy@v4
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        password: ${{ secrets.SSH_PASS }}
-        private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
-        scp_source: "build/"
-        scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
+      - name: Use Cache from Setup
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/yarn
+          key: ${{ needs.setup.outputs.cache-key }}
 
-Deploy-RO:
-  needs: setup
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
+      - name: Create env configs - RO
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=ro" >> .env
 
-    - name: Use Cache from Setup
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/yarn
-        key: ${{ needs.setup.outputs.cache-key }}
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-    - name: Create env configs - RO
-      run: |
-        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-        echo "${{ secrets.API_PATH_DEV }}" >> .env
-        echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-        echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
-        echo "VITE_API_PREFIX=ro" >> .env
+      - name: Check node version
+        run: node -v
 
-    - name: Install Dependencies with Yarn
-      run: yarn install --immutable
+      - name: Enable Corepack
+        run: corepack enable
 
-    - name: Build
-      run: CI=false yarn build
+      - name: Set Yarn version
+        run: yarn set version 3.6.1
 
-    - name: SSH Server Deploy - MD
-      uses: kostya-ten/ssh-server-deploy@v4
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        password: ${{ secrets.SSH_PASS }}
-        private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
-        scp_source: "build/"
-        scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_RO }}
+      - name: Install Dependencies with Yarn
+        run: yarn install --immutable
 
-Deploy-ONLINE:
-  needs: setup
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
+      - name: Build
+        run: CI=false yarn build
 
-    - name: Use Cache from Setup
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/yarn
-        key: ${{ needs.setup.outputs.cache-key }}
+      - name: SSH Server Deploy - MD
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          scp_source: "build/"
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_RO }}
 
-    - name: Create env configs - ONLINE
-      run: |
-        echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-        echo "${{ secrets.API_PATH_DEV }}" >> .env
-        echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-        echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
-        echo "VITE_API_PREFIX=online" >> .env
+  Deploy-ONLINE:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Install Dependencies with Yarn
-      run: yarn install --immutable
+      - name: Use Cache from Setup
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/yarn
+          key: ${{ needs.setup.outputs.cache-key }}
 
-    - name: Build
-      run: CI=false yarn build
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-    - name: SSH Server Deploy - MD
-      uses: kostya-ten/ssh-server-deploy@v4
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        password: ${{ secrets.SSH_PASS }}
-        private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
-        scp_source: "build/"
-        scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_ONLINE }}
+      - name: Check node version
+        run: node -v
 
-Send-Notification:
-  needs: [Deploy-MD, Deploy-RO, Deploy-ONLINE]
-  runs-on: ubuntu-latest
-  if: success()
-  steps:
-    - name: Send telegram message
-      uses: appleboy/telegram-action@master
-      with:
-        format: html
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: |
-          ✅ <b>[DEV] Doctor's APP</b>
-          🥷 <b>User</b>: ${{ github.actor }}
-          📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Set Yarn version
+        run: yarn set version 3.6.1
+
+      - name: Create env configs - ONLINE
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
+          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "VITE_API_PREFIX=online" >> .env
+
+      - name: Install Dependencies with Yarn
+        run: yarn install --immutable
+
+      - name: Build
+        run: CI=false yarn build
+
+      - name: SSH Server Deploy - MD
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          scp_source: "build/"
+          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_ONLINE }}
+
+  Send-Notification:
+    needs: [Deploy-MD, Deploy-RO, Deploy-ONLINE]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Send telegram message
+        uses: appleboy/telegram-action@master
+        with:
+          format: html
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ <b>[DEV] Doctor's APP</b>
+            🥷 <b>User</b>: ${{ github.actor }}
+            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
