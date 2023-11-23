@@ -6,7 +6,9 @@ export const sortChatsByUpdatedAt = (chats: ConversationPreview[]): Conversation
   if (supportChat) {
     chats = chats.filter((chat) => chat !== supportChat);
   }
-  const unreadChats = chats.filter((chat) => chat.unread === 1 || chat.unreadCount === 1);
+  const unreadChats = chats.filter(
+    (chat) => chat.unread > 0 || (chat.unreadCount && chat.unreadCount > 0)
+  );
   const readChats = chats.filter((chat) => !unreadChats.includes(chat));
 
   readChats.sort((a, b) => {
