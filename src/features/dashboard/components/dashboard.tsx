@@ -32,7 +32,11 @@ import {
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
-  const { data: allData, isLoading } = useQuery({
+  const {
+    data: allData,
+    isLoading,
+    refetch: refetching,
+  } = useQuery({
     queryKey: ["dataDahsboard"],
     queryFn: async () => apiGetDashboard(),
     onSuccess: (data: any) => {
@@ -55,9 +59,15 @@ export const DashboardWrapper: React.FC = () => {
       return apiGetReservations(monthReservations as string);
     },
   });
+
   useEffect(() => {
     refetch();
   }, [monthReservations]);
+
+  useEffect(() => {
+    refetching();
+  }, []);
+
   const navigate = useNavigate();
 
   const sessionUser = localStorage.getItem("session:user") ?? "";
