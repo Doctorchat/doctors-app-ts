@@ -60,7 +60,7 @@ jobs:
       - name: Create env configs - MD
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.API_PATH }}" >> .env
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=md" >> .env
@@ -96,7 +96,7 @@ jobs:
       - name: Create env configs - RO
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.API_PATH }}" >> .env
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=ro" >> .env
@@ -160,7 +160,7 @@ jobs:
       - name: Create env configs - ONLINE
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH_DEV }}" >> .env
+          echo "${{ secrets.API_PATH }}" >> .env
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=online" >> .env
