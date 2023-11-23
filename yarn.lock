@@ -3511,7 +3511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.4.0":
+"axios@npm:^1.6.0":
   version: 1.6.2
   resolution: "axios@npm:1.6.2"
   dependencies:
@@ -4121,7 +4121,7 @@ __metadata:
     antd: ^5.9.0
     apexcharts: ^3.42.0
     autoprefixer: ^10.4.15
-    axios: ^1.4.0
+    axios: ^1.6.0
     class-variance-authority: ^0.7.0
     clsx: ^2.0.0
     cmdk: ^0.2.0
