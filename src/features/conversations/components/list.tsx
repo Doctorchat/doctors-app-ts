@@ -37,10 +37,9 @@ export const List: React.FC = () => {
   const { listPatients, isLoading, refetchingListPatients } = useChatList();
 
   React.useEffect(() => {
-    refetchingListDoctors();
     refetchingListPatients();
   }, []);
-  
+
   const sessionUser = localStorage.getItem("session:user") ?? "";
 
   const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
