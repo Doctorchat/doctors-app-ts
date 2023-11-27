@@ -4153,6 +4153,7 @@ __metadata:
     react-hook-form: ^7.45.4
     react-i18next: ^13.2.1
     react-icons: ^4.11.0
+    react-internet-meter: ^1.1.1
     react-otp-input: ^3.1.0
     react-phone-number-input: ^3.3.5
     react-query: ^3.39.3
@@ -7667,6 +7668,15 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 7b8b80bbe2dabcc54b6c2129b7761a04b19caebe24389adc7683478ef41212b9ca0b53c63abcc06b3c01b94c84855ec5142b4c357e19c4aaaad9a4db23a3c485
+  languageName: node
+  linkType: hard
+
+"react-internet-meter@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "react-internet-meter@npm:1.1.1"
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 2b6376909fc9924e9515a1d2c68cc3041953c91b600653ebc20d62055526aca7c75ab5517b4a4edfe2d2f6836c89a756f03ce14e71a77e8f3865cd0bd426e355
   languageName: node
   linkType: hard
 
