@@ -64,6 +64,7 @@ jobs:
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=md" >> .env
+          echo "VITE_PUBLIC_API_REGION=md" >> .env
 
       - name: Install Dependencies with Yarn
         run: yarn install --immutable
@@ -100,6 +101,7 @@ jobs:
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=ro" >> .env
+          echo "VITE_PUBLIC_API_REGION=ro" >> .env
 
       - name: Use Node.js
         uses: actions/setup-node@v3
@@ -164,6 +166,7 @@ jobs:
           echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
           echo "VITE_API_PREFIX=online" >> .env
+          echo "VITE_PUBLIC_API_REGION=ro" >> .env
 
       - name: Install Dependencies with Yarn
         run: yarn install --immutable
