@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { ReactInternetSpeedMeter } from "react-internet-meter";
 import "react-internet-meter/dist/index.css";
 
 const OfflineImage = () => {
-  const { t } = useTranslation();
   return (
     <div className="_1alIC_disconnected">
       <img
@@ -23,7 +21,6 @@ const OfflineImage = () => {
 };
 
 export const InternetSpeed: React.FC = () => {
-  const { t } = useTranslation();
   const [online, setOnline] = React.useState(navigator.onLine);
 
   React.useEffect(() => {
