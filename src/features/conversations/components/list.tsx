@@ -33,7 +33,7 @@ export const List: React.FC = () => {
     listChats: store.listChats.data,
   }));
 
-  const { listDoctors, isLoadingListDoctors, refetchingListDoctors } = useChatListDoctors();
+  const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
   const { listPatients, isLoading, refetchingListPatients } = useChatList();
 
   React.useEffect(() => {

@@ -1,9 +1,6 @@
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import dayjs from "dayjs";
-
-import ExternalIcon from "@/icons/external-link.svg";
-import CamIcon from "@/icons/webcam.svg";
 import date from "@/utils/date";
 import { ConversationMessage } from "../../types";
 import { LinkIcon, VideoCameraIcon } from "@heroicons/react/24/outline";
