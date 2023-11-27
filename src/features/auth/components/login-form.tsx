@@ -27,6 +27,7 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
+import { CountryCode } from "libphonenumber-js/core";
 import { getApiErrorMessagesLogin } from "@/utils";
 import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
@@ -122,7 +123,7 @@ export const LoginForm: React.FC = () => {
                         focusInputOnCountrySelection
                         defaultCountry={
                           (import.meta.env.VITE_PUBLIC_API_REGION ?? "md").toUpperCase() as
-                            | any
+                            | CountryCode
                             | undefined
                         }
                         countryCallingCodeEditable={false}
