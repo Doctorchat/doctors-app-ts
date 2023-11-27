@@ -50,7 +50,7 @@ const ChartDonut: React.FC<ChartDonutProps> = ({ loading, data }) => {
         },
         colors: ["rgb(0, 102, 255)", "rgb(239, 68, 68)"],
       }}
-      series={[data?.likes ?? 1, data?.dislikes ?? 0]}
+      series={[data?.likes ? data?.likes : 1, data?.dislikes ? data?.dislikes : 0]}
       height="85%"
       type="donut"
     />
