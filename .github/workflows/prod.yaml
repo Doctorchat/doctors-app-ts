@@ -61,8 +61,8 @@ jobs:
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV }}" >> .env
           echo "VITE_API_PREFIX=md" >> .env
 
       - name: Install Dependencies with Yarn
@@ -97,8 +97,8 @@ jobs:
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV }}" >> .env
           echo "VITE_API_PREFIX=ro" >> .env
 
       - name: Use Node.js
@@ -161,8 +161,8 @@ jobs:
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV }}" >> .env
           echo "VITE_API_PREFIX=online" >> .env
 
       - name: Install Dependencies with Yarn

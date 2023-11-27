@@ -1,4 +1,4 @@
-name: Deploy Doctor's APP - DEV
+name: Deploy Doctor's APP - DEV - MD
 
 on:
   push:
