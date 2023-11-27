@@ -3,7 +3,7 @@ name: Deploy Doctor's APP - DEV - MD
 on:
   push:
     branches:
-      - none
+      - dev
 
 jobs:
   Setup-Ecosystem:
