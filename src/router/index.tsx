@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-
 import { MainLayout } from "@/components/layout";
 import { PrivateRoute, routes as authRoutes } from "@/features/auth";
 import { routes as authRestoreRoutes } from "@/features/restore";

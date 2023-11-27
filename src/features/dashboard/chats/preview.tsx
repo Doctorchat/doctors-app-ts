@@ -1,22 +1,18 @@
 import type { IChatCloseOrOpen } from "../types";
-
 import { Link, useSearchParams } from "react-router-dom";
-
 import { formatDistance, parseISO } from "date-fns";
-import { useTranslation } from "react-i18next";
-
-import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { ConversationDoctors, ConversationPreview } from "@/features/conversations/types";
+import { BadgeType } from "@/features/conversations/components/badge-type";
 
 export interface PreviewProps {
   conversation: IChatCloseOrOpen | ConversationDoctors | ConversationPreview;
-  typeChat: string;
+  typeChat: "patients" | "doctors" | "closed";
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeChat }) => {
-  const { t } = useTranslation();
   const { locale } = useAppI18n();
   const [searchParams] = useSearchParams();
   return (
@@ -49,21 +45,10 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeChat }) => {
             <h2 className="truncate font-medium text-typography-primary">
               {conversation.name ?? conversation.title}
             </h2>
-
-            {(typeChat === "patients" || typeChat === "closed") &&
-              (conversation?.status === "closed" ? (
-                <Badge variant="primary" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_closed")}
-                </Badge>
-              ) : conversation?.status === "open" ? (
-                <Badge variant="progress" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_open")}
-                </Badge>
-              ) : conversation?.status === "responded" ? (
-                <Badge variant="success" className="ml-1 whitespace-nowrap px-2 py-px">
-                  {t("conversations:chat_responded")}
-                </Badge>
-              ) : null)}
+            <BadgeType
+              typeConversation={typeChat}
+              conversation={conversation as ConversationPreview}
+            />
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">
