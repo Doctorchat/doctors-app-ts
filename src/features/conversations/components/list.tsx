@@ -37,7 +37,6 @@ export const List: React.FC = () => {
   const { listPatients, isLoading, refetchingListPatients } = useChatList();
 
   React.useEffect(() => {
-    refetchingListDoctors();
     refetchingListPatients();
   }, []);
   
