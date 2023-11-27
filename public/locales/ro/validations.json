@@ -6,9 +6,5 @@
   "invalid_file": "Acest fișier nu este valid",
   "file_size_too_big": "Dimensiunea fișierului ar trebui să fie mai mică decât {{max}} MB",
   "file_type_not_allowed": "Tipul de fișier trebuie să fie {{extensions}}",
-  "too_small": "Trebuie să conțină cel puțin {{min}} caractere",
-  "net_slow": "Internetul este prea lent",
-  "net_disconeted": "Deconectat de la internet",
-  "net_title": "Internet ...",
-  "net_reconect": "Reconectare pe pagină principala"
+  "too_small": "Trebuie să conțină cel puțin {{min}} caractere"
 }
