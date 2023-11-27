@@ -122,9 +122,9 @@ export const LoginForm: React.FC = () => {
                         limitMaxLength
                         focusInputOnCountrySelection
                         defaultCountry={
-                          (import.meta.env.VITE_PUBLIC_API_REGION ?? "md").toUpperCase() as
-                            | CountryCode
-                            | undefined
+                          (
+                            import.meta.env.VITE_PUBLIC_API_REGION ?? "md"
+                          ).toUpperCase() as CountryCode
                         }
                         countryCallingCodeEditable={false}
                         className="flex space-x-2"
