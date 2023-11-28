@@ -10,7 +10,7 @@
   "settings": "Settings",
   "home": "Home",
   "details": "Details",
-  "prevision_consult": "Previous consultation",
+  "prevision_consult": "Previous consultation {{time}}",
   "is_online": "Online",
   "activity": "Activity",
   "age": "Age",

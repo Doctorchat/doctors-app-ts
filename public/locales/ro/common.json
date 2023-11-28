@@ -11,7 +11,7 @@
   "settings": "Setări",
   "home": "Acasă",
   "details": "Detalii",
-  "prevision_consult": "Consultația precedentă",
+  "prevision_consult": "Consultația precedentă {{time}}",
   "is_online": "Online",
   "activity": "Activitate",
   "age": "Vârsta",

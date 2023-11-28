@@ -11,7 +11,7 @@
   "settings": "Настройки",
   "home": "Главная",
   "details": "Детали",
-  "prevision_consult": "Предыдущая консультация",
+  "prevision_consult": "Предыдущая консультация {{time}}",
   "is_online": "Онлайн",
   "activity": "Активность",
   "age": "Возраст",
