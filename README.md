@@ -5,6 +5,8 @@
 
 ```
 VITE_API_URL=
+VITE_API_PREFIX=
+VITE_PUBLIC_API_REGION=
 ```
 
 ## Pusher ENV
