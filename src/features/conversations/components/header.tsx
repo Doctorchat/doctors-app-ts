@@ -33,10 +33,25 @@ export const Header: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading =
     isCardPLoading || (!chatConversation?.user_id && !isCardPErrored) || !cardPatient;
-  const isPrevisionConsultation = chatConversation?.previous;
-  {
-    /*ToDo <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} /> */
-  }
+
+  // ToDo <UserCard open={isUserCardOpen} onOpenChange={setIsUserCardOpen} card={cardPatient} />
+  // Will be soon  <DropdownMenu>
+  //    <DropdownMenuTrigger asChild>
+  //      <Button variant="ghost" size="icon" disabled={isLoading} className="h-10 w-10 rounded-full">
+  //        <EllipsisVerticalIcon className="h-6 w-6" />
+  //      </Button>
+  //    </DropdownMenuTrigger>
+  //    <DropdownMenuContent side="bottom" align="end" className="w-40">
+  //      <DropdownMenuItem
+  //        onClick={() => navigate(`/conversations?patientId=${isPrevisionConsultation}`)}
+  //      >
+  //        {t("common:prevision_consult")}
+  //        <DropdownMenuShortcut>
+  //          <BackwardIcon className="h-5 w-5" />
+  //        </DropdownMenuShortcut>
+  //      </DropdownMenuItem>
+  //    </DropdownMenuContent>
+  //  </DropdownMenu>;
 
   return (
     <header className="flex h-16 items-center justify-between space-x-4 border-b border-neutral-200 px-5">
@@ -84,30 +99,6 @@ export const Header: React.FC = () => {
           </div>
         )}
       </div>
-      {isPrevisionConsultation && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={isLoading}
-              className="h-10 w-10 rounded-full"
-            >
-              <EllipsisVerticalIcon className="h-6 w-6" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end" className="w-40">
-            <DropdownMenuItem
-              onClick={() => navigate(`/conversations?patientId=${isPrevisionConsultation}`)}
-            >
-              {t("common:prevision_consult")}
-              <DropdownMenuShortcut>
-                <BackwardIcon className="h-5 w-5" />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
     </header>
   );
 };
