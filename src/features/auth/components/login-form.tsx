@@ -5,11 +5,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
-
 import { apiLogin } from "../api";
 import { useEmulateLogin } from "../hooks";
 import { useAuth } from "../provider";
-
 import { CountrySelect } from "@/components/shared";
 import {
   Alert,
@@ -18,7 +16,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -30,6 +27,7 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
+import { CountryCode } from "libphonenumber-js/core";
 import { getApiErrorMessagesLogin } from "@/utils";
 import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
@@ -123,7 +121,11 @@ export const LoginForm: React.FC = () => {
                         smartCaret
                         limitMaxLength
                         focusInputOnCountrySelection
-                        defaultCountry="MD"
+                        defaultCountry={
+                          (
+                            import.meta.env.VITE_PUBLIC_API_REGION ?? "md"
+                          ).toUpperCase() as CountryCode
+                        }
                         countryCallingCodeEditable={false}
                         className="flex space-x-2"
                         disabled={isAuthInProcess}

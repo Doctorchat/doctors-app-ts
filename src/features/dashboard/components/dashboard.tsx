@@ -29,9 +29,11 @@ import {
   SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST,
   SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST,
 } from "@/config";
+import { useTranslation } from "react-i18next";
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
+   const { t } = useTranslation();
   const {
     data: allData,
     isLoading,
@@ -140,7 +142,7 @@ export const DashboardWrapper: React.FC = () => {
             onClick={() => navigate("/reviews")}
           >
             <div className="flex overflow-hidden rounded bg-sky-200/50 p-1 hover:bg-sky-200">
-              <p className="text-xs text-sky-600">Acceseaza recenzii</p>
+              <p className="text-xs text-sky-600">{t("acces_reviews")}</p>
               <ChatBubbleLeftRightIcon height={14} width={14} color="#2896cf" className="ml-2" />
             </div>
           </div>
