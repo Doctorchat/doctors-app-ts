@@ -1,0 +1,6 @@
+{
+    "type_new_ticket_video": "Have a new request from {{user_name}} of type video",
+    "type_new_ticket_chat": "Have a new request from {{user_name}} of type chat",
+    "type_new_topup": "Have topped up your account with {{amount}} {{currency}}",
+    "type_new_referral": "Referalul {{user_name}} s-a înregistrat"
+}

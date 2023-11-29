@@ -12,8 +12,8 @@ import { Badge } from "@/components/ui/BadgePoint";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
 import { notificationTypeAvatar } from "./notification-type-avatar";
-import { apiGetNotificationList } from "../api";
-import { useQuery } from "react-query";
+import { apiGetNotificationList, apiGetNotificationNext } from "../api";
+import { INotifications } from "../types";
 
 const notificationLists = [
   {
@@ -94,13 +94,7 @@ const NotificationDropdown: React.FC = () => {
   const [unreadNotification, setUnreadNotification] = useState(false);
   const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [notificationList, setNotificationList] = useState<any[]>([]);
-
-  const { data: NotificationListData, isLoading } = useQuery({
-    queryKey: ["notificationList"],
-    queryFn: async () => apiGetNotificationList(),
-  });
-  console.log(NotificationListData);
+  const [notificationList, setNotificationList] = useState<INotifications[]>([]);
 
   const getNotificationCount = useCallback(async () => {
     // const resp = await apiGetNotificationCount();
@@ -117,51 +111,47 @@ const NotificationDropdown: React.FC = () => {
 
   useEffect(() => {
     getNotificationCount();
+  }, [getNotificationCount]);
+
+  const onNotificationOpen = useCallback(async () => {
     if (notificationList.length === 0) {
       setLoading(true);
-      // const resp = await apiGetNotificationList();
+      const notifications = await apiGetNotificationList();
+      const asd =
+        notifications.notifications.current_page &&
+        (await apiGetNotificationNext(notifications.notifications.current_page + 1));
+      console.log(asd);
+
+      // apiGetNotificationNext
       setLoading(false);
-
-      setNotificationList(notificationLists);
+      setNotificationList(notifications.notifications.data);
     }
-  }, [getNotificationCount, notificationLists, notificationList]);
-  // const onNotificationOpen = useCallback(async () => {
-  //   if (notificationLists.length === 0) {
-  //     setLoading(true);
-  //     // const resp = await apiGetNotificationList();
-  //     setLoading(false);
+  }, [notificationList, setLoading]);
 
-  //     setNotificationList(notificationLists);
-  //   }
-  // }, [notificationList, setLoading]);
-
-  const onMarkAllAsRead = useCallback(
-    (e: any) => {
-      const list = notificationList.map((item: any) => {
-        if (!item.readed) {
-          item.readed = true;
-        }
-        return item;
-      });
-      setNotificationList(list);
-      setUnreadNotification(false);
-    },
-    [notificationList]
-  );
+  const onMarkAllAsRead = useCallback(() => {
+    const list = notificationList.map((item: any) => {
+      if (!item.read_at) {
+        item.read_at = new Date().toString();
+      }
+      return item;
+    });
+    setNotificationList(list);
+    setUnreadNotification(false);
+  }, [notificationList]);
 
   const onMarkAsRead = useCallback(
-    (id: string, event: any) => {
+    (id: number, event: any) => {
       event.preventDefault();
 
       const list = notificationList.map((item) => {
         if (item.id === id) {
-          item.readed = true;
+          item.read_at = new Date().toString();
         }
         return item;
       });
 
       setNotificationList(list);
-      const hasUnread = notificationList.some((item) => !item.readed);
+      const hasUnread = notificationList.some((item) => !item.read_at);
       if (!hasUnread) {
         setUnreadNotification(false);
       }
@@ -174,7 +164,7 @@ const NotificationDropdown: React.FC = () => {
 
   return (
     <div className="mr-2 ">
-      <DropdownMenu key="MenuNotifications">
+      <DropdownMenu key="MenuNotifications" onOpenChange={onNotificationOpen}>
         <DropdownMenuTrigger asChild key="NotificationDropdowns">
           <Button
             key="NotificationDropdowns"
@@ -225,8 +215,10 @@ const NotificationDropdown: React.FC = () => {
                       <div>{notificationTypeAvatar(item)}</div>
                       <div className="ltr:ml-3 rtl:mr-3">
                         <div>
-                          {item.target && (
-                            <span className="heading-text font-semibold">{item.target} </span>
+                          {item.data.user_name && (
+                            <span className="heading-text font-semibold">
+                              {item.data.user_name}
+                            </span>
                           )}
                           <span>{item.description}</span>
                         </div>
