@@ -1,13 +1,10 @@
-import type { ConversationDoctors, ConversationPreview } from "../types";
-
+import type { ConversationPreview } from "../types";
 import { Link, useSearchParams } from "react-router-dom";
-
 import { formatDistance, parseISO } from "date-fns";
-import { useTranslation } from "react-i18next";
-
-import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
+import { BadgeType } from "./badge-type";
 
 export interface PreviewProps {
   conversation: ConversationPreview;
@@ -15,12 +12,10 @@ export interface PreviewProps {
 }
 
 export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation }) => {
-  const { t } = useTranslation();
   const { locale } = useAppI18n();
 
   const [searchParams] = useSearchParams();
   const chatType = typeConversation === "patients" ? "patient" : "doctor";
-
   return (
     <Link
       to={`/conversations?${chatType}Id=${conversation.id}&anonymous=${
@@ -55,12 +50,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
             <h2 className="truncate font-medium text-typography-primary">
               {conversation.name ?? conversation.title}
             </h2>
-
-            {conversation.company_id && (
-              <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
-                {t("conversations:corporate_client")}
-              </Badge>
-            )}
+            <BadgeType typeConversation={typeConversation} conversation={conversation} />
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">
@@ -85,7 +75,7 @@ export const Preview: React.FC<PreviewProps> = ({ conversation, typeConversation
             <p className="flex-1 truncate text-sm">{conversation.lastMessage.content}</p>
           )}
           {(conversation.unread ?? conversation.unreadCount) > 0 && (
-            <span className="bg-green-600 ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full	 text-xs font-medium text-white">
+            <span className="ml-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-green-600	 text-xs font-medium text-white">
               {conversation.unread ?? conversation.unreadCount}
             </span>
           )}

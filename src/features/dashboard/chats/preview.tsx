@@ -1,21 +1,18 @@
 import type { IChatCloseOrOpen } from "../types";
-
 import { Link, useSearchParams } from "react-router-dom";
-
 import { formatDistance, parseISO } from "date-fns";
-import { useTranslation } from "react-i18next";
-
-import { Avatar, AvatarFallback, AvatarImage, Badge, Skeleton } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from "@/components/ui";
 import { useAppI18n } from "@/hooks";
 import { cn, getInitials } from "@/utils";
 import { ConversationDoctors, ConversationPreview } from "@/features/conversations/types";
+import { BadgeType } from "@/features/conversations/components/badge-type";
 
 export interface PreviewProps {
   conversation: IChatCloseOrOpen | ConversationDoctors | ConversationPreview;
+  typeChat: "patients" | "doctors" | "closed";
 }
 
-export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
-  const { t } = useTranslation();
+export const Preview: React.FC<PreviewProps> = ({ conversation, typeChat }) => {
   const { locale } = useAppI18n();
   const [searchParams] = useSearchParams();
   return (
@@ -48,12 +45,10 @@ export const Preview: React.FC<PreviewProps> = ({ conversation }) => {
             <h2 className="truncate font-medium text-typography-primary">
               {conversation.name ?? conversation.title}
             </h2>
-
-            {conversation.company_id && (
-              <Badge variant="outline" className="ml-1 whitespace-nowrap px-2 py-px">
-                {t("conversations:corporate_client")}
-              </Badge>
-            )}
+            <BadgeType
+              typeConversation={typeChat}
+              conversation={conversation as ConversationPreview}
+            />
           </div>
 
           <span className="ml-2 whitespace-nowrap text-xs">

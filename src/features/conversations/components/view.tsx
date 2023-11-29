@@ -26,6 +26,8 @@ import { updateUnReadMessage } from "@/store/slices/listChatsSlice";
 import MessageContent from "./message-content";
 import { updateUnReadMessageDoctors } from "@/store/slices/listChatsDoctorsSlice";
 import { updateDoctorUnread, updatePatientUnreadCount } from "@/store/slices/listsChatsShortsSlice";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui";
 
 export const View: React.FC = () => {
   const { t } = useTranslation();
@@ -164,6 +166,8 @@ export const View: React.FC = () => {
       }
     }
   }, [chatContentDoctors?.messages]);
+  const isPrevisionConsultation = chatConversation?.previous;
+  const navigate = useNavigate();
 
   return (
     <div key="conversations" className="relative flex h-full flex-col overflow-hidden rounded-lg">
@@ -175,6 +179,16 @@ export const View: React.FC = () => {
       >
         {grouped.map(({ key, messages }) => (
           <div key={key} className="space-y-2.5">
+            {isPrevisionConsultation && (
+              <div className="flex justify-center">
+                <Button
+                  variant="primary"
+                  onClick={() => navigate(`/conversations?patientId=${isPrevisionConsultation}`)}
+                >
+                  {t("common:prevision_consult", { time: chatConversation?.previous_time })}
+                </Button>
+              </div>
+            )}
             <div className={cn("relative flex h-10 items-center justify-center px-5")}>
               <span
                 className={cn(
@@ -198,6 +212,7 @@ export const View: React.FC = () => {
                   }
                   timestamp={message?.updated ?? ""}
                 />
+
                 {message.recommendations?.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}
@@ -211,15 +226,19 @@ export const View: React.FC = () => {
                     ))}
                   </MessageBubble>
                 )}
-                {message.content && !message.files.length && (
+                {message.content && (
                   <MessageContent
                     isAutoScrollEnabled={isAutoScrollEnabled}
                     message={message}
                     isArhived={chatConversation?.isAccepted}
-                    openedConversation={chatConversation?.status === "open"}
+                    openedConversation={
+                      !!(
+                        chatConversation?.status === "open" ||
+                        chatConversation?.status === "responded"
+                      )
+                    }
                   />
                 )}
-
                 {message.files.length > 0 && (
                   <MessageBubble
                     variant={message.side === "in" ? "primary" : "secondary"}

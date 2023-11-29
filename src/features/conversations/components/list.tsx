@@ -32,9 +32,14 @@ export const List: React.FC = () => {
   const { listChats } = useSelector((store: any) => ({
     listChats: store.listChats.data,
   }));
-  const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
-  const { listPatients, isLoading } = useChatList();
 
+  const { listDoctors, isLoadingListDoctors } = useChatListDoctors();
+  const { listPatients, isLoading, refetchingListPatients } = useChatList();
+
+  React.useEffect(() => {
+    refetchingListPatients();
+  }, []);
+  
   const sessionUser = localStorage.getItem("session:user") ?? "";
 
   const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";

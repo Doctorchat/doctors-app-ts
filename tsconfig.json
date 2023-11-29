@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ],
+    "noImplicitAny": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],

@@ -1,4 +1,6 @@
 export interface ConversationPreview {
+  isAccepted?: boolean;
+  status?: string | any;
   updated_at?: string;
   id: number;
   user_id: number;
@@ -35,6 +37,8 @@ export interface ConversationDoctors {
   updated?: string;
   description?: string;
   unread?: number;
+  status?: string;
+  isAccepted?: boolean;
 }
 export interface LastMessageDc {
   content: string;

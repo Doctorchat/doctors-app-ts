@@ -12,13 +12,33 @@ import ChartDonut from "./chartProcent";
 import { useEffect, useState } from "react";
 import { getCurrentMonth } from "../utils/getDates";
 import { useDispatch } from "react-redux";
-import { addClosed, addDoctors, addPatients } from "@/store/slices/listsChatsShortsSlice";
+import {
+  addClosed,
+  addDoctors,
+  addPatients,
+  updateDoctorChatList,
+  updatePatientChatList,
+} from "@/store/slices/listsChatsShortsSlice";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router";
+import usePusher from "@/features/conversations/hooks/usePusher";
+import { Channel } from "pusher-js";
+import {
+  SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST,
+  SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST,
+  SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST,
+  SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST,
+} from "@/config";
+import { useTranslation } from "react-i18next";
 
 export const DashboardWrapper: React.FC = () => {
   const dispatch = useDispatch();
-  const { data: allData, isLoading } = useQuery({
+   const { t } = useTranslation();
+  const {
+    data: allData,
+    isLoading,
+    refetch: refetching,
+  } = useQuery({
     queryKey: ["dataDahsboard"],
     queryFn: async () => apiGetDashboard(),
     onSuccess: (data: any) => {
@@ -41,10 +61,60 @@ export const DashboardWrapper: React.FC = () => {
       return apiGetReservations(monthReservations as string);
     },
   });
+
   useEffect(() => {
     refetch();
   }, [monthReservations]);
+
+  useEffect(() => {
+    refetching();
+  }, []);
+
   const navigate = useNavigate();
+
+  const sessionUser = localStorage.getItem("session:user") ?? "";
+
+  const current_user = !!sessionUser ? JSON.parse(localStorage.getItem("session:user") || "") : "";
+  const { pusher } = usePusher();
+
+  useEffect(() => {
+    let doctorsListChannel: Channel;
+    let patientslistChannel: Channel;
+    if (pusher) {
+      doctorsListChannel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DASHBOARD_DOCTORS_LIST + current_user.id
+      );
+      patientslistChannel = pusher.subscribe(
+        SOCKET_PUSHER_CHANNEL_DASHBOARD_PATIENTS_LIST + current_user.id
+      );
+
+      doctorsListChannel.bind(SOCKET_PUSHER_EVENT_DASHBOARD_DOCTORS_LIST, (data: any) => {
+        const listMessage = JSON.parse(data.content_data);
+        console.log(listMessage);
+
+        dispatch(
+          updateDoctorChatList({
+            unreadCount: listMessage.unreadCount,
+            chat_id: listMessage.doctor_chat_id,
+            lastMessage: listMessage.message,
+            updated_at: listMessage.updated_at,
+            title: listMessage.title,
+          })
+        );
+      });
+      patientslistChannel.bind(SOCKET_PUSHER_EVENT_DASHBOARD_PATIENTS_LIST, (data: any) => {
+        const { chatList, chat_id } = data;
+
+        const chat_update = JSON.parse(chatList);
+        console.log(chat_update);
+        dispatch(updatePatientChatList({ id: chat_id, updatedData: chat_update }));
+      });
+    }
+    return () => {
+      doctorsListChannel?.unsubscribe();
+      patientslistChannel?.unsubscribe();
+    };
+  }, [pusher]);
 
   return (
     <>
@@ -72,7 +142,7 @@ export const DashboardWrapper: React.FC = () => {
             onClick={() => navigate("/reviews")}
           >
             <div className="flex overflow-hidden rounded bg-sky-200/50 p-1 hover:bg-sky-200">
-              <p className="text-xs text-sky-600">Acceseaza recenzii</p>
+              <p className="text-xs text-sky-600">{t("acces_reviews")}</p>
               <ChatBubbleLeftRightIcon height={14} width={14} color="#2896cf" className="ml-2" />
             </div>
           </div>

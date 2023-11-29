@@ -10,6 +10,7 @@
   "settings": "Settings",
   "home": "Home",
   "details": "Details",
+  "prevision_consult": "Previous consultation {{time}}",
   "is_online": "Online",
   "activity": "Activity",
   "age": "Age",
@@ -92,5 +93,6 @@
     "sun": "Sunday"
   },
   "start_time": "Start time",
-  "end_time": "End time"
+  "end_time": "End time",
+  "acces_reviews": "Access reviews"
 }

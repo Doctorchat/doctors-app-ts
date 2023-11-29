@@ -1,18 +1,12 @@
 import type { SessionUser } from "../types";
-
 import React from "react";
-
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
-
 import { apiGetSessionUser } from "../api";
-
 import { FIREBASE_PERMISSION, SESSION_TOKEN_KEY, SESSION_USER_KEY } from "@/config";
 import { useAppI18n } from "@/hooks";
 import { AppLocale } from "@/types";
 import { fetchToken } from "../../notification-firebase";
-
-import { getMessaging, onMessage } from "firebase/messaging";
-import { firebaseApp } from "@/features/notification-firebase/api/config";
+import InternetSpeed from "../components/internet-speed";
 
 export interface AuthContextValue {
   session: {
@@ -86,7 +80,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     revalidateSession();
   });
 
-
   return (
     <AuthContext.Provider
       value={{
@@ -96,6 +89,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         revalidateSession,
       }}
     >
+      <InternetSpeed />
       {children}
     </AuthContext.Provider>
   );

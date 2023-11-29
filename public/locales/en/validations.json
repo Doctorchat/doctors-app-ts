@@ -1,6 +1,6 @@
 {
   "invalid_phone_number": "Invalid phone number",
-  "forgot_password":"Forgot password?",
+  "forgot_password": "Forgot password?",
   "invalid_email": "Invalid email",
   "otp_6_characters": "OTP code must contain 6 digits",
   "invalid_file": "This file is invalid",

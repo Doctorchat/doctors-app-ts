@@ -5,11 +5,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
-
 import { apiLogin } from "../api";
 import { useEmulateLogin } from "../hooks";
 import { useAuth } from "../provider";
-
 import { CountrySelect } from "@/components/shared";
 import {
   Alert,
@@ -18,7 +16,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -30,7 +27,9 @@ import {
   Input,
   PasswordInput,
 } from "@/components/ui";
+import { CountryCode } from "libphonenumber-js/core";
 import { getApiErrorMessagesLogin } from "@/utils";
+import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
 const schema = z.object({
   phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
@@ -56,7 +55,7 @@ export const LoginForm: React.FC = () => {
 
   const [apiErrors, setApiErrors] = React.useState<string[] | string | null>(null);
 
-  const onSubmitTestIsSubmitting = async (values: FormValues) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const response = await apiLogin(values);
       const continueFrom = new URLSearchParams(window.location.search).get("continueFrom");
@@ -75,20 +74,27 @@ export const LoginForm: React.FC = () => {
   return (
     <Card className="w-full max-w-sm">
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader className="justify-between">
             <div className="text-center">
               <div className="flex items-center justify-center">
-                <img
-                  src="/assets/logo.svg"
-                  width="36"
-                  height="36"
-                  alt="Doctorchat"
-                  className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
-                />
+                <div className="ml-auto mr-[-55px]">
+                  <img
+                    src="/assets/logo.svg"
+                    width="36"
+                    height="36"
+                    alt="Doctorchat"
+                    className="mx-auto h-9 w-9 flex-shrink-0 object-contain"
+                  />
+                </div>
+                <div className="ml-auto flex justify-end">
+                  <ProfileChangeLang isShortText={true} />
+                </div>
               </div>
               <CardTitle className="mt-3 text-xl">{t("common:welcome_back")}</CardTitle>
-              <CardDescription>{t("auth:enter_credentials_to_continue")}</CardDescription>
+              <p className=" text-sm text-typography-secondary">
+                {t("auth:enter_credentials_to_continue")}
+              </p>
             </div>
           </CardHeader>
           <CardContent>
@@ -115,7 +121,11 @@ export const LoginForm: React.FC = () => {
                         smartCaret
                         limitMaxLength
                         focusInputOnCountrySelection
-                        defaultCountry="MD"
+                        defaultCountry={
+                          (
+                            import.meta.env.VITE_PUBLIC_API_REGION ?? "md"
+                          ).toUpperCase() as CountryCode
+                        }
                         countryCallingCodeEditable={false}
                         className="flex space-x-2"
                         disabled={isAuthInProcess}
@@ -138,11 +148,11 @@ export const LoginForm: React.FC = () => {
                         {t("auth:password")}
                       </FormLabel>
                       <FormLabel>
-                        {/* <Link to="/auth/restore/password">
-                          <p className="text-red-500 underline">
+                        <Link to="/auth/restore">
+                          <p className="text-sky-500 underline">
                             {t("validations:forgot_password")}
                           </p>
-                        </Link> */}
+                        </Link>
                       </FormLabel>
                     </div>
                     <FormControl>

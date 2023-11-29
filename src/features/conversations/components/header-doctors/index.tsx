@@ -17,9 +17,6 @@ export const HeaderDoctors: React.FC = () => {
     useConversation();
 
   const navigate = useNavigate();
-
-  const [isUserCardOpen, setIsUserCardOpen] = React.useState(false);
-
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isLoading =
     isCardDoctorsLoading || (!conversationDoctors?.doctor_chat_id && !isCardDoctorsErrored);

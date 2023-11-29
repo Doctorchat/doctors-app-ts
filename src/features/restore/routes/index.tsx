@@ -1,18 +1,14 @@
 import React from "react";
 import { Navigate, Outlet, RouteObject } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
-
 import { Layout } from "../components";
-
 import { Spinner } from "@/components/ui";
 import { PublicRoute } from "@/features/auth/components";
 
 const RestorePage = React.lazy(() => import("./restore-page"));
 
-const RoutesWrapper: React.FC = () => {
+const RoutesWrapperRestore: React.FC = () => {
   const { t } = useTranslation();
-
   return (
     <Layout>
       <PublicRoute>
@@ -33,10 +29,10 @@ const RoutesWrapper: React.FC = () => {
 
 export const routes: RouteObject[] = [
   {
-    element: <RoutesWrapper />,
+    element: <RoutesWrapperRestore />,
     children: [
       {
-        path: "password",
+        index: true,
         element: <RestorePage />,
       },
       {
