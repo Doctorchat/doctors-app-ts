@@ -32,18 +32,18 @@ export interface INotifications {
     | "note";
   user_id: number;
   data: {
+    link?: string;
+    content?: string;
     user_name: string;
+    like?: number;
+    isMeet?: number;
+    amount?: string;
+    currency?: string;
+    chat_id?: string;
   };
   read_at: string | number | null;
   created_at: string;
   updated_at: string;
-  like?: number;
-  isMeet?: number;
-  amount?: string;
-  currency?: string;
-  chat_id?: string;
-  content?: string | null;
-  link?: string | null;
 }
 interface ILinks {
   url: string | null;
@@ -63,7 +63,7 @@ export interface ITypesOfButton {
   note: boolean;
 }
 
-// Tipizează obiectul isButtonNotification
+
 export type ButtonNotification = {
   new_ticket: boolean;
   new_referral_revenue: boolean;
@@ -77,7 +77,7 @@ export type ButtonNotification = {
   note: boolean;
 };
 type ILinksNotifications = { isButton: boolean; isPartialLink: boolean; link: string };
-// Tipizează obiectul isLinkNotification
+
 export type LinkNotification = {
   new_ticket?: ILinksNotifications;
   new_review?: ILinksNotifications;

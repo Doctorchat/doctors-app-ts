@@ -5,8 +5,26 @@ export const apiGetNotificationList = async () => {
   return await axiosInstance.get<INotificationsData>(`/notifications/`).then((res) => res.data);
 };
 
+export const apiGetNotificationUnreadable = async () => {
+  return await axiosInstance
+    .get<INotificationsData>(`/notifications/unread`)
+    .then((res) => res.data);
+};
+
 export const apiGetNotificationNext = async (current_page: number) => {
   return await axiosInstance
     .get<INotificationsData>(`/notifications/?page=${current_page}`)
+    .then((res) => res.data);
+};
+
+export const apiGetNotificationReadAll = async () => {
+  return await axiosInstance
+    .put<INotificationsData>(`/notifications/read-all`)
+    .then((res) => res.data);
+};
+
+export const apiGetNotificationRead = async (notification_id: number) => {
+  return await axiosInstance
+    .put<INotificationsData>(`/notifications/read/${notification_id}`)
     .then((res) => res.data);
 };

@@ -6,10 +6,11 @@
     "type_new_referral_revenue": "получили бонус {{amount}} {{currency}} от реферала {{user_name}}",
     "type_new_review_like": "получили благодарственный отзыв от {{user_name}}",
     "type_new_review_dislike": "получили негативный отзыв от {{user_name}}",
-    "type_chat_archived": "чат {{chat_id}} заархивирован",
-    "type_reset_password": "ваш пароль доступа был сброшен",
+    "type_chat_archived": "Чат {{chat_id}} заархивирован",
+    "type_reset_password": "Ваш пароль доступа был сброшен",
     "type_invite_to_chat": "{{user_name}} пригласил вас во внутренний чат",
     "no_notification": "Нет уведомлений",
     "title_notification": "Уведомления",
-    "open_notification": "Открыть"
+    "open_notification": "Открыть",
+    "mark_all_read": "Отметить Все Как Прочитанное"
 }

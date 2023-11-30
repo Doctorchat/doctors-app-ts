@@ -6,10 +6,11 @@
     "type_new_referral_revenue": "you received {{amount}} {{currency}} bonus from {{user_name}} referral",
     "type_new_review_like": "have received an appreciative review from {{user_name}}",
     "type_new_review_dislike": "have received a negative review from {{user_name}}",
-    "type_chat_archived": "chat {{chat_id}} has been archived",
-    "type_reset_password": "your access password has been reset",
+    "type_chat_archived": "Chat {{chat_id}} has been archived",
+    "type_reset_password": "Your access password has been reset",
     "type_invite_to_chat": "{{user_name}} invited you to an internal chat",
     "no_notification": "No notifications",
     "title_notification": "Notifications",
-    "open_notification":"Open"
+    "open_notification":"Open",
+    "mark_all_read": "Mark All As Read"
 }

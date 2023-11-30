@@ -13,7 +13,13 @@ import { Badge } from "@/components/ui/BadgePoint";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import ButtonIcon from "@/components/ui/buttonIcon";
 import { notificationTypeAvatar } from "./notification-type-avatar";
-import { apiGetNotificationList, apiGetNotificationNext } from "../api";
+import {
+  apiGetNotificationList,
+  apiGetNotificationNext,
+  apiGetNotificationRead,
+  apiGetNotificationReadAll,
+  apiGetNotificationUnreadable,
+} from "../api";
 import { INotifications } from "../types";
 import {
   isButtonNotification,
@@ -24,192 +30,6 @@ import {
 } from "./notification-description";
 import { useTranslation } from "react-i18next";
 import { useAppI18n } from "@/hooks";
-import { useNavigate } from "react-router-dom";
-
-const notificationLists = {
-  unread: 3,
-  notifications: {
-    current_page: 1,
-    data: [
-      {
-        id: 3,
-        type: "new_referral",
-        user_id: 352,
-        data: {
-          user_name: "Al Treilea",
-        },
-        amount: 80,
-        currency: "MDL",
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 3,
-        type: "new_referral_revenue",
-        user_id: 352,
-        data: {
-          user_name: "Al new_referral_revenue",
-        },
-        amount: 80,
-        currency: "MDL",
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 9,
-        type: "new_ticket",
-        isMeet: 1,
-        user_id: 352,
-        data: {
-          user_name: "Al Nouluea",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 0,
-        type: "new_review",
-        user_id: 352,
-        like: 1,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 8,
-        type: "new_review",
-        user_id: 352,
-        like: 0,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 9,
-        type: "chat_archived",
-        user_id: 352,
-        chat_id: 84,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Vhat arhived",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 10,
-        type: "reset_password",
-        user_id: 352,
-        chat_id: 84,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 11,
-        type: "invite_to_chat",
-        user_id: 352,
-        chat_id: 84,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 12,
-        type: "info",
-        user_id: 352,
-        chat_id: 84,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        content: "Contentulk este nfo",
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-      {
-        id: 12,
-        type: "info_with_link",
-        user_id: 352,
-        chat_id: 84,
-        amount: 20,
-        currency: "Dolary",
-        data: {
-          user_name: "Al Patrulea",
-        },
-        link: "https://www.deepl.com/translator#ro/ru/Notific%C4%83rile",
-        content: "Contentulk este info_with_link",
-        read_at: null,
-        created_at: "2023-11-21T18:39:51.000000Z",
-        updated_at: "2023-11-21T18:39:51.000000Z",
-      },
-    ],
-    first_page_url: "http://127.0.0.1:8000/api/md/notifications?page=1",
-    from: 1,
-    last_page: 3,
-    last_page_url: "http://127.0.0.1:8000/api/md/notifications?page=3",
-    links: [
-      {
-        url: null,
-        label: "&laquo; Previous",
-        active: false,
-      },
-      {
-        url: "http://127.0.0.1:8000/api/md/notifications?page=1",
-        label: "1",
-        active: true,
-      },
-      {
-        url: "http://127.0.0.1:8000/api/md/notifications?page=2",
-        label: "2",
-        active: false,
-      },
-      {
-        url: "http://127.0.0.1:8000/api/md/notifications?page=3",
-        label: "3",
-        active: false,
-      },
-      {
-        url: "http://127.0.0.1:8000/api/md/notifications?page=2",
-        label: "Next &raquo;",
-        active: false,
-      },
-    ],
-    next_page_url: "http://127.0.0.1:8000/api/md/notifications?page=2",
-    path: "http://127.0.0.1:8000/api/md/notifications",
-    per_page: 1,
-    prev_page_url: null,
-    to: 1,
-    total: 3,
-  },
-};
 
 const NotificationDropdown: React.FC<any> = (props) => {
   const [unreadNotification, setUnreadNotification] = useState(false);
@@ -218,15 +38,12 @@ const NotificationDropdown: React.FC<any> = (props) => {
   const [notificationList, setNotificationList] = useState<INotifications[]>([]);
   const { locale } = useAppI18n();
   const getNotificationCount = useCallback(async () => {
-    // const resp = await apiGetNotificationCount();
-
-    const resp = { data: { count: 4 } };
-
-    if (resp.data.count > 0) {
+    const responce = await apiGetNotificationUnreadable();
+    if (responce.unread > 0) {
       setUnreadNotification(true);
       setNoResult(false);
     } else {
-      setNoResult(true);
+      setUnreadNotification(false);
     }
   }, []);
 
@@ -237,32 +54,36 @@ const NotificationDropdown: React.FC<any> = (props) => {
   const onNotificationOpen = useCallback(async () => {
     if (notificationList.length === 0) {
       setLoading(true);
-      // const notifications = await apiGetNotificationList();
-      // const asd =
+      const notifications = await apiGetNotificationList();
+      //TODO lOAD MORE NOTIFICATIONS
+      // const nextpage =
       //   notifications.notifications.current_page &&
       //   (await apiGetNotificationNext(notifications.notifications.current_page + 1));
-      // console.log(asd);
 
-      // apiGetNotificationNext
-      setLoading(false);
-      // setNotificationList(notifications.notifications.data);
-      setNotificationList(notificationLists.notifications.data as unknown as INotifications[]);
+      if (notifications) {
+        apiGetNotificationNext;
+        setLoading(false);
+        setNotificationList(notifications.notifications.data);
+      } else {
+        setNoResult(true);
+      }
     }
   }, [notificationList, setLoading]);
 
-  const onMarkAllAsRead = useCallback(() => {
+  const onMarkAllAsRead = useCallback(async () => {
     const list = notificationList.map((item: any) => {
       if (!item.read_at) {
         item.read_at = new Date().toString();
       }
       return item;
     });
+    await apiGetNotificationReadAll();
     setNotificationList(list);
     setUnreadNotification(false);
   }, [notificationList]);
 
   const onMarkAsRead = useCallback(
-    (id: number, event: any) => {
+    async (id: number, event: any) => {
       event.preventDefault();
 
       const list = notificationList.map((item) => {
@@ -272,6 +93,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         return item;
       });
 
+      await apiGetNotificationRead(id);
       setNotificationList(list);
       const hasUnread = notificationList.some((item) => !item.read_at);
       if (!hasUnread) {
@@ -310,7 +132,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         <DropdownMenuContent side="bottom" align="end" className="w-96" key="NotificationContent">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
             <h6 className="font-semibold">{t("notification:title_notification")}</h6>
-            <Tooltip title="Mark all as read">
+            <Tooltip title={t("notification:mark_all_read")} color="blue">
               <ButtonIcon
                 variant="plain"
                 shape="circle"
@@ -326,17 +148,17 @@ const NotificationDropdown: React.FC<any> = (props) => {
               {notificationList.length > 0 &&
                 notificationList.map((item, index) => {
                   const descriptionNotif: any = typeEmptyContent.includes(item.type)
-                    ? item.content
+                    ? item.data.content
                     : notificationDescription(item);
 
-                  const chatId = isLinkChatId.includes(item.type) ? item.chat_id : "";
+                  const chatId = isLinkChatId.includes(item.type) ? item.data.chat_id : "";
 
                   const isLinkOnButton =
                     isLinkNotification[item.type] && isButtonNotification[item.type]
                       ? isLinkNotification[item.type]?.link + (chatId ?? "")
                       : "";
 
-                  const customLink = item.type === "info_with_link" ? item.link : "";
+                  const customLink = item.type === "info_with_link" ? item.data.link : "";
 
                   const contentText =
                     " " +

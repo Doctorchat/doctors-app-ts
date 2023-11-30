@@ -1,9 +1,10 @@
-import { ButtonNotification, INotifications, ITypesOfButton, LinkNotification } from "../types";
+import { ButtonNotification, INotifications, LinkNotification } from "../types";
 
 export const notificationDescription = (data: INotifications) => {
+ 
   switch (data?.type) {
     case "new_ticket":
-      return data.isMeet
+      return data.data.isMeet
         ? { text: "type_new_ticket_video", data: { user_name: data.data.user_name } }
         : { text: "type_new_ticket_chat", data: { user_name: data.data.user_name } };
 
@@ -14,14 +15,14 @@ export const notificationDescription = (data: INotifications) => {
       return {
         text: "type_new_referral_revenue",
         data: {
-          amount: data.amount,
-          currency: data.currency,
+          amount: data.data.amount,
+          currency: data.data.currency,
           user_name: data.data.user_name,
         },
       };
 
     case "new_review":
-      return data.like
+      return data.data.like
         ? {
             text: "type_new_review_like",
             data: {
@@ -39,7 +40,7 @@ export const notificationDescription = (data: INotifications) => {
       return {
         text: "type_chat_archived",
         data: {
-          chat_id: data.chat_id,
+          chat_id: data.data.chat_id,
         },
       };
 
