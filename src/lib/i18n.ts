@@ -20,6 +20,7 @@ i18n
       "video",
       "vacation",
       "survey",
+      "notification"
     ],
     supportedLngs: ["ro", "ru", "en"],
     defaultNS: "common",

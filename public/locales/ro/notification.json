@@ -1,0 +1,16 @@
+{
+    "type_new_ticket_video": "aveți o solicitare nouă de la {{user_name}} de tip video",
+    "type_new_ticket_chat": "aveți o solicitare nouă de la {{user_name}} de tip chat",
+    "type_new_topup": "ați suplinit contul cu {{amount}} {{currency}}",
+    "type_new_referral": "referalul {{user_name}} s-a înregistrat",
+    "type_new_referral_revenue": "ați primit {{amount}} {{currency}} bonus de la referalul {{user_name}}",
+    "type_new_review_like": "ați primit o recenzie de apreciere de la {{user_name}}",
+    "type_new_review_dislike": "ați primit o recenzie negativă de la {{user_name}}",
+    "type_chat_archived": "Chatul {{chat_id}} a fost arhivat",
+    "type_reset_password": "Parola dumneavoastră de access a fost resetată",
+    "type_invite_to_chat": "{{user_name}} v-a invitat într-un chat intern",
+    "no_notification": "Nu există notificări",
+    "title_notification": "Notificările",
+    "open_notification": "Deschide",
+    "mark_all_read": "Marcheaza Totul Ca Citit"
+}

@@ -9,7 +9,7 @@ import { ProfileChangeLang } from "@/features/localization/components/profile-ch
 import React from "react";
 import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Tooltip } from "antd";
 
 import { UserDropdown } from "@/features/user-dropdown/components";
@@ -18,9 +18,8 @@ import { NotificationDropdown } from "@/features/notification/components";
 export interface MainLayoutHeaderProps extends React.HTMLAttributes<HTMLElement> {}
 
 export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, ...props }) => {
-  const { t } = useTranslation();
   const location = useLocation();
-
+  const navigate = useNavigate();
   React.useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       const messaging = getMessaging(firebaseApp);
@@ -102,7 +101,7 @@ export const MainLayoutHeader: React.FC<MainLayoutHeaderProps> = ({ className, .
       </Button>
       <div className="ml-2 flex items-center justify-center">
         <ProfileChangeLang />
-        <NotificationDropdown />
+        <NotificationDropdown navigate={navigate} />
         <UserDropdown />
       </div>
     </header>
