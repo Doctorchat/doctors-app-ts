@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { Tooltip } from "antd";
+import { formatDistance, parseISO } from "date-fns";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Badge } from "@/components/ui/BadgePoint";
 import { HiOutlineMailOpen } from "react-icons/hi";
@@ -14,88 +15,208 @@ import ButtonIcon from "@/components/ui/buttonIcon";
 import { notificationTypeAvatar } from "./notification-type-avatar";
 import { apiGetNotificationList, apiGetNotificationNext } from "../api";
 import { INotifications } from "../types";
+import {
+  isButtonNotification,
+  isLinkChatId,
+  isLinkNotification,
+  notificationDescription,
+  typeEmptyContent,
+} from "./notification-description";
+import { useTranslation } from "react-i18next";
+import { useAppI18n } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
-const notificationLists = [
-  {
-    id: "b06ca3f5-8fb0-4979-a016-30dfe63e8fd6",
-    target: "Jean Bowman",
-    description: "invited you to new project.",
-    date: "4 minutes ago",
-    image: "thumb-8.jpg",
-    type: 0,
-    location: "",
-    locationLabel: "",
-    status: "",
-    readed: false,
+const notificationLists = {
+  unread: 3,
+  notifications: {
+    current_page: 1,
+    data: [
+      {
+        id: 3,
+        type: "new_referral",
+        user_id: 352,
+        data: {
+          user_name: "Al Treilea",
+        },
+        amount: 80,
+        currency: "MDL",
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 3,
+        type: "new_referral_revenue",
+        user_id: 352,
+        data: {
+          user_name: "Al new_referral_revenue",
+        },
+        amount: 80,
+        currency: "MDL",
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 9,
+        type: "new_ticket",
+        isMeet: 1,
+        user_id: 352,
+        data: {
+          user_name: "Al Nouluea",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 0,
+        type: "new_review",
+        user_id: 352,
+        like: 1,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 8,
+        type: "new_review",
+        user_id: 352,
+        like: 0,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 9,
+        type: "chat_archived",
+        user_id: 352,
+        chat_id: 84,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Vhat arhived",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 10,
+        type: "reset_password",
+        user_id: 352,
+        chat_id: 84,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 11,
+        type: "invite_to_chat",
+        user_id: 352,
+        chat_id: 84,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 12,
+        type: "info",
+        user_id: 352,
+        chat_id: 84,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        content: "Contentulk este nfo",
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+      {
+        id: 12,
+        type: "info_with_link",
+        user_id: 352,
+        chat_id: 84,
+        amount: 20,
+        currency: "Dolary",
+        data: {
+          user_name: "Al Patrulea",
+        },
+        link: "https://www.deepl.com/translator#ro/ru/Notific%C4%83rile",
+        content: "Contentulk este info_with_link",
+        read_at: null,
+        created_at: "2023-11-21T18:39:51.000000Z",
+        updated_at: "2023-11-21T18:39:51.000000Z",
+      },
+    ],
+    first_page_url: "http://127.0.0.1:8000/api/md/notifications?page=1",
+    from: 1,
+    last_page: 3,
+    last_page_url: "http://127.0.0.1:8000/api/md/notifications?page=3",
+    links: [
+      {
+        url: null,
+        label: "&laquo; Previous",
+        active: false,
+      },
+      {
+        url: "http://127.0.0.1:8000/api/md/notifications?page=1",
+        label: "1",
+        active: true,
+      },
+      {
+        url: "http://127.0.0.1:8000/api/md/notifications?page=2",
+        label: "2",
+        active: false,
+      },
+      {
+        url: "http://127.0.0.1:8000/api/md/notifications?page=3",
+        label: "3",
+        active: false,
+      },
+      {
+        url: "http://127.0.0.1:8000/api/md/notifications?page=2",
+        label: "Next &raquo;",
+        active: false,
+      },
+    ],
+    next_page_url: "http://127.0.0.1:8000/api/md/notifications?page=2",
+    path: "http://127.0.0.1:8000/api/md/notifications",
+    per_page: 1,
+    prev_page_url: null,
+    to: 1,
+    total: 3,
   },
-  {
-    id: "2152cd09-413a-44be-9d5a-b2b820c6a661",
-    target: "Vickie Kim",
-    description: "comment in your ticket.",
-    date: "20 minutes ago",
-    image: "",
-    type: 0,
-    location: "",
-    locationLabel: "",
-    status: "",
-    readed: false,
-  },
-  {
-    id: "f644235d-dffc-4f17-883f-1ada117ff2c9",
-    target: "",
-    description: "Please submit your daily report.",
-    date: "1 hour ago",
-    image: "",
-    type: 1,
-    location: "",
-    locationLabel: "",
-    status: "",
-    readed: false,
-  },
-  {
-    id: "8ca04d2c-0262-417b-8a3d-4ade49939059",
-    target: "",
-    description: "Your request was rejected",
-    date: "2 days ago",
-    image: "",
-    type: 2,
-    location: "",
-    locationLabel: "",
-    status: "failed",
-    readed: true,
-  },
-  {
-    id: "e55adc24-1803-4ffd-b653-09be273f8df5",
-    target: "Jennifer Ruiz",
-    description: "mentioned your in comment.",
-    date: "2 days ago",
-    image: "thumb-4.jpg",
-    type: 0,
-    location: "",
-    locationLabel: "",
-    status: "",
-    readed: true,
-  },
-  {
-    id: "8dd23dfd-a79b-40ad-b4e9-7e70a148d5b6",
-    target: "",
-    description: "Your request has been approved.",
-    date: "4 minutes ago",
-    image: "4 days ago",
-    type: 2,
-    location: "",
-    locationLabel: "",
-    status: "succeed",
-    readed: true,
-  },
-];
+};
 
-const NotificationDropdown: React.FC = () => {
+const NotificationDropdown: React.FC<any> = (props) => {
   const [unreadNotification, setUnreadNotification] = useState(false);
   const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notificationList, setNotificationList] = useState<INotifications[]>([]);
-
+  const { locale } = useAppI18n();
   const getNotificationCount = useCallback(async () => {
     // const resp = await apiGetNotificationCount();
 
@@ -116,15 +237,16 @@ const NotificationDropdown: React.FC = () => {
   const onNotificationOpen = useCallback(async () => {
     if (notificationList.length === 0) {
       setLoading(true);
-      const notifications = await apiGetNotificationList();
-      const asd =
-        notifications.notifications.current_page &&
-        (await apiGetNotificationNext(notifications.notifications.current_page + 1));
-      console.log(asd);
+      // const notifications = await apiGetNotificationList();
+      // const asd =
+      //   notifications.notifications.current_page &&
+      //   (await apiGetNotificationNext(notifications.notifications.current_page + 1));
+      // console.log(asd);
 
       // apiGetNotificationNext
       setLoading(false);
-      setNotificationList(notifications.notifications.data);
+      // setNotificationList(notifications.notifications.data);
+      setNotificationList(notificationLists.notifications.data as unknown as INotifications[]);
     }
   }, [notificationList, setLoading]);
 
@@ -161,6 +283,7 @@ const NotificationDropdown: React.FC = () => {
   const isLastChild = (arr: Array<any>, index: number) => {
     return arr.length === index + 1;
   };
+  const { t } = useTranslation();
 
   return (
     <div className="mr-2 ">
@@ -184,9 +307,9 @@ const NotificationDropdown: React.FC = () => {
             </div>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end" className="w-80" key="NotificationContent">
+        <DropdownMenuContent side="bottom" align="end" className="w-96" key="NotificationContent">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 dark:border-gray-600">
-            <h6 className="font-semibold">Notifications</h6>
+            <h6 className="font-semibold">{t("notification:title_notification")}</h6>
             <Tooltip title="Mark all as read">
               <ButtonIcon
                 variant="plain"
@@ -201,57 +324,110 @@ const NotificationDropdown: React.FC = () => {
           <div className="h-72 overflow-y-auto ">
             <div className="custom-scroll-bar  bg-white-600 space-y-0.5 overflow-y-auto">
               {notificationList.length > 0 &&
-                notificationList.map((item, index) => (
-                  <DropdownMenuItem className="p-0" key={index}>
-                    <div
-                      key={item.id}
-                      className={`relative flex w-full cursor-pointer py-3 pl-3 pr-6 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
-                        !isLastChild(notificationList, index)
-                          ? "border-b border-gray-200 dark:border-gray-600"
-                          : ""
-                      }`}
-                      onClick={(event) => onMarkAsRead(item.id, event)}
-                    >
-                      <div>{notificationTypeAvatar(item)}</div>
-                      <div className="ltr:ml-3 rtl:mr-3">
-                        <div>
-                          {item.data.user_name && (
-                            <span className="heading-text font-semibold">
-                              {item.data.user_name}
+                notificationList.map((item, index) => {
+                  const descriptionNotif: any = typeEmptyContent.includes(item.type)
+                    ? item.content
+                    : notificationDescription(item);
+
+                  const chatId = isLinkChatId.includes(item.type) ? item.chat_id : "";
+
+                  const isLinkOnButton =
+                    isLinkNotification[item.type] && isButtonNotification[item.type]
+                      ? isLinkNotification[item.type]?.link + (chatId ?? "")
+                      : "";
+
+                  const customLink = item.type === "info_with_link" ? item.link : "";
+
+                  const contentText =
+                    " " +
+                    (descriptionNotif?.text
+                      ? t(
+                          (`notification:` + descriptionNotif.text) as string,
+                          descriptionNotif.data as {}
+                        )
+                      : descriptionNotif);
+
+                  return (
+                    <DropdownMenuItem className="p-0" key={index}>
+                      <div
+                        key={item.id}
+                        className={`relative flex w-full cursor-pointer py-3 pl-3 pr-6 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
+                          !isLastChild(notificationList, index)
+                            ? "border-b border-gray-200 dark:border-gray-600"
+                            : ""
+                        }`}
+                        onClick={(event) => onMarkAsRead(item.id, event)}
+                      >
+                        <div>{notificationTypeAvatar(item)}</div>
+                        <div className="w-full ltr:ml-3 rtl:mr-3">
+                          <div>
+                            {item.data.user_name && (
+                              <span className="heading-text font-semibold">
+                                {item.data.user_name}
+                              </span>
+                            )}
+                            <span>{contentText}</span>
+                          </div>
+                          <div
+                            className={`flex  ${
+                              isButtonNotification[item.type] ? `justify-between` : `justify-end`
+                            } pt-1`}
+                          >
+                            {isButtonNotification[item.type] && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() =>
+                                  customLink
+                                    ? window.open(customLink)
+                                    : props.navigate(isLinkOnButton)
+                                }
+                              >
+                                {t("notification:open_notification")}
+                              </Button>
+                            )}
+                            <span className="flex items-center whitespace-nowrap text-xs">
+                              <time dateTime={item.updated_at ?? item.created_at}>
+                                {formatDistance(
+                                  parseISO(item.updated_at ? item.updated_at : item.created_at),
+                                  new Date(),
+                                  {
+                                    addSuffix: true,
+                                    locale: locale(),
+                                  }
+                                )}
+                              </time>
                             </span>
-                          )}
-                          <span>{item.description}</span>
+                          </div>
                         </div>
-                        <span className="text-xs">{item.date}</span>
+                        <Badge
+                          className="absolute top-3 mt-1.5 ltr:right-4 rtl:left-4"
+                          innerClass={`${
+                            item.read_at
+                              ? " !bg-gray-300"
+                              : " ring-indigo-600 border-indigo-600 bg-indigo-600 text-indigo-600"
+                          } `}
+                        />
                       </div>
-                      <Badge
-                        className="absolute top-3 mt-1.5 ltr:right-4 rtl:left-4"
-                        innerClass={`${
-                          item.readed
-                            ? " !bg-gray-300"
-                            : " ring-indigo-600 border-indigo-600 bg-indigo-600 text-indigo-600"
-                        } `}
-                      />
-                    </div>
-                  </DropdownMenuItem>
-                ))}
+                    </DropdownMenuItem>
+                  );
+                })}
               {loading && (
-                <div className="flex h-72 items-center justify-center">
+                <div className="flex h-72 w-full items-center justify-center">
                   {/* <Spinner size={40} /> */}
                   Loading ...
                 </div>
               )}
               {noResult && (
                 <DropdownMenuItem key="NoData">
-                  <div className="flex h-72 items-center justify-center">
+                  <div className="flex h-72 w-full items-center justify-center">
                     <div className="text-center">
                       <img
                         className="mx-auto mb-2 max-w-[150px]"
                         src="/img/others/no-notification.png"
                         alt="no-notification"
                       />
-                      <h6 className="font-semibold">No notifications!</h6>
-                      <p className="mt-1">Please Try again later</p>
+                      <h6 className="font-semibold">{t("notification:no_notification")}</h6>
                     </div>
                   </div>
                 </DropdownMenuItem>

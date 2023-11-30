@@ -1,75 +1,92 @@
-import { Avatar } from "antd";
-import { useTranslation } from "react-i18next";
+import { ButtonNotification, INotifications, ITypesOfButton, LinkNotification } from "../types";
 
-import { HiClipboardList, HiInformationCircle, HiThumbDown, HiThumbUp } from "react-icons/hi";
-
-export const notificationDescription = (data: {
-  type:
-    | "new_ticket"
-    | "new_topup"
-    | "new_referral"
-    | "new_referral_revenue"
-    | "new_review"
-    | "chat_archived"
-    | "reset_password"
-    | "invite_to_chat"
-    | "info"
-    | "info_with_link"
-    | "note";
-  data: {
-    user_name: string;
-  };
-  isMeet?: number;
-  amount?: string;
-  currency?: string;
-}) => {
-  const {
-    type,
-    data: { user_name },
-    isMeet,
-    amount,
-    currency,
-  } = data;
-  const { t } = useTranslation();
-  
-  switch (type) {
+export const notificationDescription = (data: INotifications) => {
+  switch (data?.type) {
     case "new_ticket":
-      return isMeet
-        ? t("type_new_ticket_video", { user_name: user_name })
-        : t("type_new_ticket_chat", { user_name: user_name });
-
-    case "new_topup":
-      return t("type_new_topup", { amount: amount, currency: currency });
+      return data.isMeet
+        ? { text: "type_new_ticket_video", data: { user_name: data.data.user_name } }
+        : { text: "type_new_ticket_chat", data: { user_name: data.data.user_name } };
 
     case "new_referral":
-      // Referalul {user_name} s-a înregistrat.
-      return t("type_new_referral", { user_name: user_name });
+      return { text: "type_new_referral", data: { user_name: data.data.user_name } };
 
     case "new_referral_revenue":
-      return t("type_new_ticket");
+      return {
+        text: "type_new_referral_revenue",
+        data: {
+          amount: data.amount,
+          currency: data.currency,
+          user_name: data.data.user_name,
+        },
+      };
 
     case "new_review":
-      return t("type_new_ticket");
+      return data.like
+        ? {
+            text: "type_new_review_like",
+            data: {
+              user_name: data.data.user_name,
+            },
+          }
+        : {
+            text: "type_new_review_dislike",
+            data: {
+              user_name: data.data.user_name,
+            },
+          };
 
     case "chat_archived":
-      return t("type_new_ticket");
+      return {
+        text: "type_chat_archived",
+        data: {
+          chat_id: data.chat_id,
+        },
+      };
 
     case "reset_password":
-      return t("type_new_ticket");
+      return {
+        text: "type_reset_password",
+      };
 
     case "invite_to_chat":
-      return t("type_new_ticket");
+      return {
+        text: "type_invite_to_chat",
+        data: { user_name: data.data.user_name },
+      };
 
-    case "info":
-      return t("type_new_ticket");
-
-    case "info_with_link":
-      return t("type_new_ticket");
-
-    case "note":
-      return t("type_new_ticket");
+    case "info" || "info_with_link" || "note":
+      return "";
 
     default:
-      return <Avatar />;
+      return "";
   }
 };
+
+export const typeEmptyContent = ["info", "info_with_link", "note"];
+export const isLinkChatId = ["new_ticket", "chat_archived", "invite_to_chat"];
+
+export const isButtonNotification = {
+  new_ticket: true,
+  new_referral_revenue: false,
+  new_referral: false,
+  new_review: true,
+  chat_archived: true,
+  reset_password: false,
+  invite_to_chat: true,
+  info: false,
+  info_with_link: true,
+  note: false,
+} as ButtonNotification;
+
+export const isLinkNotification = {
+  new_ticket: { isPartialLink: true, link: "/conversations?patientId=" },
+  new_review: { isButton: true, isPartialLink: true, link: "/reviews" },
+  chat_archived: { isButton: true, isPartialLink: true, link: "/conversations?patientId=" },
+  invite_to_chat: { isButton: true, isPartialLink: true, link: "/conversations?patientId=" },
+  info_with_link: { isButton: true, isPartialLink: false },
+  new_referral_revenue: { isButton: false, isPartialLink: false },
+  new_referral: { isButton: false, isPartialLink: false },
+  reset_password: { isButton: false, isPartialLink: false },
+  note: { isButton: false, isPartialLink: false },
+  info: { isButton: false, isPartialLink: false },
+} as LinkNotification;

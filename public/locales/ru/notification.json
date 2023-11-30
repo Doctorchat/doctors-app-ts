@@ -1,6 +1,15 @@
 {
-    "type_new_ticket_video": "Есть новый запрос от {{user_name}} типа видео",
-    "type_new_ticket_chat": "Есть новый запрос от пользователя {{user_name}} типа чат",
-    "type_new_topup": "Пополнили свой счет на сумму {{amount}} {{currency}}",
-    "type_new_referral": "Referalul {{user_name}} s-a înregistrat"
+    "type_new_ticket_video": "есть новый запрос от {{user_name}} типа видео",
+    "type_new_ticket_chat": "есть новый запрос от пользователя {{user_name}} типа чат",
+    "type_new_topup": "пополнили свой счет на сумму {{amount}} {{currency}}",
+    "type_new_referral": "реферал {{user_name}} зарегистрировался",
+    "type_new_referral_revenue": "получили бонус {{amount}} {{currency}} от реферала {{user_name}}",
+    "type_new_review_like": "получили благодарственный отзыв от {{user_name}}",
+    "type_new_review_dislike": "получили негативный отзыв от {{user_name}}",
+    "type_chat_archived": "чат {{chat_id}} заархивирован",
+    "type_reset_password": "ваш пароль доступа был сброшен",
+    "type_invite_to_chat": "{{user_name}} пригласил вас во внутренний чат",
+    "no_notification": "Нет уведомлений",
+    "title_notification": "Уведомления",
+    "open_notification": "Открыть"
 }

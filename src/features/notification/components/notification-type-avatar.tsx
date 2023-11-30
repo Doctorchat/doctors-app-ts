@@ -1,45 +1,50 @@
 import { Avatar } from "antd";
+import {
+  HiClipboardList,
+  HiThumbDown,
+  HiThumbUp,
+  HiKey,
+  HiUserAdd,
+  HiViewGridAdd,
+} from "react-icons/hi";
+import { INotifications } from "../types";
 
-import { HiClipboardList, HiInformationCircle, HiThumbDown, HiThumbUp } from "react-icons/hi";
-
-export const notificationTypeAvatar = (data: {
-  type:
-    | "new_ticket"
-    | "new_topup"
-    | "new_referral"
-    | "new_referral_revenue"
-    | "new_review"
-    | "chat_archived"
-    | "reset_password"
-    | "invite_to_chat"
-    | "info"
-    | "info_with_link"
-    | "note";
-  like?: number;
-}) => {
+export const notificationTypeAvatar = (data: INotifications) => {
   const { type, like } = data;
   switch (type) {
-    case "new_ticket" || "chat_archived" || "info" || "info_with_link":
+    case "chat_archived":
+    case "new_ticket":
+    case "info":
+    case "info_with_link":
       return (
         <Avatar
           shape="circle"
-          className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+          className="flex items-center justify-center bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
           icon={<HiClipboardList />}
         />
       );
-    case "new_topup" || "new_referral" || "new_referral_revenue" || "invite_to_chat":
+    case "new_referral":
+    case "new_referral_revenue":
       return (
         <Avatar
           shape="circle"
-          className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
-          icon={<HiInformationCircle />}
+          className="flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+          icon={<HiViewGridAdd />}
+        />
+      );
+    case "invite_to_chat":
+      return (
+        <Avatar
+          shape="circle"
+          className="flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+          icon={<HiUserAdd />}
         />
       );
     case "note":
       return (
         <Avatar
           shape="circle"
-          className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+          className="flex items-center justify-center bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
           icon={<HiClipboardList />}
         />
       );
@@ -49,10 +54,18 @@ export const notificationTypeAvatar = (data: {
           shape="circle"
           className={
             like
-              ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
-              : "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
+              ? "flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+              : "flex items-center justify-center bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
           }
           icon={like ? <HiThumbUp /> : <HiThumbDown />}
+        />
+      );
+    case "reset_password":
+      return (
+        <Avatar
+          shape="circle"
+          className="flex items-center justify-center bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-100"
+          icon={<HiKey />}
         />
       );
     default:
