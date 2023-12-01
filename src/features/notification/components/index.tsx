@@ -49,16 +49,20 @@ const NotificationDropdown: React.FC<any> = (props) => {
     }
   }, []);
 
-  const getMoreNotifications = useCallback(async () => {
-    const newPage = await apiGetNotificationNext(currentPage);
-    if (newPage) {
-      const current = newPage.notifications.current_page;
-      const last = newPage.notifications.last_page;
-      const next = current && last && (current < last ? current + 1 : 1);
-      setNotificationList([...notificationList, ...newPage.notifications.data]);
-      next && setCurrentPage(next);
-    }
-  }, [currentPage]);
+  const getMoreNotifications = useCallback(
+    async (event: any) => {
+      event.stopPropagation();
+      const newPage = await apiGetNotificationNext(currentPage);
+      if (newPage) {
+        const current = newPage.notifications.current_page;
+        const last = newPage.notifications.last_page;
+        const next = current && last && (current < last ? current + 1 : 1);
+        setNotificationList([...notificationList, ...newPage.notifications.data]);
+        next && setCurrentPage(next);
+      }
+    },
+    [currentPage]
+  );
 
   useEffect(() => {
     getNotificationCount();
@@ -277,10 +281,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
             <DropdownMenuItem>
               <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
                 <div
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    getMoreNotifications();
-                  }}
+                  onClick={(event) => getMoreNotifications(event)}
                   className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
                 >
                   {t("notification:load_more")}
