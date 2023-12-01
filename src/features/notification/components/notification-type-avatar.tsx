@@ -9,8 +9,8 @@ import {
 } from "react-icons/hi";
 import { INotifications } from "../types";
 
-export const notificationTypeAvatar = (data: INotifications) => {
-  const { type, like } = data;
+export const notificationTypeAvatar = (notifications: INotifications) => {
+  const { type, data } = notifications;
   switch (type) {
     case "chat_archived":
     case "new_ticket":
@@ -53,11 +53,11 @@ export const notificationTypeAvatar = (data: INotifications) => {
         <Avatar
           shape="circle"
           className={
-            like
+            data.like
               ? "flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
               : "flex items-center justify-center bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
           }
-          icon={like ? <HiThumbUp /> : <HiThumbDown />}
+          icon={data.like ? <HiThumbUp /> : <HiThumbDown />}
         />
       );
     case "reset_password":
