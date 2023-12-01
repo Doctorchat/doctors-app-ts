@@ -36,7 +36,9 @@ const NotificationDropdown: React.FC<any> = (props) => {
   const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notificationList, setNotificationList] = useState<INotifications[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const { locale } = useAppI18n();
+
   const getNotificationCount = useCallback(async () => {
     const responce = await apiGetNotificationUnreadable();
     if (responce.unread > 0) {
@@ -47,6 +49,17 @@ const NotificationDropdown: React.FC<any> = (props) => {
     }
   }, []);
 
+  const getMoreNotifications = useCallback(async () => {
+    const newPage = await apiGetNotificationNext(currentPage);
+    if (newPage) {
+      const current = newPage.notifications.current_page;
+      const last = newPage.notifications.last_page;
+      const next = current && last && (current < last ? current + 1 : 1);
+      setNotificationList([...notificationList, ...newPage.notifications.data]);
+      next && setCurrentPage(next);
+    }
+  }, [currentPage]);
+
   useEffect(() => {
     getNotificationCount();
   }, [getNotificationCount]);
@@ -55,13 +68,12 @@ const NotificationDropdown: React.FC<any> = (props) => {
     if (notificationList.length === 0) {
       setLoading(true);
       const notifications = await apiGetNotificationList();
-      //TODO lOAD MORE NOTIFICATIONS
-      // const nextpage =
-      //   notifications.notifications.current_page &&
-      //   (await apiGetNotificationNext(notifications.notifications.current_page + 1));
-
       if (notifications) {
-        apiGetNotificationNext;
+        const current = notifications.notifications.current_page;
+        const last = notifications.notifications.last_page;
+        const next = current && last && (current < last ? current + 1 : 1);
+        console.log(next ?? 1);
+        setCurrentPage(next ?? 1);
         setLoading(false);
         setNotificationList(notifications.notifications.data);
       } else {
@@ -257,16 +269,21 @@ const NotificationDropdown: React.FC<any> = (props) => {
             </div>
           </div>
 
-          {/* <DropdownMenuItem>
-            <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
-              <Link
-                to="/app/account/activity-log"
-                className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
-              >
-                View All Activity
-              </Link>
-            </div>
-          </DropdownMenuItem> */}
+          {currentPage > 1 && (
+            <DropdownMenuItem>
+              <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
+                <div
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    getMoreNotifications();
+                  }}
+                  className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+                >
+                  {t("notification:load_more")}
+                </div>
+              </div>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

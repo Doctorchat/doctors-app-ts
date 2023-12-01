@@ -12,5 +12,6 @@
     "no_notification": "Нет уведомлений",
     "title_notification": "Уведомления",
     "open_notification": "Открыть",
-    "mark_all_read": "Отметить Все Как Прочитанное"
+    "mark_all_read": "Отметить Все Как Прочитанное",
+    "load_more": "Загрузить больше"
 }

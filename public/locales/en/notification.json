@@ -12,5 +12,6 @@
     "no_notification": "No notifications",
     "title_notification": "Notifications",
     "open_notification":"Open",
-    "mark_all_read": "Mark All As Read"
+    "mark_all_read": "Mark All As Read",
+    "load_more":"Load more"
 }
