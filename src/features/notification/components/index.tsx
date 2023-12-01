@@ -51,7 +51,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
 
   const getMoreNotifications = useCallback(
     async (event: any) => {
-      event.stopPropagation();
+      event.preventDefault();
       const newPage = await apiGetNotificationNext(currentPage);
       if (newPage) {
         const current = newPage.notifications.current_page;
@@ -278,12 +278,9 @@ const NotificationDropdown: React.FC<any> = (props) => {
           </div>
 
           {currentPage > 1 && (
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={(event) => getMoreNotifications(event)}>
               <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
-                <div
-                  onClick={(event) => getMoreNotifications(event)}
-                  className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
-                >
+                <div className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white">
                   {t("notification:load_more")}
                 </div>
               </div>
