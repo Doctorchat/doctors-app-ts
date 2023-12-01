@@ -95,21 +95,22 @@ const NotificationDropdown: React.FC<any> = (props) => {
   }, [notificationList]);
 
   const onMarkAsRead = useCallback(
-    async (id: number, event: any) => {
+    async (id: number, read_at: string | number | null, event: any) => {
       event.preventDefault();
+      if (!read_at) {
+        const list = notificationList.map((item) => {
+          if (item.id === id) {
+            item.read_at = new Date().toString();
+          }
+          return item;
+        });
 
-      const list = notificationList.map((item) => {
-        if (item.id === id) {
-          item.read_at = new Date().toString();
+        await apiGetNotificationRead(id);
+        setNotificationList(list);
+        const hasUnread = notificationList.some((item) => !item.read_at);
+        if (!hasUnread) {
+          setUnreadNotification(false);
         }
-        return item;
-      });
-
-      await apiGetNotificationRead(id);
-      setNotificationList(list);
-      const hasUnread = notificationList.some((item) => !item.read_at);
-      if (!hasUnread) {
-        setUnreadNotification(false);
       }
     },
     [notificationList]
@@ -182,7 +183,11 @@ const NotificationDropdown: React.FC<any> = (props) => {
                       : descriptionNotif);
 
                   return (
-                    <DropdownMenuItem className="p-0" key={index}>
+                    <DropdownMenuItem
+                      className="p-0"
+                      key={index}
+                      onClick={(event) => onMarkAsRead(item.id, item.read_at, event)}
+                    >
                       <div
                         key={item.id}
                         className={`relative flex w-full cursor-pointer py-3 pl-3 pr-6 hover:bg-gray-50 active:bg-gray-100 dark:hover:bg-black dark:hover:bg-opacity-20  ${
@@ -190,7 +195,6 @@ const NotificationDropdown: React.FC<any> = (props) => {
                             ? "border-b border-gray-200 dark:border-gray-600"
                             : ""
                         }`}
-                        onClick={(event) => onMarkAsRead(item.id, event)}
                       >
                         <div>{notificationTypeAvatar(item)}</div>
                         <div className="w-full ltr:ml-3 rtl:mr-3">
