@@ -1,7 +1,6 @@
 import { ButtonNotification, INotifications, LinkNotification } from "../types";
 
 export const notificationDescription = (data: INotifications) => {
- 
   switch (data?.type) {
     case "new_ticket":
       return data.data.isMeet
@@ -55,7 +54,9 @@ export const notificationDescription = (data: INotifications) => {
         data: { user_name: data.data.user_name },
       };
 
-    case "info" || "info_with_link" || "note":
+    case "info":
+    case "info_with_link":
+    case "note":
       return "";
 
     default:
