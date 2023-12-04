@@ -19,7 +19,7 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
       return (
         <Avatar
           shape="circle"
-          className="flex items-center justify-center bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+          className="flex h-9 w-9 items-center justify-center bg-blue-100 !text-2xl text-blue-600 dark:bg-blue-500/20 dark:text-blue-100	"
           icon={<HiClipboardList />}
         />
       );
@@ -28,7 +28,7 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
       return (
         <Avatar
           shape="circle"
-          className="flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+          className="flex h-9 w-9 items-center justify-center bg-emerald-100 !text-2xl text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100	"
           icon={<HiViewGridAdd />}
         />
       );
@@ -36,7 +36,7 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
       return (
         <Avatar
           shape="circle"
-          className="flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
+          className="flex h-9 w-9 items-center justify-center bg-emerald-100 !text-2xl text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100	"
           icon={<HiUserAdd />}
         />
       );
@@ -44,7 +44,7 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
       return (
         <Avatar
           shape="circle"
-          className="flex items-center justify-center bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
+          className="flex h-9 w-9 items-center justify-center bg-blue-100 !text-2xl text-blue-600 dark:bg-blue-500/20 dark:text-blue-100	"
           icon={<HiClipboardList />}
         />
       );
@@ -54,8 +54,8 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
           shape="circle"
           className={
             data.like
-              ? "flex items-center justify-center bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100"
-              : "flex items-center justify-center bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100"
+              ? "flex h-9 w-9 items-center justify-center bg-emerald-100 !text-2xl text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100	"
+              : "flex h-9 w-9 items-center justify-center bg-red-100 !text-2xl text-red-600 dark:bg-red-500/20 dark:text-red-100	"
           }
           icon={data.like ? <HiThumbUp /> : <HiThumbDown />}
         />
@@ -64,11 +64,11 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
       return (
         <Avatar
           shape="circle"
-          className="flex items-center justify-center bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-100"
+          className="flex h-9 w-9 items-center justify-center bg-amber-100 !text-2xl text-amber-600 dark:bg-amber-500/20 dark:text-amber-100	"
           icon={<HiKey />}
         />
       );
     default:
-      return <Avatar />;
+      return <Avatar className="h-9 w-9" />;
   }
 };

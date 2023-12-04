@@ -200,7 +200,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
                             : ""
                         }`}
                       >
-                        <div>{notificationTypeAvatar(item)}</div>
+                        <div className="flex items-center">{notificationTypeAvatar(item)}</div>
                         <div className="w-full ltr:ml-3 rtl:mr-3">
                           <div>
                             {item.data.user_name && (
