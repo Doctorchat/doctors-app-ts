@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { INotificationsData } from "../types";
+import { INotifications, INotificationsData } from "../types";
 
 export const apiGetNotificationList = async () => {
   return await axiosInstance.get<INotificationsData>(`/notifications/`).then((res) => res.data);
@@ -17,10 +17,10 @@ export const apiGetNotificationNext = async (current_page: number) => {
     .then((res) => res.data);
 };
 
-export const apiGetNotificationReadAll = async () => {
+export const apiGetNotificationReadAll = async (ids: number[]) => {
   return await axiosInstance
-    .put<INotificationsData>(`/notifications/read-all`)
-    .then((res) => res.data);
+    .put<INotificationsData>(`/notifications/read-batch`, { ids: ids })
+    .then((res) => res);
 };
 
 export const apiGetNotificationRead = async (notification_id: number) => {
@@ -28,3 +28,4 @@ export const apiGetNotificationRead = async (notification_id: number) => {
     .put<INotificationsData>(`/notifications/read/${notification_id}`)
     .then((res) => res.data);
 };
+

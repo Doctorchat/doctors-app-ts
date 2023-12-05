@@ -32,9 +32,10 @@ import { useTranslation } from "react-i18next";
 import { useAppI18n } from "@/hooks";
 
 const NotificationDropdown: React.FC<any> = (props) => {
-  const [unreadNotification, setUnreadNotification] = useState(false);
-  const [noResult, setNoResult] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [unreadNotification, setUnreadNotification] = useState<boolean>(false);
+  const [noResult, setNoResult] = useState<boolean>(false);
+  const [numberUnreadNotifications, setNumberUnreadNotifications] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
   const [notificationList, setNotificationList] = useState<INotifications[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { locale } = useAppI18n();
@@ -42,9 +43,11 @@ const NotificationDropdown: React.FC<any> = (props) => {
   const getNotificationCount = useCallback(async () => {
     const responce = await apiGetNotificationUnreadable();
     if (responce.unread > 0) {
+      setNumberUnreadNotifications(responce.unread);
       setUnreadNotification(true);
       setNoResult(false);
     } else {
+      setNumberUnreadNotifications(0);
       setUnreadNotification(false);
     }
   }, []);
@@ -61,7 +64,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         next && setCurrentPage(next);
       }
     },
-    [currentPage]
+    [currentPage, getNotificationCount]
   );
 
   useEffect(() => {
@@ -76,7 +79,6 @@ const NotificationDropdown: React.FC<any> = (props) => {
         const current = notifications.notifications.current_page;
         const last = notifications.notifications.last_page;
         const next = current && last && (current < last ? current + 1 : 1);
-        console.log(next ?? 1);
         setCurrentPage(next ?? 1);
         setLoading(false);
         setNotificationList(notifications.notifications.data);
@@ -87,16 +89,21 @@ const NotificationDropdown: React.FC<any> = (props) => {
   }, [notificationList, setLoading]);
 
   const onMarkAllAsRead = useCallback(async () => {
+    const ids: number[] = [];
     const list = notificationList.map((item: any) => {
       if (!item.read_at) {
         item.read_at = new Date().toString();
+        ids.push(item.id);
       }
       return item;
     });
-    await apiGetNotificationReadAll();
-    setNotificationList(list);
-    setUnreadNotification(false);
-  }, [notificationList]);
+    if (ids.length) {
+      setNumberUnreadNotifications(numberUnreadNotifications - ids.length);
+      await apiGetNotificationReadAll(ids);
+      setNotificationList(list);
+      setUnreadNotification(false);
+    }
+  }, [notificationList, getNotificationCount]);
 
   const onMarkAsRead = useCallback(
     async (id: number, read_at: string | number | null, event: any) => {
@@ -110,6 +117,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         });
 
         await apiGetNotificationRead(id);
+        setNumberUnreadNotifications(numberUnreadNotifications - 1);
         setNotificationList(list);
         const hasUnread = notificationList.some((item) => !item.read_at);
         if (!hasUnread) {
@@ -136,7 +144,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
             className="h-10 w-10 rounded-full"
           >
             <div className="text-2xl">
-              {unreadNotification ? (
+              {numberUnreadNotifications > 0 ? (
                 <Badge badgeStyle={{ top: "2px", right: "3px" }}>
                   <BellIcon className="h-6 w-6" />
                 </Badge>
@@ -200,7 +208,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
                             : ""
                         }`}
                       >
-                        <div>{notificationTypeAvatar(item)}</div>
+                        <div className="flex items-center">{notificationTypeAvatar(item)}</div>
                         <div className="w-full ltr:ml-3 rtl:mr-3">
                           <div>
                             {item.data.user_name && (

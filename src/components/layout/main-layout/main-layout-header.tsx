@@ -1,5 +1,4 @@
-import { Bars3BottomLeftIcon, BellIcon } from "@heroicons/react/24/outline";
-import { useTranslation } from "react-i18next";
+import { Bars3BottomLeftIcon } from "@heroicons/react/24/outline";
 import { useMediaQuery } from "usehooks-ts";
 import { shallow } from "zustand/shallow";
 import { useMainLayoutSidenavStore } from "./main-layout-sidenav";
@@ -10,7 +9,6 @@ import React from "react";
 import { getMessaging, onMessage } from "firebase/messaging";
 import { firebaseApp } from "@/features/notification-firebase/api/config";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tooltip } from "antd";
 
 import { UserDropdown } from "@/features/user-dropdown/components";
 import { NotificationDropdown } from "@/features/notification/components";
