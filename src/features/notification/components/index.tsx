@@ -47,6 +47,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
       setUnreadNotification(true);
       setNoResult(false);
     } else {
+      setNoResult(true);
       setNumberUnreadNotifications(0);
       setUnreadNotification(false);
     }
