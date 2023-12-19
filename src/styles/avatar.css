@@ -71,11 +71,4 @@
   > .tooltip-wrapper {
     @apply -ml-2 rtl:-mr-2;
   }
-
-  > .avatar,
-  > .tooltip-wrapper {
-    &:first-child {
-      @apply ml-0 rtl:mr-0;
-    }
-  }
 }

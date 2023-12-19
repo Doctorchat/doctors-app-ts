@@ -178,18 +178,9 @@ const NotificationDropdown: React.FC<any> = (props) => {
 
                   const customLink = item.type === "info_with_link" ? item.data.link : "";
 
-                  const contentText =
-                    " " +
-                    (descriptionNotif?.text
-                      ? t(
-                          (`notification:` + descriptionNotif.text) as string,
-                          descriptionNotif.data as {}
-                        )
-                      : descriptionNotif);
-
                   return (
                     <DropdownMenuItem
-                      className="p-0"                     
+                      className="p-0"
                       onClick={(event) => onMarkAsRead(item.id, item.read_at, event)}
                     >
                       <div
@@ -208,7 +199,15 @@ const NotificationDropdown: React.FC<any> = (props) => {
                                 {item.data.user_name}
                               </span>
                             )}
-                            <span>{contentText}</span>
+                            <span>
+                              {" " +
+                                (descriptionNotif?.text
+                                  ? t(
+                                      (`notification:` + descriptionNotif.text) as string,
+                                      descriptionNotif.data as {}
+                                    )
+                                  : descriptionNotif)}
+                            </span>
                           </div>
                           <div
                             className={`flex  ${
