@@ -169,7 +169,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
             </Tooltip>
           </div>
 
-          <div className="h-72 overflow-y-auto ">
+          <div className="h-[27rem] overflow-y-auto ">
             <div className="custom-scroll-bar  bg-white-600 space-y-0.5 overflow-y-auto">
               {notificationList.length > 0 &&
                 notificationList.map((item, index) => {
@@ -264,10 +264,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
                   );
                 })}
               {loading && (
-                <div className="flex h-72 w-full items-center justify-center">
-                  {/* <Spinner size={40} /> */}
-                  Loading ...
-                </div>
+                <div className="flex h-72 w-full items-center justify-center">Loading ...</div>
               )}
               {noResult && (
                 <DropdownMenuItem key="NoData">
@@ -287,9 +284,9 @@ const NotificationDropdown: React.FC<any> = (props) => {
           </div>
 
           {currentPage > 1 && (
-            <DropdownMenuItem onClick={(event) => getMoreNotifications(event)}>
-              <div className="flex w-full justify-center border-t border-gray-200 px-4 py-2 dark:border-gray-600">
-                <div className="cursor-pointer p-2 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white">
+            <DropdownMenuItem onClick={(event) => getMoreNotifications(event)} className="h-7">
+              <div className="flex w-full justify-center border-t border-gray-200 px-4  dark:border-gray-600">
+                <div className="cursor-pointer p-1 px-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white">
                   {t("notification:load_more")}
                 </div>
               </div>
