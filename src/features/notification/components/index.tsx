@@ -82,6 +82,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         setLoading(false);
         setNotificationList(notifications.notifications.data);
       } else {
+        setLoading(false);
         setNoResult(true);
       }
     }
