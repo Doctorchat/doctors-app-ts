@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button } from "@/components/ui";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Button,
 } from "@/components/ui";
 import { Tooltip } from "antd";
 import { formatDistance, parseISO } from "date-fns";
@@ -32,7 +32,6 @@ import { useTranslation } from "react-i18next";
 import { useAppI18n } from "@/hooks";
 
 const NotificationDropdown: React.FC<any> = (props) => {
-  const [unreadNotification, setUnreadNotification] = useState<boolean>(false);
   const [noResult, setNoResult] = useState<boolean>(false);
   const [numberUnreadNotifications, setNumberUnreadNotifications] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,12 +43,10 @@ const NotificationDropdown: React.FC<any> = (props) => {
     const responce = await apiGetNotificationUnreadable();
     if (responce.unread > 0) {
       setNumberUnreadNotifications(responce.unread);
-      setUnreadNotification(true);
       setNoResult(false);
     } else {
       setNoResult(true);
       setNumberUnreadNotifications(0);
-      setUnreadNotification(false);
     }
   }, []);
 
@@ -102,7 +99,6 @@ const NotificationDropdown: React.FC<any> = (props) => {
       setNumberUnreadNotifications(numberUnreadNotifications - ids.length);
       await apiGetNotificationReadAll(ids);
       setNotificationList(list);
-      setUnreadNotification(false);
     }
   }, [notificationList, getNotificationCount]);
 
@@ -120,10 +116,6 @@ const NotificationDropdown: React.FC<any> = (props) => {
         await apiGetNotificationRead(id);
         setNumberUnreadNotifications(numberUnreadNotifications - 1);
         setNotificationList(list);
-        const hasUnread = notificationList.some((item) => !item.read_at);
-        if (!hasUnread) {
-          setUnreadNotification(false);
-        }
       }
     },
     [notificationList]
@@ -186,19 +178,10 @@ const NotificationDropdown: React.FC<any> = (props) => {
 
                   const customLink = item.type === "info_with_link" ? item.data.link : "";
 
-                  const contentText =
-                    " " +
-                    (descriptionNotif?.text
-                      ? t(
-                          (`notification:` + descriptionNotif.text) as string,
-                          descriptionNotif.data as {}
-                        )
-                      : descriptionNotif);
-
                   return (
                     <DropdownMenuItem
                       className="p-0"
-                      key={index}
+                      key={item.id}
                       onClick={(event) => onMarkAsRead(item.id, item.read_at, event)}
                     >
                       <div
@@ -217,7 +200,15 @@ const NotificationDropdown: React.FC<any> = (props) => {
                                 {item.data.user_name}
                               </span>
                             )}
-                            <span>{contentText}</span>
+                            <span>
+                              {" " +
+                                (descriptionNotif?.text
+                                  ? t(
+                                      `notification:` + descriptionNotif.text,
+                                      descriptionNotif.data as {}
+                                    )
+                                  : descriptionNotif)}
+                            </span>
                           </div>
                           <div
                             className={`flex  ${

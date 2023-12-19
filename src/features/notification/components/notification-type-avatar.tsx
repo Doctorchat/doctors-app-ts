@@ -15,6 +15,7 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
     case "chat_archived":
     case "new_ticket":
     case "info":
+    case "note":
     case "info_with_link":
       return (
         <Avatar
@@ -38,14 +39,6 @@ export const notificationTypeAvatar = (notifications: INotifications) => {
           shape="circle"
           className="flex h-9 w-9 items-center justify-center bg-emerald-100 !text-2xl text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100	"
           icon={<HiUserAdd />}
-        />
-      );
-    case "note":
-      return (
-        <Avatar
-          shape="circle"
-          className="flex h-9 w-9 items-center justify-center bg-blue-100 !text-2xl text-blue-600 dark:bg-blue-500/20 dark:text-blue-100	"
-          icon={<HiClipboardList />}
         />
       );
     case "new_review":

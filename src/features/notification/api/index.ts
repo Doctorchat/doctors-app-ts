@@ -1,5 +1,5 @@
 import axiosInstance from "@/lib/axios";
-import { INotifications, INotificationsData } from "../types";
+import { INotificationsData } from "../types";
 
 export const apiGetNotificationList = async () => {
   return await axiosInstance.get<INotificationsData>(`/notifications/`).then((res) => res.data);
