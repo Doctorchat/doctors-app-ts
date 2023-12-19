@@ -204,7 +204,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
                               {" " +
                                 (descriptionNotif?.text
                                   ? t(
-                                      (`notification:` + descriptionNotif.text) as string,
+                                      `notification:` + descriptionNotif.text,
                                       descriptionNotif.data as {}
                                     )
                                   : descriptionNotif)}
