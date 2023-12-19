@@ -17,4 +17,6 @@ export interface SessionUser {
     [key in TWeekDays]: string[];
   };
   consultationAutoRenew?: boolean;
+  video: boolean;
+  chat: boolean;
 }

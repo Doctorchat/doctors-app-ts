@@ -4,6 +4,7 @@ import v_chat from "../assets/v_chat.gif";
 import c_chat from "../assets/c_chat.gif";
 import { toggleChatConversations, toggleVideoChatConversations } from "../api";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/features/auth";
 
 export const Options = () => {
   const { t } = useTranslation();
@@ -13,22 +14,23 @@ export const Options = () => {
     video: false,
   });
 
-  useEffect(() => {
-    const storeUser = localStorage.getItem("session:user:options");
+  const { session } = useAuth();
 
-    if (storeUser && storeUser !== "undefined") {
-      const user = JSON.parse(storeUser);
-      setUserData(user);
-    } else {
-      localStorage.removeItem("session:user:options");
-    }
+  useEffect(() => {
+    setUserData({ chat: session.user?.chat ?? false, video: session.user?.video ?? false });
   }, []);
 
-  const updateData = async (action: () => Promise<{ data: any }>) => {
+  const updateData = async (action: () => Promise<any>) => {
     try {
       const res = await action();
       if (res) {
-        localStorage.setItem("session:user:options", JSON.stringify(res));
+        const userStorage = localStorage.getItem("session:user");
+        if (userStorage) {
+          var user = JSON.parse(userStorage) || {};
+          user.video = res?.video;
+          user.chat = res?.chat;
+          localStorage.setItem("session:user", JSON.stringify(user));
+        }
       }
     } catch (error) {
       console.error("Error updating data:", error);
