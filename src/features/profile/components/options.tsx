@@ -26,7 +26,7 @@ export const Options = () => {
       if (res) {
         const userStorage = localStorage.getItem("session:user");
         if (userStorage) {
-          var user = JSON.parse(userStorage) || {};
+          const user = JSON.parse(userStorage) || {};
           user.video = res?.video;
           user.chat = res?.chat;
           localStorage.setItem("session:user", JSON.stringify(user));
