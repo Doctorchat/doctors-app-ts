@@ -70,6 +70,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
   }, [getNotificationCount]);
 
   const onNotificationOpen = useCallback(async () => {
+    setNoResult(false);
     if (notificationList.length === 0) {
       setLoading(true);
       const notifications = await apiGetNotificationList();
