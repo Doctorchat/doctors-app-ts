@@ -181,6 +181,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
                   return (
                     <DropdownMenuItem
                       className="p-0"
+                      key={item.id}
                       onClick={(event) => onMarkAsRead(item.id, item.read_at, event)}
                     >
                       <div
