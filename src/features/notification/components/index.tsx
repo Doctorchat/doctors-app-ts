@@ -45,7 +45,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
       setNumberUnreadNotifications(responce.unread);
       setNoResult(false);
     } else {
-      setNoResult(true);
+      setNoResult(false);
       setNumberUnreadNotifications(0);
     }
   }, []);
@@ -70,10 +70,12 @@ const NotificationDropdown: React.FC<any> = (props) => {
   }, [getNotificationCount]);
 
   const onNotificationOpen = useCallback(async () => {
+    setNoResult(false);
     if (notificationList.length === 0) {
       setLoading(true);
       const notifications = await apiGetNotificationList();
-      if (notifications) {
+
+      if (notifications.notifications.data.length) {
         const current = notifications.notifications.current_page;
         const last = notifications.notifications.last_page;
         const next = current && last && (current < last ? current + 1 : 1);
@@ -81,6 +83,7 @@ const NotificationDropdown: React.FC<any> = (props) => {
         setLoading(false);
         setNotificationList(notifications.notifications.data);
       } else {
+        setLoading(false);
         setNoResult(true);
       }
     }
