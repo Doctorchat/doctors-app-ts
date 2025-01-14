@@ -29,3 +29,59 @@ export type Appointment = {
   user_notified: number;
   user_notified_in_one_day: number;
 };
+
+export interface IMedicalCentre {}
+
+type Logo = {
+  id: number;
+  name: string;
+  extension: string;
+  mime_type: string;
+  size: number;
+  url: string;
+};
+
+type Schedule = {
+  from: string | null;
+  to: string | null;
+};
+
+type MedicalCentre = {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  phone: string;
+  email: string;
+  api_token: string | null;
+  logo: Logo;
+  created_at: string;
+  updated_at: string;
+};
+
+export interface IMedicalCentreData {
+  id: number;
+  medical_centre: MedicalCentre;
+  duration: number | null;
+  monday: Schedule;
+  tuesday: Schedule;
+  wednesday: Schedule;
+  thursday: Schedule;
+  friday: Schedule;
+  saturday: Schedule;
+  sunday: Schedule;
+  auto_regenerate: boolean;
+}
+
+export type ApiResponseMedicalCentre = {
+  data: IMedicalCentreData[];
+};
+
+export type IWeekDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";

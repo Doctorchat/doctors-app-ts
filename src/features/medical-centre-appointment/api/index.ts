@@ -1,5 +1,22 @@
 import axiosInstance from "@/lib/axios";
-import { SetDisponibilityPayload } from "../types";
+import {
+  ApiResponseMedicalCentre,
+  IMedicalCentreData,
+  SetDisponibilityPayload,
+} from "@/features/medical-centre-appointment/types";
+
+export const getMedicalCentre = async () => {
+  return await axiosInstance
+    .get<ApiResponseMedicalCentre>(`/doctor/medical-centers`)
+    .then((res) => res.data);
+};
+
+export const updateDisponibilityByMedicalCentreId = async ({
+  id,
+  ...data
+}: Omit<IMedicalCentreData, "medical_centre">) => {
+  return await axiosInstance.put(`/doctor/medical-centers/${id}`, data).then((res) => res.data);
+};
 
 export const getSlots = async (doctorId: number) => {
   return await axiosInstance.get(`/doctors/slots/${doctorId}`).then((res) => res.data);
@@ -19,21 +36,4 @@ export const getFinishedMeetings = async () => {
 
 export const setDisponibility = async (data: SetDisponibilityPayload) => {
   return await axiosInstance.post(`/user/card/disponibility`, data).then((res) => res.data);
-};
-
-export const authGoogleVerify = async (data: any) => {
-  return await axiosInstance({
-    baseURL: "https://api.doctorchat.md/api",
-    url: "/authorize/verify",
-    method: "POST",
-    data,
-  }).then((res) => res.data);
-};
-
-export const authGoogleCancel = async () => {
-  return await axiosInstance({
-    baseURL: "https://api.doctorchat.md/api",
-    url: "/authorize/cancel",
-    method: "POST",
-  }).then((res) => res.data);
 };

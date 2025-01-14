@@ -1,3 +1,173 @@
+"use client";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { cn } from "@/utils";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { updateDisponibilityByMedicalCentreId } from "../api";
+import {
+  Button,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+} from "@/components/ui";
+import Notification from "@/components/ui/notification";
+
+import { Checkbox } from "antd";
+
+import { IMedicalCentreData } from "@/features/medical-centre-appointment/types";
+import { FormFieldWeekDays } from "@/features/medical-centre-appointment/components/form-field-week-days.tsx";
+import { daysWeek } from "@/utils/date.ts";
+import { useMedicalCentreList } from "@/features/medical-centre-appointment/hooks";
+
+interface IProps {
+  data: IMedicalCentreData;
+}
+
+const daySchema = z
+  .object({
+    from: z.string().nullable(),
+    to: z.string().nullable(),
+  })
+  .nullable();
+
+const schema = z.object({
+  duration: z
+    .string()
+    .nullable()
+    .transform((value) => Number(value)),
+  auto_regenerate: z.boolean(),
+  ...Object.fromEntries(daysWeek.map((day) => [day, daySchema])),
+});
+
+type FormValues = z.infer<typeof schema>;
+
+export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
+  const { refetchMedicalCentre } = useMedicalCentreList();
+  const { t } = useTranslation();
+  const [loading] = useState(false);
+  const [apiResponse, setApiResponse] = React.useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const form = useForm<FormValues>({
+    defaultValues: {
+      duration: data?.duration || 0,
+      auto_regenerate: data?.auto_regenerate || true,
+      // @ts-ignore
+      ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
+    },
+    resolver: zodResolver(schema),
+  });
+
+  console.log(form?.getValues());
+
+  const onSubmitTestIsSubmitting = async (values: any) => {
+    console.log(values);
+    try {
+      await updateDisponibilityByMedicalCentreId({
+        id: data?.id,
+        ...values,
+      });
+
+      setApiResponse({ type: "success", message: t("common:success_update") });
+      await refetchMedicalCentre();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log(123);
+    }
+  };
+
+  const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
+    setApiResponse(val);
+
+  return (
+    <>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
+          <Notification
+            open={Boolean(apiResponse)}
+            onOpenChange={setOnOpenChange(null)}
+            type={apiResponse?.type}
+            description={
+              apiResponse?.type === "success"
+                ? t("common:success_update")
+                : t("common:error_update")
+            }
+          />
+
+          {/*<Notification
+          open={apiResponse ? true : false}
+          onOpenChange={setOnOpenChange(null)}
+          type={apiResponse?.type}
+          description={
+            apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")
+          }
+        />*/}
+          <div className={cn("flex flex-col gap-4")}>
+            <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("video:consultation_interval")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="w-full px-2 py-4"
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormFieldWeekDays form={form} loading={loading} />
+          </div>
+
+          <div className={cn("flex items-center justify-between gap-4")}>
+            <FormField
+              control={form.control}
+              name="auto_regenerate"
+              render={({ field }) => (
+                <FormItem className="flex items-center gap-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onChange={(checked: any) => field.onChange(checked)}
+                      className="!mt-0"
+                      {...(field as any)}
+                    />
+                  </FormControl>
+                  <FormLabel>{t("medical_centre:auto_regenerate")}</FormLabel>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              disabled={loading}
+              className="xs:hover:bg-primary-hover mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
+            >
+              {t("common:save")}
+              {loading && "..."}
+            </Button>
+          </div>
+        </form>
+      </FormProvider>
+    </>
+  );
+};
+
+/*
 import React, { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/utils";
@@ -5,7 +175,7 @@ import { FormProvider, UseFormReturn, useForm } from "react-hook-form";
 import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TWeekDays, useAuth } from "@/features/auth";
-import { setDisponibility } from "../api/index";
+import { setDisponibility } from "../api";
 import {
   Button,
   FormControl,
@@ -253,3 +423,4 @@ const FormFieldWeekDays: React.FC<FormFieldWeekDaysProps> = (props) => {
 };
 
 export default FormAppointmentsSettings;
+*/
