@@ -1,32 +1,88 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "react-query";
 import { Button } from "@/components/ui";
 import { getSlots, removeSlot } from "../../api";
 import { useTranslation } from "react-i18next";
 import { Appointment } from "../../types";
 import { useAuth } from "@/features/auth";
-import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxXMarkIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { calculateDateTimeInTimeZone } from "@/utils/time-zone";
 import Notification from "@/components/ui/notification";
+import { useMedicalCentreList } from "@/features/medical-centre-appointment/hooks";
+import { Avatar, Collapse, Empty, Skeleton } from "antd";
+import { cn } from "@/utils";
+import { FormAppointmentsSettings } from "@/features/medical-centre-appointment/components/form-appointments-settings.tsx";
 
 const MedicalCentreAppointmentsSlots = () => {
   const { t } = useTranslation();
   const { session } = useAuth();
+
+  const { medicalCentreList, isLoadingMedicalCentre } = useMedicalCentreList();
+
+  const collapseItems = useMemo(
+    () =>
+      medicalCentreList?.map((item) => {
+        const { id, city, address, name, logo } = item?.medical_centre;
+        return {
+          key: id,
+          label: (
+            <div className="flex items-center gap-3">
+              <Avatar
+                shape="square"
+                size="large"
+                src={<img src={logo?.url} alt="avatar" />}
+                className="ring-1 ring-gray-200"
+              />
+              <div className="">
+                <div>{name}</div>
+                <div className="text-xs opacity-60">
+                  {address}, {city}
+                </div>
+              </div>
+            </div>
+          ),
+          children: (
+            <>
+              <div
+                className={cn(
+                  "item-center mb-4 flex justify-center rounded-xl border border-primary bg-primary bg-opacity-10 px-3 py-2 font-medium"
+                )}
+              >
+                <ExclamationCircleIcon className="mr-2 h-5 w-5 text-primary" />
+                <p className="text-center text-sm text-primary">
+                  {t("video:appointments_warning")}
+                </p>
+              </div>
+
+              <FormAppointmentsSettings data={item} />
+            </>
+          ),
+        };
+      }),
+    [medicalCentreList]
+  );
 
   const {
     data: slots,
     isLoading: areSlotsLoading,
     refetch,
   } = useQuery({
-    queryKey: ["slots", session?.user?.id],
-    queryFn: async () => {
-      return getSlots(session?.user?.id as number);
+    queryKey: ["medical-centre-slots"],
+    queryFn: ({ queryKey }) => {
+      const id = queryKey[1] || "";
+      return getSlots(id);
     },
     refetchOnWindowFocus: false,
-    enabled: !!session?.user?.id,
+    enabled: false,
   });
+
+  const handleFetchSlots = async (id: string) => {
+    await refetch({ queryKey: ["medical-centre-slots", id] });
+  };
+
   const [openNotification, setOpenNotification] = React.useState<boolean>(false);
   const [loadingStates, setLoadingStates] = React.useState<{ [key: string]: boolean }>({});
+
   const onRemoveSlot = (slotId: number): void => {
     setLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [slotId]: true }));
     removeSlot(slotId)
@@ -52,20 +108,41 @@ const MedicalCentreAppointmentsSlots = () => {
     );
   }
 
-  if (!slots?.length) {
+  /*  if (!slots?.length) {
     return (
       <div className="mt-8 flex flex-col items-center justify-center">
         <ArchiveBoxXMarkIcon className="h-16 w-16 text-gray-400" />
         <h4 className="text-md mb-2 font-medium text-gray-400">{t("common:empty_list")}</h4>
       </div>
     );
-  }
+  }*/
+
+  const onChangeCollapse = (key: string | string[]) => {
+    handleFetchSlots(typeof key === "string" ? key : key[0]);
+    console.log(key);
+  };
 
   return (
     <div className="py-3">
       <div className="mb-5">
         <h6 className="mb-2 ps-2 font-semibold text-gray-700">{t("video:active_appointments")}</h6>
-        <div className="flex flex-col space-y-4">
+        {isLoadingMedicalCentre ? (
+          <Skeleton active round paragraph={{ rows: 5 }} title={false} />
+        ) : (
+          <>
+            {!collapseItems?.length ? (
+              <Empty description={t("common:empty_list")} />
+            ) : (
+              <Collapse
+                accordion
+                expandIconPosition="end"
+                items={collapseItems}
+                onChange={onChangeCollapse}
+              />
+            )}
+          </>
+        )}
+        {/*<div className="flex flex-col space-y-4">
           {slots?.map((appointment: Appointment) => (
             <div
               key={appointment.id}
@@ -90,8 +167,9 @@ const MedicalCentreAppointmentsSlots = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>*/}
       </div>
+
       <Notification
         open={openNotification ? true : false}
         onOpenChange={setOpenNotification.bind(null, false)}

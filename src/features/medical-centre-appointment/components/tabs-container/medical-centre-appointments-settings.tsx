@@ -1,56 +1,20 @@
 import { useTranslation } from "react-i18next";
-import { Avatar, Collapse } from "antd";
-
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { cn } from "@/utils";
-import { FormAppointmentsSettings } from "../form-appointments-settings";
+import { Avatar, Collapse, Empty, Skeleton } from "antd";
 import { useMemo } from "react";
-import { useMedicalCentreList } from "@/features/medical-centre-appointment/hooks";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
-/*const fakeDoctorMedicalCentre = [
-  {
-    id: "1",
-    medical_centre: {
-      id: 1,
-      name: "Centrul medical Medi Partner",
-      city: "Chișinău",
-      address: "sec. Râșcani, bd. Moscova, 15/7",
-      phone: "string",
-      email: "string",
-      logo: {
-        url: "https://medipartner.md/wp-content/uploads/2021/06/Logo-01.png",
-      },
-      created_at: "2019-08-24T14:15:22Z",
-      updated_at: "2019-08-24T14:15:22Z",
-    },
-  },
-  {
-    id: "2",
-    medical_centre: {
-      id: 2,
-      name: "American Medical Center ",
-      city: "Chișinău",
-      address: "str. Pușkin 47/1",
-      phone: "string",
-      email: "string",
-      logo: {
-        url: "https://amc.md/uploads/settings/thumbs/version_100/5b9bd35fec2f7.png",
-      },
-      created_at: "2019-08-24T14:15:22Z",
-      updated_at: "2019-08-24T14:15:22Z",
-    },
-  },
-];*/
+import { cn } from "@/utils";
+import { useMedicalCentreList } from "@/features/medical-centre-appointment/hooks";
+import { FormAppointmentsSettings } from "../form-appointments-settings";
 
 const MedicalCentreAppointmentsSettings = () => {
   const { t } = useTranslation();
-  const { medicalCentre } = useMedicalCentreList();
+  const { medicalCentreList, isLoadingMedicalCentre } = useMedicalCentreList();
 
   const collapseItems = useMemo(
     () =>
-      medicalCentre?.map((item) => {
+      medicalCentreList?.map((item) => {
         const { id, city, address, name, logo } = item?.medical_centre;
-
         return {
           key: id,
           label: (
@@ -87,7 +51,7 @@ const MedicalCentreAppointmentsSettings = () => {
           ),
         };
       }),
-    [medicalCentre]
+    [medicalCentreList]
   );
 
   return (
@@ -95,7 +59,17 @@ const MedicalCentreAppointmentsSettings = () => {
       <div className="mb-5">
         <h6 className="mb-2 ps-2 font-semibold text-gray-700">{t("common:settings")}</h6>
 
-        <Collapse accordion expandIconPosition="end" items={collapseItems} />
+        {isLoadingMedicalCentre ? (
+          <Skeleton active round paragraph={{ rows: 5 }} title={false} />
+        ) : (
+          <>
+            {!collapseItems?.length ? (
+              <Empty description={t("common:empty_list")} />
+            ) : (
+              <Collapse accordion expandIconPosition="end" items={collapseItems} />
+            )}
+          </>
+        )}
       </div>
     </div>
   );

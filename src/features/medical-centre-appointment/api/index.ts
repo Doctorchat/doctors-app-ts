@@ -18,8 +18,10 @@ export const updateDisponibilityByMedicalCentreId = async ({
   return await axiosInstance.put(`/doctor/medical-centers/${id}`, data).then((res) => res.data);
 };
 
-export const getSlots = async (doctorId: number) => {
-  return await axiosInstance.get(`/doctors/slots/${doctorId}`).then((res) => res.data);
+export const getSlots = async (medicalCentreId: string) => {
+  return await axiosInstance
+    .get(`/doctor/medical-centers/slots`, { params: { medical_centre_id: medicalCentreId } })
+    .then((res) => res.data);
 };
 
 export const removeSlot = async (slotId: number) => {

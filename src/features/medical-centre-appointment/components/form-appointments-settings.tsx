@@ -37,9 +37,9 @@ const daySchema = z
 
 const schema = z.object({
   duration: z
-    .string()
+    .union([z.string(), z.number()])
     .nullable()
-    .transform((value) => Number(value)),
+    .transform((value) => (value ? Number(value) : 1)),
   auto_regenerate: z.boolean(),
   ...Object.fromEntries(daysWeek.map((day) => [day, daySchema])),
 });
@@ -49,26 +49,25 @@ type FormValues = z.infer<typeof schema>;
 export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
   const { refetchMedicalCentre } = useMedicalCentreList();
   const { t } = useTranslation();
-  const [loading] = useState(false);
-  const [apiResponse, setApiResponse] = React.useState<{
+
+  const [loading, setLoading] = useState(false);
+  const [apiResponse, setApiResponse] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
 
   const form = useForm<FormValues>({
     defaultValues: {
-      duration: data?.duration || 0,
-      auto_regenerate: data?.auto_regenerate || true,
+      duration: data?.duration || 1,
+      auto_regenerate: Boolean(data?.auto_regenerate),
       // @ts-ignore
       ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
     },
     resolver: zodResolver(schema),
   });
 
-  console.log(form?.getValues());
-
   const onSubmitTestIsSubmitting = async (values: any) => {
-    console.log(values);
+    setLoading(true);
     try {
       await updateDisponibilityByMedicalCentreId({
         id: data?.id,
@@ -79,8 +78,9 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
       await refetchMedicalCentre();
     } catch (error) {
       console.log(error);
+      setApiResponse({ type: "error", message: t("common:error_update") });
     } finally {
-      console.log(123);
+      setLoading(false);
     }
   };
 
@@ -102,14 +102,6 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
             }
           />
 
-          {/*<Notification
-          open={apiResponse ? true : false}
-          onOpenChange={setOnOpenChange(null)}
-          type={apiResponse?.type}
-          description={
-            apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")
-          }
-        />*/}
           <div className={cn("flex flex-col gap-4")}>
             <FormField
               control={form.control}
@@ -122,6 +114,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
                       type="number"
                       className="w-full px-2 py-4"
                       disabled={loading}
+                      min={1}
                       {...field}
                     />
                   </FormControl>
@@ -142,7 +135,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
                   <FormControl>
                     <Checkbox
                       checked={field.value}
-                      onChange={(checked: any) => field.onChange(checked)}
+                      onChange={(checked) => field.onChange(checked)}
                       className="!mt-0"
                       {...(field as any)}
                     />
