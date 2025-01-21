@@ -14,26 +14,25 @@ const MedicalCentreAppointmentsSlots = () => {
   const collapseItems = useMemo(
     () =>
       medicalCentreList?.map((item) => {
-        const { id, city, address, name, logo } = item?.medical_centre;
         return {
-          key: id,
+          key: item?.medical_centre?.id,
           label: (
             <div className="flex items-center gap-3">
               <Avatar
                 shape="square"
                 size="large"
-                src={<img src={logo?.url} alt="avatar" />}
+                src={<img src={item?.medical_centre?.logo?.url} alt="avatar" />}
                 className="ring-1 ring-gray-200"
               />
               <div className="">
-                <div>{name}</div>
+                <div>{item?.medical_centre?.name}</div>
                 <div className="text-xs opacity-60">
-                  {address}, {city}
+                  {item?.medical_centre?.address}, {item?.medical_centre?.city}
                 </div>
               </div>
             </div>
           ),
-          children: <MedicalCentreSlotItem id={id} />,
+          children: <MedicalCentreSlotItem id={item?.medical_centre?.id} />,
         };
       }),
     [medicalCentreList]
