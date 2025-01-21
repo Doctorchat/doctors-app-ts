@@ -1,12 +1,13 @@
-import { useQuery } from "react-query";
-import { getFinishedMeetings, getMeetings, getSlots, removeSlot } from "../../api";
-import { useTranslation } from "react-i18next";
+/*import { useQuery } from "react-query";
+import { getFinishedMeetings, getMeetings } from "../../api";
 import { useAuth } from "@/features/auth";
-import AppointmentItem from "../appointment-item";
+import AppointmentItem from "../appointment-item";*/
+import { Empty } from "antd";
+import { useTranslation } from "react-i18next";
 
 const MedicalCentreAppointmentsList = () => {
   const { t } = useTranslation();
-  const { session } = useAuth();
+  /*  const { session } = useAuth();
 
   const { data: meetings, isLoading: isMeetingsLoading } = useQuery({
     queryKey: ["active-appointments", session?.user?.id],
@@ -22,11 +23,15 @@ const MedicalCentreAppointmentsList = () => {
       return getFinishedMeetings();
     },
     refetchOnWindowFocus: false,
-  });
+  });*/
 
   return (
     <>
-      <AppointmentItem
+      <div className="p-10">
+        <Empty description={t("common:empty_list")} />
+      </div>
+
+      {/* <AppointmentItem
         isLoading={isMeetingsLoading}
         data={meetings}
         title={t("video:active_appointments")}
@@ -37,7 +42,7 @@ const MedicalCentreAppointmentsList = () => {
         data={finishedMeetings}
         title={t("video:finished_appointments")}
         completed
-      />
+      />*/}
     </>
   );
 };

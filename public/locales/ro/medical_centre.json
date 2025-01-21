@@ -1,4 +1,6 @@
 {
   "medical_centre_appointments": "Programări fizice",
-  "auto_regenerate": "Regenerare automată"
+  "auto_regenerate": "Regenerare automată",
+  "delete_slot_title": "Confirmare ștergere slot",
+  "delete_slot_are_you_sure": "Sunteți sigur că doriți să ștergeți acest slot? Această acțiune este ireversibilă."
 }

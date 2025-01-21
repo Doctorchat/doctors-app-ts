@@ -24,8 +24,10 @@ export const getSlots = async (medicalCentreId: string) => {
     .then((res) => res.data);
 };
 
-export const removeSlot = async (slotId: number) => {
-  return await axiosInstance.delete(`/user/card/reservations/${slotId}`).then((res) => res.data);
+export const removeSlot = async (physicalSlotId: number) => {
+  return await axiosInstance
+    .delete(`/doctor/medical-centers/${physicalSlotId}/delete`)
+    .then((res) => res.data);
 };
 
 export const getMeetings = async () => {
@@ -34,8 +36,4 @@ export const getMeetings = async () => {
 
 export const getFinishedMeetings = async () => {
   return await axiosInstance.get("/user/card/reservations/finished").then((res) => res.data);
-};
-
-export const setDisponibility = async (data: SetDisponibilityPayload) => {
-  return await axiosInstance.post(`/user/card/disponibility`, data).then((res) => res.data);
 };

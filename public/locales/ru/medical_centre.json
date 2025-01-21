@@ -1,4 +1,6 @@
 {
   "medical_centre_appointments": "Очные записи",
-  "auto_regenerate": "Автоматическая регенерация"
+  "auto_regenerate": "Автоматическая регенерация",
+  "delete_slot_title": "Подтверждение удаления слота",
+  "delete_slot_are_you_sure": "Вы уверены, что хотите удалить этот слот? Это действие нельзя отменить."
 }

@@ -63,6 +63,7 @@ export interface IMedicalCentreData {
   id: number;
   medical_centre: MedicalCentre;
   duration: number | null;
+  buffer: number | null;
   monday: Schedule;
   tuesday: Schedule;
   wednesday: Schedule;
