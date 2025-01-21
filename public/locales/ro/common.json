@@ -95,5 +95,6 @@
   },
   "start_time": "Ora de început",
   "end_time": "Ora de sfârșit",
-  "acces_reviews": "Accesează recenzii"
+  "acces_reviews": "Accesează recenzii",
+  "yes_delete": "Da, șterge"
 }

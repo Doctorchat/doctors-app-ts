@@ -9,6 +9,7 @@ import {
   VideoCameraIcon,
   SunIcon,
   QuestionMarkCircleIcon,
+  BuildingOffice2Icon
 } from "@heroicons/react/24/outline";
 
 export const NAVIGATION_SIDENAV_WIDTH = 275;
@@ -86,5 +87,11 @@ export const navigationLinks: NavigationLink[] = [
     href: "/video-appointment",
     translation: "video:video_appointments",
     icon: VideoCameraIcon,
+  },
+  {
+    key: "medical-centre-appointments",
+    href: "/medical-centre-appointments",
+    translation: "medical_centre:medical_centre_appointments",
+    icon: BuildingOffice2Icon,
   },
 ];

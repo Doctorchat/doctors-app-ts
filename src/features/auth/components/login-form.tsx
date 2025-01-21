@@ -32,7 +32,7 @@ import { getApiErrorMessagesLogin } from "@/utils";
 import { ProfileChangeLang } from "@/features/localization/components/profile-change-lang";
 
 const schema = z.object({
-  phone: z.string().refine(isValidPhoneNumber, { message: "validations:invalid_phone_number" }),
+  phone: z.string(),
   password: z.string().nonempty(),
 });
 

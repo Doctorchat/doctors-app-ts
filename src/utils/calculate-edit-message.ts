@@ -1,5 +1,5 @@
 export const hasPassedTenMinutes = (updatedTimestamp: any) => {
-  const TEN_MINUTES_IN_MS = 10 * 60 * 1000; // 10 minute în milisecunde
+  const TEN_MINUTES_IN_MS = 30 * 60 * 1000; // updated din 10 in 30 minute în milisecunde
   const currentTime = new Date().getTime();
   const updatedTime = new Date(updatedTimestamp).getTime();
   const elapsedTime = currentTime - updatedTime;
