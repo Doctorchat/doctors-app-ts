@@ -8,7 +8,6 @@ export const getApiErrorMessagesLogin = (response: any, t: any): string[] | stri
     if (response.response?.status === 401) {
       const error = response as ApiErrorResponse;
       let errorMessageKey = "";
-      console.log(error.response?.data.errors);
 
       if (error.response?.data.message) {
         if (error.response.data.message === "You are not a doctor") {
@@ -30,7 +29,6 @@ export const getApiErrorMessagesLogin = (response: any, t: any): string[] | stri
     } else if (response.response?.status === 422) {
       const error = response as ApiErrorResponse;
       let errorMessageKey = "";
-      console.log(error.response?.data.errors);
 
       if (error.response?.data.message) {
         if (error.response.data.message === "You are not a doctor") {
@@ -56,7 +54,6 @@ export const getApiErrorMessagesLogin = (response: any, t: any): string[] | stri
 };
 
 export const getApiErrorMessages = (response: unknown): string[] | string => {
-  
   if (axios.isAxiosError(response)) {
     //     'message' => 'Entered password is invalid' -401
     // 'message' => 'Bad credentials' - in caz cind IP adresa e blocata, aici nu stiu ce sa scriu, ca el nu trebuie sa stie ca are IP blocat - 401
@@ -65,11 +62,9 @@ export const getApiErrorMessages = (response: unknown): string[] | string => {
       const error = response as ApiErrorResponse;
       if (error.response?.data.errors) {
         //['The selected phone is invalid.']
-        console.log(Object.values(error.response.data.errors).flat());
         return Object.values(error.response.data.errors).flat();
       }
       if (error.response?.data.message || error.message) {
-        console.log(Object.values(error.response?.data.message || error.message));
         return error.response?.data.message || error.message;
       }
     }

@@ -36,6 +36,8 @@
   },
   "email_address": "Adresa de email",
   "phone_number": "Nr. Telefon",
+  "name": "Nume",
+  "date": "Data",
   "select": "Selectează",
   "search": "Căutare",
   "no_data": "Nu există date",
@@ -96,5 +98,9 @@
   "start_time": "Ora de început",
   "end_time": "Ora de sfârșit",
   "acces_reviews": "Accesează recenzii",
-  "yes_delete": "Da, șterge"
+  "yes_delete": "Da, șterge",
+  "status_canceled": "Anulat",
+  "status_confirmed": "Confirmat",
+  "status_completed": "Finalizat",
+  "status_booked": "Rezervat"
 }

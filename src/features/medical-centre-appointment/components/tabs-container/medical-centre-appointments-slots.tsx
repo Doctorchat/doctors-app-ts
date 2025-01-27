@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Avatar, Collapse, Empty, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +38,7 @@ const MedicalCentreAppointmentsSlots = () => {
     [medicalCentreList]
   );
 
-  const [openNotification, setOpenNotification] = React.useState<boolean>(false);
+  const [openNotification, setOpenNotification] = useState<boolean>(false);
 
   return (
     <div className="py-3">

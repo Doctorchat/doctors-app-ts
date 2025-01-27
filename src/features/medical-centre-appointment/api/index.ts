@@ -2,13 +2,19 @@ import axiosInstance from "@/lib/axios";
 import {
   ApiResponseMedicalCentre,
   IMedicalCentreData,
-  SetDisponibilityPayload,
 } from "@/features/medical-centre-appointment/types";
+import { API_URL } from "@/config";
 
 export const getMedicalCentre = async () => {
   return await axiosInstance
     .get<ApiResponseMedicalCentre>(`/doctor/medical-centers`)
     .then((res) => res.data);
+};
+
+export const getMyPhysicalConsultations = async () => {
+  return await axiosInstance.get(`/api/my-physical-consultations`, {
+    baseURL: API_URL,
+  });
 };
 
 export const updateDisponibilityByMedicalCentreId = async ({
@@ -28,12 +34,4 @@ export const removeSlot = async (physicalSlotId: number) => {
   return await axiosInstance
     .delete(`/doctor/medical-centers/${physicalSlotId}/delete`)
     .then((res) => res.data);
-};
-
-export const getMeetings = async () => {
-  return await axiosInstance.get("/user/card/reservations/pending").then((res) => res.data);
-};
-
-export const getFinishedMeetings = async () => {
-  return await axiosInstance.get("/user/card/reservations/finished").then((res) => res.data);
 };
