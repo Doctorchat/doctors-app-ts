@@ -13,20 +13,23 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        xs: "360px",
+      },
       colors: {
         typography: {
           primary: colors.neutral[950],
           secondary: colors.neutral[500],
         },
-        "primary": "#06f",
+        primary: "#06f",
         "primary-hover": "#0058db",
         "gray-600": "#6c757d",
-        "danger": "#dc3545",
+        danger: "#dc3545",
         "danger-10": "rgba(220, 53, 69, 0.1)",
         "danger-haver": "#CA3433",
-        "success": "#198754",
+        success: "#198754",
         "success-10": "rgba(25, 135, 84, 0.1)",
-        "warring": "#ffa800",
+        warring: "#ffa800",
         "warring-10": "rgba(255, 168, 0, 0.1)",
       },
       fontFamily: {

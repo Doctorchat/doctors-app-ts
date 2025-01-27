@@ -36,6 +36,8 @@
   },
   "email_address": "Адрес электронной почты",
   "phone_number": "Номер телефона",
+  "name": "Имя",
+  "date": "Дата",
   "select": "Выберите",
   "search": "Поиск",
   "no_data": "Нет данных",
@@ -96,5 +98,9 @@
   "start_time": "Время начала",
   "end_time": "Время окончания",
   "acces_reviews": "Доступ к отзывам",
-  "yes_delete": "Да, удалить"
+  "yes_delete": "Да, удалить",
+  "status_canceled": "Отменено",
+  "status_confirmed": "Подтверждено",
+  "status_completed": "Завершено",
+  "status_booked": "Забронировано"
 }
