@@ -76,7 +76,7 @@ jobs:
         uses: kostya-ten/ssh-server-deploy@v4
         with:
           host: '31.172.77.196'
-          username: 'doctorchat-chat'
+          username: 'doctorchat-chat-dev'
           password: ${{ secrets.APP_PASSWORD }}
           scp_source: "build/"
           scp_target: "/home/doctorchat-chat-dev/htdocs/chat-dev.doctorchat.md/"
