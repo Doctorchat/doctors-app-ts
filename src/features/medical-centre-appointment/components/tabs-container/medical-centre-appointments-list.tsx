@@ -5,7 +5,8 @@ import { PresetColorKey } from "antd/es/theme/interface";
 import { formatDateWithYearOption } from "@/utils/formatDate.ts";
 import { getMyPhysicalConsultations } from "@/features/medical-centre-appointment/api";
 import { useQuery } from "react-query";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
+import { DateTime } from "luxon";
 
 interface ConsultationStatus {
   label: string;
@@ -93,7 +94,11 @@ const MedicalCentreAppointmentsList = () => {
                         <div className="text-gray-500">
                           {t("common:date")}:{" "}
                           <span className="font-medium text-gray-700">
-                            {formatDateWithYearOption(consultation?.start_time)}
+                            <p>
+                              {DateTime.fromFormat(consultation.start_time, "yyyy-MM-dd HH:mm:ss")
+                                .toUTC()
+                                .toFormat("d MMMM, HH:mm")}
+                            </p>
                           </span>
                         </div>
 

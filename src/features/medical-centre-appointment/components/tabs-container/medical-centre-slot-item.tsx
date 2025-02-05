@@ -6,8 +6,10 @@ import { useTranslation } from "react-i18next";
 
 import { getSlots, removeSlot } from "../../api";
 import { Button } from "@/components/ui";
-import { calculateDateTimeInTimeZone } from "@/utils/time-zone.ts";
+import moment from "@/utils/localMoment.ts";
 import type { Appointment } from "@/features/medical-centre-appointment/types";
+import getActiveLng from "@/utils/getActiveLng.ts";
+import { DateTime } from "luxon";
 
 interface IProps {
   id: string | number;
@@ -62,7 +64,12 @@ export const MedicalCentreSlotItem: React.FC<IProps> = ({ id }) => {
                   <div className="absolute left-[0px] right-1/2 h-10 w-1 rounded-full bg-orange-200" />
                   <div className="flex flex-col">
                     <span>{t("video:consultation_date")}</span>
-                    <p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>
+                    <p>
+                      {DateTime.fromISO(appointment.start_time)
+                        .toUTC()
+                        .toFormat("d MMMM yyyy, HH:mm")}
+                    </p>
+                    {/*<p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>*/}
                   </div>
 
                   <Popconfirm
