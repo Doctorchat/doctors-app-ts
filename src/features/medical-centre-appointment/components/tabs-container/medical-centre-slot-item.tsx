@@ -80,6 +80,7 @@ export const MedicalCentreSlotItem: React.FC<IProps> = ({ id }) => {
                     cancelText={t("common:no")}
                     className={"max-w-44"}
                     overlayClassName="max-w-72"
+                    okButtonProps={{ danger: true }}
                   >
                     <Button
                       variant="destructive"
