@@ -1,4 +1,4 @@
-name: Deploy Doctor's APP - DEV - MD
+name: Deploy Doctor's APP - DEV
 
 on:
   push:
@@ -61,8 +61,8 @@ jobs:
         run: |
           echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH_DEV }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
+          echo "${{ secrets.PUSHER_ENV }}" >> .env
+          echo "${{ secrets.FIREBASE_ENV }}" >> .env
           echo "VITE_API_PREFIX=md" >> .env
           echo "VITE_PUBLIC_API_REGION=md" >> .env
 
@@ -75,127 +75,8 @@ jobs:
       - name: SSH Server Deploy - MD
         uses: kostya-ten/ssh-server-deploy@v4
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASS }}
-          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
+          host: '31.172.77.196'
+          username: 'doctorchat-chat-dev'
+          password: ${{ secrets.APP_PASSWORD }}
           scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_MD }}
-
-  Deploy-RO:
-    needs: Setup-Ecosystem
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Cache from Setup
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/yarn
-          key: ${{ needs.setup.outputs.cache-key }}
-
-      - name: Create env configs - RO
-        run: |
-          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH_DEV }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
-          echo "VITE_API_PREFIX=ro" >> .env
-          echo "VITE_PUBLIC_API_REGION=ro" >> .env
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Check node version
-        run: node -v
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set Yarn version
-        run: yarn set version 3.6.1
-
-      - name: Install Dependencies with Yarn
-        run: yarn install --immutable
-
-      - name: Build
-        run: CI=false yarn build
-
-      - name: SSH Server Deploy - MD
-        uses: kostya-ten/ssh-server-deploy@v4
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASS }}
-          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_RO }}
-
-  Deploy-ONLINE:
-    needs: Setup-Ecosystem
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Cache from Setup
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/yarn
-          key: ${{ needs.setup.outputs.cache-key }}
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Check node version
-        run: node -v
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set Yarn version
-        run: yarn set version 3.6.1
-
-      - name: Create env configs - ONLINE
-        run: |
-          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
-          echo "${{ secrets.API_PATH_DEV }}" >> .env
-          echo "${{ secrets.PUSHER_ENV_DEV }}" >> .env
-          echo "${{ secrets.FIREBASE_ENV_DEV }}" >> .env
-          echo "VITE_API_PREFIX=online" >> .env
-          echo "VITE_PUBLIC_API_REGION=ro" >> .env
-
-      - name: Install Dependencies with Yarn
-        run: yarn install --immutable
-
-      - name: Build
-        run: CI=false yarn build
-
-      - name: SSH Server Deploy - MD
-        uses: kostya-ten/ssh-server-deploy@v4
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASS }}
-          private_key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          scp_source: "build/"
-          scp_target: ${{ secrets.TARGET_DOCTORS_DEV_APP_ONLINE }}
-
-  Send-Notification:
-    needs: [Deploy-MD, Deploy-RO, Deploy-ONLINE]
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Send telegram message
-        uses: appleboy/telegram-action@master
-        with:
-          format: html
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ✅ <b>[DEV] Doctor's APP</b>
-            🥷 <b>User</b>: ${{ github.actor }}
-            📂 <b>Commit:</b> <a href="https://github.com/${{ github.repository }}/commit/${{github.sha}}">${{ github.event.commits[0].message }}</a>
+          scp_target: "/home/doctorchat-chat-dev/htdocs/chat-dev.doctorchat.md/"
