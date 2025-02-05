@@ -39,11 +39,11 @@ const schema = z.object({
   duration: z
     .union([z.string(), z.number()])
     .nullable()
-    .transform((value) => (value ? Number(value) : 1)),
+    .transform((value) => (value ? Number(value) : 0)),
   buffer: z
     .union([z.string(), z.number()])
     .nullable()
-    .transform((value) => (value ? Number(value) : 1)),
+    .transform((value) => (value ? Number(value) : 0)),
   auto_regenerate: z.boolean(),
   ...Object.fromEntries(daysWeek.map((day) => [day, daySchema])),
 });
@@ -62,8 +62,8 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
 
   const form = useForm<FormValues>({
     defaultValues: {
-      duration: data?.duration || 1,
-      buffer: data?.buffer || 1,
+      duration: data?.duration || 0,
+      buffer: data?.buffer || 0,
       auto_regenerate: Boolean(data?.auto_regenerate),
       // @ts-ignore
       ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
@@ -74,9 +74,11 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
   const onSubmitTestIsSubmitting = async (values: any) => {
     setLoading(true);
     try {
+      const { duration, ...rest } = values;
       await updateDisponibilityByMedicalCentreId({
         id: data?.id,
-        ...values,
+        duration: duration === 0 ? null : duration,
+        ...rest,
       });
 
       setApiResponse({ type: "success", message: t("common:success_update") });
@@ -133,7 +135,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
                       type="number"
                       className="w-full px-2 py-4"
                       disabled={loading}
-                      min={1}
+                      min={0}
                       {...field}
                     />
                   </FormControl>
@@ -167,7 +169,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
             <Button
               type="submit"
               disabled={loading}
-              className="xs:hover:bg-primary-hover mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
+              className="mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
             >
               {t("common:save")}
               {loading && "..."}
