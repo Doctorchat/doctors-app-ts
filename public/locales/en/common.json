@@ -35,6 +35,8 @@
   },
   "email_address": "E-mail address",
   "phone_number": "Phone number",
+  "name": "Name",
+  "date": "Date",
   "select": "Select",
   "search": "Search",
   "no_data": "No data",
@@ -94,5 +96,10 @@
   },
   "start_time": "Start time",
   "end_time": "End time",
-  "acces_reviews": "Access reviews"
+  "acces_reviews": "Access reviews",
+  "yes_delete": "Yes, delete",
+  "status_canceled": "Canceled",
+  "status_confirmed": "Confirmed",
+  "status_completed": "Completed",
+  "status_booked": "Booked"
 }

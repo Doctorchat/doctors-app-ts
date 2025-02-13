@@ -20,7 +20,8 @@ i18n
       "video",
       "vacation",
       "survey",
-      "notification"
+      "notification",
+      "medical_centre"
     ],
     supportedLngs: ["ro", "ru", "en"],
     defaultNS: "common",

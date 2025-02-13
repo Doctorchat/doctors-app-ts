@@ -14,6 +14,7 @@ import { routes as videoRoutes } from "@/features/video-appointment";
 import { routes as vacationRoutes } from "@/features/vacantion";
 import { routes as recomandationRoutes } from "@/features/recomandation-analyse";
 import { routes as surveysRoutes } from "@/features/surveys";
+import { routes as medicalCentreRoutes } from "@/features/medical-centre-appointment";
 import GoogleCalendarCallback from "@/features/video-appointment/components/callback";
 
 export const router = createBrowserRouter([
@@ -76,5 +77,9 @@ export const router = createBrowserRouter([
   {
     path: "/custom-surveys/*",
     children: surveysRoutes,
+  },
+  {
+    path: "/medical-centre-appointments/*",
+    children: medicalCentreRoutes,
   },
 ]);

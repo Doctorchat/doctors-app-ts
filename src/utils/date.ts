@@ -1,7 +1,15 @@
-import { format, formatDistanceToNow, differenceInYears, differenceInMonths, differenceInWeeks, isToday, isValid } from 'date-fns';
-import { enUS, ro, ru } from 'date-fns/locale';
-import { useTranslation } from 'react-i18next';
-import getActiveLng from './getActiveLng';
+import {
+  format,
+  formatDistanceToNow,
+  differenceInYears,
+  differenceInMonths,
+  differenceInWeeks,
+  isToday,
+  isValid,
+} from "date-fns";
+import { enUS, ro, ru } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import getActiveLng from "./getActiveLng";
 
 const formats = {
   time: "HH:mm",
@@ -10,13 +18,13 @@ const formats = {
   year: "dd/MM/yyyy",
   full: "dd.MM.yyyy HH:mm",
   serverDate: "yyyy-MM-dd",
-  serverFull: "yyyy-MM-dd HH:mm"
+  serverFull: "yyyy-MM-dd HH:mm",
 };
 
 const localeMapping: Record<string, typeof enUS | typeof ro | typeof ru> = {
   en: enUS,
   ro: ro,
-  ru: ru
+  ru: ru,
 };
 
 export interface Transformers {
@@ -55,13 +63,14 @@ export default function transformDate(date: Date | string): any {
   const localeMapping: Record<string, Locale> = {
     en: enUS,
     ro: ro,
-    ru: ru
+    ru: ru,
   };
 
   const currentLocale = localeMapping[getActiveLng()];
 
   const dynamic = (): string => {
-    if (differenceInYears(new Date(), parsedDate) !== 0) return format(parsedDate, formats.year, { locale: currentLocale });
+    if (differenceInYears(new Date(), parsedDate) !== 0)
+      return format(parsedDate, formats.year, { locale: currentLocale });
     if (!isToday(parsedDate)) return format(parsedDate, formats.day, { locale: currentLocale });
     return format(parsedDate, formats.time, { locale: currentLocale });
   };
@@ -71,7 +80,8 @@ export default function transformDate(date: Date | string): any {
     return format(parsedDate, formats.month, { locale: currentLocale });
   };
 
-  const toServerDate = (): string => format(parsedDate, formats.serverDate, { locale: currentLocale });
+  const toServerDate = (): string =>
+    format(parsedDate, formats.serverDate, { locale: currentLocale });
 
   return {
     dynamic,
@@ -107,6 +117,17 @@ export const calculateAge = (birthday: Date | string): AgeData => {
   const parsedBirthday = new Date(birthday);
   const years = differenceInYears(new Date(), parsedBirthday);
   const months = differenceInMonths(new Date(), parsedBirthday) - years * 12;
-  const weeks = differenceInWeeks(new Date(), parsedBirthday) - years * 52 - Math.floor(months * 4.33);
+  const weeks =
+    differenceInWeeks(new Date(), parsedBirthday) - years * 52 - Math.floor(months * 4.33);
   return { age: years, years, months, weeks };
 };
+
+export const daysWeek = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];

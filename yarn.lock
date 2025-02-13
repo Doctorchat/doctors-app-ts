@@ -2925,6 +2925,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/luxon@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "@types/luxon@npm:3.4.2"
+  checksum: 6f92d5bd02e89f310395753506bcd9cef3a56f5940f7a50db2a2b9822bce753553ac767d143cb5b4f9ed5ddd4a84e64f89ff538082ceb4d18739af7781b56925
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^20.5.7":
   version: 20.9.4
   resolution: "@types/node@npm:20.9.4"
@@ -4110,6 +4117,7 @@ __metadata:
     "@types/file-saver": ^2.0.5
     "@types/firebase": ^3.2.1
     "@types/lodash": ^4.14.199
+    "@types/luxon": ^3.4.2
     "@types/node": ^20.5.7
     "@types/react": ^18.2.21
     "@types/react-dom": ^18.2.7
@@ -4140,6 +4148,7 @@ __metadata:
     i18next-browser-languagedetector: ^7.1.0
     i18next-http-backend: ^2.2.1
     lodash: ^4.17.21
+    luxon: ^3.5.0
     moment: ^2.29.4
     postcss: ^8.4.31
     postcss-import: ^15.1.0
@@ -6080,6 +6089,13 @@ __metadata:
   dependencies:
     yallist: ^4.0.0
   checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "luxon@npm:3.5.0"
+  checksum: f290fe5788c8e51e748744f05092160d4be12150dca70f9fadc0d233e53d60ce86acd82e7d909a114730a136a77e56f0d3ebac6141bbb82fd310969a4704825b
   languageName: node
   linkType: hard
 
