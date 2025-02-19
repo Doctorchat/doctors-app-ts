@@ -95,9 +95,9 @@ const MedicalCentreAppointmentsList = () => {
                           {t("common:date")}:{" "}
                           <span className="font-medium text-gray-700">
                             <p>
-                              {DateTime.fromFormat(consultation.start_time, "yyyy-MM-dd HH:mm:ss")
-                                .toUTC()
-                                .toFormat("d MMMM, HH:mm")}
+                              {DateTime.fromFormat(consultation.start_time, "yyyy-MM-dd HH:mm:ss", {
+                                zone: "utc",
+                              }).toFormat("d MMMM, HH:mm")}
                             </p>
                           </span>
                         </div>

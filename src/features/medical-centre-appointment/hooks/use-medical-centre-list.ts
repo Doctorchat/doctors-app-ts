@@ -12,9 +12,6 @@ export const useMedicalCentreList = () => {
     queryFn: async () => {
       return getMedicalCentre();
     },
-    onSuccess: (data) => {
-      console.log(data.data.map((i) => i.medical_centre));
-    },
   });
 
   return { medicalCentreList: data?.data, refetchMedicalCentre, isLoadingMedicalCentre };

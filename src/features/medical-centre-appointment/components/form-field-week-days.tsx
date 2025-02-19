@@ -55,6 +55,7 @@ export const FormFieldWeekDays: React.FC<FormFieldWeekDaysProps> = (props) => {
                         ? [dayjs(field.value.from, format), dayjs(field.value.to, format)]
                         : null
                     }
+                    minuteStep={5}
                   />
                 </Suspense>
               </FormControl>

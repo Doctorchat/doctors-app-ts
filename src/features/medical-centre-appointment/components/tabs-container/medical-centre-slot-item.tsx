@@ -65,10 +65,9 @@ export const MedicalCentreSlotItem: React.FC<IProps> = ({ id }) => {
                   <span>{t("video:consultation_date")}</span>
                   <p>
                     {DateTime.fromISO(appointment.start_time)
-                      .toUTC()
+                      .setZone("Europe/Chisinau")
                       .toFormat("d MMMM yyyy, HH:mm")}
                   </p>
-                  {/*<p>{calculateDateTimeInTimeZone(appointment.start_time)}</p>*/}
                 </div>
 
                 <Popconfirm
