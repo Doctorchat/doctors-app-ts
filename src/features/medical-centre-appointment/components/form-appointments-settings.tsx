@@ -65,8 +65,6 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
       duration: data?.duration || 0,
       buffer: data?.buffer || 0,
       auto_regenerate: Boolean(data?.auto_regenerate),
-      // @ts-ignore
-      ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
     },
     resolver: zodResolver(schema),
   });
@@ -94,11 +92,17 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
     setApiResponse(val);
 
-  const [_, setRender] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setRender(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  // const [_, setRender] = useState(false);
+  // useEffect(() => {
+  //   if (!data) return;
+  //   const timer = setTimeout(() => {
+  //     setRender(true);
+  //     console.log("timer render");
+  //   }, 1000);
+  //   console.log("render");
+  //
+  //   return () => clearTimeout(timer);
+  // }, [data]);
 
   return (
     <FormProvider {...form}>
@@ -147,7 +151,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
             )}
           />
 
-          <FormFieldWeekDays form={form} loading={loading} />
+          <FormFieldWeekDays form={form} loading={loading} data={data} />
         </div>
 
         <div className={cn("flex items-center justify-between gap-4")}>
