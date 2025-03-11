@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { Checkbox } from "antd";
@@ -65,8 +65,6 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
       duration: data?.duration || 0,
       buffer: data?.buffer || 0,
       auto_regenerate: Boolean(data?.auto_regenerate),
-      // @ts-ignore
-      ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
     },
     resolver: zodResolver(schema),
   });
@@ -93,12 +91,6 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
 
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
     setApiResponse(val);
-
-  const [_, setRender] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setRender(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <FormProvider {...form}>
@@ -147,7 +139,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
             )}
           />
 
-          <FormFieldWeekDays form={form} loading={loading} />
+          <FormFieldWeekDays form={form} loading={loading} data={data} />
         </div>
 
         <div className={cn("flex items-center justify-between gap-4")}>
