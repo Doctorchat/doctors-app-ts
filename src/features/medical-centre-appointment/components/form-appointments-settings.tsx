@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { Checkbox } from "antd";
@@ -91,18 +91,6 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
 
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
     setApiResponse(val);
-
-  // const [_, setRender] = useState(false);
-  // useEffect(() => {
-  //   if (!data) return;
-  //   const timer = setTimeout(() => {
-  //     setRender(true);
-  //     console.log("timer render");
-  //   }, 1000);
-  //   console.log("render");
-  //
-  //   return () => clearTimeout(timer);
-  // }, [data]);
 
   return (
     <FormProvider {...form}>
