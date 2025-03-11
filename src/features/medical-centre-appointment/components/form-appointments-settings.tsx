@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
 import { Checkbox } from "antd";
@@ -94,89 +94,91 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
   const setOnOpenChange = (val: { type: "error" | "success"; message: string } | null) => () =>
     setApiResponse(val);
 
+  const [_, setRender] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setRender(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <>
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
-          <Notification
-            open={Boolean(apiResponse)}
-            onOpenChange={setOnOpenChange(null)}
-            type={apiResponse?.type}
-            description={
-              apiResponse?.type === "success"
-                ? t("common:success_update")
-                : t("common:error_update")
-            }
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitTestIsSubmitting)}>
+        <Notification
+          open={Boolean(apiResponse)}
+          onOpenChange={setOnOpenChange(null)}
+          type={apiResponse?.type}
+          description={
+            apiResponse?.type === "success" ? t("common:success_update") : t("common:error_update")
+          }
+        />
+
+        <div className={cn("flex flex-col gap-4")}>
+          <FormField
+            control={form.control}
+            name="duration"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("video:consultation_duration")}</FormLabel>
+                <FormControl>
+                  <Input type="number" className="w-full" disabled={loading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
-          <div className={cn("flex flex-col gap-4")}>
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("video:consultation_duration")}</FormLabel>
-                  <FormControl>
-                    <Input type="number" className="w-full" disabled={loading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="buffer"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("video:consultation_interval")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    className="w-full px-2 py-4"
+                    disabled={loading}
+                    min={0}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="buffer"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("video:consultation_interval")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      className="w-full px-2 py-4"
-                      disabled={loading}
-                      min={0}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormFieldWeekDays form={form} loading={loading} />
+        </div>
 
-            <FormFieldWeekDays form={form} loading={loading} />
-          </div>
-
-          <div className={cn("flex items-center justify-between gap-4")}>
-            <FormField
-              control={form.control}
-              name="auto_regenerate"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onChange={(checked) => field.onChange(checked)}
-                      className="!mt-0"
-                      {...(field as any)}
-                    />
-                  </FormControl>
-                  <FormLabel>{t("medical_centre:auto_regenerate")}</FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              disabled={loading}
-              className="mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
-            >
-              {t("common:save")}
-              {loading && "..."}
-            </Button>
-          </div>
-        </form>
-      </FormProvider>
-    </>
+        <div className={cn("flex items-center justify-between gap-4")}>
+          <FormField
+            control={form.control}
+            name="auto_regenerate"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onChange={(checked) => field.onChange(checked)}
+                    className="!mt-0"
+                    {...(field as any)}
+                  />
+                </FormControl>
+                <FormLabel>{t("medical_centre:auto_regenerate")}</FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={loading}
+            className="mt-4 w-60 bg-primary px-2 py-1 text-sm hover:bg-primary-hover xs:hover:bg-primary-hover sm:hover:bg-primary-hover md:hover:bg-primary-hover"
+          >
+            {t("common:save")}
+            {loading && "..."}
+          </Button>
+        </div>
+      </form>
+    </FormProvider>
   );
 };

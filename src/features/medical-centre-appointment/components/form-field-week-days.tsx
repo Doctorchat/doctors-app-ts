@@ -39,29 +39,39 @@ export const FormFieldWeekDays: React.FC<FormFieldWeekDaysProps> = (props) => {
           key={index}
           control={form.control}
           name={day}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t(`common:days_week.${day?.slice(0, 3)}`)}</FormLabel>
-              <FormControl>
-                <Suspense fallback={<Skeleton className="h-8 w-full py-2" />}>
-                  <TimePicker
-                    className="w-full py-2"
-                    placeholder={[t("common:start_time"), t("common:end_time")]}
-                    disabled={loading}
-                    format={format}
-                    onChange={(value) => handleTimeChange(day, value)}
-                    value={
-                      field.value?.from && field.value?.to
-                        ? [dayjs(field.value.from, format), dayjs(field.value.to, format)]
-                        : null
-                    }
-                    minuteStep={5}
-                  />
-                </Suspense>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel>{t(`common:days_week.${day?.slice(0, 3)}`)}</FormLabel>
+
+                <FormControl>
+                  <Suspense fallback={<Skeleton className="h-8 w-full py-2" />}>
+                    <TimePicker
+                      className="w-full py-2"
+                      placeholder={[t("common:start_time"), t("common:end_time")]}
+                      disabled={loading}
+                      format={format}
+                      onChange={(value) => handleTimeChange(day, value)}
+                      value={
+                        field.value?.from && field.value?.to
+                          ? [
+                              dayjs(field.value.from, format).isValid()
+                                ? dayjs(field.value.from, format)
+                                : null,
+                              dayjs(field.value.to, format).isValid()
+                                ? dayjs(field.value.to, format)
+                                : null,
+                            ]
+                          : null
+                      }
+                      minuteStep={5}
+                    />
+                  </Suspense>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
       ))}
     </>
