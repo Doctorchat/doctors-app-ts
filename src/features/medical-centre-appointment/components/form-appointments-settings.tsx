@@ -65,6 +65,8 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
       duration: data?.duration || 0,
       buffer: data?.buffer || 0,
       auto_regenerate: Boolean(data?.auto_regenerate),
+      // @ts-ignore
+      ...Object.fromEntries(daysWeek.map((day) => [day, data[day]])),
     },
     resolver: zodResolver(schema),
   });
@@ -139,7 +141,7 @@ export const FormAppointmentsSettings: React.FC<IProps> = ({ data }) => {
             )}
           />
 
-          <FormFieldWeekDays form={form} loading={loading} data={data} />
+          <FormFieldWeekDays form={form} loading={loading} />
         </div>
 
         <div className={cn("flex items-center justify-between gap-4")}>
