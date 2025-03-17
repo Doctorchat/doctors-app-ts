@@ -44,7 +44,7 @@ export const InternetSpeed: React.FC = () => {
       pingInterval={4000}
       thresholdUnit="megabyte"
       threshold={15}
-      imageUrl="/offline.jpg"
+      imageUrl="/offline-1px.jpg"
       downloadSize="1781287"
     />
   ) : (
