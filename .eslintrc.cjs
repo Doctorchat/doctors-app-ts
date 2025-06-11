@@ -10,9 +10,14 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "prettier",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  ignorePatterns: ["dist", "build", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh", "prettier", "import"],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: ["./tsconfig.json", "./tsconfig.node.json"],
+  },
+  plugins: ["react-refresh", "import"],
   rules: {
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -20,8 +25,6 @@ module.exports = {
 
     "react/prop-types": "off",
     "react/no-unknown-property": "off",
-
-    "prettier/prettier": "warn",
 
     "import/order": [
       "warn",

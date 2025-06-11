@@ -6,50 +6,27 @@ on:
       - main
 
 jobs:
-  Setup-Ecosystem:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-yarn.outputs.cache-key }}
+    strategy:
+      matrix:
+        region: [md, ro]
+        include:
+          - region: md
+            username: doctorchat-chat
+            target_path: /home/doctorchat-chat/htdocs/chat.doctorchat.md/
+          - region: ro
+            username: doctorchat-chat-ro
+            target_path: /home/doctorchat-chat-ro/htdocs/chat.doctorchat.ro/
+    
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-
-      - name: Cache Yarn cache
-        uses: actions/cache@v3
-        id: cache-yarn
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-  Deploy-MD:
-    needs: Setup-Ecosystem
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Cache from Setup
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/yarn
-          key: ${{ needs.setup.outputs.cache-key }}
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: "18"
-
-      - name: Check node version
-        run: node -v
+          cache: 'yarn'
 
       - name: Enable Corepack
         run: corepack enable
@@ -57,26 +34,25 @@ jobs:
       - name: Set Yarn version
         run: yarn set version 3.6.1
 
-      - name: Create env configs - MD
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Create environment config
         run: |
-          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> .env        
           echo "${{ secrets.API_PATH }}" >> .env
           echo "${{ secrets.PUSHER_ENV }}" >> .env
           echo "${{ secrets.FIREBASE_ENV }}" >> .env
-          echo "VITE_API_PREFIX=md" >> .env
-          echo "VITE_PUBLIC_API_REGION=md" >> .env
+          echo "VITE_API_PREFIX=${{ matrix.region }}" >> .env
+          echo "VITE_PUBLIC_API_REGION=${{ matrix.region }}" >> .env
 
-      - name: Install Dependencies with Yarn
-        run: yarn install --immutable
-
-      - name: Build
+      - name: Build application
         run: CI=false yarn build
 
-      - name: SSH Server Deploy - MD
+      - name: Deploy to server
         uses: kostya-ten/ssh-server-deploy@v4
         with:
           host: '31.172.77.196'
-          username: 'doctorchat-chat'
+          username: ${{ matrix.username }}
           password: ${{ secrets.APP_PASSWORD }}
           scp_source: "build/"
-          scp_target: "/home/doctorchat-chat/htdocs/chat.doctorchat.md/"
+          scp_target: ${{ matrix.target_path }}
